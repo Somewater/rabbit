@@ -10,12 +10,12 @@ task :compile, :filename do |task, args|
     compile_file "RabbitApplication"
     compile_file "LocalRabbitLoader"
   end
-  puts "=== Compilation success!!! ==="
+  puts "=== Compilation success! ==="
 end
 
 task :compile_editor do
   compile_editor_file "RabbitEditor"
-  puts "=== Compilation success!!! ==="
+  puts "=== Compilation success! ==="
 end
 
 task :compile_all do
@@ -24,7 +24,7 @@ task :compile_all do
   compile_file "RabbitApplication"
   compile_file "LocalRabbitLoader"
   compile_editor_file "RabbitEditor"
-  puts "=== Compilation success!!! ==="
+  puts "=== Compilation success! ==="
 end
 
 def compile_file(filename)
