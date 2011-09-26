@@ -1,0 +1,545 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../print.css" type="text/css" media="print">
+<meta content="BasicSpatialManager2D,com.pblabs.rendering2D.BasicSpatialManager2D,EntitiesDirtyEvent,_objectList,addSpatialObject,boxVsBox,castRay,getObjectsUnderPoint,queryCircle,queryRectangle,removeSpatialObject" name="keywords">
+<title>com.pblabs.rendering2D.BasicSpatialManager2D</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="../../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../../cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'BasicSpatialManager2D - PushButton API Reference - r958 (ZaaBot build #215)';
+				var baseRef = '../../../';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">PushButton API Reference - r958 (ZaaBot build #215)</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../../all-classes.html')" href="../../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../all-classes.html')" href="../../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../index-list.html')" href="../../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../../index.html?com/pblabs/rendering2D/BasicSpatialManager2D.html&amp;com/pblabs/rendering2D/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../../images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;BasicSpatialManager2D</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a>&nbsp;| <a href="#constantSummary">Constants</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class BasicSpatialManager2D"); titleBar_setSubNav(true,true,false,false,false,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">com.pblabs.rendering2D</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Class</td><td class="classSignature">public class BasicSpatialManager2D</td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">BasicSpatialManager2D <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../../images/inherit-arrow.gif"> <a href="../engine/entity/EntityComponent.html">EntityComponent</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Implements</td><td><a href="ISpatialManager2D.html">ISpatialManager2D</a></td>
+</tr>
+</table>
+<p></p>
+    Basic 2d spatial manager that stores everything in a list. There are many
+    smarter implementations, but this one is simple and reliable.
+    <p></p>
+<br>
+<hr>
+</div>
+<a name="propertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Properties</div>
+<div class="showHideLinks">
+<div class="hideInheritedProperty" id="hideInheritedProperty">
+<a onclick="javascript:setInheritedVisible(false,'Property');" href="#propertySummary" class="showHideLink"><img src="../../../images/expanded.gif" class="showHideLinkImage"> Hide Inherited Public Properties</a>
+</div>
+<div class="showInheritedProperty" id="showInheritedProperty">
+<a onclick="javascript:setInheritedVisible(true,'Property');" href="#propertySummary" class="showHideLink"><img src="../../../images/collapsed.gif" class="showHideLinkImage"> Show Inherited Public Properties</a>
+</div>
+</div>
+<table id="summaryTableProperty" class="summaryTable hideInheritedProperty" cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../engine/entity/EntityComponent.html#isRegistered">isRegistered</a> : Boolean<div class="summaryTableDescription">
+       
+       Whether or not the component is currently registered with an entity.</div>
+</td><td class="summaryTableOwnerCol"><a href="../engine/entity/EntityComponent.html">EntityComponent</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../engine/entity/EntityComponent.html#name">name</a> : String<div class="summaryTableDescription">
+       
+       The name given to the component when it is added to an entity.</div>
+</td><td class="summaryTableOwnerCol"><a href="../engine/entity/EntityComponent.html">EntityComponent</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../engine/entity/EntityComponent.html#owner">owner</a> : <a href="../engine/entity/IEntity.html">IEntity</a>
+<div class="summaryTableDescription">
+       
+       A reference to the entity that this component currently belongs to.</div>
+</td><td class="summaryTableOwnerCol"><a href="../engine/entity/EntityComponent.html">EntityComponent</a></td>
+</tr>
+</table>
+</div>
+<a name="protectedPropertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Protected Properties</div>
+<table id="summaryTableProtectedProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_objectList">_objectList</a> : Array<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">BasicSpatialManager2D</td>
+</tr>
+</table>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<div class="showHideLinks">
+<div class="hideInheritedMethod" id="hideInheritedMethod">
+<a onclick="javascript:setInheritedVisible(false,'Method');" href="#methodSummary" class="showHideLink"><img src="../../../images/expanded.gif" class="showHideLinkImage"> Hide Inherited Public Methods</a>
+</div>
+<div class="showInheritedMethod" id="showInheritedMethod">
+<a onclick="javascript:setInheritedVisible(true,'Method');" href="#methodSummary" class="showHideLink"><img src="../../../images/collapsed.gif" class="showHideLinkImage"> Show Inherited Public Methods</a>
+</div>
+</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#addSpatialObject()">addSpatialObject</a>(object:<a href="ISpatialObject2D.html">ISpatialObject2D</a>):void</div>
+<div class="summaryTableDescription">
+       
+       Add a generic spatial object to this manager.</div>
+</td><td class="summaryTableOwnerCol">BasicSpatialManager2D</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#boxVsBox()">boxVsBox</a>(box1:Rectangle, box2:Rectangle):Boolean</div>
+<div class="summaryTableDescription">
+      Determines if the two rectangles intersect.</div>
+</td><td class="summaryTableOwnerCol">BasicSpatialManager2D</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#castRay()">castRay</a>(start:Point, end:Point, mask:<a href="../engine/core/ObjectType.html">ObjectType</a>, result:<a href="RayHitInfo.html">RayHitInfo</a>):Boolean</div>
+<div class="summaryTableDescription">
+       
+       Cast a ray and (optionally) return information about what it hits in result.</div>
+</td><td class="summaryTableOwnerCol">BasicSpatialManager2D</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getObjectsUnderPoint()">getObjectsUnderPoint</a>(worldPosition:Point, results:Array, mask:<a href="../engine/core/ObjectType.html">ObjectType</a> = null):Boolean</div>
+<div class="summaryTableDescription">
+       
+       Return all the spatial objects under a given point.</div>
+</td><td class="summaryTableOwnerCol">BasicSpatialManager2D</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#queryCircle()">queryCircle</a>(center:Point, radius:Number, mask:<a href="../engine/core/ObjectType.html">ObjectType</a>, results:Array):Boolean</div>
+<div class="summaryTableDescription">
+       
+       Return all the spatial objects that overlap the specified circle.</div>
+</td><td class="summaryTableOwnerCol">BasicSpatialManager2D</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#queryRectangle()">queryRectangle</a>(box:Rectangle, mask:<a href="../engine/core/ObjectType.html">ObjectType</a>, results:Array):Boolean</div>
+<div class="summaryTableDescription">
+       
+       Return all the spatial objects that overlap with the specified box and match
+       one or more of the types in the mask.</div>
+</td><td class="summaryTableOwnerCol">BasicSpatialManager2D</td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../engine/entity/EntityComponent.html#register()">register</a>(owner:<a href="../engine/entity/IEntity.html">IEntity</a>, name:String):void</div>
+<div class="summaryTableDescription">
+       
+       Registers the component with an entity.</div>
+</td><td class="summaryTableOwnerCol"><a href="../engine/entity/EntityComponent.html">EntityComponent</a></td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#removeSpatialObject()">removeSpatialObject</a>(object:<a href="ISpatialObject2D.html">ISpatialObject2D</a>):void</div>
+<div class="summaryTableDescription">
+       
+       Remove a previously registered object from this manager.</div>
+</td><td class="summaryTableOwnerCol">BasicSpatialManager2D</td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../engine/entity/EntityComponent.html#reset()">reset</a>():void</div>
+<div class="summaryTableDescription">
+       
+       This is called by an entity on all of its components any time a component
+       is added or removed.</div>
+</td><td class="summaryTableOwnerCol"><a href="../engine/entity/EntityComponent.html">EntityComponent</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../engine/entity/EntityComponent.html#unregister()">unregister</a>():void</div>
+<div class="summaryTableDescription">
+       
+       Unregisters the component from an entity.</div>
+</td><td class="summaryTableOwnerCol"><a href="../engine/entity/EntityComponent.html">EntityComponent</a></td>
+</tr>
+</table>
+</div>
+<a name="protectedMethodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Protected Methods</div>
+<div class="showHideLinks">
+<div class="hideInheritedProtectedMethod" id="hideInheritedProtectedMethod">
+<a onclick="javascript:setInheritedVisible(false,'ProtectedMethod');" href="#protectedMethodSummary" class="showHideLink"><img src="../../../images/expanded.gif" class="showHideLinkImage"> Hide Inherited Protected Methods</a>
+</div>
+<div class="showInheritedProtectedMethod" id="showInheritedProtectedMethod">
+<a onclick="javascript:setInheritedVisible(true,'ProtectedMethod');" href="#protectedMethodSummary" class="showHideLink"><img src="../../../images/collapsed.gif" class="showHideLinkImage"> Show Inherited Protected Methods</a>
+</div>
+</div>
+<table id="summaryTableProtectedMethod" class="summaryTable hideInheritedProtectedMethod" cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="hideInheritedProtectedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../engine/entity/EntityComponent.html#onAdd()">onAdd</a>():void</div>
+<div class="summaryTableDescription">
+       This is called when the component is added to an entity.</div>
+</td><td class="summaryTableOwnerCol"><a href="../engine/entity/EntityComponent.html">EntityComponent</a></td>
+</tr>
+<tr class="hideInheritedProtectedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../engine/entity/EntityComponent.html#onRemove()">onRemove</a>():void</div>
+<div class="summaryTableDescription">
+       This is called when the component is removed from an entity.</div>
+</td><td class="summaryTableOwnerCol"><a href="../engine/entity/EntityComponent.html">EntityComponent</a></td>
+</tr>
+<tr class="hideInheritedProtectedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../engine/entity/EntityComponent.html#onReset()">onReset</a>():void</div>
+<div class="summaryTableDescription">
+       This is called anytime a component is added or removed from the owner entity.</div>
+</td><td class="summaryTableOwnerCol"><a href="../engine/entity/EntityComponent.html">EntityComponent</a></td>
+</tr>
+</table>
+</div>
+<a name="constantSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Constants</div>
+<table id="summaryTableConstant" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Constant</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#EntitiesDirtyEvent">EntitiesDirtyEvent</a> : String = "BasicSpatialManager2D.EntitiesDirty"<div class="summaryTableDescription">[static]
+      An event with this name is raised on the owner.eventDispatcher when 
+      the entity list changes via addSpatialObject or removeSpatialObject.</div>
+</td><td class="summaryTableOwnerCol">BasicSpatialManager2D</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="propertyDetail"></a>
+<div class="detailSectionHeader">Property detail</div>
+<a name="_objectList"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_objectList</td><td class="detailHeaderType">property</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _objectList:Array</code>
+</div>
+<a name="methodDetail"></a>
+<div class="detailSectionHeader">Method detail</div>
+<a name="addSpatialObject()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">addSpatialObject</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function addSpatialObject(object:<a href="ISpatialObject2D.html">ISpatialObject2D</a>):void</code><p>
+       
+       Add a generic spatial object to this manager. A manager with advanced
+       functionality will support both general ISpatialObject2D implementations
+       as well as enabling special functionality for its peered classes.
+       </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">object</span>:<a href="ISpatialObject2D.html">ISpatialObject2D</a></code></td>
+</tr>
+</table>
+</div>
+<a name="boxVsBox()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">boxVsBox</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function boxVsBox(box1:Rectangle, box2:Rectangle):Boolean</code><p>
+      Determines if the two rectangles intersect.
+      This, along with the objectMask of the spatial component is used in queryRectangle 
+      to determine which spatial components are added to the results array.
+      </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">box1</span>:Rectangle</code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">box2</span>:Rectangle</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code></td>
+</tr>
+</table>
+</div>
+<a name="castRay()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">castRay</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function castRay(start:Point, end:Point, mask:<a href="../engine/core/ObjectType.html">ObjectType</a>, result:<a href="RayHitInfo.html">RayHitInfo</a>):Boolean</code><p>
+       
+       Cast a ray and (optionally) return information about what it hits in result.
+       </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">start</span>:Point</code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">end</span>:Point</code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">mask</span>:<a href="../engine/core/ObjectType.html">ObjectType</a></code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">result</span>:<a href="RayHitInfo.html">RayHitInfo</a></code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code></td>
+</tr>
+</table>
+</div>
+<a name="getObjectsUnderPoint()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getObjectsUnderPoint</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getObjectsUnderPoint(worldPosition:Point, results:Array, mask:<a href="../engine/core/ObjectType.html">ObjectType</a> = null):Boolean</code><p>
+       
+       Return all the spatial objects under a given point. Objects can optionally implement
+       pixel-level collision checking.
+              </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">worldPosition</span>:Point</code> &mdash; Point in worldspace to check.
+       </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">results</span>:Array</code> &mdash; An array into which ISpatialObject2Ds are added based on what is under point.
+       </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">mask</span>:<a href="../engine/core/ObjectType.html">ObjectType</a></code> (default = <code>null</code>)<code></code> &mdash; Only consider objects that match this ObjectType. Null uses all types.
+      </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Found something under point or not.
+       </td>
+</tr>
+</table>
+</div>
+<a name="queryCircle()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">queryCircle</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function queryCircle(center:Point, radius:Number, mask:<a href="../engine/core/ObjectType.html">ObjectType</a>, results:Array):Boolean</code><p>
+       
+       Return all the spatial objects that overlap the specified circle.
+       
+       </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">center</span>:Point</code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">radius</span>:Number</code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">mask</span>:<a href="../engine/core/ObjectType.html">ObjectType</a></code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">results</span>:Array</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code></td>
+</tr>
+</table>
+</div>
+<a name="queryRectangle()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">queryRectangle</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function queryRectangle(box:Rectangle, mask:<a href="../engine/core/ObjectType.html">ObjectType</a>, results:Array):Boolean</code><p>
+       
+       Return all the spatial objects that overlap with the specified box and match
+       one or more of the types in the mask.
+       
+       </p><p>Note that if you pass in a populated array, this method appends to it.
+       This can be useful if you want to combine the results of several
+       queries. If you just want the results from one query, make sure to
+       set results.length=0; before you pass it to queryRectangle.</p>
+       
+       <span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">box</span>:Rectangle</code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">mask</span>:<a href="../engine/core/ObjectType.html">ObjectType</a></code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">results</span>:Array</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; True if one or more objects were found and push()'ed to results.
+       </td>
+</tr>
+</table>
+</div>
+<a name="removeSpatialObject()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">removeSpatialObject</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function removeSpatialObject(object:<a href="ISpatialObject2D.html">ISpatialObject2D</a>):void</code><p>
+       
+       Remove a previously registered object from this manager.
+       
+       </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">object</span>:<a href="ISpatialObject2D.html">ISpatialObject2D</a></code></td>
+</tr>
+</table>
+</div>
+<a name="constantDetail"></a>
+<div class="detailSectionHeader">Constant detail</div>
+<a name="EntitiesDirtyEvent"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">EntitiesDirtyEvent</td><td class="detailHeaderType">constant</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const EntitiesDirtyEvent:String = "BasicSpatialManager2D.EntitiesDirty"</code><p>
+      An event with this name is raised on the owner.eventDispatcher when 
+      the entity list changes via addSpatialObject or removeSpatialObject.
+      </p></div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright">http://pushbuttonengine.com/</center>
+</div>
+</body>
+</html>
+<!--http://pushbuttonengine.com/-->

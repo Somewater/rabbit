@@ -1,0 +1,1754 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../../print.css" type="text/css" media="print">
+<meta content="InputKey,com.pblabs.engine.core.InputKey,A,ADD,ALT,B,BACKSLASH,BACKSPACE,C,CAPS_LOCK,COLON,COMMA,COMMAND,CONTROL,D,DECIMAL,DELETE,DIVIDE,DOWN,E,EIGHT,END,ENTER,ESCAPE,F,F1,F11,F12,F2,F3,F4,F5,F6,F7,F8,F9,FIVE,FOUR,G,H,HOME,I,INSERT,INVALID,J,K,L,LEFT,LEFT_BRACKET,M,MINUS,MOUSE_BUTTON,MOUSE_HOVER,MOUSE_WHEEL,MOUSE_X,MOUSE_Y,MULTIPLY,N,NINE,NUM0,NUM1,NUM2,NUM3,NUM4,NUM5,NUM6,NUM7,NUM8,NUM9,NUMENTER,NUM_LOCK,O,ONE,P,PAGE_DOWN,PAGE_UP,PAUSE,PERIOD,PLUS,Q,QUOTE,R,RIGHT,RIGHT_BRACKET,S,SCROLL_LOCK,SEVEN,SHIFT,SIX,SLASH,SPACE,SUBTRACT,T,TAB,THREE,TILDE,TWO,U,UP,V,W,X,Y,Z,ZERO,defaultType,keyCode,staticTypeMap,typeMap,codeToString,stringToCode,stringToKey" name="keywords">
+<title>com.pblabs.engine.core.InputKey</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="../../../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../../../cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'InputKey - PushButton API Reference - r958 (ZaaBot build #215)';
+				var baseRef = '../../../../';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">PushButton API Reference - r958 (ZaaBot build #215)</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../../../all-classes.html')" href="../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../all-classes.html')" href="../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../index-list.html')" href="../../../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../../../index.html?com/pblabs/engine/core/InputKey.html&amp;com/pblabs/engine/core/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../../../images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;InputKey</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a>&nbsp;| <a href="#constantSummary">Constants</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class InputKey"); titleBar_setSubNav(true,true,false,false,false,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">com.pblabs.engine.core</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Class</td><td class="classSignature">public class InputKey</td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">InputKey <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../../../images/inherit-arrow.gif"> <a href="../serialization/Enumerable.html">Enumerable</a></td>
+</tr>
+</table>
+<p></p>
+     Enumeration class that maps friendly key names to their key code equivalent. This class
+     should not be instantiated directly, rather, one of the constants should be used.
+     <p></p>
+<br>
+<hr>
+</div>
+<a name="propertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Properties</div>
+<table id="summaryTableProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#defaultType">defaultType</a> : <a href="../serialization/Enumerable.html">Enumerable</a>
+<div class="summaryTableDescription">[read-only]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#keyCode">keyCode</a> : int<div class="summaryTableDescription">[read-only]
+         The key code that this wraps.</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#staticTypeMap">staticTypeMap</a> : Dictionary<div class="summaryTableDescription">[static][read-only]
+         A dictionary mapping the string names of all the keys to the InputKey they represent.</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#typeMap">typeMap</a> : Dictionary<div class="summaryTableDescription">[read-only]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+</table>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<div class="showHideLinks">
+<div class="hideInheritedMethod" id="hideInheritedMethod">
+<a onclick="javascript:setInheritedVisible(false,'Method');" href="#methodSummary" class="showHideLink"><img src="../../../../images/expanded.gif" class="showHideLinkImage"> Hide Inherited Public Methods</a>
+</div>
+<div class="showInheritedMethod" id="showInheritedMethod">
+<a onclick="javascript:setInheritedVisible(true,'Method');" href="#methodSummary" class="showHideLink"><img src="../../../../images/collapsed.gif" class="showHideLinkImage"> Show Inherited Public Methods</a>
+</div>
+</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#InputKey()">InputKey</a>(keyCode:int = 0)</div>
+<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#codeToString()">codeToString</a>(value:int):String</div>
+<div class="summaryTableDescription">[static]
+         Converts a key code to the string that represents it.</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../serialization/Enumerable.html#deserialize()">deserialize</a>(xml:XML):*</div>
+<div class="summaryTableDescription">
+       
+       deserializes the object from xml.</div>
+</td><td class="summaryTableOwnerCol"><a href="../serialization/Enumerable.html">Enumerable</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../serialization/Enumerable.html#serialize()">serialize</a>(xml:XML):void</div>
+<div class="summaryTableDescription">
+       
+       serializes the object to XML.</div>
+</td><td class="summaryTableOwnerCol"><a href="../serialization/Enumerable.html">Enumerable</a></td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#stringToCode()">stringToCode</a>(value:String):int</div>
+<div class="summaryTableDescription">[static]
+         Converts the name of a key to the keycode it represents.</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#stringToKey()">stringToKey</a>(value:String):<a href="../core/InputKey.html">InputKey</a>
+</div>
+<div class="summaryTableDescription">[static]
+         Converts the name of a key to the InputKey it represents.</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+</table>
+</div>
+<a name="constantSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Constants</div>
+<table id="summaryTableConstant" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Constant</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#A">A</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#ADD">ADD</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#ALT">ALT</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#B">B</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#BACKSLASH">BACKSLASH</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#BACKSPACE">BACKSPACE</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#C">C</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#CAPS_LOCK">CAPS_LOCK</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#COLON">COLON</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#COMMA">COMMA</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#COMMAND">COMMAND</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#CONTROL">CONTROL</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#D">D</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#DECIMAL">DECIMAL</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#DELETE">DELETE</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#DIVIDE">DIVIDE</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#DOWN">DOWN</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#E">E</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#EIGHT">EIGHT</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#END">END</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#ENTER">ENTER</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#ESCAPE">ESCAPE</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#F">F</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#F1">F1</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#F11">F11</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#F12">F12</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#F2">F2</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#F3">F3</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#F4">F4</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#F5">F5</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#F6">F6</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#F7">F7</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#F8">F8</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#F9">F9</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#FIVE">FIVE</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#FOUR">FOUR</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#G">G</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#H">H</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#HOME">HOME</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#I">I</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#INSERT">INSERT</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#INVALID">INVALID</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#J">J</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#K">K</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#L">L</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#LEFT">LEFT</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#LEFT_BRACKET">LEFT_BRACKET</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#M">M</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#MINUS">MINUS</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#MOUSE_BUTTON">MOUSE_BUTTON</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#MOUSE_HOVER">MOUSE_HOVER</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#MOUSE_WHEEL">MOUSE_WHEEL</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#MOUSE_X">MOUSE_X</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#MOUSE_Y">MOUSE_Y</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#MULTIPLY">MULTIPLY</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#N">N</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#NINE">NINE</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#NUM0">NUM0</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#NUM1">NUM1</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#NUM2">NUM2</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#NUM3">NUM3</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#NUM4">NUM4</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#NUM5">NUM5</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#NUM6">NUM6</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#NUM7">NUM7</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#NUM8">NUM8</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#NUM9">NUM9</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#NUMENTER">NUMENTER</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#NUM_LOCK">NUM_LOCK</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#O">O</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#ONE">ONE</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#P">P</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PAGE_DOWN">PAGE_DOWN</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PAGE_UP">PAGE_UP</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PAUSE">PAUSE</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PERIOD">PERIOD</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PLUS">PLUS</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#Q">Q</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#QUOTE">QUOTE</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#R">R</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#RIGHT">RIGHT</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#RIGHT_BRACKET">RIGHT_BRACKET</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#S">S</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#SCROLL_LOCK">SCROLL_LOCK</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#SEVEN">SEVEN</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#SHIFT">SHIFT</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#SIX">SIX</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#SLASH">SLASH</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#SPACE">SPACE</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#SUBTRACT">SUBTRACT</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#T">T</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#TAB">TAB</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#THREE">THREE</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#TILDE">TILDE</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#TWO">TWO</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#U">U</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#UP">UP</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#V">V</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#W">W</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#X">X</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#Y">Y</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#Z">Z</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#ZERO">ZERO</a> : <a href="../core/InputKey.html">InputKey</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">InputKey</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="propertyDetail"></a>
+<div class="detailSectionHeader">Property detail</div>
+<a name="defaultType"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">defaultType</td><td class="detailHeaderType">property</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>defaultType:<a href="../serialization/Enumerable.html">Enumerable</a></code>&nbsp;&nbsp;[read-only]<span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get defaultType():<a href="../serialization/Enumerable.html">Enumerable</a></code>
+<br>
+</div>
+<a name="keyCode"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">keyCode</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>keyCode:int</code>&nbsp;&nbsp;[read-only]<p>
+         The key code that this wraps.
+         </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get keyCode():int</code>
+<br>
+</div>
+<a name="staticTypeMap"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">staticTypeMap</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>staticTypeMap:Dictionary</code>&nbsp;&nbsp;[read-only]<p>
+         A dictionary mapping the string names of all the keys to the InputKey they represent.
+         </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get staticTypeMap():Dictionary</code>
+<br>
+</div>
+<a name="typeMap"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">typeMap</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>typeMap:Dictionary</code>&nbsp;&nbsp;[read-only]<span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get typeMap():Dictionary</code>
+<br>
+</div>
+<a name="constructorDetail"></a>
+<div class="detailSectionHeader">Constructor detail</div>
+<a name="InputKey()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">InputKey</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">constructor</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function InputKey(keyCode:int = 0)</code><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">keyCode</span>:int</code> (default = <code>0</code>)<code></code></td>
+</tr>
+</table>
+</div>
+<a name="methodDetail"></a>
+<div class="detailSectionHeader">Method detail</div>
+<a name="codeToString()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">codeToString</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function codeToString(value:int):String</code><p>
+         Converts a key code to the string that represents it.
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">value</span>:int</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code></td>
+</tr>
+</table>
+</div>
+<a name="stringToCode()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">stringToCode</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function stringToCode(value:String):int</code><p>
+         Converts the name of a key to the keycode it represents.
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">value</span>:String</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>int</code></td>
+</tr>
+</table>
+</div>
+<a name="stringToKey()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">stringToKey</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function stringToKey(value:String):<a href="../core/InputKey.html">InputKey</a></code><p>
+         Converts the name of a key to the InputKey it represents.
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">value</span>:String</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../core/InputKey.html">InputKey</a></code></td>
+</tr>
+</table>
+</div>
+<a name="constantDetail"></a>
+<div class="detailSectionHeader">Constant detail</div>
+<a name="A"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">A</td><td class="detailHeaderType">constant</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const A:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="ADD"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">ADD</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const ADD:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="ALT"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">ALT</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const ALT:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="B"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">B</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const B:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="BACKSLASH"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">BACKSLASH</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const BACKSLASH:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="BACKSPACE"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">BACKSPACE</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const BACKSPACE:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="C"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">C</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const C:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="CAPS_LOCK"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">CAPS_LOCK</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const CAPS_LOCK:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="COLON"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">COLON</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const COLON:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="COMMA"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">COMMA</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const COMMA:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="COMMAND"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">COMMAND</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const COMMAND:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="CONTROL"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">CONTROL</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const CONTROL:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="D"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">D</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const D:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="DECIMAL"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">DECIMAL</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const DECIMAL:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="DELETE"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">DELETE</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const DELETE:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="DIVIDE"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">DIVIDE</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const DIVIDE:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="DOWN"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">DOWN</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const DOWN:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="E"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">E</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const E:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="EIGHT"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">EIGHT</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const EIGHT:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="END"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">END</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const END:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="ENTER"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">ENTER</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const ENTER:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="ESCAPE"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">ESCAPE</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const ESCAPE:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="F"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">F</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const F:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="F1"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">F1</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const F1:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="F11"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">F11</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const F11:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="F12"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">F12</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const F12:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="F2"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">F2</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const F2:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="F3"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">F3</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const F3:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="F4"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">F4</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const F4:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="F5"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">F5</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const F5:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="F6"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">F6</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const F6:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="F7"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">F7</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const F7:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="F8"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">F8</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const F8:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="F9"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">F9</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const F9:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="FIVE"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">FIVE</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const FIVE:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="FOUR"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">FOUR</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const FOUR:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="G"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">G</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const G:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="H"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">H</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const H:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="HOME"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">HOME</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const HOME:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="I"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">I</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const I:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="INSERT"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">INSERT</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const INSERT:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="INVALID"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">INVALID</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const INVALID:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="J"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">J</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const J:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="K"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">K</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const K:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="L"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">L</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const L:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="LEFT"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">LEFT</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const LEFT:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="LEFT_BRACKET"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">LEFT_BRACKET</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const LEFT_BRACKET:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="M"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">M</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const M:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="MINUS"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">MINUS</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const MINUS:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="MOUSE_BUTTON"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">MOUSE_BUTTON</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const MOUSE_BUTTON:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="MOUSE_HOVER"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">MOUSE_HOVER</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const MOUSE_HOVER:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="MOUSE_WHEEL"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">MOUSE_WHEEL</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const MOUSE_WHEEL:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="MOUSE_X"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">MOUSE_X</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const MOUSE_X:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="MOUSE_Y"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">MOUSE_Y</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const MOUSE_Y:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="MULTIPLY"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">MULTIPLY</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const MULTIPLY:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="N"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">N</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const N:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="NINE"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">NINE</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const NINE:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="NUM0"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">NUM0</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const NUM0:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="NUM1"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">NUM1</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const NUM1:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="NUM2"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">NUM2</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const NUM2:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="NUM3"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">NUM3</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const NUM3:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="NUM4"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">NUM4</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const NUM4:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="NUM5"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">NUM5</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const NUM5:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="NUM6"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">NUM6</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const NUM6:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="NUM7"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">NUM7</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const NUM7:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="NUM8"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">NUM8</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const NUM8:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="NUM9"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">NUM9</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const NUM9:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="NUMENTER"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">NUMENTER</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const NUMENTER:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="NUM_LOCK"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">NUM_LOCK</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const NUM_LOCK:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="O"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">O</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const O:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="ONE"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">ONE</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const ONE:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="P"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">P</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const P:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="PAGE_DOWN"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PAGE_DOWN</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PAGE_DOWN:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="PAGE_UP"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PAGE_UP</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PAGE_UP:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="PAUSE"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PAUSE</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PAUSE:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="PERIOD"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PERIOD</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PERIOD:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="PLUS"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PLUS</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PLUS:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="Q"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">Q</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const Q:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="QUOTE"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">QUOTE</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const QUOTE:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="R"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">R</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const R:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="RIGHT"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">RIGHT</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const RIGHT:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="RIGHT_BRACKET"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">RIGHT_BRACKET</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const RIGHT_BRACKET:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="S"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">S</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const S:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="SCROLL_LOCK"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">SCROLL_LOCK</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const SCROLL_LOCK:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="SEVEN"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">SEVEN</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const SEVEN:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="SHIFT"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">SHIFT</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const SHIFT:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="SIX"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">SIX</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const SIX:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="SLASH"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">SLASH</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const SLASH:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="SPACE"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">SPACE</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const SPACE:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="SUBTRACT"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">SUBTRACT</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const SUBTRACT:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="T"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">T</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const T:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="TAB"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">TAB</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const TAB:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="THREE"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">THREE</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const THREE:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="TILDE"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">TILDE</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const TILDE:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="TWO"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">TWO</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const TWO:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="U"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">U</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const U:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="UP"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">UP</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const UP:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="V"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">V</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const V:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="W"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">W</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const W:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="X"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">X</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const X:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="Y"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">Y</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const Y:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="Z"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">Z</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const Z:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<a name="ZERO"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">ZERO</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const ZERO:<a href="../core/InputKey.html">InputKey</a></code>
+</div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright">http://pushbuttonengine.com/</center>
+</div>
+</body>
+</html>
+<!--http://pushbuttonengine.com/-->

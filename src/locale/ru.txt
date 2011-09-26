@@ -1,0 +1,49 @@
+ERROR=ОШИБКА
+ALERT=ВНИМАНИЕ
+OK=OK
+PAUSE=ПАУЗА
+
+###################
+#
+#	ERROR MASSAGES
+#
+#####################
+ERROR_INIT_LOADING_STATIC=Не удалось соединиться с сервером. Попробуй еще раз
+ERROR_INIT_LOADING_PROFILE=Не удалось соединиться с сервером. Попробуй еще раз
+ERROR_LOADING_ASSETS=Не удается загрузить графику игры. Попробуй еще раз
+ERROR_LOADING_XMLS=Не удается загрузить описание уровня. Попробуй еще раз
+###################
+#
+#	LEVEL MESSAGES
+#
+#####################
+LEVEL_FAIL_TIME=Твое время вышло!
+LEVEL_FATAL_LIFE=Кролик устал... смертельно!
+LEVEL_FATAL_CARROT=Ты проворонил морковку!
+LEVEL_SUCCESS_FINISH=Уровень пройден!
+###################
+#
+#	PAUSE MENU WINDOW
+#
+#####################
+BUTTON_GOTO_MAIN_MENU=ГЛАВНОЕ МЕНЮ
+BUTTON_RESTART_LEVEL=НАЧАТЬ УРОВЕНЬ ЗАНОВО
+###################
+#
+#	MAIN PAGE
+#
+#####################
+CONTINUE_GAME=ПРОДОЛЖИТЬ ИГРУ
+START_GAME=НАЧАТЬ ИГРУ
+LEVEL_SELECTION=ВЫБОР УРОВНЯ
+MY_ACHIEVEMENTS=МОИ НАГРАДЫ
+ABOUT_GAME=ОБ ИГРЕ
+INVITE_BUTTON_TEXT=ХОЧУ ИГРАТЬ
+###################
+#
+#	LEVELS PAGE
+#
+#####################
+ERROR_LOCKED_HINT=Уровень заблокирован. Сначала пройди предыдущий уровень
+BACK_TO_MAIN_MENU=Назад в главное меню
+GLOBAL_SCORE_COUNTER_HINT=Всего собрано морковок\n/\nМаксимальное количество

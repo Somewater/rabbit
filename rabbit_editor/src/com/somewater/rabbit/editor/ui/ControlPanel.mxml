@@ -1,0 +1,170 @@
+<?xml version="1.0"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" width="200" height="700" label="EDITOR"
+		  title="{selectedLevel.name + ' (' + selectedLevel.id + ')'}"
+		  implements="com.somewater.rabbit.IRabbitEditor">
+	<mx:Script>
+		<![CDATA[
+		import com.somewater.rabbit.IRabbitEditor;
+		import com.somewater.rabbit.editor.xml.XmlController;
+		import com.somewater.rabbit.storage.Config;
+		import com.somewater.rabbit.storage.LevelDef;
+
+		import mx.collections.ArrayCollection;
+		import mx.core.Application;
+
+		[Bindable]
+		public var selectedLevel:LevelDef;
+		private var needStartLevel:Boolean = false;
+
+
+		public var menuData:ArrayCollection;
+
+		public static var instance:IRabbitEditor;
+
+		public function start():void {
+			enabled = false;
+			instance = this;
+			Config.editor = this;
+			stage.frameRate = Config.FRAME_RATE;
+			if (Config.application) {
+				Config.application.addEventListener("applicationInited", function(e:Event):void {
+					menuData = new ArrayCollection([
+						{"label":"Select level", data:"select_level"},
+						{"label":"Edit level", data:"edit_level"},
+						{"label":"Edit entities", data:"edit_entities"},
+						{"label":"Show entities", data:"show_entities"}
+					]);
+					menu.dataProvider = menuData;
+					enabled = true;
+					callLater(onMainMenuChanged);
+				})
+
+			}
+			else
+				callLater(start);
+		}
+
+		public function restartLevel(newLevel:LevelDef = null, force:Boolean = false):void {
+			needStartLevel = force || (newLevel != null && (selectedLevel == null || newLevel.id != selectedLevel.id));
+			if (needStartLevel)
+				selectedLevel = newLevel;
+			menu.selectedIndex = 1;
+			onMainMenuChanged();
+		}
+
+		private function onMainMenuChanged(e:Event = null):void {
+			switch (menu.value) {
+				case "select_level":
+					selectLevel();
+					break;
+				case "edit_level":
+					editLevel();
+					break;
+				case "edit_entities":
+					if (selectedLevel)
+						showEntitiesEditor();
+					else
+						menu.selectedIndex = 0;
+					break;
+				case "show_entities":
+					if (selectedLevel)
+						showEntitiesInLevel();
+					else
+						menu.selectedIndex = 0;
+					break;
+			}
+		}
+
+		private function selectLevel():void {
+			holder.removeAllChildren();
+			holder.addChild(new LevelIcon()).addEventListener(MouseEvent.CLICK, onLevelSelected)
+			for (var i:int = 0; i < XmlController.instance.getLevels().length; i++) {
+				var b:LevelIcon = new LevelIcon();
+				b.data = XmlController.instance.getLevels()[i];
+				b.addEventListener(MouseEvent.CLICK, onLevelSelected)
+				holder.addChild(b);
+			}
+		}
+
+		private function onLevelSelected(e:Event):void {
+			var newLevel:LevelDef = LevelIcon(e.currentTarget).level;
+			restartLevel(newLevel == null ? XmlController.instance.getNewLevel() : newLevel);
+		}
+
+		private function editLevel():void {
+			holder.removeAllChildren();
+			if (selectedLevel == null) {
+				selectedLevel = XmlController.instance.getNewLevel();
+				needStartLevel = true;
+			}
+			if (needStartLevel)
+				startLevel(selectedLevel);
+			showLevelProperties();
+		}
+
+		private function startLevel(level:LevelDef):void {
+			Config.application.startGame(level);
+			needStartLevel = false;
+		}
+
+		private function showLevelProperties():void {
+			holder.removeAllChildren();
+
+			var propEditor:LevelEditor = new LevelEditor();
+			propEditor.data = selectedLevel;
+			holder.addChild(propEditor);
+		}
+
+		private function showEntitiesInLevel():void {
+			holder.removeAllChildren();
+
+			var entityList:EntityList = new EntityList();
+			entityList.data = selectedLevel;
+			holder.addChild(entityList);
+		}
+
+		private function showEntitiesEditor():void {
+			holder.removeAllChildren();
+
+			var entityEditor:EntityEditor = new EntityEditor();
+			entityEditor.data = selectedLevel;
+			holder.addChild(entityEditor);
+		}
+
+		private function saveLevel():void {
+			Config.application.message("TODO: save level #" + selectedLevel.id);
+		}
+
+		public function show():void {
+			Application.application.show();
+		}
+
+		public function hide():void {
+			Application.application.hide();
+		}
+
+		public function showOrHide():void {
+			Application.application.showOrHide();
+		}
+
+		]]>
+	</mx:Script>
+	<mx:ComboBox id="menu" width="100%" close="onMainMenuChanged(event);" tabEnabled="false">
+	</mx:ComboBox>
+
+	<mx:VBox id="holder" width="100%" height="100%" backgroundColor="#EEFFEE" horizontalScrollPolicy="off">
+	</mx:VBox>
+
+	<mx:VBox width="100%">
+		<mx:HBox id="statusBar" width="100%" height="35" verticalAlign="middle" paddingLeft="3" paddingRight="3">
+			<mx:TextInput id="console" width="100%">
+			</mx:TextInput>
+			<mx:Button id="submit" width="25" height="25">
+			</mx:Button>
+		</mx:HBox>
+		<mx:HBox width="100%">
+			<mx:Button width="100%" label="SAVE" click="saveLevel()" enabled="{selectedLevel != null}"></mx:Button>
+		</mx:HBox>
+	</mx:VBox>
+
+</mx:Panel>

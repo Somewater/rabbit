@@ -1,0 +1,1372 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../print.css" type="text/css" media="print">
+<meta content="PBE,com.pblabs.engine.PBE,IS_SHIPPING_BUILD,_currentGroup,_inputManager,_nameManager,_objectTypeManager,_processManager,_resourceManager,_rootGroup,_scene,_soundManager,_spatialManager,_templateManager,currentGroup,inputManager,levelManager,mainClass,mainStage,nameManager,objectTypeManager,processManager,resourceManager,rootGroup,scene,screenManager,soundManager,spatialManager,started,templateManager,versionDetails,addResources,allocateEntity,callLater,defineEntityByFunction,defineWithXML,findChild,getFlashVars,getHostingDomain,initializeManagers,initializeScene,isAnyKeyDown,isKeyDown,loadResource,log,lookup,lookupComponentByName,lookupComponentByType,lookupEntity,makeEntity,popStageQuality,pushStageQuality,registerType,startup" name="keywords">
+<title>com.pblabs.engine.PBE</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="../../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../../cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'PBE - PushButton API Reference - r958 (ZaaBot build #215)';
+				var baseRef = '../../../';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">PushButton API Reference - r958 (ZaaBot build #215)</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../../all-classes.html')" href="../../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../all-classes.html')" href="../../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../index-list.html')" href="../../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../../index.html?com/pblabs/engine/PBE.html&amp;com/pblabs/engine/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../../images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;PBE</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class PBE"); titleBar_setSubNav(false,true,false,false,false,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">com.pblabs.engine</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Class</td><td class="classSignature">public class PBE</td>
+</tr>
+</table>
+<p></p>
+     Utility class to simplify working with PushButton Engine.
+     
+     This class makes some assumptions about what components and modules
+     are present. If you are doing strange things, then you may need to
+     directly access things this class does for you. However if you are
+     just getting started this is likely to be a useful toolkit.
+     <p></p>
+<br>
+<hr>
+</div>
+<a name="propertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Properties</div>
+<table id="summaryTableProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#currentGroup">currentGroup</a> : <a href="core/PBGroup.html">PBGroup</a>
+<div class="summaryTableDescription">[static]
+         PBObjects are automatically added to the currentGroup when they are
+         created, so that nothing is every unrooted in the PBObject tree.</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#inputManager">inputManager</a> : <a href="core/InputManager.html">InputManager</a>
+<div class="summaryTableDescription">[static][read-only]
+         Returns the InputManager instance.</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#IS_SHIPPING_BUILD">IS_SHIPPING_BUILD</a> : Boolean = false<div class="summaryTableDescription">[static]
+         Set this to true to get rid of a bunch of development related functionality that isn't
+         needed in a final release build.</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#levelManager">levelManager</a> : <a href="core/LevelManager.html">LevelManager</a>
+<div class="summaryTableDescription">[static][read-only]
+         Returns the LevelManager instance
+         </div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#mainClass">mainClass</a> : Sprite<div class="summaryTableDescription">[static][read-only]
+         A reference to the main class of the application.</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#mainStage">mainStage</a> : Stage<div class="summaryTableDescription">[static][read-only]
+         The stage.</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#nameManager">nameManager</a> : <a href="core/NameManager.html">NameManager</a>
+<div class="summaryTableDescription">[static][read-only]
+         Returns the NameManager instance 
+         </div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#objectTypeManager">objectTypeManager</a> : <a href="core/ObjectTypeManager.html">ObjectTypeManager</a>
+<div class="summaryTableDescription">[static][read-only]
+         Returns the ObjectTypeManager instance.</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#processManager">processManager</a> : <a href="core/ProcessManager.html">ProcessManager</a>
+<div class="summaryTableDescription">[static][read-only]
+         Returns the ProcessManager instance 
+         </div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#resourceManager">resourceManager</a> : <a href="resource/ResourceManager.html">ResourceManager</a>
+<div class="summaryTableDescription">[static][read-only]
+         Returns the ResourceManager instance.</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#rootGroup">rootGroup</a> : <a href="core/PBGroup.html">PBGroup</a>
+<div class="summaryTableDescription">[static][read-only]
+         The root group; all sets and groups should be ultimately owned by
+         this guy.</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#scene">scene</a> : <a href="../rendering2D/IScene2D.html">IScene2D</a>
+<div class="summaryTableDescription">[static][read-only]</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#screenManager">screenManager</a> : <a href="../screens/ScreenManager.html">ScreenManager</a>
+<div class="summaryTableDescription">[static][read-only]
+         Returns the ScreenManager instance
+         </div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#soundManager">soundManager</a> : <a href="../sound/ISoundManager.html">ISoundManager</a>
+<div class="summaryTableDescription">[static][read-only]
+         Returns the global SoundManager instance.</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#spatialManager">spatialManager</a> : <a href="../rendering2D/ISpatialManager2D.html">ISpatialManager2D</a>
+<div class="summaryTableDescription">[static][read-only]</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#started">started</a> : Boolean<div class="summaryTableDescription">[static][read-only]
+         True if PBE.startup has been called.</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#templateManager">templateManager</a> : <a href="core/TemplateManager.html">TemplateManager</a>
+<div class="summaryTableDescription">[static][read-only]
+         Returns the TemplateManager instance.</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#versionDetails">versionDetails</a> : <a href="version/VersionDetails.html">VersionDetails</a>
+<div class="summaryTableDescription">[static][read-only]
+         Returns information about the current running swf.</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+</table>
+</div>
+<a name="protectedPropertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Protected Properties</div>
+<table id="summaryTableProtectedProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_currentGroup">_currentGroup</a> : <a href="core/PBGroup.html">PBGroup</a> = null<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_inputManager">_inputManager</a> : <a href="core/InputManager.html">InputManager</a> = null<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_nameManager">_nameManager</a> : <a href="core/NameManager.html">NameManager</a> = null<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_objectTypeManager">_objectTypeManager</a> : <a href="core/ObjectTypeManager.html">ObjectTypeManager</a> = null<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_processManager">_processManager</a> : <a href="core/ProcessManager.html">ProcessManager</a> = null<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_resourceManager">_resourceManager</a> : <a href="resource/ResourceManager.html">ResourceManager</a> = null<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_rootGroup">_rootGroup</a> : <a href="core/PBGroup.html">PBGroup</a> = null<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_scene">_scene</a> : <a href="../rendering2D/DisplayObjectScene.html">DisplayObjectScene</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_soundManager">_soundManager</a> : <a href="../sound/SoundManager.html">SoundManager</a> = null<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_spatialManager">_spatialManager</a> : <a href="../rendering2D/ISpatialManager2D.html">ISpatialManager2D</a>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_templateManager">_templateManager</a> : <a href="core/TemplateManager.html">TemplateManager</a> = null<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+</table>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#addResources()">addResources</a>(rb:<a href="resource/ResourceBundle.html">ResourceBundle</a>):void</div>
+<div class="summaryTableDescription">[static]
+         If you want to use a ResourceBundle, add it to PBE with this method.</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#allocateEntity()">allocateEntity</a>():<a href="entity/IEntity.html">IEntity</a>
+</div>
+<div class="summaryTableDescription">[static]
+         Allocates an instance of the hidden Entity class.</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#callLater()">callLater</a>(method:Function, args:Array = null):void</div>
+<div class="summaryTableDescription">[static]
+         Defer a call until the start of the next tick or frame.</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#defineEntityByFunction()">defineEntityByFunction</a>(name:String, definition:Function):void</div>
+<div class="summaryTableDescription">[static]
+         Define an entity using a function callback.</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#defineWithXML()">defineWithXML</a>(xml:XML):void</div>
+<div class="summaryTableDescription">[static]
+         Define one or more entities using PBE level XML.</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#findChild()">findChild</a>(name:String, displayObjectToSearch:DisplayObject = null):DisplayObject</div>
+<div class="summaryTableDescription">[static]
+         Recursively searches for an object with the specified name that has been added to the
+         display hierarchy.</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getFlashVars()">getFlashVars</a>():Object</div>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getHostingDomain()">getHostingDomain</a>():String</div>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#initializeScene()">initializeScene</a>(view:<a href="../rendering2D/ui/IUITarget.html">IUITarget</a>, sceneName:String = "SceneDB", sceneClass:Class = null, spatialManagerClass:Class = null):<a href="entity/IEntity.html">IEntity</a>
+</div>
+<div class="summaryTableDescription">[static]
+         Helper function to set up a basic scene using default Rendering2D
+         classes.</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#isAnyKeyDown()">isAnyKeyDown</a>():Boolean</div>
+<div class="summaryTableDescription">[static]
+         Return true if any key is down.</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#isKeyDown()">isKeyDown</a>(key:<a href="core/InputKey.html">InputKey</a>):Boolean</div>
+<div class="summaryTableDescription">[static]
+         Return true if the specified key is down.</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#loadResource()">loadResource</a>(filename:String, resourceType:Class, onLoaded:Function = null, onFailed:Function = null, forceReload:Boolean = false):void</div>
+<div class="summaryTableDescription">[static]
+         Loads a resource from a file.</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#log()">log</a>(reporter:*, message:String):void</div>
+<div class="summaryTableDescription">[static]
+         Print a message to the log.</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#lookup()">lookup</a>(objectName:String):<a href="core/PBObject.html">PBObject</a>
+</div>
+<div class="summaryTableDescription">[static]
+         Locate a PBObject (entity, set, group) by its name.</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#lookupComponentByName()">lookupComponentByName</a>(entityName:String, componentName:String):<a href="entity/IEntityComponent.html">IEntityComponent</a>
+</div>
+<div class="summaryTableDescription">[static]
+         Locate a named component on a named entity.</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#lookupComponentByType()">lookupComponentByType</a>(entityName:String, componentType:Class):<a href="entity/IEntityComponent.html">IEntityComponent</a>
+</div>
+<div class="summaryTableDescription">[static]
+         Locate the first component of a type on a named entity.</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#lookupEntity()">lookupEntity</a>(entityName:String):<a href="entity/IEntity.html">IEntity</a>
+</div>
+<div class="summaryTableDescription">[static]
+         Locate an IEntity by its name.</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#makeEntity()">makeEntity</a>(entityName:String, params:Object = null):<a href="entity/IEntity.html">IEntity</a>
+</div>
+<div class="summaryTableDescription">[static]
+         Make a new instance of an entity, setting appropriate fields based
+         on the parameters passed.</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#popStageQuality()">popStageQuality</a>():void</div>
+<div class="summaryTableDescription">[static]
+         Restore stage quality to previous value.</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#pushStageQuality()">pushStageQuality</a>(newQuality:String):void</div>
+<div class="summaryTableDescription">[static]
+         Set stage quality to a new value, and store the old value so we
+         can restore it later.</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#registerType()">registerType</a>(type:Class):void</div>
+<div class="summaryTableDescription">[static]
+         Register a type with PushButton Engine so that it can be deserialized,
+         even if no code directly uses it.</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#startup()">startup</a>(mainClass:Sprite):void</div>
+<div class="summaryTableDescription">[static]
+         Start the engine by giving it a reference to the root of the display hierarchy.</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+</table>
+</div>
+<a name="protectedMethodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Protected Methods</div>
+<table id="summaryTableProtectedMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#initializeManagers()">initializeManagers</a>():void</div>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">PBE</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="propertyDetail"></a>
+<div class="detailSectionHeader">Property detail</div>
+<a name="_currentGroup"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_currentGroup</td><td class="detailHeaderType">property</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected static var _currentGroup:<a href="core/PBGroup.html">PBGroup</a> = null</code>
+</div>
+<a name="currentGroup"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">currentGroup</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>currentGroup:<a href="core/PBGroup.html">PBGroup</a></code>&nbsp;&nbsp;[read-write]<p>
+         PBObjects are automatically added to the currentGroup when they are
+         created, so that nothing is every unrooted in the PBObject tree. You
+         can set this to whatever you like.
+         </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get currentGroup():<a href="core/PBGroup.html">PBGroup</a></code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set currentGroup(value:<a href="core/PBGroup.html">PBGroup</a>):void</code>
+<br>
+</div>
+<a name="_inputManager"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_inputManager</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected static var _inputManager:<a href="core/InputManager.html">InputManager</a> = null</code>
+</div>
+<a name="inputManager"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">inputManager</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>inputManager:<a href="core/InputManager.html">InputManager</a></code>&nbsp;&nbsp;[read-only]<p>
+         Returns the InputManager instance. 
+         </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get inputManager():<a href="core/InputManager.html">InputManager</a></code>
+<br>
+</div>
+<a name="IS_SHIPPING_BUILD"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">IS_SHIPPING_BUILD</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static var IS_SHIPPING_BUILD:Boolean = false</code><p>
+         Set this to true to get rid of a bunch of development related functionality that isn't
+         needed in a final release build.
+         </p></div>
+<a name="levelManager"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">levelManager</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>levelManager:<a href="core/LevelManager.html">LevelManager</a></code>&nbsp;&nbsp;[read-only]<p>
+         Returns the LevelManager instance
+         </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get levelManager():<a href="core/LevelManager.html">LevelManager</a></code>
+<br>
+</div>
+<a name="mainClass"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">mainClass</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>mainClass:Sprite</code>&nbsp;&nbsp;[read-only]<p>
+         A reference to the main class of the application. This must be set when the application
+         first loads as several core subsystems rely on it's presence.
+         </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get mainClass():Sprite</code>
+<br>
+</div>
+<a name="mainStage"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">mainStage</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>mainStage:Stage</code>&nbsp;&nbsp;[read-only]<p>
+         The stage. This is the root of the display heirarchy and is automatically created by
+         flash when the application starts up.
+         </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get mainStage():Stage</code>
+<br>
+</div>
+<a name="_nameManager"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_nameManager</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected static var _nameManager:<a href="core/NameManager.html">NameManager</a> = null</code>
+</div>
+<a name="nameManager"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">nameManager</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>nameManager:<a href="core/NameManager.html">NameManager</a></code>&nbsp;&nbsp;[read-only]<p>
+         Returns the NameManager instance 
+         </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get nameManager():<a href="core/NameManager.html">NameManager</a></code>
+<br>
+</div>
+<a name="_objectTypeManager"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_objectTypeManager</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected static var _objectTypeManager:<a href="core/ObjectTypeManager.html">ObjectTypeManager</a> = null</code>
+</div>
+<a name="objectTypeManager"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">objectTypeManager</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>objectTypeManager:<a href="core/ObjectTypeManager.html">ObjectTypeManager</a></code>&nbsp;&nbsp;[read-only]<p>
+         Returns the ObjectTypeManager instance. 
+         </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get objectTypeManager():<a href="core/ObjectTypeManager.html">ObjectTypeManager</a></code>
+<br>
+</div>
+<a name="_processManager"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_processManager</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected static var _processManager:<a href="core/ProcessManager.html">ProcessManager</a> = null</code>
+</div>
+<a name="processManager"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">processManager</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>processManager:<a href="core/ProcessManager.html">ProcessManager</a></code>&nbsp;&nbsp;[read-only]<p>
+         Returns the ProcessManager instance 
+         </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get processManager():<a href="core/ProcessManager.html">ProcessManager</a></code>
+<br>
+</div>
+<a name="_resourceManager"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_resourceManager</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected static var _resourceManager:<a href="resource/ResourceManager.html">ResourceManager</a> = null</code>
+</div>
+<a name="resourceManager"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">resourceManager</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>resourceManager:<a href="resource/ResourceManager.html">ResourceManager</a></code>&nbsp;&nbsp;[read-only]<p>
+         Returns the ResourceManager instance. 
+         </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get resourceManager():<a href="resource/ResourceManager.html">ResourceManager</a></code>
+<br>
+</div>
+<a name="_rootGroup"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_rootGroup</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected static var _rootGroup:<a href="core/PBGroup.html">PBGroup</a> = null</code>
+</div>
+<a name="rootGroup"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">rootGroup</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>rootGroup:<a href="core/PBGroup.html">PBGroup</a></code>&nbsp;&nbsp;[read-only]<p>
+         The root group; all sets and groups should be ultimately owned by
+         this guy.
+         </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get rootGroup():<a href="core/PBGroup.html">PBGroup</a></code>
+<br>
+</div>
+<a name="_scene"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_scene</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected static var _scene:<a href="../rendering2D/DisplayObjectScene.html">DisplayObjectScene</a></code>
+</div>
+<a name="scene"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">scene</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>scene:<a href="../rendering2D/IScene2D.html">IScene2D</a></code>&nbsp;&nbsp;[read-only]<span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get scene():<a href="../rendering2D/IScene2D.html">IScene2D</a></code>
+<br>
+</div>
+<a name="screenManager"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">screenManager</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>screenManager:<a href="../screens/ScreenManager.html">ScreenManager</a></code>&nbsp;&nbsp;[read-only]<p>
+         Returns the ScreenManager instance
+         </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get screenManager():<a href="../screens/ScreenManager.html">ScreenManager</a></code>
+<br>
+</div>
+<a name="_soundManager"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_soundManager</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected static var _soundManager:<a href="../sound/SoundManager.html">SoundManager</a> = null</code>
+</div>
+<a name="soundManager"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">soundManager</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>soundManager:<a href="../sound/ISoundManager.html">ISoundManager</a></code>&nbsp;&nbsp;[read-only]<p>
+         Returns the global SoundManager instance.
+         </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get soundManager():<a href="../sound/ISoundManager.html">ISoundManager</a></code>
+<br>
+</div>
+<a name="_spatialManager"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_spatialManager</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected static var _spatialManager:<a href="../rendering2D/ISpatialManager2D.html">ISpatialManager2D</a></code>
+</div>
+<a name="spatialManager"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">spatialManager</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>spatialManager:<a href="../rendering2D/ISpatialManager2D.html">ISpatialManager2D</a></code>&nbsp;&nbsp;[read-only]<span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get spatialManager():<a href="../rendering2D/ISpatialManager2D.html">ISpatialManager2D</a></code>
+<br>
+</div>
+<a name="started"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">started</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>started:Boolean</code>&nbsp;&nbsp;[read-only]<p>
+         True if PBE.startup has been called.
+         </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get started():Boolean</code>
+<br>
+</div>
+<a name="_templateManager"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_templateManager</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected static var _templateManager:<a href="core/TemplateManager.html">TemplateManager</a> = null</code>
+</div>
+<a name="templateManager"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">templateManager</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>templateManager:<a href="core/TemplateManager.html">TemplateManager</a></code>&nbsp;&nbsp;[read-only]<p>
+         Returns the TemplateManager instance.
+         </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get templateManager():<a href="core/TemplateManager.html">TemplateManager</a></code>
+<br>
+</div>
+<a name="versionDetails"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">versionDetails</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>versionDetails:<a href="version/VersionDetails.html">VersionDetails</a></code>&nbsp;&nbsp;[read-only]<p>
+         Returns information about the current running swf.
+         </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get versionDetails():<a href="version/VersionDetails.html">VersionDetails</a></code>
+<br>
+</div>
+<a name="methodDetail"></a>
+<div class="detailSectionHeader">Method detail</div>
+<a name="addResources()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">addResources</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function addResources(rb:<a href="resource/ResourceBundle.html">ResourceBundle</a>):void</code><p>
+         If you want to use a ResourceBundle, add it to PBE with this method.
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">rb</span>:<a href="resource/ResourceBundle.html">ResourceBundle</a></code></td>
+</tr>
+</table>
+</div>
+<a name="allocateEntity()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">allocateEntity</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function allocateEntity():<a href="entity/IEntity.html">IEntity</a></code><p>
+         Allocates an instance of the hidden Entity class. This should be
+         used anytime an IEntity object needs to be created. Encapsulating
+         the Entity class forces code to use IEntity rather than Entity when
+         dealing with entity references. This will ensure that code is future
+         proof as well as allow the Entity class to be pooled in the future.
+         
+         </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="entity/IEntity.html">IEntity</a></code> &mdash; 
+                        A new IEntity.
+         
+                        
+                     </td>
+</tr>
+</table>
+</div>
+<a name="callLater()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">callLater</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function callLater(method:Function, args:Array = null):void</code><p>
+         Defer a call until the start of the next tick or frame. 
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">method</span>:Function</code> &mdash; Method to call.
+         </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">args</span>:Array</code> (default = <code>null</code>)<code></code> &mdash; Arguments, if any.
+         </td>
+</tr>
+</table>
+</div>
+<a name="defineEntityByFunction()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">defineEntityByFunction</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function defineEntityByFunction(name:String, definition:Function):void</code><p>
+         Define an entity using a function callback.
+         
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">name</span>:String</code> &mdash; The name of the entity; used to identify it for creation
+                     later.
+         </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">definition</span>:Function</code> &mdash; The function, taking no arguments and returning IEntity,
+               which creates an instance of that entity.
+         </td>
+</tr>
+</table>
+</div>
+<a name="defineWithXML()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">defineWithXML</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function defineWithXML(xml:XML):void</code><p>
+         Define one or more entities using PBE level XML.
+         
+         This function will do its best to cope with what you give it. It can
+         accept either a things tag containing several entities/templates/groups,
+         or a template or entity tag defining a single item.
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">xml</span>:XML</code></td>
+</tr>
+</table>
+</div>
+<a name="findChild()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">findChild</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function findChild(name:String, displayObjectToSearch:DisplayObject = null):DisplayObject</code><p>
+         Recursively searches for an object with the specified name that has been added to the
+         display hierarchy.
+         
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">name</span>:String</code> &mdash; The name of the object to find.
+         
+         </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">displayObjectToSearch</span>:DisplayObject</code> (default = <code>null</code>)<code></code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>DisplayObject</code> &mdash; The display object with the specified name, or null if it wasn't found.
+         </td>
+</tr>
+</table>
+</div>
+<a name="getFlashVars()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getFlashVars</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function getFlashVars():Object</code>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Object</code></td>
+</tr>
+</table>
+</div>
+<a name="getHostingDomain()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getHostingDomain</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function getHostingDomain():String</code>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code></td>
+</tr>
+</table>
+</div>
+<a name="initializeManagers()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">initializeManagers</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected static function initializeManagers():void</code>
+</div>
+<a name="initializeScene()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">initializeScene</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function initializeScene(view:<a href="../rendering2D/ui/IUITarget.html">IUITarget</a>, sceneName:String = "SceneDB", sceneClass:Class = null, spatialManagerClass:Class = null):<a href="entity/IEntity.html">IEntity</a></code><p>
+         Helper function to set up a basic scene using default Rendering2D
+         classes. Very useful for getting started quickly.
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">view</span>:<a href="../rendering2D/ui/IUITarget.html">IUITarget</a></code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">sceneName</span>:String</code> (default = "<code>SceneDB</code>")<code></code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">sceneClass</span>:Class</code> (default = <code>null</code>)<code></code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">spatialManagerClass</span>:Class</code> (default = <code>null</code>)<code></code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="entity/IEntity.html">IEntity</a></code></td>
+</tr>
+</table>
+</div>
+<a name="isAnyKeyDown()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">isAnyKeyDown</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function isAnyKeyDown():Boolean</code><p>
+         Return true if any key is down.
+         </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code></td>
+</tr>
+</table>
+</div>
+<a name="isKeyDown()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">isKeyDown</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function isKeyDown(key:<a href="core/InputKey.html">InputKey</a>):Boolean</code><p>
+         Return true if the specified key is down.
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">key</span>:<a href="core/InputKey.html">InputKey</a></code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code></td>
+</tr>
+</table>
+</div>
+<a name="loadResource()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">loadResource</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function loadResource(filename:String, resourceType:Class, onLoaded:Function = null, onFailed:Function = null, forceReload:Boolean = false):void</code><p>
+         Loads a resource from a file. If the resource has already been loaded or is embedded, a
+         reference to the existing resource will be given. The resource is not returned directly
+         since loading is asynchronous. Instead, it will be passed to the function specified in
+         the onLoaded parameter. Even if the resource has already been loaded, it cannot be
+         assumed that the callback will happen synchronously.
+         
+         </p><p>This will not attempt to load resources that have previously failed to load. Instead,
+         the load will fail instantly.</p>
+         
+         <span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">filename</span>:String</code> &mdash; The url of the file to load.
+         </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">resourceType</span>:Class</code> &mdash; The Resource subclass specifying the type of resource that is being
+         requested.
+         </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">onLoaded</span>:Function</code> (default = <code>null</code>)<code></code> &mdash; A function that will be called on successful load of the resource. The
+         function should take a single parameter of the type specified in the resourceType
+         parameter.
+         </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">onFailed</span>:Function</code> (default = <code>null</code>)<code></code> &mdash; A function that will be called if loading of the resource fails. The
+         function should take a single parameter of the type specified in the resourceType
+         parameter. The resource passed to the function will be invalid, but the filename
+         property will be correct.
+         </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">forceReload</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; Always reload the resource, even if it has already been loaded.
+         
+         </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">Resource</div>
+</div>
+<a name="log()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">log</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function log(reporter:*, message:String):void</code><p>
+         Print a message to the log. 
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">reporter</span>:*</code> &mdash; Usually 'this'; the class initiating the logging.
+         </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">message</span>:String</code> &mdash; The message to log.
+         
+         </td>
+</tr>
+</table>
+</div>
+<a name="lookup()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">lookup</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function lookup(objectName:String):<a href="core/PBObject.html">PBObject</a></code><p>
+         Locate a PBObject (entity, set, group) by its name.
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">objectName</span>:String</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="core/PBObject.html">PBObject</a></code></td>
+</tr>
+</table>
+</div>
+<a name="lookupComponentByName()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">lookupComponentByName</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function lookupComponentByName(entityName:String, componentName:String):<a href="entity/IEntityComponent.html">IEntityComponent</a></code><p>
+         Locate a named component on a named entity.
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">entityName</span>:String</code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">componentName</span>:String</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="entity/IEntityComponent.html">IEntityComponent</a></code></td>
+</tr>
+</table>
+</div>
+<a name="lookupComponentByType()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">lookupComponentByType</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function lookupComponentByType(entityName:String, componentType:Class):<a href="entity/IEntityComponent.html">IEntityComponent</a></code><p>
+         Locate the first component of a type on a named entity.
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">entityName</span>:String</code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">componentType</span>:Class</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="entity/IEntityComponent.html">IEntityComponent</a></code></td>
+</tr>
+</table>
+</div>
+<a name="lookupEntity()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">lookupEntity</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function lookupEntity(entityName:String):<a href="entity/IEntity.html">IEntity</a></code><p>
+         Locate an IEntity by its name.
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">entityName</span>:String</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="entity/IEntity.html">IEntity</a></code></td>
+</tr>
+</table>
+</div>
+<a name="makeEntity()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">makeEntity</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function makeEntity(entityName:String, params:Object = null):<a href="entity/IEntity.html">IEntity</a></code><p>
+         Make a new instance of an entity, setting appropriate fields based
+         on the parameters passed.
+         
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">entityName</span>:String</code> &mdash; Identifier by which to look up the entity on the 
+               TemplateManager.
+         </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">params</span>:Object</code> (default = <code>null</code>)<code></code> &mdash;     Properties to assign, by key/value. Keys can be
+               strings or PropertyReferences. Values can be any
+               type.
+         </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="entity/IEntity.html">IEntity</a></code></td>
+</tr>
+</table>
+</div>
+<a name="popStageQuality()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">popStageQuality</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function popStageQuality():void</code><p>
+         Restore stage quality to previous value.
+         
+         </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">pushStageQuality</div>
+</div>
+<a name="pushStageQuality()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">pushStageQuality</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function pushStageQuality(newQuality:String):void</code><p>
+         Set stage quality to a new value, and store the old value so we
+         can restore it later. Useful if you want to temporarily toggle
+         render quality.
+          
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">newQuality</span>:String</code> &mdash; From StafeQuality, new quality level to use. 
+         </td>
+</tr>
+</table>
+</div>
+<a name="registerType()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">registerType</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function registerType(type:Class):void</code><p>
+         Register a type with PushButton Engine so that it can be deserialized,
+         even if no code directly uses it.
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">type</span>:Class</code></td>
+</tr>
+</table>
+</div>
+<a name="startup()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">startup</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function startup(mainClass:Sprite):void</code><p>
+         Start the engine by giving it a reference to the root of the display hierarchy.
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">mainClass</span>:Sprite</code></td>
+</tr>
+</table>
+</div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright">http://pushbuttonengine.com/</center>
+</div>
+</body>
+</html>
+<!--http://pushbuttonengine.com/-->

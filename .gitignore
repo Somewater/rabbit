@@ -1,0 +1,17 @@
+bin-debug/*.swf
+
+.actionScriptProperties
+.project
+.settings
+*.as3proj
+.flexProperties
+.idea
+*.iml
+
+*/.actionScriptProperties
+*/.project
+*/.settings
+*/*.as3proj
+*/.flexProperties
+*/.idea
+*/*.iml

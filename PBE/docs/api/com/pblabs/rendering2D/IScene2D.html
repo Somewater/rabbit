@@ -1,0 +1,730 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../print.css" type="text/css" media="print">
+<meta content="IScene2D,com.pblabs.rendering2D.IScene2D,layerCount,sceneViewBounds,position,rotation,sceneAlignment,sceneView,trackLimitRectangle,zoom,add,getLayer,getRenderersUnderPoint,invalidate,invalidateRectangle,remove,screenPan,setWorldCenter,sortSpatials,transformSceneToScreen,transformSceneToWorld,transformScreenToScene,transformScreenToWorld,transformWorldToScene,transformWorldToScreen" name="keywords">
+<title>com.pblabs.rendering2D.IScene2D</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="../../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../../cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'IScene2D - PushButton API Reference - r958 (ZaaBot build #215)';
+				var baseRef = '../../../';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">PushButton API Reference - r958 (ZaaBot build #215)</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../../all-classes.html')" href="../../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../all-classes.html')" href="../../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../index-list.html')" href="../../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../../index.html?com/pblabs/rendering2D/IScene2D.html&amp;com/pblabs/rendering2D/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../../images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Interface&nbsp;IScene2D</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Interface IScene2D"); titleBar_setSubNav(false,true,false,false,false,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">com.pblabs.rendering2D</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Interface</td><td class="classSignature">public interface IScene2D</td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Implementors</td><td><a href="../rendering2D/DisplayObjectScene.html">DisplayObjectScene</a></td>
+</tr>
+</table>
+<p></p>
+     Base interface for a 2d scene. A scene contains multiple layers, and has
+     a camera transform which is applied to pan/rotate/zoom the view. The scene
+     is responsible for tracking and rendering all the drawable objects in the
+     world.
+     
+     <p></p>
+<p>
+<span class="classHeaderTableLabel">See also</span>
+</p>
+<div class="seeAlso">
+<a href="DisplayObjectRenderer.html" target="">DisplayObjectRenderer</a>
+<br>
+<a href="DisplayObjectScene.html" target="">DisplayObjectScene</a>
+</div>
+<br>
+<hr>
+</div>
+<a name="propertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Properties</div>
+<table id="summaryTableProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#layerCount">layerCount</a> : int<div class="summaryTableDescription">[read-only]
+         Layers are assigned positive integers between 0 and N.</div>
+</td><td class="summaryTableOwnerCol">IScene2D</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#position">position</a> : Point<div class="summaryTableDescription">
+         The location of the view onto the scene.</div>
+</td><td class="summaryTableOwnerCol">IScene2D</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#rotation">rotation</a> : Number<div class="summaryTableDescription">
+         Rotation in degrees about the center point of the scene.</div>
+</td><td class="summaryTableOwnerCol">IScene2D</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#sceneAlignment">sceneAlignment</a> : <a href="../rendering2D/SceneAlignment.html">SceneAlignment</a>
+<div class="summaryTableDescription">
+         How the scene is aligned relative to its position property.</div>
+</td><td class="summaryTableOwnerCol">IScene2D</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#sceneView">sceneView</a> : <a href="ui/IUITarget.html">IUITarget</a>
+<div class="summaryTableDescription">
+         The SceneView where the contents of this scene will be displayed.</div>
+</td><td class="summaryTableOwnerCol">IScene2D</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#sceneViewBounds">sceneViewBounds</a> : Rectangle<div class="summaryTableDescription">[read-only]
+         The region of the scene we are currently viewing.</div>
+</td><td class="summaryTableOwnerCol">IScene2D</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#trackLimitRectangle">trackLimitRectangle</a> : Rectangle<div class="summaryTableDescription">
+         If set, this clamps the camera to scroll no further than its boundaries
+         </div>
+</td><td class="summaryTableOwnerCol">IScene2D</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#zoom">zoom</a> : Number<div class="summaryTableDescription">
+         Zoom/scale factor; 1 = no zoom, less than 1 = zoom out, greater than 1 = zoom in.</div>
+</td><td class="summaryTableOwnerCol">IScene2D</td>
+</tr>
+</table>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#add()">add</a>(dor:<a href="DisplayObjectRenderer.html">DisplayObjectRenderer</a>):void</div>
+<div class="summaryTableDescription">
+         Add a DisplayObjectRenderer to the scene; all you normally have to
+         do is set scene on DisplayObjectRenderer, not call this directly.</div>
+</td><td class="summaryTableOwnerCol">IScene2D</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getLayer()">getLayer</a>(index:int, allocateIfAbsent:Boolean = false):<a href="../rendering2D/DisplayObjectSceneLayer.html">DisplayObjectSceneLayer</a>
+</div>
+<div class="summaryTableDescription">
+         Get the layer at specified index.</div>
+</td><td class="summaryTableOwnerCol">IScene2D</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getRenderersUnderPoint()">getRenderersUnderPoint</a>(screenPosition:Point, results:Array, mask:<a href="../engine/core/ObjectType.html">ObjectType</a> = null):Boolean</div>
+<div class="summaryTableDescription">
+         Return a sorted list of the DisplayObjectRenderers under a given 
+         screen position.</div>
+</td><td class="summaryTableOwnerCol">IScene2D</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#invalidate()">invalidate</a>(dirtyRenderer:<a href="DisplayObjectRenderer.html">DisplayObjectRenderer</a>):void</div>
+<div class="summaryTableDescription">
+         Indicates that a renderer has changed, and must be redrawn.</div>
+</td><td class="summaryTableOwnerCol">IScene2D</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#invalidateRectangle()">invalidateRectangle</a>(dirty:Rectangle):void</div>
+<div class="summaryTableDescription">
+         Just like invalidate, but indicates a specific region in scene 
+         coordinates.</div>
+</td><td class="summaryTableOwnerCol">IScene2D</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#remove()">remove</a>(dor:<a href="DisplayObjectRenderer.html">DisplayObjectRenderer</a>):void</div>
+<div class="summaryTableDescription">
+         Remove a DisplayObjectRenderer from the scene; all you normally have
+         to do is clear scene on DisplayObjectRenderer, or destroy its owning
+         entity, not call this directly.</div>
+</td><td class="summaryTableOwnerCol">IScene2D</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#screenPan()">screenPan</a>(deltaX:int, deltaY:int):void</div>
+<div class="summaryTableDescription">
+         Pan-the view by (deltaX, deltaY) screen pixels.</div>
+</td><td class="summaryTableOwnerCol">IScene2D</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#setWorldCenter()">setWorldCenter</a>(position:Point):void</div>
+<div class="summaryTableDescription">
+         Center the view on a position in world space.</div>
+</td><td class="summaryTableOwnerCol">IScene2D</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#sortSpatials()">sortSpatials</a>(array:Array):void</div>
+<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">IScene2D</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#transformSceneToScreen()">transformSceneToScreen</a>(inPos:Point):Point</div>
+<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">IScene2D</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#transformSceneToWorld()">transformSceneToWorld</a>(inPos:Point):Point</div>
+<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">IScene2D</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#transformScreenToScene()">transformScreenToScene</a>(inPos:Point):Point</div>
+<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">IScene2D</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#transformScreenToWorld()">transformScreenToWorld</a>(inPos:Point):Point</div>
+<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">IScene2D</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#transformWorldToScene()">transformWorldToScene</a>(inPos:Point):Point</div>
+<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">IScene2D</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#transformWorldToScreen()">transformWorldToScreen</a>(inPos:Point):Point</div>
+<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">IScene2D</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="propertyDetail"></a>
+<div class="detailSectionHeader">Property detail</div>
+<a name="layerCount"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">layerCount</td><td class="detailHeaderType">property</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>layerCount:int</code>&nbsp;&nbsp;[read-only]<p>
+         Layers are assigned positive integers between 0 and N. This tells 
+         you what N is. This can be the same as how many layers there are,
+         but you might only be using layers 2,3, and 7, in which case
+         layerCount will be 8, but there will only be three layers. 
+         
+         </p><p>layerCount is mostly useful in order to iterate over all the
+         layers by calling getLayer.</p>
+         
+         <span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get layerCount():int</code>
+<br>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">getLayer</div>
+</div>
+<a name="position"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">position</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>position:Point</code>&nbsp;&nbsp;[read-write]<p>
+         The location of the view onto the scene. This is affected by sceneAlignment.  
+         </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get position():Point</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set position(value:Point):void</code>
+<br>
+</div>
+<a name="rotation"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">rotation</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>rotation:Number</code>&nbsp;&nbsp;[read-write]<p>
+         Rotation in degrees about the center point of the scene.
+         </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get rotation():Number</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set rotation(value:Number):void</code>
+<br>
+</div>
+<a name="sceneAlignment"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">sceneAlignment</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>sceneAlignment:<a href="../rendering2D/SceneAlignment.html">SceneAlignment</a></code>&nbsp;&nbsp;[read-write]<p>
+         How the scene is aligned relative to its position property.
+         
+         </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get sceneAlignment():<a href="../rendering2D/SceneAlignment.html">SceneAlignment</a></code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set sceneAlignment(value:<a href="../rendering2D/SceneAlignment.html">SceneAlignment</a>):void</code>
+<br>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="SceneAlignment.html" target="">SceneAlignment</a>
+<br>position</div>
+</div>
+<a name="sceneView"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">sceneView</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>sceneView:<a href="ui/IUITarget.html">IUITarget</a></code>&nbsp;&nbsp;[read-write]<p>
+         The SceneView where the contents of this scene will be displayed. 
+         </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get sceneView():<a href="ui/IUITarget.html">IUITarget</a></code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set sceneView(value:<a href="ui/IUITarget.html">IUITarget</a>):void</code>
+<br>
+</div>
+<a name="sceneViewBounds"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">sceneViewBounds</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>sceneViewBounds:Rectangle</code>&nbsp;&nbsp;[read-only]<p>
+         The region of the scene we are currently viewing.
+         </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get sceneViewBounds():Rectangle</code>
+<br>
+</div>
+<a name="trackLimitRectangle"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">trackLimitRectangle</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>trackLimitRectangle:Rectangle</code>&nbsp;&nbsp;[read-write]<p>
+         If set, this clamps the camera to scroll no further than its boundaries
+         </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get trackLimitRectangle():Rectangle</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set trackLimitRectangle(value:Rectangle):void</code>
+<br>
+</div>
+<a name="zoom"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">zoom</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>zoom:Number</code>&nbsp;&nbsp;[read-write]<p>
+         Zoom/scale factor; 1 = no zoom, less than 1 = zoom out, greater than 1 = zoom in. 
+         </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get zoom():Number</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set zoom(value:Number):void</code>
+<br>
+</div>
+<a name="methodDetail"></a>
+<div class="detailSectionHeader">Method detail</div>
+<a name="add()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">add</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function add(dor:<a href="DisplayObjectRenderer.html">DisplayObjectRenderer</a>):void</code><p>
+         Add a DisplayObjectRenderer to the scene; all you normally have to
+         do is set scene on DisplayObjectRenderer, not call this directly.
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">dor</span>:<a href="DisplayObjectRenderer.html">DisplayObjectRenderer</a></code></td>
+</tr>
+</table>
+</div>
+<a name="getLayer()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getLayer</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getLayer(index:int, allocateIfAbsent:Boolean = false):<a href="../rendering2D/DisplayObjectSceneLayer.html">DisplayObjectSceneLayer</a></code><p>
+         Get the layer at specified index. 
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">index</span>:int</code> &mdash; Index of layer to return.
+         </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">allocateIfAbsent</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; False by default. If true, will allocate a 
+                                 new layer if none is present.
+         </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../rendering2D/DisplayObjectSceneLayer.html">DisplayObjectSceneLayer</a></code> &mdash; 
+                        The requested layer.
+         
+                        
+                     </td>
+</tr>
+</table>
+</div>
+<a name="getRenderersUnderPoint()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getRenderersUnderPoint</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getRenderersUnderPoint(screenPosition:Point, results:Array, mask:<a href="../engine/core/ObjectType.html">ObjectType</a> = null):Boolean</code><p>
+         Return a sorted list of the DisplayObjectRenderers under a given 
+         screen position.
+          
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">screenPosition</span>:Point</code> &mdash; Location on screen we are curious about.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">results</span>:Array</code> &mdash; An array into which DisplayObjectRenderers are added based on what is under point.  
+         </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">mask</span>:<a href="../engine/core/ObjectType.html">ObjectType</a></code> (default = <code>null</code>)<code></code> &mdash; Only renderers with one or more of these bits set on their objectMask will be returned. Null uses all types.
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Found something under point or not.
+         </td>
+</tr>
+</table>
+</div>
+<a name="invalidate()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">invalidate</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function invalidate(dirtyRenderer:<a href="DisplayObjectRenderer.html">DisplayObjectRenderer</a>):void</code><p>
+         Indicates that a renderer has changed, and must be redrawn. Only 
+         necessary if you are using layers that implement ICachingLayer
+         (you don't by default).
+         
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">dirtyRenderer</span>:<a href="DisplayObjectRenderer.html">DisplayObjectRenderer</a></code> &mdash; The renderer that has changed.
+         </td>
+</tr>
+</table>
+</div>
+<a name="invalidateRectangle()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">invalidateRectangle</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function invalidateRectangle(dirty:Rectangle):void</code><p>
+         Just like invalidate, but indicates a specific region in scene 
+         coordinates. All layers will have that region redrawn.
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">dirty</span>:Rectangle</code> &mdash; The region to redraw.
+         </td>
+</tr>
+</table>
+</div>
+<a name="remove()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">remove</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function remove(dor:<a href="DisplayObjectRenderer.html">DisplayObjectRenderer</a>):void</code><p>
+         Remove a DisplayObjectRenderer from the scene; all you normally have
+         to do is clear scene on DisplayObjectRenderer, or destroy its owning
+         entity, not call this directly.
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">dor</span>:<a href="DisplayObjectRenderer.html">DisplayObjectRenderer</a></code></td>
+</tr>
+</table>
+</div>
+<a name="screenPan()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">screenPan</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function screenPan(deltaX:int, deltaY:int):void</code><p>
+         Pan-the view by (deltaX, deltaY) screen pixels. This takes into account zoom.
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">deltaX</span>:int</code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">deltaY</span>:int</code></td>
+</tr>
+</table>
+</div>
+<a name="setWorldCenter()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">setWorldCenter</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function setWorldCenter(position:Point):void</code><p>
+         Center the view on a position in world space.
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">position</span>:Point</code></td>
+</tr>
+</table>
+</div>
+<a name="sortSpatials()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">sortSpatials</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function sortSpatials(array:Array):void</code><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">array</span>:Array</code></td>
+</tr>
+</table>
+</div>
+<a name="transformSceneToScreen()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">transformSceneToScreen</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function transformSceneToScreen(inPos:Point):Point</code><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">inPos</span>:Point</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Point</code></td>
+</tr>
+</table>
+</div>
+<a name="transformSceneToWorld()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">transformSceneToWorld</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function transformSceneToWorld(inPos:Point):Point</code><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">inPos</span>:Point</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Point</code></td>
+</tr>
+</table>
+</div>
+<a name="transformScreenToScene()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">transformScreenToScene</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function transformScreenToScene(inPos:Point):Point</code><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">inPos</span>:Point</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Point</code></td>
+</tr>
+</table>
+</div>
+<a name="transformScreenToWorld()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">transformScreenToWorld</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function transformScreenToWorld(inPos:Point):Point</code><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">inPos</span>:Point</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Point</code></td>
+</tr>
+</table>
+</div>
+<a name="transformWorldToScene()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">transformWorldToScene</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function transformWorldToScene(inPos:Point):Point</code><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">inPos</span>:Point</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Point</code></td>
+</tr>
+</table>
+</div>
+<a name="transformWorldToScreen()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">transformWorldToScreen</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function transformWorldToScreen(inPos:Point):Point</code><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">inPos</span>:Point</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Point</code></td>
+</tr>
+</table>
+</div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright">http://pushbuttonengine.com/</center>
+</div>
+</body>
+</html>
+<!--http://pushbuttonengine.com/-->

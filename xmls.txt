@@ -1,0 +1,12 @@
+<NotepadPlus>
+    <Session activeView="0">
+        <mainView activeIndex="4">
+            <File firstVisibleLine="0" xOffset="0" scrollWidth="3952" startPos="86" endPos="86" selMode="0" lang="XML" filename="F:\Work\Gamedev\Rabbit\bin-debug\LevelPack.xml" />
+            <File firstVisibleLine="6" xOffset="0" scrollWidth="3952" startPos="132" endPos="132" selMode="0" lang="XML" filename="F:\Work\Gamedev\Rabbit\bin-debug\Managers.xml" />
+            <File firstVisibleLine="69" xOffset="0" scrollWidth="3952" startPos="2441" endPos="2441" selMode="0" lang="XML" filename="F:\Work\Gamedev\Rabbit\bin-debug\Description.xml" />
+            <File firstVisibleLine="0" xOffset="0" scrollWidth="3952" startPos="136" endPos="136" selMode="0" lang="XML" filename="F:\Work\Gamedev\Rabbit\bin-debug\Levels.xml" />
+            <File firstVisibleLine="0" xOffset="0" scrollWidth="3952" startPos="580" endPos="595" selMode="0" lang="MS INI file" filename="F:\Work\Gamedev\Rabbit\src\locale\ru.txt" />
+        </mainView>
+        <subView activeIndex="0" />
+    </Session>
+</NotepadPlus>

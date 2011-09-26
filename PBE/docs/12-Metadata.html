@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+   <link rel="stylesheet" type="text/css" href="stylesheet.css"/>
+   <script type="text/javascript" src="js/pageToc.js"></script>
+   <script type="text/javascript" src="js/sh/scripts/shCore.js"></script>
+   <script type="text/javascript" src="js/sh/scripts/shBrushJScript.js"></script>
+   <script type="text/javascript" src="js/sh/scripts/shBrushPhp.js"></script>
+   <script type="text/javascript" src="js/sh/scripts/shBrushPlain.js"></script>
+   <script type="text/javascript" src="js/sh/scripts/shBrushXml.js"></script>
+   <link type="text/css" rel="stylesheet" href="js/sh/styles/shCore.css"/>
+   <link type="text/css" rel="stylesheet" href="js/sh/styles/shThemeDefault.css"/>
+   <script type="text/javascript">
+   		SyntaxHighlighter.config.clipboardSwf = 'js/sh/scripts/clipboard.swf';
+   		SyntaxHighlighter.all();
+   </script>
+   <title>Metadata</title>
+</head>
+<body>
+
+   <h1>Metadata</h1>
+   
+   <p>This is a reference to the various metadata and what it indicates to the editor and serializer.</p>
+   
+   <div id="pageToc"></div>
+
+   <div id="contentArea">
+<pre>
+TypeHint
+   type="fully.qualified.class"
+      This can be used on Array or Dictionary fields to specify the root type
+      to use for children. By default, the type specified and any child types
+      are used. The EditorData-referenceType metadata can be used in conjunction
+      with this to modify that behavior. This can also be used on
+      PropertyReference fields to specify the type of properties that can be
+      referenced. If it is omitted, all types are considered valid.
+
+EditorData
+   defaultValue="{value}"
+      Default defaultValues are: Boolean=false, number,int,uint=0, String="".
+      Only primitives can have default values, however, classes can have default
+      values that consist of a pipe separated list of values for its children.
+      This only works on simple classes, like flash.geom.Point.
+   
+   ignore="true/false"
+      When used on a class, it tells the editor to not allow instances of this
+      type to be created for instance type fields. When used on a field, it
+      tells the editor to completely ignore the field. Private and protected
+      members, read only properties, and interfaces are automatically ignored.
+   
+   editAs="fully.qualified.class"
+      Tells the editor to treat the class like a different type. The class will
+      have to implement ISerializable to be loaded by the game correctly.
+   
+   typeHint="fully.qualified.class"
+      This is the same as the TypeHint metadata tag, but can be used with other
+      tags. For example, if editAs="Array" is set on a Class, this can specify
+      the child type to use for that array.
+   
+   extensions="comma,separated,list"
+      Only applicable to Resource derived classes, this specifies the file
+      extensions that are valid for the Resource type. If omitted, all
+      extensions are considered valid.
+   
+   referenceType="static/instance componentReference/nameReference/objectReference"
+      This specifies how a complex class field should be treated. On a complex
+      field, it applies directly to that field. On an Array or Dictionary, it
+      applies to the child fields. A value of instance means a new instance of
+      either the fields type or a child type will be created. A value of static
+      means the fields type will be used and cannot be changed. The default is
+      instance.
+      
+      componentReference indicates that the field will take a reference to an
+      existing component. If the type of the field is a component, then the tag
+      is not necessary. But, sometimes the type is actually an interface, in
+      which case this tag must exist to have the editor properly edit the field.
+      
+      nameReference and objectReference work the same way as componentReference
+      except they apply to fields that expect a reference to an entity. The
+      difference between the two is nameReference will reference an existing
+      entity whereas objectReference will instantiate a new entity.
+
+</pre>
+</div>
+</body>
+</html>

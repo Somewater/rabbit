@@ -1,0 +1,3 @@
+<testsuite errors="0" failures="0" name="com.pblabs.rendering2D.tests.Rendering2DTests" tests="1" time="0">
+  <testcase classname="com.pblabs.rendering2D.tests.Rendering2DTests" name="testBoxVsBox" time="0"/>
+</testsuite>

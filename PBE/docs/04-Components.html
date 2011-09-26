@@ -1,0 +1,283 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+   <link rel="stylesheet" type="text/css" href="stylesheet.css"/>
+   <script type="text/javascript" src="js/pageToc.js"></script>
+   <script type="text/javascript" src="js/sh/scripts/shCore.js"></script>
+   <script type="text/javascript" src="js/sh/scripts/shBrushJScript.js"></script>
+   <script type="text/javascript" src="js/sh/scripts/shBrushPhp.js"></script>
+   <script type="text/javascript" src="js/sh/scripts/shBrushPlain.js"></script>
+   <script type="text/javascript" src="js/sh/scripts/shBrushXml.js"></script>
+   <link type="text/css" rel="stylesheet" href="js/sh/styles/shCore.css"/>
+   <link type="text/css" rel="stylesheet" href="js/sh/styles/shThemeDefault.css"/>
+   <script type="text/javascript">
+   		SyntaxHighlighter.config.clipboardSwf = 'js/sh/scripts/clipboard.swf';
+   		SyntaxHighlighter.all();
+   </script>
+   <title>Components</title>
+</head>
+<body>
+
+   <h1>Components</h1>
+   
+   <p>The PushButton Engine lets you build games quickly by breaking functionality down into components. Because components are focused and implement a consistent interface, it is easy to make new functionality by combining them. This chapter discusses why components are desirable, how to write components, and how to distribute them.</p>
+   
+   <p>Components are an important piece of the puzzle but hardly the whole thing! Other chapters in this manual describe the resource manager, XML level format, and other important parts of the engine.</p>
+   
+   <div id="pageToc"></div>
+
+   <div id="contentArea">
+
+   <h2>Why Use Components?</h2>
+   
+   <p>Components are a better way to develop games. They avoid the major problems that come from inheritance-based implementations. Games that are made with components are naturally more modular, maintainable, and extensible. Many design decisions in PBEngine were made to encourage this approach.</p>
+   
+   <p>The first major game to use components and publish about it was <a href="http://en.wikipedia.org/wiki/Dungeon_Siege" target="_blank">Dungeon Siege</a> (Gas Powered Games, 2002). "<a href="http://www.drizzle.com/~scottb/gdc/game-objects_files/frame.htm" target="_blank">A Data-Driven Game Object System</a>" was presented at GDC that year, and gives a thorough discussion of the system they used. The major benefit was that they avoided a complex object hierarchy and were able to manage a very large, complex game world in a "flat" way. They ended up with 21 C++ components, 148 script-based components, and around 10,000 object types.</p>
+   
+   <p>Their C++ components were things like "actor", "conversation", "follower", "physics" and so forth. The 148 script components were much more game specific, implementing things like logic for traps and puzzles, movement for elevators, quest tracking, etc. They were able to focus most of their time on moving the game forward rather than focusing on infrastructure, and adding a new feature was quick.</p> 
+   
+   <p>The Dungeon Siege experience is very instructive. They avoided tangled object hierarchies and managed to deliver a complex, compelling game world. Since then, a similar component architecture has been used in other games and middlewares, most notably Unity, TorqueX, and Gamebryo.</p>
+   
+   <h2>Overview of Components and Entities in PushButton Engine</h2>
+   
+   <p>A game object is represented as an IEntity that contains a list of one or more IEntityComponents. For instance, a player entity built from components might look like this:</p>
+   
+   <img src="images/04-ComponentSystem_SimpleExample.png" alt="" />
+   
+   <p>As you can see, each component is named, as is the entity. It's straightforward to imagine how the data might flow in this example - mover maintains the position of the object and updates its physical state as time advances. When sprite needs to render, it gets position data from mover. input applies forces to mover so that the player character moves based on the user's actions.</p>
+   
+   <h2>Creating A Component</h2>
+   
+   <p>Creating a new type of component is easy. Here is a minimal component:</p>
+   
+   <pre class="brush: js">
+   class SimplestComponent extends EntityComponent
+   {
+   }</pre>
+   
+   <p>Notice that we use the convention of appending Component to the name of every class that is usable as a component (ie, that extends EntityComponent or implements IEntityComponent). This makes it easy to spot components.</p>
+   
+   <p>Several methods are available for you to optionally override. The EntityComponent API docs explain fully, but the following example shows a minimal component that overrides them, with comments briefly explaining when and why they are called.</p>
+   
+   <pre class="brush: js">
+   class SimplerComponent extends EntityComponent
+   {
+
+      protected override function onAdd():void
+      {
+         // Let superclass initialize, too.
+         super.onAdd();
+         
+         // Initialize resources.
+         // This will be called when the component is added to an entity.
+      }
+   
+      protected override function onReset():void
+      {
+         // Let superclass reset, too.
+         super.onReset();
+
+         // (Re)acquire references to components inside the same entity.
+         // This will be called after onAdd, whenever another component
+         // is added or removed from the owning entity.
+      }
+   
+      protected override function onRemove():void
+      {
+         // Let superclass remove, too.
+         super.onRemove();
+
+         // Release resources and references.
+         // Called when the component is removed from its entity, usually
+         // as part of the entity's destruction.
+      }
+      
+   }</pre>
+   
+   <p><b>A note on how components are initialized by the deserializer:</b> First all properties are set, some of them more than once if there are multiple templates (more on that in the XML Format chapter). Then, onAdd() is called for all the components in unspecified order. Finally, onReset() is called for each component in unspecified order, to give it a chance to gather references to other components.</p>
+   
+   <h2>Accessing Other Components</h2>
+   
+   <p>There are three ways for components to interact: <b>properties</b>, <b>events</b>, or <b>interfaces</b>. All of them are based on query methods on IEntity. If you are writing code in a component, the owner member will return a reference to the IEntity that contains that component.</p>
+   
+   <p>These approaches work very similarly whether you are accessing components on another entity or on your owner.  The only difference is that instead of using owner, you will use the NameManager or another means to look up an IEntity.</p>
+   
+   <h3>Properties</h3>
+   
+   <p>The best way to share data amongst components is via properties. Properties are good because they don't require any compile-time dependencies between components - in fact, it's easy to reconfigure how data is accessed, allowing components to be used in unanticipated ways. They're great for sharing position, velocity, color, health, and any other kind of data.</p>
+   
+   <p>Adding a property to a component is as easy as adding a new member variable. Accessing properties is done using simple strings that specify what field on what component should be read or written. Here's a quick example of how this looks:</p>
+   
+   <pre class="brush: js">
+   class TestComponent extends EntityComponent 
+   {
+      public var aProperty:String = "Hello!";
+   }
+   
+   // Inside another component on an entity which has a TestComponent named Test:
+   var value:String = owner.getProperty(new PropertyReference("@Test.aProperty")) as String;
+   
+   Logger.print(this, value); // Outputs "Hello!"
+   </pre>
+   
+   <p>You can also access fields inside complex data types. Suppose aProperty were a Point. You could do the following:</p>
+   
+   <pre class="brush: js">
+   var xPosition:Number = owner.getProperty(new PropertyReference("@Test.aProperty.x");
+   </pre>
+   
+   <p>In fact, you can access any member contained in another component. The only other thing to know is that to access items in Arrays or Dictionaries, you use the same dot syntax:</p>
+   
+   <pre class="brush: js">
+   // Equivalent to accessing anArray[4].x on @Test.
+   var xPosition:Number = owner.getProperty(new PropertyReference("@Test.anArray.4.x"));
+   </pre>
+   
+   <p>The property system respects getters and setters, so if you need side effects when you set or get a field, you can implement this quite naturally.</p>
+   
+   <p>What is the purpose of the PropertyReference type? It makes it simple to configure where a component looks to get a property. Consider this:</p>
+   
+   <pre class="brush: js">
+   class TestComponent extends EntityComponent
+   {
+      public var PositionProperty:PropertyReference = new PropertyReference("@Spatial.position");
+      
+      public function DoSomeBehavior():void
+      {
+         var myPos:Point = owner.getProperty(PositionProperty) as Point;
+      }
+   }
+   </pre>
+   
+   <p>If you need to get your position from some other component, it's very easy to reconfigure TestComponent. In addition, you are saving the overhead of creating a new PropertyReference every time you request the property. Once all the data inputs and outputs for a component are configurable, it's much easier to use components in unexpected situations.</p>
+   
+   <h3>Events</h3>
+   
+   <p>Every IEntity exposes a standard Flash eventDispatcher, so it's easy to dispatch and listen for events. Events make a lot of sense for one-shot scenarios, like detecting when a player jumps, responding to collision events, detecting damage, state machine transitions, and so forth.</p>
+   
+   <pre class="brush: js">
+   // Example of dispatching an event from a component.
+   class TestComponent extends EntityComponent
+   {
+      // Declare identifier for the event.
+      static public const SOME_ACTION:String = "SomeAction";
+   
+      public function SomeActionHappens():void
+      {
+         owner.eventDispatcher.dispatchEvent(new Event(SOME_ACTION));
+      }
+   }
+   
+   // Example of listening for an event in a component.
+   class TestListenerComponent extends EntityComponent
+   {
+      protected function onAdd():void
+      {
+         owner.eventDispatcher.addEventListener(TestComponent.SOME_ACTION, _EventHandler);
+      }
+      
+      private function _EventHandler(e:Event):void
+      {
+         trace("Got an event!");
+      }
+      
+      protected function onRemove():void
+      {
+         // Notice that we have to unsubscribe the event when the component
+         // is removed.
+         owner.eventDispatcher.removeEventListener(TestComponent.SOME_ACTION, _EventHandler);
+      }
+   }
+   </pre>
+   
+   <h3>Direct Access</h3>
+   
+   <p>If all else fails, you can <b>directly access another component</b>, either using a common interface or directly. This is the least desirable option, because it introduces compile-time dependencies. Compile-time dependencies are a big problem, because they can make it very difficult to use components from different packages. It's better to use events or properties, as they work entirely by name and do not assume that certain interfaces or parent classes are present.</p>
+   
+   <p>However, it can give better performance, and it can make sense in some situations. For instance, in our player example above, using an interface might make sense for the input component to use to apply forces to the mover.</p>
+   
+   <p>There are three methods to directly access a component in an entity. Use owner for your own entity, or lookup and use another entity to get components from somewhere else. The methods:</p>
+   
+   <ul>
+   <li><b>lookupComponentByName</b> which looks up a single named component and returns it.</li>
+   <li><b>lookupComponentByType</b> which looks up a single component by type and returns it.</li>
+   <li><b>lookupComponentsByType</b> which finds all components that match the specified type.</li>
+   </ul>
+   
+   <p>Here's a simple example of directly accessing another component:</p>
+   
+   <pre class="brush: js">
+   // Interface implemented by another component.
+   interface IExampleInterface
+   {
+      function getBigArray():Array;
+   }
+   
+   class TestComponent extends EntityComponent
+   {
+      public otherComponentName:String = "anotherComponent";
+      
+      public function AccessSomeData():void
+      {
+         var otherItem:IExampleInterface = owner.lookupComponentByName(otherComponentName, IExampleInterface) as IExampleInterface;
+         
+         for each(var i:* in otherItem.getBigArray())
+            trace(i);
+      }
+   }
+   </pre>
+   
+   <p>These functions are cheap, and calling them once a tick won't slow anything down. However, if you do need to store a permanent reference to a component, make sure to clear and re-establish it when onReset() is called. Otherwise, you may access stale data or cause a memory leak.</p>
+   
+   <pre class="brush: js">
+   // Just like the previous component, but it keeps the reference around longer.
+   class TestComponent extends EntityComponent
+   {
+      public var anotherComponent:IExampleInterface;
+   
+      protected function onAdd():void
+      {
+         super.onAdd();
+         anotherComponent = owner.LookupComponentByType(IExampleInterface) as IExampleInterface;
+      }
+      
+      protected function onReset():void
+      {
+         super.onReset();
+         anotherComponent = owner.LookupComponentByType(IExampleInterface) as IExampleInterface;
+      }
+      
+      protected function onRemove():void
+      {
+         super.onRemove();
+         
+         // Don't forget to clear the reference to prevent memory leaks.
+         anotherComponent = null;
+      }
+      
+      public function DoSomething():void
+      {
+         for each(var i:* in anotherComponent.getBigArray())
+            Logger.print(this, i);
+      }
+   }
+   </pre>
+   
+   <h2>Linkage Issues</h2>
+   
+   <p>When you are using components that are only mentioned in level files, the Flex compiler won't know they are being used and may remove them. To prevent this, use the helper function <em>PBE.registerType</em>. For example:</p>
+   
+    <pre class="brush: js">
+        PBE.registerType(com.pblabs.rendering2D.DisplayObjectRenderer);
+    </pre>
+   
+   <h2>Packaging Components</h2>
+   
+   <p>Components are simple AS3 classes, so packaging them is easy. We recommend compiling them into a SWC, so that sharing them is as easy as dropping a file into your library path.</p>
+   
+   <p>To facilitate this, components should be grouped into packages for easy redistribution. For instance, in Grunts (an isometric tower defense game), the isometric renderer and the pathfinder are in separate packages from the game. Because of this they are much easier to copy around and reuse. If desired, we can even compile (for example) just the pathfinder into a SWC and share it.</p>
+   
+   </div>
+      
+</body>
+</html>

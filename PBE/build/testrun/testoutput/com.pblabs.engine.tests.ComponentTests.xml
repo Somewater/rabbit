@@ -1,0 +1,6 @@
+<testsuite errors="0" failures="0" name="com.pblabs.engine.tests.ComponentTests" tests="4" time="0">
+  <testcase classname="com.pblabs.engine.tests.ComponentTests" name="testProperties" time="0"/>
+  <testcase classname="com.pblabs.engine.tests.ComponentTests" name="testSerialization" time="0"/>
+  <testcase classname="com.pblabs.engine.tests.ComponentTests" name="testComponents" time="0"/>
+  <testcase classname="com.pblabs.engine.tests.ComponentTests" name="testSerializationCallbacks" time="0"/>
+</testsuite>

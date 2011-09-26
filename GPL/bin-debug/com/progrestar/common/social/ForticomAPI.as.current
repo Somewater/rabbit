@@ -1,0 +1,155 @@
+﻿package com.progrestar.common.social
+{
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
+	import flash.events.StatusEvent;
+	import flash.net.LocalConnection;
+	
+	/**
+	 * @author Forticom Ltd.
+	 * @date 18/02/2010 15:34
+	 * @description Forticom API interface for applications;
+	 */
+	internal class ForticomAPI extends EventDispatcher
+	{
+		public static const CONNECTED : String = "connection established";
+		public static const SEND_ERROR : String = "send failed";
+		
+		private static var _instance : ForticomAPI;
+		
+		private var _connection : LocalConnection = new LocalConnection;
+		private var _connectionName : String;
+		private var _eventsPool : Array = [];
+		private var _connected : Boolean = false;
+		
+		public static function get connected():Boolean{
+			return instance._connected;
+		}
+		
+		public function ForticomAPI(key : SingleTonKey) 
+		{
+			super();
+			
+			this._connection.allowDomain("*");
+			this._connection.addEventListener(StatusEvent.STATUS, this.handleOutStatus);
+			this._connection.client = this;
+		}
+		
+		private function handleOutStatus(event : StatusEvent) : void
+		{
+			if (event.level != StatusEvent.STATUS)
+			{
+				this.dispatchEvent(new Event(ForticomAPI.SEND_ERROR));
+			}
+		}
+		
+		public function connect(name : String) : void
+		{
+			this._connectionName = name;
+			try
+			{
+				this._connection.connect("_api_" + this._connectionName);
+			}
+			catch (e : Error)
+			{
+				throw new Error("Connection " + this._connectionName + " is already in use!");
+			}
+		}
+		
+		public function establishConnection() : void
+		{
+			if (!this._connected)
+			{
+				this._connected = true;
+				this.dispatchEvent(new Event(ForticomAPI.CONNECTED));
+				
+				while (this._eventsPool.length)
+				{
+					var item : PoolItem = this._eventsPool.shift() as PoolItem;
+					//this.send(item.method, item.args);
+					if(item)
+					this.send.apply(this, [item.method].concat(item.args))
+				}
+			}
+		}
+		
+		private function send(method : String, ... rest) : void
+		{
+			if (this._connected)
+			{
+				if(rest && rest.length==1 && rest[0]==""){
+					rest = null;
+				}
+				
+				if (rest)
+					this._connection.send.apply(this._connection, ["_proxy_" + ForticomAPI.instance._connectionName, method].concat(rest));
+				else
+					this._connection.send.apply(this._connection, ["_proxy_" + ForticomAPI.instance._connectionName, method]); 
+			}
+			else{
+				trace("Local connection not connected: method = "+method);
+				this._eventsPool.push(new PoolItem(method, rest));
+			}
+		}
+		
+		private static function get instance() : ForticomAPI
+		{
+			ForticomAPI._instance = ForticomAPI._instance ? ForticomAPI._instance : new ForticomAPI(new SingleTonKey);
+			return ForticomAPI._instance;
+		}
+		
+		public static function showInstall() : void
+		{
+			ForticomAPI.instance.send("showInstall");
+		}
+		
+		public static function showSettings() : void
+		{
+			ForticomAPI.instance.send("showSettings");
+		}
+		
+		public static function showFeed(uid : String = null, attachment : String = null, actionLinks : String = null) : void
+		{
+			ForticomAPI.instance.send("showFeed", uid, attachment, actionLinks);
+		}
+		
+		public static function showInvite() : void
+		{
+			ForticomAPI.instance.send("showInvite");
+		}
+		
+		public static function showPayment(name : String, description : String, code : String, price : int = -1, options : String = null, attributes : String = null) : void
+		{
+			ForticomAPI.instance.send("showPayment", name, description, code, price, options, attributes);
+		}
+		
+		public static function set connection(name : String) : void
+		{
+			ForticomAPI.instance.connect(name);
+		}
+		
+		public static function addEventListener(type : String, listener : Function, useCapture : Boolean = false, priority : int = 0, useWeakReference : Boolean = false) : void
+		{
+			ForticomAPI.instance.addEventListener(type, listener, useCapture, priority, useWeakReference);
+		}
+		
+		public static function removeEventListener(type : String, listener : Function, useCapture : Boolean = false) : void
+		{
+			ForticomAPI.instance.removeEventListener(type, listener, useCapture);
+		}
+	}
+
+}
+
+internal class SingleTonKey { public function SingleTonKey() { } }
+internal class PoolItem
+{
+	public var method : String;
+	public var args : Array;
+	
+	public function PoolItem($method : String, ... $args)
+	{
+		this.method = $method;
+		this.args = $args;
+	}
+}

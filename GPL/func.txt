@@ -1,0 +1,27 @@
+public function cross(S1:Point,F1:Point,S2:Point,F2:Point):Point
+		{
+			var Z:Number  = (F1.y-S1.y)*(S2.x-F2.x)-(S2.y-F2.y)*(F1.x-S1.x);
+			var Ca:Number = (F1.y-S1.y)*(S2.x-S1.x)-(S2.y-S1.y)*(F1.x-S1.x);
+			var Cb:Number = (S2.y-S1.y)*(S2.x-F2.x)-(S2.y-F2.y)*(S2.x-S1.x);
+			if( (Z == 0)&&(Ca == 0)&&(Cb == 0) )
+			{
+				return null;//Same line
+			}
+			if( Z == 0 )
+			{
+				return null;//Paralel
+			}
+			var Ua:Number = Ca/Z;
+			var Ub:Number = Cb/Z;
+			if( (0 <= Ua)&&(Ua <= 1)&&(0 <= Ub)&&(Ub <= 1) )
+			{
+				return new Point(S1.x+(F1.x-S1.x)*Ub,S1.y+(F1.y-S1.y)*Ub);
+				//				if((Ua==0)||(Ua==1)||(Ub==0)||(Ub==1)) return null//On tail
+			}
+			else
+			{
+				return null;//Cross outside
+			}
+			
+			return null;
+		}

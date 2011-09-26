@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<levels version="0">
+
+
+	<level id="0">
+		<group>Everything</group>
+		<name>Это самый первый уровень</name>
+		<desc>Ну, дело в том, что это такой вот уровень</desc>
+		<conditions>
+			<carrot>1</carrot>
+			<time>360</time>
+		</conditions>
+		<width>10</width>
+		<height>10</height>
+	</level>
+	
+	<level id="1">
+		<group>Everything</group>
+		<name>Это самый первый уровень</name>
+		<desc>А это второй уровень игры, самый сложный</desc>
+		<conditions>
+			<carrot>5</carrot>
+		</conditions>
+		<width>20</width>
+		<height>20</height>
+	</level>
+	
+</levels>

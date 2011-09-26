@@ -1,0 +1,43 @@
+	<!--
+		Rabbit game levelpack
+	-->
+<things version="0">
+	<group name="Everything">
+		<objectReference name="WatchDog" x="4" y="4" />
+		<objectReference name="WatchDog" x="8" y="8" />
+		<objectReference name="WatchDog" x="2" y="6" />
+		<objectReference name="Hedgehog" x="1" y="4" />
+		<objectReference name="Hedgehog" x="3" y="4" />
+		<objectReference name="Hero" x="2" y="0" />
+		<objectReference name="Beam" x="0" y="1"/>
+		<objectReference name="Beam" />
+		<objectReference name="Beam" />
+		<objectReference name="Beam" />
+		
+		
+		<!--objectReference name="Rabbit" />
+		<objectReference name="Rabbit" />
+		<objectReference name="Rabbit" />
+		
+		<objectReference name="Bush" />
+		<objectReference name="Bush" />
+		<objectReference name="Bush" />
+		<objectReference name="Bush" />
+		<objectReference name="Bush" /-->
+		
+		<groupReference name="CarrotArmy" />
+	</group>
+	
+	<group name="CarrotArmy">
+		<objectReference name="Carrot" />
+		<objectReference name="Carrot" />
+		<objectReference name="Carrot" />
+		<objectReference name="Carrot" />
+		<objectReference name="Carrot" />
+		<objectReference name="Carrot" />
+		<objectReference name="Carrot" />
+		<objectReference name="Carrot" />
+		<objectReference name="Carrot" />
+		<objectReference name="Carrot" />
+	</group>
+</things>

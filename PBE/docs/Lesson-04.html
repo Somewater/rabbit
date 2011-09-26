@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+   <link rel="stylesheet" type="text/css" href="stylesheet.css"/>
+   <script type="text/javascript" src="js/pageToc.js"></script>
+   <script type="text/javascript" src="js/sh/scripts/shCore.js"></script>
+   <script type="text/javascript" src="js/sh/scripts/shBrushJScript.js"></script>
+   <script type="text/javascript" src="js/sh/scripts/shBrushPhp.js"></script>
+   <script type="text/javascript" src="js/sh/scripts/shBrushPlain.js"></script>
+   <script type="text/javascript" src="js/sh/scripts/shBrushXml.js"></script>
+   <link type="text/css" rel="stylesheet" href="js/sh/styles/shCore.css"/>
+   <link type="text/css" rel="stylesheet" href="js/sh/styles/shThemeDefault.css"/>
+   <script type="text/javascript">
+   		SyntaxHighlighter.config.clipboardSwf = 'js/sh/scripts/clipboard.swf';
+   		SyntaxHighlighter.all();
+   </script>
+   <title>PushButton Engine Lesson #4: Keyboard Input for Player Control</title>
+</head>
+<body>
+
+   <h1>PushButton Engine Lesson #4: Keyboard Input for Player Control</h1>
+   <p><center><em>"Human beings, vegetables, or cosmic dust, we all dance to a mysterious tune, intoned in the distance by an invisible player."</em> - Albert Einstein</center></p>
+   
+   <p>The goal of this lesson is to guide the user through creating a custom component that uses keyboard input to move a simple shape around the screen.</p>
+   
+   <p>These lessons are structured in a series of steps -- small milestones that will provide focused short-term goals for incrementally understanding PushButton Engine.</p>
+   
+   <p>These lessons are targeted at someone who is new to PBEngine, but not necessarily new to programming.</p>
+   <div id="pageToc"></div>
+
+   <div id="contentArea">   
+   
+   <h2>Tutorial Resources:</h2>
+   <p>To follow along with the tutorial, you can download the starter project and use it as your base to implement the tutorial:
+      <ul>
+         <li><a href="downloads/Lesson4Base.zip">Lesson4Base.zip</a> (8KB)</li>
+      </ul>
+   The completed lesson files are available at the end of the tutorial.
+   </p>
+   <p>As covered in Lesson 1, extract the example .zip into a personal project folder, and ensure that it builds in your build environment.</p>
+   
+   <p>The built .swf of the base starter project should display a blue circle in the center of the screen.</p>
+   
+   <h2>Introduction to the Tutorial</h2>
+   
+   <p>In the last lesson, we saw how to create a simple controller component that moves the character based on a behavioral pattern.  Next, we'll add keyboard input, so that the movements are controlled by the player.</p>
+   
+   <p>To help streamline user input, PBE provides a method to check if a key is down: PBE.isKeyDown().</p>
+   
+   <p>For more advanced input configurations (such as allowing key remappings or special event notifications for keys), PBE also provides the InputManager and the InputMap. These are more powerful, but often aren't needed for simpler games. We will not discuss them in this tutorial.</p>
+   
+   <h2>Building a Component</h2>
+   <p>Just like in our last lesson, we again set up a basic scene with three basic components: render, spatial, and controller.  And again, we will be creating a custom component that inherits from TickedComponent so that it updates itself every frame.</p>
+
+   <p>This new component will check if the left or right keys are down, and move the player's object if so.</p>
+
+   <p>The various keys that we can poll are referenced through the InputKey class:</p>
+   <pre class="brush: js">
+   // Input keys can be referenced through static class members:
+   InputKey.LEFT
+   // Or they can be referenced by a named string lookup:
+   InputKey.stringToKey("LEFT")
+   </pre>   
+
+   <p>In the base lesson directory, you will find the simple stub class HeroControllerComponent.  To make it respond to keyboard events, we will have the onTick() method ask PBE if the keys we are interested in are being pressed.  You can do this through the PBE.isKeyDown() method, like so:</p>
+
+   <pre class="brush: js">
+   // isKeyDown() returns a boolean -- false means the key is up, and true means that the key is down.
+   if (PBE.isKeyDown(InputKey.SPACE))
+   {
+      // React to the key being depressed:
+      Logger.print(this, "Hey, cheer up!");
+   }
+   </pre>
+
+   <p>Depending on which keys are down, we will modify our owner's spatial component's position.  Just like last time, we will retrieve the spatial position through a PropertyReference, make adjustments according to a set of rules, and then set the position property to the new position value.  The only things that are different are the rules by which we change the position.</p>
+
+   <p>These are the rules that we will follow this time to move our character back and forth:</p>
+   <p>
+   <ul>
+      <li>If the right key is being pressed:
+         <ul>
+            <li>Move ourselves to the right</li>
+         </ul>
+      </li>
+      <li>If the left key is being pressed:
+         <ul>
+            <li>Move ourselves to the left</li>
+         </ul>
+      </li>
+      <li>If we are past the right edge:
+         <ul>
+            <li>Clamp ourselves to the right edge</li>
+         </ul>
+      </li>
+      <li>If we are past the left edge:
+         <ul>
+            <li>Clamp ourselves to the left edge</li>
+         </ul>
+      </li>
+   </ul>
+   </p>
+
+   <p>Now that we know how we want it to act, let's actually implement it.  Modify the HeroControllerComponent to look like the following:</p>
+   <p><strong>File: /Lesson4Base/Source/HeroControllerComponent.as</strong></p>
+   <pre class="brush: js">
+       package 
+       {
+           import com.pblabs.engine.PBE;
+           import com.pblabs.engine.components.TickedComponent;
+           import com.pblabs.engine.core.InputKey;
+           import com.pblabs.engine.entity.PropertyReference;
+
+           import flash.geom.Point;
+
+           // Make a ticked component so that it can update itself every frame with onTick() 
+           public class HeroControllerComponent extends TickedComponent
+           {
+               // Keep a property reference to our entity's position.
+               public var positionReference:PropertyReference;
+
+               // onTick() is called every frame
+               public override function onTick(tickRate:Number):void
+               {
+                   // Get references for our spatial position.
+                   var position:Point = owner.getProperty(positionReference);
+
+                   // Look at our input keys to see which direction we should move. Left is -x, right is +x.
+                   if (PBE.isKeyDown(InputKey.RIGHT))
+                   {
+                       // Move our hero to the right
+                       position.x += 15;
+                   }
+
+                   if (PBE.isKeyDown(InputKey.LEFT))
+                   {
+                       // Move our hero to the left
+                       position.x -= 15;
+                   }
+
+                   // Finally, add some boundary limits so that we don't go off the edge of the screen.
+                   if (position.x > 375)
+                   {
+                       // Set our position at the wall edge
+                       position.x = 375;               
+                   } 
+                   else if (position.x < -375)
+                   {
+                       // Set our position at the wall edge
+                       position.x = -375;
+                   }
+
+                   // Send our manipulated spatial variables back to the spatial manager
+                   owner.setProperty(positionReference, position);
+               }    
+           }
+       }
+   </pre>   
+   
+   <p>And that should do it!</p>
+
+   <p><h2>Putting your oar in.</h2></p>
+   <p>After it's all compiled, you should have an .swf like the following (click to load):</p>
+   <p><a href="downloads/Lesson4Final.swf"><img src="images/Lesson4_1.png" width="204" height="159" alt="I like to move it move it!"></a></p>
+   
+   <p><h2>Conclusion</h2></p>
+   
+   <p>Congratulations!  You have finished lesson #4, and given your game the ability to react to user input.</p>
+   
+   <p>You can download the completed project source files for this project.
+      <ul>
+         <li><a href="downloads/Lesson4Final.zip">Lesson4Final.zip</a> (8KB)</li>
+      </ul>
+   </p>
+   </div>
+</body>
+</html>

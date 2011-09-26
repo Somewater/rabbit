@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:WindowedApplication 
+    xmlns:mx = "http://www.adobe.com/2006/mxml" 
+    xmlns:fu="http://www.adobe.com/2009/flexUnitUIRunner" 
+    width="1024"
+    height="768"
+    invoke="invokeHandler(event)">
+    <mx:Script>
+        <![CDATA[
+            import com.pblabs.PBEngineTestSuite;
+            import com.pblabs.box2D.Box2DSpatialComponent;
+            import com.pblabs.engine.PBE;
+            import com.pblabs.engine.debug.Logger;
+            import com.pblabs.testFramework.JUnitListener;
+            
+            import org.flexunit.listeners.UIListener;
+            import org.flexunit.runner.FlexUnitCore;
+            import org.flexunit.runner.Request;
+            import org.flexunit.runner.notification.async.XMLListener;
+
+            private var core:FlexUnitCore;
+
+            public function runMe(outputDir:String, exitOnComplete:Boolean):void
+            {
+                if(PBE.started)
+                {
+                    Logger.warn(this, "runMe", "Tried to run tests twice, aborting...");
+                    return;
+                }
+                
+                PBE.startup(this);
+                
+                var testResources:TestResources = new TestResources();
+                core = new FlexUnitCore();
+
+                //Listener for the UI, optional
+                core.addListener(new UIListener(uiListener));
+                core.addListener(new JUnitListener(outputDir, exitOnComplete));
+
+                //FlexUnit wants the class reference, not an instance				
+                PBEngineTestSuite.testLevel = "../assets/testLevel.xml";
+                core.run(PBEngineTestSuite);
+            }
+
+            protected function invokeHandler(event:InvokeEvent):void
+            {
+                var file:File = File.applicationStorageDirectory.resolvePath("testresults");
+                var outputDir:String = file.nativePath;
+                var exitOnComplete:Boolean = false;
+                if (event.arguments.length > 0)
+                    outputDir = event.arguments[0];
+
+                if (event.arguments.length > 1)
+                    exitOnComplete = event.arguments[1] == "true";
+                        
+                runMe(outputDir, exitOnComplete);
+            }
+ 
+        ]]>
+    </mx:Script>
+    <mx:Style>
+		WindowedApplication {
+			   backgroundColor: #3872b2;
+			   backgroundGradientColors: #3872b2, #0c1a3d;
+			   backgroundGradientAlphas: 1, 1;
+			   themeColor: #ffffff;
+			   color: #444444;
+			   fontFamily: "Myriad Pro Semibold";
+			   fontSize: 12;
+			}
+	</mx:Style>
+
+    <fu:TestRunnerBase id="uiListener" width="100%" height="100%"/>
+</mx:WindowedApplication>

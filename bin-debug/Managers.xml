@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+	<!--
+		Rabbit game ui-managers
+	-->
+<things version="0">
+	
+	<!--
+
+		HORIZONT
+
+	-->
+	<entity name="Horizont">
+		<component name="Render" type="com.somewater.rabbit.ui.HorizontRender">
+			<layerIndex>0</layerIndex>
+		</component>	
+	</entity>
+	
+	
+	
+	<!--
+
+		CLOCK
+
+	-->
+	
+	
+	<group name="LevelManagers">
+		<objectReference name="Horizont"/>
+	</group>
+
+</things>

@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" 
+				backgroundColor="#888888" width="700" height="500"  xmlns:local="*"
+				creationComplete="init();"
+				click="onClick()"
+				>
+	<mx:Script>
+		<![CDATA[
+			import com.progrestar.common.polygonal.PathRequest;
+			import com.progrestar.common.polygonal.PolyPathFinder;
+			import com.progrestar.common.polygonal.PolyPathFinderEvent;
+			import com.progrestar.common.util.Profiler;
+			
+			import flash.utils.getTimer;
+			
+			import pl.bmnet.gpcas.geometry.Poly;
+			import pl.bmnet.gpcas.geometry.PolyDefault;
+			import pl.bmnet.gpcas.geometry.PolySimple;
+			import pl.bmnet.gpcas.geometry.Polygon;
+			
+			
+			
+			public var walls:Array = [];
+			public var union:PolyDefault;
+			
+			private var setSource:Boolean = true;
+			private var sourcePos:Point;
+			private var destinationPos:Point;
+			
+			/**
+			 * 0 точки
+			 * 2 верхний угол новой стены
+			 * 3 нижний угол новой стены
+			 */
+			private var mouseState:int;
+			
+			private var topPoint:Point;
+			
+			public var ppf:PolyPathFinder;
+			
+			
+			private function init():void
+			{
+				Profiler.init(this);
+				
+				ppf = new PolyPathFinder();
+				
+				var self:SimpleExample = this;
+				ppf.addEventListener(PolyPathFinderEvent.PATH_FOUND, function(ev:PolyPathFinderEvent):void{
+					pathTablo.graphics.clear();
+					//pathTablo.graphics.beginFill(0xFF00FF);
+					var p:Point = ev.path[0];
+					pathTablo.graphics.moveTo(p.x, p.y);
+					for(var i:int = 0;i<ev.path.length;i++){
+						var p:Point = ev.path[i];
+						pathTablo.graphics.lineStyle(2, 0x0000FF * (i/ev.path.length));
+						pathTablo.graphics.lineTo(p.x, p.y);
+						pathTablo.graphics.drawCircle(p.x, p.y, 1);
+					}
+					pathTablo.graphics.lineTo(p.x, p.y);
+					
+					trace(ev.path);
+				});
+				
+				pathTablo.graphics.lineStyle(3, 0xFF00FF);
+				
+				addEventListener(Event.ENTER_FRAME, function(e:Event):void{
+					
+					return;
+					
+					if(Math.random() < 0.9) return;
+					
+					var t:uint = startTestCycle();
+					
+					pathTablo.graphics.lineTo(testNum * 0.5, t * 0.1);
+					
+					if(testNum > 1000)
+						e.currentTarget.removeEventListener(e.type, arguments.callee);
+				});
+			}
+			
+			public function createShapes(max:int = 100):void
+			{
+				//walls = [createBox(100,0, 50,50),createBox(0,0, 100,50)];
+				
+				walls = [
+							createBox(100,100,20,100)
+							,createBox(200,100,20,100)
+							,createBox(100,100,100,20)
+							,createBox(100,200,90,20)
+							
+							,createBox(300,100,20,100)
+							
+							,createBox(400,100,20,100)
+							
+							,createBox(150,150,100,100)
+						]
+				
+				
+					
+				const minSize:int = 20;
+				const halfSize:int = 20;
+				for(var i:int = 0;i<max;i++)
+					walls.push(createBox(Math.random() * 300, Math.random() * 300, minSize + Math.random() * halfSize,minSize + Math.random() * halfSize));
+			}
+			
+			private function createBox(x:int,y:int,w:int,h:int):Poly
+			{
+				var points:Array = [[x,y],[x + w,y],[x + w, y + h],[x, y + h]];
+				return createPoly(points);
+			}
+			
+			
+			/* Simple Array to Poly conversion function , further reading : pl.bmnet.gpcas.geometry.Poly interface*/
+			public static function createPoly(points:Array):Poly{
+				var res : Poly = new PolyDefault();
+				for each (var point : Array in points){
+					res.addPoint(new Point(point[0],point[1]));
+				}
+				return res;
+			}
+			
+			private function showUnion():void{
+				var poly : Poly;
+				var i:int;
+				var counter:uint;
+				
+				tablo.graphics.clear();
+				
+				
+				
+				for(i = 0;i<walls.length;i++){
+					tablo.graphics.beginFill(0xFFFFFF * Math.random(), 0.3);
+					showPoly(walls[i]);
+				}
+				
+				
+				
+				calcUnion();
+
+				// union сорержит суммарную фигуру
+				
+				var points:Array = union.getPoints();
+				counter = points.length;
+					
+				var g:Graphics = tablo.graphics;
+				g.lineStyle(2, 0xFF0000);
+				g.moveTo(points[0].x, points[0].y);
+				
+				for(i = 0;i<counter;i++)
+				{
+					var p:Point = points[i];
+					g.lineTo(p.x, p.y);
+				}
+				g.lineTo(points[0].x, points[0].y);
+				
+				polyCanvas.clear();
+				polyCanvas.drawPoly(union);
+			}
+			
+			public function calcUnion():void
+			{
+				var t:uint = getTimer();
+				
+				Profiler.enter("calcUnion");
+				
+				if(walls.length == 0)
+					union = new PolyDefault();
+				else if(walls.length < 2){
+					union = walls[0];
+				}else{	
+//					i = 0;
+//					while(i < walls.length)
+//					{
+//						union = Poly(walls[i]).union();
+//					}
+					union = walls[0];
+					for(var i:int = 1;i<walls.length;i++){
+						var poly: Poly = walls[i];
+						this.union = this.union.union(poly) as PolyDefault;
+					}
+				}
+				
+				Profiler.exit("calcUnion");
+				
+				trace("*****************\n" + ("union calc time = " + (getTimer() - t)) + "		" + ("wall num = " + walls.length) + "\n*****************");
+			}
+			
+			
+			public function showPoly(poly:Poly):void
+			{
+				var counter:uint;
+				var i:uint;
+				var points:Array = poly.getPoints();
+				counter = points.length
+				
+				var g:Graphics = tablo.graphics;
+				g.moveTo(points[0].x, points[0].y);
+				
+				for(i = 0;i<counter;i++){
+					var p:Point = points[i];
+					g.lineTo(p.x, p.y);
+				}
+				g.lineTo(points[0].x, points[0].y);
+			}
+			
+			public function onClick():void
+			{
+				if(mouseState == 0)
+					setPoints();
+				if(mouseState == 1){
+					mouseState = 2;
+				}
+				else if(mouseState == 2)
+				{
+					topPoint = new Point(this.mouseX, this.mouseY - 30);
+					mouseState = 3;
+				}else if(mouseState == 3){
+					mouseState = 0;
+					var downPoint:Point = new Point(this.mouseX, this.mouseY - 30);
+					if(downPoint.x - topPoint.x > 0 && downPoint.y - topPoint.y > 0)
+						walls.push(createBox(topPoint.x, topPoint.y, downPoint.x - topPoint.x,downPoint.y - topPoint.y));
+				}
+			}
+				
+				
+			public function setPoints():void
+			{
+				var p:Point = new Point(this.mouseX, this.mouseY - 30);
+				if(setSource) sourcePos = p; else destinationPos = p; setSource = !setSource;
+				pointTablo.graphics.clear();
+				pointTablo.graphics.beginFill(0x008800);
+				pointTablo.graphics.drawCircle(sourcePos.x,sourcePos.y, 4);
+				if(destinationPos){
+					pointTablo.graphics.beginFill(0x00FFFF);
+					pointTablo.graphics.drawCircle(destinationPos.x,destinationPos.y, 4);
+				}
+				if(sourcePos && destinationPos && union)
+				{
+					ppf.setMap(union);
+					ppf.getPath(new PathRequest(sourcePos, destinationPos, union));
+				}
+			}
+			
+			
+			private var testNum:int = 20;
+			public function startTestCycle():uint
+			{
+				var t:uint;
+				
+				createShapes(testNum);
+				
+				t = getTimer();
+				
+				calcUnion();
+				
+				t = getTimer() - t;
+				
+				trace("*****************\n" + ("union calc time = " + t) + "		" + ("wall num = " + walls.length) + "\n*****************");
+				
+				testNum += 10;
+				
+				return t;
+			}
+			
+		]]>
+	</mx:Script>
+	<local:PolyCanvas width="100%" height="100%" id="polyCanvas" y="30"/>
+	<mx:HBox width="100%" height="75">
+		<mx:Button label="clear walls" click="{walls = [];}"/>
+		<mx:Button label="new wall" click="{mouseState = 1;}"/>
+		<mx:Button label="RAND" click="{createShapes();}"/>
+		<mx:Button label="CALC" click="{showUnion();}"/>
+		<mx:Button label="start test" click="{startTestCycle();}"/>
+		<mx:Button label="dummy" click="{startTestCycle();}"/>
+	</mx:HBox>
+	<mx:UIComponent id="tablo" y="30"/>
+	<mx:UIComponent id="pointTablo" y="30"/>
+	<mx:UIComponent id="pathTablo" y="30"/>
+</mx:Application>

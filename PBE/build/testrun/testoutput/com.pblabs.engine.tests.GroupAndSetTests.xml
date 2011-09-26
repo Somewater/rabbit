@@ -1,0 +1,3 @@
+<testsuite errors="0" failures="0" name="com.pblabs.engine.tests.GroupAndSetTests" tests="1" time="0">
+  <testcase classname="com.pblabs.engine.tests.GroupAndSetTests" name="groupSetAndObjectJumbo" time="0"/>
+</testsuite>

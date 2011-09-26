@@ -1,0 +1,362 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../../print.css" type="text/css" media="print">
+<meta content="ResourceManager,com.pblabs.engine.resource.ResourceManager,onEmbeddedFail,onlyLoadEmbeddedResources,isLoaded,load,registerEmbeddedResource,registerResourceProvider,unload" name="keywords">
+<title>com.pblabs.engine.resource.ResourceManager</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="../../../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../../../cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'ResourceManager - PushButton API Reference - r958 (ZaaBot build #215)';
+				var baseRef = '../../../../';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">PushButton API Reference - r958 (ZaaBot build #215)</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../../../all-classes.html')" href="../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../all-classes.html')" href="../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../index-list.html')" href="../../../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../../../index.html?com/pblabs/engine/resource/ResourceManager.html&amp;com/pblabs/engine/resource/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../../../images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;ResourceManager</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class ResourceManager"); titleBar_setSubNav(false,true,false,false,false,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">com.pblabs.engine.resource</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Class</td><td class="classSignature">public class ResourceManager</td>
+</tr>
+</table>
+<p></p>
+     The resource manager handles all tasks related to using asset files (images, xml, etc)
+     in a project. This includes loading files, managing embedded resources, and cleaninp up
+     resources no longer in use.
+     <p></p>
+<br>
+<hr>
+</div>
+<a name="propertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Properties</div>
+<table id="summaryTableProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#onEmbeddedFail">onEmbeddedFail</a> : Function<div class="summaryTableDescription">
+         Function that will be called if OnlyLoadEmbeddedResources is set and we
+         fail to find something.</div>
+</td><td class="summaryTableOwnerCol">ResourceManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#onlyLoadEmbeddedResources">onlyLoadEmbeddedResources</a> : Boolean = false<div class="summaryTableDescription">
+         If true, we will never get resources from outside the SWF - only resources
+         that have been properly embedded and registered with the ResourceManager
+         will be used.</div>
+</td><td class="summaryTableOwnerCol">ResourceManager</td>
+</tr>
+</table>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#isLoaded()">isLoaded</a>(filename:String, resourceType:Class):Boolean</div>
+<div class="summaryTableDescription">
+         Check if a resource is loaded and ready to go.</div>
+</td><td class="summaryTableOwnerCol">ResourceManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#load()">load</a>(filename:String, resourceType:Class, onLoaded:Function = null, onFailed:Function = null, forceReload:Boolean = false):<a href="../resource/Resource.html">Resource</a>
+</div>
+<div class="summaryTableDescription">
+         Loads a resource from a file.</div>
+</td><td class="summaryTableOwnerCol">ResourceManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#registerEmbeddedResource()">registerEmbeddedResource</a>(filename:String, resourceType:Class, data:*):void</div>
+<div class="summaryTableDescription">
+         Registers data with the resource manager to be treated as a resource.</div>
+</td><td class="summaryTableOwnerCol">ResourceManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#registerResourceProvider()">registerResourceProvider</a>(resourceProvider:<a href="provider/IResourceProvider.html">IResourceProvider</a>):void</div>
+<div class="summaryTableDescription">
+         Provide a source for resources to the ResourceManager.</div>
+</td><td class="summaryTableOwnerCol">ResourceManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#unload()">unload</a>(filename:String, resourceType:Class):void</div>
+<div class="summaryTableDescription">
+         Unloads a previously loaded resource.</div>
+</td><td class="summaryTableOwnerCol">ResourceManager</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="propertyDetail"></a>
+<div class="detailSectionHeader">Property detail</div>
+<a name="onEmbeddedFail"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">onEmbeddedFail</td><td class="detailHeaderType">property</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var onEmbeddedFail:Function</code><p>
+         Function that will be called if OnlyLoadEmbeddedResources is set and we
+         fail to find something. Useful for displaying feedback for artists (such
+         as via a dialog box ;). Passed the filename of the requested resource.
+         </p></div>
+<a name="onlyLoadEmbeddedResources"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">onlyLoadEmbeddedResources</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var onlyLoadEmbeddedResources:Boolean = false</code><p>
+         If true, we will never get resources from outside the SWF - only resources
+         that have been properly embedded and registered with the ResourceManager
+         will be used.
+         </p></div>
+<a name="methodDetail"></a>
+<div class="detailSectionHeader">Method detail</div>
+<a name="isLoaded()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">isLoaded</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function isLoaded(filename:String, resourceType:Class):Boolean</code><p>
+         Check if a resource is loaded and ready to go. 
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">filename</span>:String</code> &mdash; Same as request to load()
+         </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">resourceType</span>:Class</code> &mdash; Same as request to load().
+         </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; True if resource is loaded.
+         </td>
+</tr>
+</table>
+</div>
+<a name="load()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">load</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function load(filename:String, resourceType:Class, onLoaded:Function = null, onFailed:Function = null, forceReload:Boolean = false):<a href="../resource/Resource.html">Resource</a></code><p>
+         Loads a resource from a file. If the resource has already been loaded or is embedded, a
+         reference to the existing resource will be given. The resource is not returned directly
+         since loading is asynchronous. Instead, it will be passed to the function specified in
+         the onLoaded parameter. Even if the resource has already been loaded, it cannot be
+         assumed that the callback will happen synchronously.
+         
+         </p><p>This will not attempt to load resources that have previously failed to load. Instead,
+         the load will fail instantly.</p>
+         
+         <span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">filename</span>:String</code> &mdash; The url of the file to load.
+         </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">resourceType</span>:Class</code> &mdash; The Resource subclass specifying the type of resource that is being
+         requested.
+         </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">onLoaded</span>:Function</code> (default = <code>null</code>)<code></code> &mdash; A function that will be called on successful load of the resource. The
+         function should take a single parameter of the type specified in the resourceType
+         parameter.
+         </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">onFailed</span>:Function</code> (default = <code>null</code>)<code></code> &mdash; A function that will be called if loading of the resource fails. The
+         function should take a single parameter of the type specified in the resourceType
+         parameter. The resource passed to the function will be invalid, but the filename
+         property will be correct.
+         </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">forceReload</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; Always reload the resource, even if it has already been loaded.
+         
+         </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../resource/Resource.html">Resource</a></code></td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="Resource.html" target="">Resource</a>
+</div>
+</div>
+<a name="registerEmbeddedResource()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">registerEmbeddedResource</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function registerEmbeddedResource(filename:String, resourceType:Class, data:*):void</code><p>
+         Registers data with the resource manager to be treated as a resource. This is
+         used by embedded resources, which is facilitated by the ResourceBinding class.
+         
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">filename</span>:String</code> &mdash; The name to register the resource under. In the case of embedded
+         resources, it should match the filename of the resource.
+         </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">resourceType</span>:Class</code> &mdash; The Resource subclass to create with the specified data.
+         </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">data</span>:*</code> &mdash; A byte array containing the data for the resource. This should match
+         up with the data expected by the specific Resource subclass.
+         
+         </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../resource/ResourceBundle.html" target="">com.pblabs.engine.resource.ResourceBundle</a>
+</div>
+</div>
+<a name="registerResourceProvider()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">registerResourceProvider</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function registerResourceProvider(resourceProvider:<a href="provider/IResourceProvider.html">IResourceProvider</a>):void</code><p>
+         Provide a source for resources to the ResourceManager. Once added,
+         the ResourceManager will use this IResourceProvider to try to fulfill
+         resource load requests.
+          
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">resourceProvider</span>:<a href="provider/IResourceProvider.html">IResourceProvider</a></code> &mdash; Provider to add.
+         </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">IResourceProvider</div>
+</div>
+<a name="unload()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">unload</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function unload(filename:String, resourceType:Class):void</code><p>
+         Unloads a previously loaded resource. This does not necessarily mean the resource
+         will be available for garbage collection. Resources are reference counted so if
+         the specified resource has been loaded multiple times, its reference count will
+         only decrease as a result of this.
+         
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">filename</span>:String</code> &mdash; The url of the resource to unload.
+         </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">resourceType</span>:Class</code> &mdash; The type of the resource to unload.
+         </td>
+</tr>
+</table>
+</div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright">http://pushbuttonengine.com/</center>
+</div>
+</body>
+</html>
+<!--http://pushbuttonengine.com/-->

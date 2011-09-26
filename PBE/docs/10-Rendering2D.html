@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+   <link rel="stylesheet" type="text/css" href="stylesheet.css"/>
+   <script type="text/javascript" src="js/pageToc.js"></script>
+   <script type="text/javascript" src="js/sh/scripts/shCore.js"></script>
+   <script type="text/javascript" src="js/sh/scripts/shBrushJScript.js"></script>
+   <script type="text/javascript" src="js/sh/scripts/shBrushPhp.js"></script>
+   <script type="text/javascript" src="js/sh/scripts/shBrushPlain.js"></script>
+   <script type="text/javascript" src="js/sh/scripts/shBrushXml.js"></script>
+   <link type="text/css" rel="stylesheet" href="js/sh/styles/shCore.css"/>
+   <link type="text/css" rel="stylesheet" href="js/sh/styles/shThemeDefault.css"/>
+   <script type="text/javascript">
+   		SyntaxHighlighter.config.clipboardSwf = 'js/sh/scripts/clipboard.swf';
+   		SyntaxHighlighter.all();
+   </script>
+   <title>Rendering2D</title>
+</head>
+<body>
+
+   <h1>Rendering2D</h1>
+   
+   <p>Every game needs to render graphics. Rendering2D is a simple rendering framework designed to let rendering components coexist.</p>
+   
+   <div id="pageToc"></div>
+
+   <div id="contentArea">
+
+   <h2>Rendering2D Basics</h2>
+   
+   <p>Rendering2D is built on two halves. The first half is the <b>scene</b> and the second half is the <b>spatial manager</b>. These halves are independent. You can use either, one, or none in your game.</p>
+   
+   <p>The spatial manager provides a way to place objects in space and perform queries on them. The scene lets you place and draw visual objects like sprites. Scenes also support some queries, mostly the ones needed in order to implement picking.</p>
+          
+   <h3>Bitmaps vs. DisplayObjects</h3>
+   
+   <p>At the fundamental level of Flash graphics, there are two ways of displaying graphics to the user. The first is to create an individual DisplayObject to represent each "sprite", or moving graphic, on the screen. The second is to create a single BitmapData canvas that you draw ("blit") all of your other images to each frame.  There is no one "right way" to do this, so Rendering2D is flexible enough to support both. <em>DisplayObjectScene</em> lets you use <em>DisplayObject</em>s, and <em>BitmapDataScene</em> composites to a <em>Bitmap</em>. When you are using a <em>BitmapDataScene</em>, there is a direct <em>copyPixels</em> based path available to objects that implement <em></em> and it will automatically convert it to the right kind of output. See <em>ICopyPixelsRenderer</em>.</p>
+   
+   <h3>Draw Layers And Sorting</h3>
+   
+   <p>An important part of the Rendering2D architecture is the draw layer system. Each renderable component is required to implement a property called <em>layerIndex</em>, which controls on which draw layer it is shown. This allows manual control of sorting, by grouping drawable items onto overlapping layers. Layers are drawn in ascending order, starting with layer zero. This means that anything on layer 0 will be on the "bottom", and things in higher layers will be drawn on top of lower layers. There can be any number of layers, and they do not have to be contiguous (ie you could have only layers 0, 1, and 10).</p>
+   
+   <p>For example, in a platformer, you might assign layer zero to distant background elements, layer one to nearer background elements, layer two to platforms in the world, layer three to powerups, layer four to enemies, layer five to the player, and layer six to feedback elements like scores or damage effects. That's just an example; you can use layers however you like.</p>
+   
+   <p>DisplayObjectScene implements no intra-layer sorting by default. The draw order of two items in the same layer is undefined. You can implement your own sorting by specifying a sort function on the layer's <em>drawOrderFunction</em> field.</p>
+   
+   <h3>How Rendering Works</h3>
+   
+   <p>The rendering process is very simple. At the start of each frame, the <em>DisplayObjectScene</em> sorts its layers, then each layer has the opportunity to update the draw order of its renderables. The <em>DisplayObjectScene</em> uses <em>DisplayObject</em>s and Flash's renderer to display the scene, so finally any necessary changes are pushed into the <em>DisplayObject</em>s on the stage.</p>
+   
+   <p>If you are using the <em>BitmapDataScene</em>, then the main difference is that drawing is done manually onto the <em>BitmapData</em> using the <em>BitmapData.draw</em> method. In addition, renderable objects can optionally implement the <em>ICopyPixelsRenderer</em> interface, in which case they will be called every frame to draw themselves onto the <em>BitmapData</em>.
+   
+   <h3>Implementing a Drawable Component</h3>
+   
+   <p>Any component which wants to be drawn should inherit from <em>DisplayObjectRenderer</em> or one of its subclasses.</p>
+      
+   <h2>Using The System</h2>
+   
+   <p>The best way to understand the rendering2D system is to look at the examples (RollyBallGame, PBEngineDemo, or the PBFlexlessEngineDemo) and see how they set up their entities. You can also look at the Lessons, which cover how to display and move shapes and sprites.</p>
+   
+   <p>The requirements for rendering are simple. You need a <em>SceneView</em> or <em>FlexSceneView</em>, which is where the scene will be displayed. You need a <em>DisplayObjectScene</em> or related class. And you need some <em>DisplayObjectRenderers</em>. The renderers will have their <em>scene</em> field to set to reference the <em>DisplayObjectScene</em>, and the <em>DisplayObjectScene</em> will have its <em>sceneView</em> field set to indicate to what <em>SceneView</em> or <em>FlexSceneView</em> it should draw.</p>
+      
+   <h2>Extending The System</h2>
+      
+   <p>If you have a 3rd party library that can draw to either a <em>DisplayObject</em> or a <em>BitmapData</em>, it should be trivial to integrate into the rendering2D framework. Feed the <em>DisplayObject</em> or <em>BitmapData</em> to a DisplayObjectRenderer or a <em>BitmapRenderer</em> and off you'll go.</p>
+   
+   </div>
+</body>
+</html>

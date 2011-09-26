@@ -1,0 +1,207 @@
+package com.progrestar.common
+{
+	import com.progrestar.common.actors.BlittedClip;
+	import com.progrestar.common.actors.ObjectState;
+	import com.progrestar.common.actors.StateMachine;
+	import com.progrestar.common.factory.McFactory;
+	import com.progrestar.common.global.Env;
+	import com.progrestar.common.managers.BlittingManager;
+	import com.progrestar.common.new_iso.IsoContainer;
+	
+	import flash.display.DisplayObjectContainer;
+	import flash.display.MovieClip;
+	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.geom.Rectangle;
+	
+	public class StateGameObject extends GameObject
+	{
+		public static const defblit=true; 
+		public static var outsideVisibleBounds:Rectangle=new Rectangle(0,0,750,650);
+		protected var _blitting:int;
+		public function set blitting(value:Boolean)
+		{
+			if(value)_blitting=1;
+			else _blitting=-1;
+		}
+		public function get blitting():Boolean
+		{
+			if(_blitting==0)
+				return defblit;
+			if(_blitting==1)
+				return true;
+			else 
+				return false;
+		}
+		protected var _animationState:uint;
+		public var stateMachine:StateMachine;
+		public var bc:BlittedClip;
+		protected var _states:uint; 
+		public function StateGameObject(arg1:MovieClip=null)
+		{
+			if(_states==0) _states=1;
+			if(_blitting==0)blitting=defblit;
+			if(arg1&&McFactory.staticMCs[arg1.name])
+			{
+				blitting=true;
+				BlittingManager.mcs[arg1.name]=arg1;
+				instanceID=arg1.name;
+				if(contains(arg1))
+				{
+					removeChild(arg1);
+				}
+				BlittingManager.parents[arg1.name]=new Sprite();
+				(BlittingManager.parents[arg1.name] as Sprite).addChild(arg1);
+//				if(arg1.name.indexOf("hero")!=-1)
+				arg1= new BlittedClip(arg1,setChildAge,stopChildren,arg1.name);
+			}
+			super(arg1);
+		}
+		public function goto(...states)
+		{
+			//if(_states!=states.length)throw new Error("ERROR:Define _states (depth of state) in StateGameObject or subclass!");
+			if(blitting)
+			{
+				BlittingManager.setTimeline((mc as BlittedClip),states);	
+				if(states.length)
+				{
+					startFrame=1;
+					endFrame=1;
+					curFrame=0;
+				}
+				
+				updateFrame();
+			}
+			else
+			{
+				var clip:MovieClip=mc;
+				clip.gotoAndStop(states[0])
+				for(var i=1;i<states.length;i++)
+				{
+					clip=(clip.getChildAt(0) as MovieClip);
+					clip.gotoAndStop(states[i]);
+				}
+				if(states.length==1)
+				{
+					startFrame=states[0];
+					endFrame=startFrame;
+					curFrame=startFrame;
+					hasChildrenAge=true;
+				}
+			}
+		}
+		override public function updateFrame():void
+		{
+			if(false && blitting)
+			{
+				if(endFrame==1)
+					if((mc as BlittedClip).timeline[0])
+						endFrame=(mc as BlittedClip).timeline[0];
+				else endFrame=startFrame;
+				if(curFrame==0)
+				{
+					curFrame=startFrame;
+					(mc as BlittedClip).show(curFrame);
+					return;
+				}
+				tempFrame= 1;
+				if (curFrame + 1 <=endFrame)
+				{
+					tempFrame = curFrame + 1;
+				}
+				else if (looping)
+				{
+					tempFrame = startFrame;
+				}
+				else
+				{
+					tempFrame = endFrame;
+				}
+				
+				if (curFrame != tempFrame)
+				{
+					curFrame = tempFrame;
+					(mc as BlittedClip).show(tempFrame);
+				}
+			}
+			else 
+				super.updateFrame();
+		}
+		override public function playAnimation(_startFrame:int=0, _endFrame:int=0, loop:Boolean=true, isState:Boolean=true):void
+		{
+			if(blitting)
+			{
+				if(isState)
+				{
+					startFrame=1;
+					endFrame=1;
+					if((mc as BlittedClip).states && _startFrame==(mc as BlittedClip).states[0]){}
+					else this.goto(_startFrame);
+				}
+				else 
+				{
+					startFrame=_startFrame;
+					endFrame=_endFrame;
+					curFrame=0;
+					this.goto();
+				}
+				looping=loop;
+			}else
+			{
+				super.playAnimation(_startFrame,_endFrame, loop, isState);
+			}
+		}
+		override public function tick(arg1:int = 0):void
+		{
+			stateMachine && stateMachine.tick(arg1);
+			super.tick(arg1);
+			if(this is IsoContainer) return;
+			if(this.visible)
+				if(age%30) 
+					return;
+			var visarea:Rectangle =this.getBounds(Env.main);
+			this.visible=visarea.intersects(StateGameObject.outsideVisibleBounds);
+		}
+		public function replaceAllBlit(e:Event){
+			if(mc.numChildren){
+				var c=0;
+				if(mc.numChildren==2)
+				{
+					c=1;
+					mc.getChildAt(0).cacheAsBitmap=true;
+				}
+				bc = new BlittedClip((mc.getChildAt(c)as MovieClip),setChildAge,stopChildren,"GOID:"+this.instanceID+" State:"+mc.currentFrame);
+				mc.removeChildAt(c)
+			}
+			mc.removeEventListener(Event.FRAME_CONSTRUCTED, replaceAllBlit)
+			if (mc.totalFrames!=mc.currentFrame)
+			{
+				mc.gotoAndStop(mc.currentFrame+1);
+				mc.addEventListener(Event.FRAME_CONSTRUCTED,replaceAllBlit);
+			}
+			
+		}
+		override protected function setChildAge(ob:DisplayObjectContainer, ag:int):void
+		{
+			if (stateMachine) 
+			{
+				ag=stateMachine.age;	
+			}
+			super.setChildAge(ob,ag);
+		}
+		public function get actionState():ObjectState
+		{
+			return this.stateMachine.state;
+		}
+		public function set actionState(value:ObjectState)
+		{
+			this.stateMachine.state=value;
+		}
+		public function set animationState(value:uint){
+			_animationState = value;
+		}
+		public function get animationState():uint{
+			return _animationState;
+		}
+	}
+}

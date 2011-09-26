@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" backgroundColor="#CCCCFF"
+		width="100%" height="100%"
+		verticalScrollPolicy="off"
+		horizontalScrollPolicy="off"
+		creationComplete="init();">
+	<mx:Script>
+		<![CDATA[
+		import com.somewater.rabbit.storage.LevelDef;
+
+		[Bindable]
+		private var level:LevelDef
+
+		private function init():void
+		{
+			level = data as LevelDef;
+		}
+
+		private function restartLevel():void {
+			ControlPanel.instance.restartLevel(level, true);
+		}
+
+		]]>
+	</mx:Script>
+	<mx:VBox width="100%" height="100%">
+		<mx:VBox id="holder" width="100%" height="100%" verticalGap="1">
+			<mx:Label text="id:"></mx:Label>
+			<mx:TextInput id="level_id" text="{level.id}" restrict="-0123456789" maxChars="3" width="100%"></mx:TextInput>
+			<mx:Spacer></mx:Spacer>
+
+			<mx:Label text="name:"></mx:Label>
+			<mx:TextInput id="level_name" text="{level.name}" width="100%"></mx:TextInput>
+			<mx:Spacer></mx:Spacer>
+
+			<mx:Label text="description:"></mx:Label>
+			<mx:TextArea id="level_desc" text="{level.desc}" width="100%"></mx:TextArea>
+			<mx:Spacer></mx:Spacer>
+
+			<mx:Label text="filename:"></mx:Label>
+			<mx:TextInput id="level_file" text="{level.file}" width="100%"></mx:TextInput>
+			<mx:Spacer></mx:Spacer>
+
+			<mx:Label text="width:"></mx:Label>
+			<mx:TextInput id="level_width" text="{level.width}" restrict="0123456789" maxChars="2" width="100%"></mx:TextInput>
+			<mx:Spacer></mx:Spacer>
+
+			<mx:Label text="height:"></mx:Label>
+			<mx:TextInput id="level_height" text="{level.height}" restrict="0123456789" maxChars="2" width="100%"></mx:TextInput>
+		</mx:VBox>
+		<mx:VBox width="100%">
+			<mx:Button label="Restart level" click="restartLevel()" width="100%"></mx:Button>
+		</mx:VBox>
+	</mx:VBox>
+</mx:Canvas>

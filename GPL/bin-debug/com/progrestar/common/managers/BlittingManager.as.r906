@@ -1,0 +1,135 @@
+package com.progrestar.common.managers
+{
+	import com.progrestar.common.StateGameObject;
+	import com.progrestar.common.actors.BlittedClip;
+	
+	import flash.display.MovieClip;
+	import flash.events.Event;
+	import flash.utils.Dictionary;
+	
+	public class BlittingManager
+	{
+		public static var bitmaps : Dictionary=new Dictionary();
+		public static var mcs : Dictionary=new Dictionary();
+		public static var points : Dictionary=new Dictionary();
+		public static var policy : String="";
+		private static var _GameObjects_to_Blit : Array;
+		private static var _isStates : Array;
+		
+		public static const POLICY_AT_RUNTIME : String = 'runtime';
+		public static const POLICY_AT_CREATION : String = 'creation';
+		
+		public static function create() : void {
+			if(!_GameObjects_to_Blit) throw new Error("No GameObjects to Blit At CREATION!!!\n" +
+														"Use BlittingManager.addGameObject() method first");
+			if(policy==POLICY_AT_RUNTIME) throw new Error("Already at RUNTIME!!! Can't switch back to CREATION");
+			bitmaps = new Dictionary();
+			points = new Dictionary();
+			mcs = new Dictionary();
+			policy = POLICY_AT_CREATION;
+			var obj:StateGameObject;
+			var isState:Boolean;
+			var len:uint=_isStates.length;
+			var total:uint;
+			var bc:BlittedClip;
+			for(var i =0;i<len;i++){
+				obj=_GameObjects_to_Blit.pop();
+				total=obj.mc.totalFrames+1;
+//				for(var j=1;j<total;j++)
+//				{
+					obj.mc.gotoAndStop(1);
+					trace(obj.instanceID+":"+obj.mc.currentFrame+":"+obj.mc.numChildren);
+					obj.mc.addEventListener(Event.FRAME_CONSTRUCTED,obj.replaceAllBlit)
+//					obj.replaceBlit(null);
+//					for(var f=1;f<obj.bc.totalFrames+1;f++)
+//					obj.bc.gotoAndStop(f);
+//				}
+			}
+		}
+		public static function runtime():void {
+			if(policy!=POLICY_AT_CREATION)
+			{
+				if(policy==POLICY_AT_RUNTIME) throw new Error("Already at RUNTIME!!! Can't reinit RUNTIME");
+				bitmaps = new Dictionary();
+				points = new Dictionary();
+				mcs = new Dictionary();
+			}
+			policy = POLICY_AT_RUNTIME;			
+		}
+		public static function addGameObject(gameObject:StateGameObject,isState:Boolean):uint{
+			if(policy==POLICY_AT_RUNTIME)throw new Error("Already at RUNTIME!!! Can't Blit ");
+			if(gameObject.instanceID==" ")throw new Error("GameObject.instanceID not specified!!!");
+			if(!_GameObjects_to_Blit) 
+			{
+				_GameObjects_to_Blit=[];
+				_isStates=[];
+			}
+			_GameObjects_to_Blit.push(gameObject);
+			_isStates.push(isState);
+			return _isStates.length;
+		}
+		/**  запускает BlittingManager
+		 *  @param GOstoBlit массив геймобджектов для блита AT CREATION
+		**/ 
+		public static function start(GOstoBlit:Array=null,iS:Array=null)
+		{
+			var state:Boolean;
+			if (GOstoBlit)
+			{
+				while(GOstoBlit.length)
+				{
+					if (iS) state=iS.pop() else state=true;
+					addGameObject(GOstoBlit.pop(),state);
+				}
+				create();
+			}
+//			runtime();
+		} 
+		public static function setTimeline(bc:BlittedClip,states:Array)
+		{
+			var timeline:Array;
+			var pts:Array;
+			var uid:String=bc.name;
+			if(!bitmaps[uid])
+			{
+				bitmaps[uid]=[];
+				points[uid]=[];
+			}
+			timeline=bitmaps[uid];
+			pts=points[uid];
+			for (var i=0;i<states.length;i++)
+			{
+				if(!timeline[states[i]])
+				{
+					timeline[states[i]]=[];
+					pts[states[i]]=[];
+				}
+				timeline=timeline[states[i]];
+				pts=pts[states[i]];
+			}
+			bc.timeline=timeline;
+			bc.points=pts;
+			bc.states=states;
+/*			if(!timeline[0])
+			{
+				var clip:MovieClip=mcs[uid];
+				clip.gotoAndStop(states[0])
+				for(var i=1;i<states.length;i++)
+				{
+					clip=(clip.getChildAt(0) as MovieClip);
+					clip.gotoAndStop(states[i]);
+				}
+				if(clip.numChildren)
+				{
+					if(clip.name!="heromale_hero")
+					{
+						timeline[0]=(clip.getChildAt(0) as MovieClip).totalFrames;	
+					}
+					else timeline[0]=10;
+				}
+				else timeline[0]=1;
+			}
+			return 1; */
+		}
+	}
+}

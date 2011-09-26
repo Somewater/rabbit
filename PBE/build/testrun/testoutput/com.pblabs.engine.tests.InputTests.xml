@@ -1,0 +1,3 @@
+<testsuite errors="0" failures="0" name="com.pblabs.engine.tests.InputTests" tests="1" time="0">
+  <testcase classname="com.pblabs.engine.tests.InputTests" name="testInputMap" time="0"/>
+</testsuite>

@@ -1,0 +1,829 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../../print.css" type="text/css" media="print">
+<meta content="ProcessManager,com.pblabs.engine.core.ProcessManager,MAX_TICKS_PER_FRAME,TICKS_PER_SECOND,TICK_RATE,TICK_RATE_MS,_interpolationFactor,_platformTime,_timeScale,_virtualTime,animatedObjects,deferredMethodQueue,disableSlowWarning,duringAdvance,elapsed,lastTime,needPurgeEmpty,started,thinkHeap,tickedObjects,interpolationFactor,isTicking,platformTime,timeScale,virtualTime,TimeScale,addAnimatedObject,addTickedObject,callLater,queueObject,removeAnimatedObject,removeTickedObject,schedule,seek,start,stop,testAdvance" name="keywords">
+<title>com.pblabs.engine.core.ProcessManager</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="../../../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../../../cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'ProcessManager - PushButton API Reference - r958 (ZaaBot build #215)';
+				var baseRef = '../../../../';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">PushButton API Reference - r958 (ZaaBot build #215)</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../../../all-classes.html')" href="../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../all-classes.html')" href="../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../index-list.html')" href="../../../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../../../index.html?com/pblabs/engine/core/ProcessManager.html&amp;com/pblabs/engine/core/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../../../images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;ProcessManager</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a>&nbsp;| <a href="#constantSummary">Constants</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class ProcessManager"); titleBar_setSubNav(true,true,false,false,false,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">com.pblabs.engine.core</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Class</td><td class="classSignature">public class ProcessManager</td>
+</tr>
+</table>
+<p></p>
+     The process manager manages all time related functionality in the engine.
+     It provides mechanisms for performing actions every frame, every tick, or
+     at a specific time in the future.
+     
+     <p>A tick happens at a set interval defined by the TICKS_PER_SECOND constant.
+     Using ticks for various tasks that need to happen repeatedly instead of
+     performing those tasks every frame results in much more consistent output.
+     However, for animation related tasks, frame events should be used so the
+     display remains smooth.</p>
+     
+     <p></p>
+<p>
+<span class="classHeaderTableLabel">See also</span>
+</p>
+<div class="seeAlso">
+<a href="ITickedObject.html" target="">ITickedObject</a>
+<br>
+<a href="IAnimatedObject.html" target="">IAnimatedObject</a>
+</div>
+<br>
+<hr>
+</div>
+<a name="propertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Properties</div>
+<table id="summaryTableProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#disableSlowWarning">disableSlowWarning</a> : Boolean = true<div class="summaryTableDescription">[static]
+         If true, disables warnings about losing ticks.</div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#interpolationFactor">interpolationFactor</a> : Number<div class="summaryTableDescription">[read-only]
+         Used to determine how far we are between ticks.</div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#isTicking">isTicking</a> : Boolean<div class="summaryTableDescription">[read-only]
+         Returns true if the process manager is advancing.</div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#platformTime">platformTime</a> : Number<div class="summaryTableDescription">[read-only]
+         Current time reported by getTimer(), updated every frame.</div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#timeScale">timeScale</a> : Number<div class="summaryTableDescription">
+         The scale at which time advances.</div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#TimeScale">TimeScale</a> : Number<div class="summaryTableDescription">
+         TweenMax uses timeScale as a config property, so by also having a
+         capitalized version, we can tween TimeScale instead and get along 
+         just fine.</div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#virtualTime">virtualTime</a> : Number<div class="summaryTableDescription">[read-only]
+         The amount of time that has been processed by the process manager.</div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+</table>
+</div>
+<a name="protectedPropertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Protected Properties</div>
+<table id="summaryTableProtectedProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#animatedObjects">animatedObjects</a> : Array<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#deferredMethodQueue">deferredMethodQueue</a> : Array<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#duringAdvance">duringAdvance</a> : Boolean = false<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#elapsed">elapsed</a> : Number = 0.0<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_interpolationFactor">_interpolationFactor</a> : Number = 0.0<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#lastTime">lastTime</a> : int = -1.0<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#needPurgeEmpty">needPurgeEmpty</a> : Boolean = false<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_platformTime">_platformTime</a> : int = 0<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#started">started</a> : Boolean = false<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#thinkHeap">thinkHeap</a> : <a href="../core/SimplePriorityQueue.html">SimplePriorityQueue</a>
+<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#tickedObjects">tickedObjects</a> : Array<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_timeScale">_timeScale</a> : Number = 1.0<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_virtualTime">_virtualTime</a> : int = 0.0<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+</table>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#addAnimatedObject()">addAnimatedObject</a>(object:<a href="IAnimatedObject.html">IAnimatedObject</a>, priority:Number = 0.0):void</div>
+<div class="summaryTableDescription">
+         Registers an object to receive frame callbacks.</div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#addTickedObject()">addTickedObject</a>(object:<a href="ITickedObject.html">ITickedObject</a>, priority:Number = 0.0):void</div>
+<div class="summaryTableDescription">
+         Registers an object to receive tick callbacks.</div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#callLater()">callLater</a>(method:Function, args:Array = null):void</div>
+<div class="summaryTableDescription">
+         Deferred function callback - called back at start of processing for next frame.</div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#queueObject()">queueObject</a>(object:<a href="IQueuedObject.html">IQueuedObject</a>):void</div>
+<div class="summaryTableDescription">
+         Queue an IQueuedObject for callback.</div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#removeAnimatedObject()">removeAnimatedObject</a>(object:<a href="IAnimatedObject.html">IAnimatedObject</a>):void</div>
+<div class="summaryTableDescription">
+         Unregisters an object from receiving frame callbacks.</div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#removeTickedObject()">removeTickedObject</a>(object:<a href="ITickedObject.html">ITickedObject</a>):void</div>
+<div class="summaryTableDescription">
+         Unregisters an object from receiving tick callbacks.</div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#schedule()">schedule</a>(delay:Number, thisObject:Object, callback:Function, ... arguments):void</div>
+<div class="summaryTableDescription">
+         Schedules a function to be called at a specified time in the future.</div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#seek()">seek</a>(amount:Number):void</div>
+<div class="summaryTableDescription">
+         Forces the process manager to seek its virtualTime by the specified amount.</div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#start()">start</a>():void</div>
+<div class="summaryTableDescription">
+         Starts the process manager.</div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#stop()">stop</a>():void</div>
+<div class="summaryTableDescription">
+         Stops the process manager.</div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#testAdvance()">testAdvance</a>(amount:Number):void</div>
+<div class="summaryTableDescription">
+         Forces the process manager to advance by the specified amount.</div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+</table>
+</div>
+<a name="constantSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Constants</div>
+<table id="summaryTableConstant" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Constant</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#MAX_TICKS_PER_FRAME">MAX_TICKS_PER_FRAME</a> : int = 5<div class="summaryTableDescription">[static]
+         The maximum number of ticks that can be processed in a frame.</div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#TICK_RATE">TICK_RATE</a> : Number<div class="summaryTableDescription">[static]
+         The rate at which ticks are fired, in seconds.</div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#TICK_RATE_MS">TICK_RATE_MS</a> : Number<div class="summaryTableDescription">[static]
+         The rate at which ticks are fired, in milliseconds.</div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#TICKS_PER_SECOND">TICKS_PER_SECOND</a> : int = 30<div class="summaryTableDescription">[static]
+         The number of ticks that will happen every second.</div>
+</td><td class="summaryTableOwnerCol">ProcessManager</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="propertyDetail"></a>
+<div class="detailSectionHeader">Property detail</div>
+<a name="animatedObjects"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">animatedObjects</td><td class="detailHeaderType">property</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var animatedObjects:Array</code>
+</div>
+<a name="deferredMethodQueue"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">deferredMethodQueue</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var deferredMethodQueue:Array</code>
+</div>
+<a name="disableSlowWarning"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">disableSlowWarning</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static var disableSlowWarning:Boolean = true</code><p>
+         If true, disables warnings about losing ticks.
+         </p></div>
+<a name="duringAdvance"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">duringAdvance</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var duringAdvance:Boolean = false</code>
+</div>
+<a name="elapsed"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">elapsed</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var elapsed:Number = 0.0</code>
+</div>
+<a name="_interpolationFactor"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_interpolationFactor</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _interpolationFactor:Number = 0.0</code>
+</div>
+<a name="interpolationFactor"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">interpolationFactor</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>interpolationFactor:Number</code>&nbsp;&nbsp;[read-only]<p>
+         Used to determine how far we are between ticks. 0.0 at the start of a tick, and
+         1.0 at the end. Useful for smoothly interpolating visual elements.
+         </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get interpolationFactor():Number</code>
+<br>
+</div>
+<a name="isTicking"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">isTicking</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>isTicking:Boolean</code>&nbsp;&nbsp;[read-only]<p>
+         Returns true if the process manager is advancing.
+         </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get isTicking():Boolean</code>
+<br>
+</div>
+<a name="lastTime"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">lastTime</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var lastTime:int = -1.0</code>
+</div>
+<a name="needPurgeEmpty"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">needPurgeEmpty</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var needPurgeEmpty:Boolean = false</code>
+</div>
+<a name="_platformTime"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_platformTime</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _platformTime:int = 0</code>
+</div>
+<a name="platformTime"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">platformTime</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>platformTime:Number</code>&nbsp;&nbsp;[read-only]<p>
+         Current time reported by getTimer(), updated every frame. Use this to avoid
+         costly calls to getTimer(), or if you want a unique number representing the
+         current frame.
+         </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get platformTime():Number</code>
+<br>
+</div>
+<a name="started"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">started</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var started:Boolean = false</code>
+</div>
+<a name="thinkHeap"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">thinkHeap</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var thinkHeap:<a href="../core/SimplePriorityQueue.html">SimplePriorityQueue</a></code>
+</div>
+<a name="tickedObjects"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">tickedObjects</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var tickedObjects:Array</code>
+</div>
+<a name="_timeScale"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_timeScale</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _timeScale:Number = 1.0</code>
+</div>
+<a name="timeScale"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">timeScale</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>timeScale:Number</code>&nbsp;&nbsp;[read-write]<p>
+         The scale at which time advances. If this is set to 2, the game
+         will play twice as fast. A value of 0.5 will run the
+         game at half speed. A value of 1 is normal.
+         </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get timeScale():Number</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set timeScale(value:Number):void</code>
+<br>
+</div>
+<a name="TimeScale"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">TimeScale</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>TimeScale:Number</code>&nbsp;&nbsp;[read-write]<p>
+         TweenMax uses timeScale as a config property, so by also having a
+         capitalized version, we can tween TimeScale instead and get along 
+         just fine.
+         </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get TimeScale():Number</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set TimeScale(value:Number):void</code>
+<br>
+</div>
+<a name="_virtualTime"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_virtualTime</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _virtualTime:int = 0.0</code>
+</div>
+<a name="virtualTime"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">virtualTime</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>virtualTime:Number</code>&nbsp;&nbsp;[read-only]<p>
+         The amount of time that has been processed by the process manager. This does
+         take the time scale into account. Time is in milliseconds.
+         </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get virtualTime():Number</code>
+<br>
+</div>
+<a name="methodDetail"></a>
+<div class="detailSectionHeader">Method detail</div>
+<a name="addAnimatedObject()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">addAnimatedObject</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function addAnimatedObject(object:<a href="IAnimatedObject.html">IAnimatedObject</a>, priority:Number = 0.0):void</code><p>
+         Registers an object to receive frame callbacks.
+         
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">object</span>:<a href="IAnimatedObject.html">IAnimatedObject</a></code> &mdash; The object to add.
+         </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">priority</span>:Number</code> (default = <code>0.0</code>)<code></code> &mdash; The priority of the object. Objects added with higher priorities
+         will receive their callback before objects with lower priorities. The highest
+         (first-processed) priority is Number.MAX_VALUE. The lowest (last-processed) 
+         priority is -Number.MAX_VALUE.
+         </td>
+</tr>
+</table>
+</div>
+<a name="addTickedObject()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">addTickedObject</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function addTickedObject(object:<a href="ITickedObject.html">ITickedObject</a>, priority:Number = 0.0):void</code><p>
+         Registers an object to receive tick callbacks.
+         
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">object</span>:<a href="ITickedObject.html">ITickedObject</a></code> &mdash; The object to add.
+         </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">priority</span>:Number</code> (default = <code>0.0</code>)<code></code> &mdash; The priority of the object. Objects added with higher priorities
+         will receive their callback before objects with lower priorities. The highest
+         (first-processed) priority is Number.MAX_VALUE. The lowest (last-processed) 
+         priority is -Number.MAX_VALUE.
+         </td>
+</tr>
+</table>
+</div>
+<a name="callLater()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">callLater</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function callLater(method:Function, args:Array = null):void</code><p>
+         Deferred function callback - called back at start of processing for next frame. Useful
+         any time you are going to do setTimeout(someFunc, 1) - it's a lot cheaper to do it 
+         this way.
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">method</span>:Function</code> &mdash; Function to call.
+         </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">args</span>:Array</code> (default = <code>null</code>)<code></code> &mdash; Any arguments.
+         </td>
+</tr>
+</table>
+</div>
+<a name="queueObject()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">queueObject</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function queueObject(object:<a href="IQueuedObject.html">IQueuedObject</a>):void</code><p>
+         Queue an IQueuedObject for callback. This is a very cheap way to have a callback
+         happen on an object. If an object is queued when it is already in the queue, it
+         is removed, then added.
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">object</span>:<a href="IQueuedObject.html">IQueuedObject</a></code></td>
+</tr>
+</table>
+</div>
+<a name="removeAnimatedObject()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">removeAnimatedObject</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function removeAnimatedObject(object:<a href="IAnimatedObject.html">IAnimatedObject</a>):void</code><p>
+         Unregisters an object from receiving frame callbacks.
+         
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">object</span>:<a href="IAnimatedObject.html">IAnimatedObject</a></code> &mdash; The object to remove.
+         </td>
+</tr>
+</table>
+</div>
+<a name="removeTickedObject()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">removeTickedObject</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function removeTickedObject(object:<a href="ITickedObject.html">ITickedObject</a>):void</code><p>
+         Unregisters an object from receiving tick callbacks.
+         
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">object</span>:<a href="ITickedObject.html">ITickedObject</a></code> &mdash; The object to remove.
+         </td>
+</tr>
+</table>
+</div>
+<a name="schedule()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">schedule</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function schedule(delay:Number, thisObject:Object, callback:Function, ... arguments):void</code><p>
+         Schedules a function to be called at a specified time in the future.
+         
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">delay</span>:Number</code> &mdash; The number of milliseconds in the future to call the function.
+         </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">thisObject</span>:Object</code> &mdash; The object on which the function should be called. This
+         becomes the 'this' variable in the function.
+         </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">callback</span>:Function</code> &mdash; The function to call.
+         </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code>... <span class="label">arguments</span></code> &mdash; The arguments to pass to the function when it is called.
+         </td>
+</tr>
+</table>
+</div>
+<a name="seek()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">seek</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function seek(amount:Number):void</code><p>
+         Forces the process manager to seek its virtualTime by the specified amount.
+         This moves virtualTime without calling advance and without processing ticks or frames.
+         WARNING: USE WITH CAUTION AND ONLY IF YOU REALLY KNOW THE CONSEQUENCES!
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">amount</span>:Number</code></td>
+</tr>
+</table>
+</div>
+<a name="start()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">start</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function start():void</code><p>
+         Starts the process manager. This is automatically called when the first object
+         is added to the process manager. If the manager is stopped manually, then this
+         will have to be called to restart it.
+         </p></div>
+<a name="stop()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">stop</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function stop():void</code><p>
+         Stops the process manager. This is automatically called when the last object
+         is removed from the process manager, but can also be called manually to, for
+         example, pause the game.
+         </p></div>
+<a name="testAdvance()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">testAdvance</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function testAdvance(amount:Number):void</code><p>
+         Forces the process manager to advance by the specified amount. This should
+         only be used for unit testing.
+         
+         </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">amount</span>:Number</code> &mdash; The amount of time to simulate.
+         </td>
+</tr>
+</table>
+</div>
+<a name="constantDetail"></a>
+<div class="detailSectionHeader">Constant detail</div>
+<a name="MAX_TICKS_PER_FRAME"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">MAX_TICKS_PER_FRAME</td><td class="detailHeaderType">constant</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const MAX_TICKS_PER_FRAME:int = 5</code><p>
+         The maximum number of ticks that can be processed in a frame.
+         
+         </p><p>In some cases, a single frame can take an extremely long amount of
+         time. If several ticks then need to be processed, a game can
+         quickly get in a state where it has so many ticks to process
+         it can never catch up. This is known as a death spiral.</p>
+         
+         <p>To prevent this we have a safety limit. Time is dropped so the
+         system can catch up in extraordinary cases. If your game is just
+         slow, then you will see that the ProcessManager can never catch up
+         and you will constantly get the "too many ticks per frame" warning,
+         if you have disableSlowWarning set to true.</p>
+         </div>
+<a name="TICK_RATE"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">TICK_RATE</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const TICK_RATE:Number</code><p>
+         The rate at which ticks are fired, in seconds.
+         </p></div>
+<a name="TICK_RATE_MS"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">TICK_RATE_MS</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const TICK_RATE_MS:Number</code><p>
+         The rate at which ticks are fired, in milliseconds.
+         </p></div>
+<a name="TICKS_PER_SECOND"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">TICKS_PER_SECOND</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const TICKS_PER_SECOND:int = 30</code><p>
+         The number of ticks that will happen every second.
+         </p></div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright">http://pushbuttonengine.com/</center>
+</div>
+</body>
+</html>
+<!--http://pushbuttonengine.com/-->

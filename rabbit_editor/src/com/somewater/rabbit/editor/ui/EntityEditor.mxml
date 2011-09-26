@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" backgroundColor="#CCFFCC"
+		width="100%" height="100%"
+		verticalScrollPolicy="off"
+		horizontalScrollPolicy="off"
+		creationComplete="init();">
+	<mx:Script>
+		<![CDATA[
+		import com.somewater.rabbit.editor.events.EntitySelectedEvent;
+		import com.somewater.rabbit.editor.xml.XmlController;
+		import com.somewater.rabbit.events.EditorEvent;
+		import com.somewater.rabbit.storage.Config;
+		import com.somewater.rabbit.storage.LevelDef;
+
+		import flash.events.IEventDispatcher;
+
+		import mx.controls.Alert;
+
+		private var level:LevelDef
+		private var description:Array;
+		private var editorModuleChangeListener:Boolean = false;
+
+		private function init():void
+		{
+			level = data as LevelDef;
+			description = XmlController.instance.getDescription();
+			var descriptionKeys:Array = [];
+			var key:String;
+			for(key in description)
+				descriptionKeys.push(key);
+			descriptionKeys.sort();
+
+			for(var i:int = 0;i<descriptionKeys.length;i++)
+			{
+				key = descriptionKeys[i];
+				var template:XML = description[key];
+				var icon:EntityIcon = new EntityIcon();
+				icon.data = template;
+				icon.addEventListener(EntitySelectedEvent.ENTITY_SELECTED_EVENT, onEntitySelected)
+
+				holder.addChild(icon);
+			}
+		}
+
+		private function onEntitySelected(event:EntitySelectedEvent):void {
+			var template:XML = event.template;
+			var name:String = template.@name;
+
+			ControlPanel.instance.hide();
+			var module:IEventDispatcher = Config.game.setTemplateTool(template);
+			if(!editorModuleChangeListener)
+			{
+				module.addEventListener(Event.CHANGE, onChangeEditorEvent);
+				editorModuleChangeListener = true;
+			}
+		}
+
+		private function onChangeEditorEvent(event:EditorEvent):void {
+			trace("TODO: instert into xml entity #" + event.data.hash);
+		}
+
+		]]>
+	</mx:Script>
+	<mx:Canvas horizontalScrollPolicy="off" width="100%" height="100%">
+		<mx:VBox width="100%" height="100%" id="holder">
+		</mx:VBox>
+	</mx:Canvas>
+</mx:Canvas>

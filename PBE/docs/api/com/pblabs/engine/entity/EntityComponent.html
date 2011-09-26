@@ -1,0 +1,331 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../../print.css" type="text/css" media="print">
+<meta content="EntityComponent,com.pblabs.engine.entity.EntityComponent,isRegistered,name,owner,onAdd,onRemove,onReset,register,reset,unregister" name="keywords">
+<title>com.pblabs.engine.entity.EntityComponent</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="../../../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../../../cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'EntityComponent - PushButton API Reference - r958 (ZaaBot build #215)';
+				var baseRef = '../../../../';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">PushButton API Reference - r958 (ZaaBot build #215)</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../../../all-classes.html')" href="../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../all-classes.html')" href="../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../index-list.html')" href="../../../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../../../index.html?com/pblabs/engine/entity/EntityComponent.html&amp;com/pblabs/engine/entity/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../../../images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;EntityComponent</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class EntityComponent"); titleBar_setSubNav(false,true,false,false,false,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">com.pblabs.engine.entity</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Class</td><td class="classSignature">public class EntityComponent</td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Implements</td><td><a href="IEntityComponent.html">IEntityComponent</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Subclasses</td><td><a href="../components/AnimatedComponent.html">AnimatedComponent</a>, <a href="../../rendering2D/BasicSpatialManager2D.html">BasicSpatialManager2D</a>, <a href="../../box2D/Box2DManagerComponent.html">Box2DManagerComponent</a>, <a href="../../box2D/Box2DSpatialComponent.html">Box2DSpatialComponent</a>, <a href="../components/DataComponent.html">DataComponent</a>, <a href="../../components/basic/EventSoundTrigger.html">EventSoundTrigger</a>, <a href="../../tweaker/GoogleSpreadsheetTweaker.html">GoogleSpreadsheetTweaker</a>, <a href="../components/GroupManagerComponent.html">GroupManagerComponent</a>, <a href="../components/GroupMemberComponent.html">GroupMemberComponent</a>, <a href="../../components/basic/HealthComponent.html">HealthComponent</a>, <a href="../../components/stateMachine/MachineDescription.html">MachineDescription</a>, <a href="../../rendering2D/spritesheet/MultiSpriteSheetHelper.html">MultiSpriteSheetHelper</a>, <a href="../../rendering2D/spritesheet/SpriteContainerComponent.html">SpriteContainerComponent</a>, <a href="../components/ThinkingComponent.html">ThinkingComponent</a>, <a href="../components/TickedComponent.html">TickedComponent</a></td>
+</tr>
+</table>
+<p></p>
+    An implementation of the IEntityComponent interface, providing all the basic
+    functionality required of all components. Custom components should always
+    derive from this class rather than implementing IEntityComponent directly.
+    
+    <p></p>
+<p>
+<span class="classHeaderTableLabel">See also</span>
+</p>
+<div class="seeAlso">
+<a href="IEntity.html" target="">IEntity</a>
+</div>
+<br>
+<hr>
+</div>
+<a name="propertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Properties</div>
+<table id="summaryTableProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#isRegistered">isRegistered</a> : Boolean<div class="summaryTableDescription">[read-only]
+       
+       Whether or not the component is currently registered with an entity.</div>
+</td><td class="summaryTableOwnerCol">EntityComponent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#name">name</a> : String<div class="summaryTableDescription">[read-only]
+       
+       The name given to the component when it is added to an entity.</div>
+</td><td class="summaryTableOwnerCol">EntityComponent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#owner">owner</a> : <a href="../entity/IEntity.html">IEntity</a>
+<div class="summaryTableDescription">
+       
+       A reference to the entity that this component currently belongs to.</div>
+</td><td class="summaryTableOwnerCol">EntityComponent</td>
+</tr>
+</table>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#register()">register</a>(owner:<a href="IEntity.html">IEntity</a>, name:String):void</div>
+<div class="summaryTableDescription">
+       
+       Registers the component with an entity.</div>
+</td><td class="summaryTableOwnerCol">EntityComponent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#reset()">reset</a>():void</div>
+<div class="summaryTableDescription">
+       
+       This is called by an entity on all of its components any time a component
+       is added or removed.</div>
+</td><td class="summaryTableOwnerCol">EntityComponent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#unregister()">unregister</a>():void</div>
+<div class="summaryTableDescription">
+       
+       Unregisters the component from an entity.</div>
+</td><td class="summaryTableOwnerCol">EntityComponent</td>
+</tr>
+</table>
+</div>
+<a name="protectedMethodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Protected Methods</div>
+<table id="summaryTableProtectedMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#onAdd()">onAdd</a>():void</div>
+<div class="summaryTableDescription">
+       This is called when the component is added to an entity.</div>
+</td><td class="summaryTableOwnerCol">EntityComponent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#onRemove()">onRemove</a>():void</div>
+<div class="summaryTableDescription">
+       This is called when the component is removed from an entity.</div>
+</td><td class="summaryTableOwnerCol">EntityComponent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#onReset()">onReset</a>():void</div>
+<div class="summaryTableDescription">
+       This is called anytime a component is added or removed from the owner entity.</div>
+</td><td class="summaryTableOwnerCol">EntityComponent</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="propertyDetail"></a>
+<div class="detailSectionHeader">Property detail</div>
+<a name="isRegistered"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">isRegistered</td><td class="detailHeaderType">property</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>isRegistered:Boolean</code>&nbsp;&nbsp;[read-only]<p>
+       
+       Whether or not the component is currently registered with an entity.
+       </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get isRegistered():Boolean</code>
+<br>
+</div>
+<a name="name"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">name</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>name:String</code>&nbsp;&nbsp;[read-only]<p>
+       
+       The name given to the component when it is added to an entity.
+       
+       This value should be equivelent to the second parameter passed to the register
+       method.
+       
+       </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get name():String</code>
+<br>
+</div>
+<a name="owner"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">owner</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>owner:<a href="../entity/IEntity.html">IEntity</a></code>&nbsp;&nbsp;[read-write]<p>
+       
+       A reference to the entity that this component currently belongs to. If
+       the component has not been added to an entity, this will be null.
+       
+       </p><p>This value should be equivalent to the first parameter passed to the register
+       method.</p>
+       
+       <span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get owner():<a href="../entity/IEntity.html">IEntity</a></code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set owner(value:<a href="../entity/IEntity.html">IEntity</a>):void</code>
+<br>
+</div>
+<a name="methodDetail"></a>
+<div class="detailSectionHeader">Method detail</div>
+<a name="onAdd()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">onAdd</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected function onAdd():void</code><p>
+       This is called when the component is added to an entity. Any initialization,
+       event registration, or object lookups should happen here. Component lookups
+       on the owner entity should NOT happen here. Use onReset instead.
+       
+       </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../entity/EntityComponent.html#onReset()" target="">onReset()</a>
+</div>
+</div>
+<a name="onRemove()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">onRemove</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected function onRemove():void</code><p>
+       This is called when the component is removed from an entity. It should reverse
+       anything that happened in onAdd or onReset (like removing event listeners or
+       nulling object references).
+       </p></div>
+<a name="onReset()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">onReset</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected function onReset():void</code><p>
+       This is called anytime a component is added or removed from the owner entity.
+       Lookups of other components on the owner entity should happen here.
+       
+       </p><p>This can potentially be called multiple times, so make sure previous lookups
+       are properly cleaned up each time.</p>
+       </div>
+<a name="register()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">register</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function register(owner:<a href="IEntity.html">IEntity</a>, name:String):void</code><p>
+       
+       Registers the component with an entity. This should only ever be called by
+       an IEntity from the addComponent method.
+       
+       </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">owner</span>:<a href="IEntity.html">IEntity</a></code> &mdash; The entity to register the component with.
+       </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">name</span>:String</code> &mdash; The name to assign to the component.
+       </td>
+</tr>
+</table>
+</div>
+<a name="reset()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">reset</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function reset():void</code><p>
+       
+       This is called by an entity on all of its components any time a component
+       is added or removed. In this method, any references to properties on the
+       owner entity should be purged and re-looked up.
+       </p></div>
+<a name="unregister()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">unregister</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function unregister():void</code><p>
+       
+       Unregisters the component from an entity. This should only ever be called by
+       an entity class from the removeComponent method.
+       </p></div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright">http://pushbuttonengine.com/</center>
+</div>
+</body>
+</html>
+<!--http://pushbuttonengine.com/-->

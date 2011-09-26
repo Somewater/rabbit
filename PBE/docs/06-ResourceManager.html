@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+   <link rel="stylesheet" type="text/css" href="stylesheet.css"/>
+   <script type="text/javascript" src="js/pageToc.js"></script>
+   <script type="text/javascript" src="js/sh/scripts/shCore.js"></script>
+   <script type="text/javascript" src="js/sh/scripts/shBrushJScript.js"></script>
+   <script type="text/javascript" src="js/sh/scripts/shBrushPhp.js"></script>
+   <script type="text/javascript" src="js/sh/scripts/shBrushPlain.js"></script>
+   <script type="text/javascript" src="js/sh/scripts/shBrushXml.js"></script>
+   <link type="text/css" rel="stylesheet" href="js/sh/styles/shCore.css"/>
+   <link type="text/css" rel="stylesheet" href="js/sh/styles/shThemeDefault.css"/>
+   <script type="text/javascript">
+   		SyntaxHighlighter.config.clipboardSwf = 'js/sh/scripts/clipboard.swf';
+   		SyntaxHighlighter.all();
+   </script>
+   <title>Resource Manager</title>
+</head>
+<body>
+
+   <h1>Resource Manager</h1>
+   
+   <p>Few games can run without requiring extra data like images, levels, or sound. The ResourceManager lets you access files embedded in your SWF as well as external files. It also lets you indicate what kind of data is in each resource, so that once loading completes, the image or XML or sound (or whatever) is ready to go.</p>
+   
+   <div id="pageToc"></div>
+
+   <div id="contentArea">
+
+   <h2>Loading Resources</h2>
+   
+   <p>Loading a resource manually is simple. You specify the filename, resource type, and callbacks for when the load completes or fails.</p>
+   
+   <pre class="brush: js">
+   // Example of loading an image:
+   ResourceManager.instance.load("../Assets/Image/testImage.jpg", ImageResource, _OnImageLoaded, _OnImageFailed);
+   
+   // Callback when the load succeeds.
+   function _OnImageLoaded(resource:ImageResource):void
+   {
+      // Store the loaded resource or do other activity.
+      Image = resource;
+   }
+   
+   // Callback when the load fails.
+   function _OnImageFailed(resource:ImageResource):void
+   {
+      // Report the error.
+      Logger.printError(this, "_OnImageFailed", "Couldn't load the image!");
+   }
+   </pre>
+   
+   <p>Resource types are subclasses of com.pblabs.engine.resource.Resource. Commonly used subclasses are XMLResource, ImageResource, and MP3Resource. Typically, these classes process the resource in some way and present you with finished data, such as a BitmapData in the case of the ImageResource.</p>
+   
+   <h2>Embedding Resources</h2>
+   
+   <p>Loading files externally is a bad idea. It makes it harder to distribute your game, and the extra round trips to the server can increase loading time significantly. In addition, resources embedded in the SWF can have additional compression put on them.</p>
+   
+   <p>The easiest way to embed a resource in PBE is with the ResourceBundle class.  Create a subclass of the ResourceBundle class, where each file to be included in the swf is given an [Embed] tag. Here are some examples of how to embed your resources in a ResourceBundle.</p>
+
+   <p>For most file types, this is all you have to do for them to show up and work properly. However, for XML and pbelevel files, we must include the mimeType='application/octet-stream' in the [Embed()] tag. Otherwise the compiler will fail to include them in the right format. If you have a SWF file, omitting the mimeType will cause mxmlc to re-encode the SWF, stripping any ActionScript it contains. Images without mimeType tags may be re-compressed, so be careful if download size is important.</p>
+   
+   <pre class="brush: js">
+   public class MyResources extends ResourceBundle
+   {
+	  // Images and sounds can be embedded directly.
+      [Embed(source=&quot;../assets/myimage.png&quot;)]
+      public var resmyimage:Class;
+
+      [Embed(source=&quot;../assets/myjpg.jpg&quot;)]
+      public var resmyjpg:Class;
+
+      [Embed(source = &quot;../assets/sounds/mysound.mp3&quot;)]
+      public var resmysound:Class;
+
+      // Note that we are specifying mimeType for xml so it is embedded properly.
+      [Embed(source = &quot;../assets/levelDescriptions.xml&quot;, mimeType = 'application/octet-stream')]
+      public var resmyleveldescriptions:Class;
+
+      [Embed(source=&quot;../assets/levels/mylevel.pbelevel&quot;, mimeType='application/octet-stream')]
+      public var resmylevel:Class;
+
+   }   
+   </pre>
+   
+   <p>Instantiate <em>MyResources</em>, and it will register all of the resources with the <em>ResourceManager</em> according to their proper type. Usually you will want to do this immediately after you call <em>PBE.startup</em>.</p>
+   
+   <pre class="brush: js">
+   PBE.startup(this);
+   new MyResources();
+   </pre>
+   
+   <h2>Adding New Resource Types</h2>
+   
+   <p>The com.pblabs.engine.resource.Resource class is subclassed to add support for different resource types. This is very straightforward - just check out the XMLResource to see how it's done. You will want to override <em>_onContentReady</em> and provide accessors to get at whatever data is needed.</p>
+
+   </div>
+</body>
+</html>
