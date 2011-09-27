@@ -9,12 +9,13 @@ package com.somewater.rabbit.storage
 		public var desc:String;
 		
 		public var file:String = "LevelPack";
-		public var group:String;
 		
 		public var width:int = 12;
 		public var height:int = 12;
 		
 		public var conditions:Array;
+		
+		public var group:*;
 
 		private var _xml:XML;
 		
@@ -45,6 +46,12 @@ package com.somewater.rabbit.storage
 			{
 				conditions[condition.localName()] = condition.toString();
 			}
+			
+			if(!this.group)
+			{
+				this.group = XML(<group></group>).appendChild(xml.group.*);
+				this.group.@name = groupName;
+			}
 		}
 		
 		public function get number():String
@@ -55,6 +62,14 @@ package com.somewater.rabbit.storage
 		public function get toXML():XML
 		{
 			return Config.loader.getXML("Description");
+		}
+
+		/**
+		 * Имя группы, из которой формируется и благодаря которой удаляется уровень
+		 */
+		public function get groupName():String
+		{
+			return "LevelCreatures_" + id.toString();
 		}
 	}
 }

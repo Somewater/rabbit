@@ -3,7 +3,6 @@
 
 
 	<level id="0">
-		<group>Everything</group>
 		<name>Это самый первый уровень</name>
 		<desc>Ну, дело в том, что это такой вот уровень</desc>
 		<conditions>
@@ -12,6 +11,12 @@
 		</conditions>
 		<width>10</width>
 		<height>10</height>
+		<group>
+				<objectReference name="Crow" x="8" y="8"/>
+				<objectReference name="WatchDog" x="4" y="4"/>
+				<objectReference name="Hedgehog" x="4" y="4" />
+				<objectReference name="Hero" x="2" y="0" />
+		</group>
 	</level>
 	
 	<level id="1">

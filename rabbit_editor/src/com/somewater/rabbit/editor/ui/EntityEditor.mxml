@@ -6,6 +6,8 @@
 		creationComplete="init();">
 	<mx:Script>
 		<![CDATA[
+		import com.pblabs.engine.entity.IEntity;
+		import com.pblabs.engine.entity.PropertyReference;
 		import com.somewater.rabbit.editor.events.EntitySelectedEvent;
 		import com.somewater.rabbit.editor.xml.XmlController;
 		import com.somewater.rabbit.events.EditorEvent;
@@ -19,6 +21,7 @@
 		private var level:LevelDef
 		private var description:Array;
 		private var editorModuleChangeListener:Boolean = false;
+		private var selectedTemplate:XML;
 
 		private function init():void
 		{
@@ -43,11 +46,10 @@
 		}
 
 		private function onEntitySelected(event:EntitySelectedEvent):void {
-			var template:XML = event.template;
-			var name:String = template.@name;
+			selectedTemplate = event.template;
 
 			ControlPanel.instance.hide();
-			var module:IEventDispatcher = Config.game.setTemplateTool(template);
+			var module:IEventDispatcher = Config.game.setTemplateTool(selectedTemplate);
 			if(!editorModuleChangeListener)
 			{
 				module.addEventListener(Event.CHANGE, onChangeEditorEvent);
@@ -56,7 +58,15 @@
 		}
 
 		private function onChangeEditorEvent(event:EditorEvent):void {
-			trace("TODO: instert into xml entity #" + event.data.hash);
+			var entity:IEntity = event.data as IEntity;
+			// <objectReference name="Crow" x="8" y="8"/>
+			var child:XML = <objectReference/>
+			child.@x = entity.getProperty(new PropertyReference("@Spatial.tile.x"));
+			child.@y = entity.getProperty(new PropertyReference("@Spatial.tile.y"))
+			child.@name = selectedTemplate.@name;
+			child.@hash = entity.hash;
+			var group:XML = ControlPanel.instance.level.group;
+			group.appendChild(child);
 		}
 
 		]]>

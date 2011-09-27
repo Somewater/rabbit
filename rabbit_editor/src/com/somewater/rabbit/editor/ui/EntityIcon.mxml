@@ -34,7 +34,7 @@
             bmp.draw(mc, m);
 
 			var bitmap:Bitmap = new Bitmap(bmp);
-			var bounds:Rectangle = bmp.rect;
+			bounds = bmp.rect;
 			bitmap.scaleX = bitmap.scaleY = Math.min(template_icon.width / bounds.width, template_icon.height / bounds.height);
 
 			bitmap.x = -bounds.x + (template_icon.width - bitmap.width) * 0.5;

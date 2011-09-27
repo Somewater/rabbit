@@ -80,7 +80,7 @@ package com.somewater.rabbit.debug {
 
 				// создать ентити
 				var newEntity:IEntity = PBE.templateManager.instantiateEntity(template.@name);
-				newEntity.owningGroup = PBE.lookup("Everything") as PBGroup;
+				newEntity.owningGroup = PBE.lookup(Config.game.level.groupName) as PBGroup;
 
 				// отпозиционировать ентити в нужный тайл
 				IsoSpatial(newEntity.lookupComponentByName("Spatial")).position = tile.clone();
@@ -108,7 +108,7 @@ package com.somewater.rabbit.debug {
 		private function setIcon(slug:String):void
 		{
 			removeIcon();
-			mouseIcon = createIconFromSlug(slug, 0.35);
+			mouseIcon = createIconFromSlug(slug, 0.7);
 			stage.addChild(mouseIcon);
 			setListeners();
 		}

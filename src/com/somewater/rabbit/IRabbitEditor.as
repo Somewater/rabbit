@@ -18,5 +18,7 @@ package com.somewater.rabbit {
 		function hide():void
 
 		function showOrHide():void
+
+		function get level():LevelDef
 	}
 }

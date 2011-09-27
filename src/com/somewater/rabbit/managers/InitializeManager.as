@@ -185,9 +185,7 @@ package com.somewater.rabbit.managers
 			switchPBE(true);
 
 			
-			
-			lastLevelGroup = app.level.group;
-			PBE.templateManager.instantiateGroup(lastLevelGroup);
+			instantiateLevel(app.level);
 			
 			IsoCameraController.getInstance().position = new Point(int((level.width - Config.T_WIDTH)*0.5),
 																int((level.height - Config.T_HEIGHT)*0.5));// создаем камеру и центрируем (если надо) игровое поле
@@ -259,5 +257,27 @@ package com.somewater.rabbit.managers
 		}
 		
 		
+		/**
+		 * 
+		 */
+		private static function instantiateLevel(level:LevelDef):void
+		{
+			if(level.group is XML)
+			{
+				lastLevelGroup = level.groupName;
+				var group:XML = XML(level.group).copy();
+				
+				if(PBE.templateManager.getXML(lastLevelGroup) == null)
+					PBE.templateManager.addXML(group, lastLevelGroup, 0);
+				PBE.templateManager.instantiateGroup(lastLevelGroup);
+			}
+			else if(level.group is String)
+			{
+				lastLevelGroup = level.group;
+				PBE.templateManager.instantiateGroup(level.group);
+			}
+			else
+				throw new Error("Level #" + level.id + " instantiation error. Wrong type of group field");
+		}
 	}
 }

@@ -53,7 +53,7 @@ package com.somewater.rabbit.editor.xml {
 		if(!description)
 		{
 			var xml:XML = Config.loader.getXML("Description");
-			var xmlArray = [];
+			var xmlArray:Array = [];
 			var allDescription:Array = [];
 			var child:XML;
 			var name:String;

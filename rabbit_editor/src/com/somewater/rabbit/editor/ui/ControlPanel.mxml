@@ -13,7 +13,7 @@
 		import mx.core.Application;
 
 		[Bindable]
-		public var selectedLevel:LevelDef;
+		private var selectedLevel:LevelDef;
 		private var needStartLevel:Boolean = false;
 
 
@@ -145,6 +145,11 @@
 
 		public function showOrHide():void {
 			Application.application.showOrHide();
+		}
+
+		public function get level():LevelDef
+		{
+			return selectedLevel;
 		}
 
 		]]>
