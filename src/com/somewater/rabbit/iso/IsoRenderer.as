@@ -256,8 +256,9 @@ package com.somewater.rabbit.iso
 				_clipDirty = false;
 			}
 			
-			// клип имеет право передвинуть анимацию
-			var frameTime:Boolean = PBE.processManager.virtualTime - _clipLastUpdate > 1000/frameRate;
+			// клип имеет право передвинуть анимацию 
+			// ("+1" чтобы из за округлений не получалось 33 и 33.3 и анимация не двигалась, хотя и должна)
+			var frameTime:Boolean = PBE.processManager.virtualTime - _clipLastUpdate + 1 >= 1000/frameRate;
 
 			if(state == _currentState && (!_useDirection || __direction == _currentDirection))
 			{

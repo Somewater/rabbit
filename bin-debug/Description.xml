@@ -55,6 +55,7 @@
 		</component>
 		<component name="Render">
 			<slug>rabbit.RabbitActor</slug>	
+			<frameRate>15</frameRate>
 			<useDirection>8</useDirection>		
 		</component>
 	</template>
@@ -68,6 +69,7 @@
 	<template name="Bush" template="IsoMover" sets="wall">
 		<component name="Render">
 			<slug>rabbit.BushActor</slug>
+			<frameRate>15</frameRate>
 			<useDirection>1</useDirection>
 		</component>
 		<component name="Spatial">
@@ -118,6 +120,7 @@
 	<template name="Carrot" template="Iso" sets="wall,harvest">
 		<component name="Render">
 			<slug>rabbit.CarrotActor</slug>
+			<frameRate>15</frameRate>
 			<useDirection>4</useDirection>
 			<height>-1</height>
 		</component>
@@ -150,6 +153,7 @@
 			<scene entityName="SceneDB" componentName="Scene"/>
 			<positionProperty>@Spatial.position</positionProperty>
 			<slug>rabbit.Beam</slug>
+			<frameRate>15</frameRate>
 			<useDirection>1</useDirection>
 			<height>-1</height>
 		</component>
@@ -249,6 +253,7 @@
 		</component>
 		<component name="Render">
 			<slug>rabbit.CrowActor</slug>	
+			<frameRate>15</frameRate>
 			<useDirection>-4</useDirection>		
 			<height>1</height>
 		</component>
@@ -285,6 +290,7 @@
 		</component>
 		<component name="Render">
 			<slug>rabbit.HedgehogActor</slug>	
+			<frameRate>15</frameRate>
 			<useDirection>4</useDirection>		
 		</component>
 		<component name="Logic" type="com.somewater.rabbit.logic.LogicComponent">
