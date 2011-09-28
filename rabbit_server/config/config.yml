@@ -1,0 +1,6 @@
+config:
+  hello: mysql
+  world: 127.0.0.1
+  database: rabbit
+  username: pav
+  password: qwerty

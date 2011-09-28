@@ -15,3 +15,7 @@ bin-debug/*.swf
 */.flexProperties
 */.idea
 */*.iml
+
+*.lock
+logs/*
+tmp/*

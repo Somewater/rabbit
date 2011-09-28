@@ -1,0 +1,6 @@
+production:
+  adapter: mysql
+  host: 127.0.0.1
+  database: rabbit
+  username: rabbit
+  password: love4meand663

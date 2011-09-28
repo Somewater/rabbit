@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+env = ARGV[0]
+ENV['RAILS_ENV'] = env if env
+ARGV = []
+
+require 'irb'
+require ::File.expand_path('../../config',  __FILE__)
+require 'irb/completion'
+
+
+IRB.start
