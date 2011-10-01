@@ -18,3 +18,10 @@ test:
   database: rabbit_test
   username: rabbit
   password: love4meand663
+
+stat:
+  adapter: mysql
+  host: 127.0.0.1
+  database: rabbit_stat
+  username: rabbit
+  password: love4meand663
