@@ -54,3 +54,15 @@ namespace :flash do
 	  puts %x[#{MXMLC_COMMON_COMMANDLINE_ARGS} -output=bin-debug/#{filename}.swf rabbit_editor/src/#{filename}.mxml]
 	end
 end
+
+
+desc "Server tasks"
+namespace :srv do
+	desc "Initialize server"
+	task :initialize do
+		FileUtils.mkdir("#{ROOT}/logs")
+		["production.log","development.log","test.log"].each {|file| FileUtils.touch("#{ROOT}/logs/#{file}")}
+		FileUtils.mkdir("#{ROOT}/tmp")
+		["always_restart.txt","restart.txt"].each {|file| FileUtils.touch("#{ROOT}/tmp/#{file}")}
+	end
+end

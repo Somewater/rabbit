@@ -1,5 +1,6 @@
 source 'http://rubygems.org'
 
+gem 'rack'
 gem 'rack-timeout', '0.0.3'
 gem 'mysql2', '>= 0.3.6'
 gem 'mysql', '2.8.1'
