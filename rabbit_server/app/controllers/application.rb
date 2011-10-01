@@ -61,7 +61,7 @@ class Application
 						i += 1
 					end
 					"time=#{(Time.new - time).to_f}"
-				when "errors"
+				when /errors/
 					ErrorsController.new.call request
 				else
 					Hello.new.call request

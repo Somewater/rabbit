@@ -6,7 +6,7 @@ class ErrorsController < Application
 			errors = Error.find(:all)
 
 			errors.each_with_index do |e, index|
-				res += "<div style=\"background: #{e.resolved == 0 ? '#CCFFFF' : '#FFCCFF'}\"><h3>#{e.title}  (#{e.resolved ? 'resolved!' : 'unresolved'})</h3><h4>Content:</h4>#{e.content}<h4>Resolution:</h4><pre>#{e.resolution}</pre></div>"
+				res += "<div style=\"background: #{e.resolved == 1 ? '#CCFFFF' : '#FFCCFF'}\"><h3>#{e.title}  (#{e.resolved == 1 ? 'resolved!' : 'unresolved'})</h3><h4>Content:</h4>#{e.content}<h4>Resolution:</h4><pre>#{e.resolution}</pre></div>"
 			end
 		end
 
