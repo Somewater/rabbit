@@ -4,8 +4,9 @@ ENV['RAILS_ENV'] = env if env
 ARGV = []
 
 require 'irb'
-require ::File.expand_path('../../config',  __FILE__)
 require 'irb/completion'
+ROOT = File.dirname( File.expand_path( __FILE__ + '../../..') )
+require ::File.expand_path('../../config/environment',  __FILE__)
 
 
 IRB.start

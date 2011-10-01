@@ -1,7 +1,8 @@
 source 'http://rubygems.org'
 
 gem 'rack-timeout', '0.0.3'
-gem 'mysql2', '~> 0.2.6'
+gem 'mysql2', '>= 0.3.6'
+gem 'mysql', '2.8.1'
 gem 'activerecord', '>= 3.0.9'
 gem 'activesupport', '>= 3.0.9'
 

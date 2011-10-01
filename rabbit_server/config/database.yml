@@ -4,3 +4,17 @@ production:
   database: rabbit
   username: rabbit
   password: love4meand663
+
+development:
+  adapter: mysql
+  host: 127.0.0.1
+  database: rabbit_development
+  username: rabbit
+  password: love4meand663
+
+test:
+  adapter: mysql
+  host: 127.0.0.1
+  database: rabbit_test
+  username: rabbit
+  password: love4meand663
