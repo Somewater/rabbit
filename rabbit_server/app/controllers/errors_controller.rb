@@ -1,4 +1,3 @@
-# encoding: utf-8
 class ErrorsController < Application
 
 	ERROR_PATH = '/errors'
@@ -37,10 +36,6 @@ class ErrorsController < Application
 						error.save
 						act = 'new'
 						error = {}
-					else
-						error.title = error.title.force_encoding('UTF-8')
-						error.content = error.content.force_encoding('UTF-8')
-						error.resolution = error.resolution.force_encoding('UTF-8')
 					end
 				when "resolve"
 					error = Error.find(request['id'])
@@ -69,19 +64,19 @@ class ErrorsController < Application
 				#error = e if e['id'] == request['id']
 				url = ERROR_PATH + "?id=" + e['id'].to_s
 				resolved = e.resolved || 0
-				res += "<div style=\"background: #{resolved == 2 ? '#EEEEEE' : (resolved == 1 ? '#CCFFFF' : '#FFCCFF')}\"><h3>
-						<a href='#{url}&act=edit'>#{e.title ? e.title.force_encoding('UTF-8') : nil}</a>&nbsp;&nbsp;&nbsp;&nbsp;<small>#{
-							(["<a href='#{url}&act=resolve'>исправить :)</a>","<a href='#{url}&act=check'>проверить :)</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='#{url}&act=unresolve'>пересмотр :(</a>","<a href='#{url}&act=delete'>удалить :)</a>"])[resolved] }
-						</small></h3><h4>Описание:</h4>#{e.content ? e.content.force_encoding('UTF-8') : nil}<h4>Ответ:</h4><pre>#{e.resolution ? e.resolution.force_encoding('UTF-8') : nil}</pre><h4>Картинки:</h4>#{e.images}</div>"
+				res += "<div style=\"background: #{resolved == 2 ? '#EEEEEE' : (resolved == 1 ? '#CCFFCC' : '#FFCCFF')}\"><h3>
+						<a href='#{url}&act=edit'>#{e.title ? e.title : nil}</a>&nbsp;&nbsp;&nbsp;&nbsp;<small>#{
+							(["<a href='#{url}&act=resolve'>resolve :)</a>","<a href='#{url}&act=check'>check :)</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='#{url}&act=unresolve'>unresolve :(</a>","<a href='#{url}&act=delete'>delete :)</a>"])[resolved] }
+						</small></h3><h4>Content:</h4>#{e.content ? e.content : nil}<h4>Resolution:</h4><i>#{e.resolution ? e.resolution : nil}</i><h4>Images:</h4>#{e.images}</div>"
 			end
 		end
 
-		form = create_form([{:value => error['title']	, :name => 'title', :title => 'Заголовок', :type => 'input'},
-							{:value => error['content']	, :name => 'content', :title => 'Описание', :type => 'textarea'},
-							{:value => error['resolution']	, :name => 'resolution', :title => 'Описание', :type => 'textarea'},
-							{:value => ( act == 'edit' ? 'Сохранить' : 'Создать ошибку'), :type => 'submit'}
+		form = create_form([{:value => error['title']	, :name => 'title', :title => 'Title', :type => 'input'},
+							{:value => error['content']	, :name => 'content', :title => 'Content', :type => 'textarea'},
+							{:value => error['resolution']	, :name => 'resolution', :title => 'Resolution', :type => 'textarea'},
+							{:value => ( act == 'edit' ? 'Save' : 'Create error'), :type => 'submit'}
 						   ], act, error)
-		[200, {"Content-Type" => "text/html; charset=UTF-8"}, "<html><head></head><body>#{form.force_encoding('UTF-8')}#{res.force_encoding('UTF-8')}</body></html>"]
+		[200, {"Content-Type" => "text/html; charset=UTF-8"}, "<html><head></head><body style='font-size: 14px;'>#{form}#{res}</body></html>"]
 	end
 	
 	def create_form(inputs, act, error = nil)
@@ -100,9 +95,9 @@ class ErrorsController < Application
 				#{
 					act == 'edit' ?
 					"<tr width='100%'><td></td><td width='100%'>
-					<input type='radio' #{(error && error['resolved'] == 0) || (!error) ? 'cheched' : nil} name='resolved' value='0'>Не исправлена&nbsp;</input>
-					<input type='radio' #{error && error['resolved'] == 1 ? 'cheched' : nil} name='resolved' value='1'>Исправлена&nbsp;</input>
-					<input type='radio' #{error && error['resolved'] == 2 ? 'cheched' : nil} name='resolved' value='2'></input>Проверена
+					<input type='radio' #{(error && error['resolved'] == 0) || (!error) ? 'cheched' : nil} name='resolved' value='0'>Unresolved&nbsp;</input>
+					<input type='radio' #{error && error['resolved'] == 1 ? 'cheched' : nil} name='resolved' value='1'>Resolved&nbsp;</input>
+					<input type='radio' #{error && error['resolved'] == 2 ? 'cheched' : nil} name='resolved' value='2'></input>Checked
 					</td></tr>"
 					 : nil
 					}
@@ -110,3 +105,4 @@ class ErrorsController < Application
 		</form></p><p></p>"
 	end
 end
+
