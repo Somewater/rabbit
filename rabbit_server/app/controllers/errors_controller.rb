@@ -70,7 +70,7 @@ class ErrorsController < Application
 				url = ERROR_PATH + "?id=" + e['id'].to_s
 				resolved = e.resolved || 0
 				res += "<div style=\"background: #{resolved == 2 ? '#EEEEEE' : (resolved == 1 ? '#CCFFFF' : '#FFCCFF')}\"><h3>
-						<a href='#{url}&act=edit'>#{e.title}</a>&nbsp;&nbsp;&nbsp;&nbsp;<small>#{
+						<a href='#{url}&act=edit'>#{e.title.force_encoding('UTF-8')}</a>&nbsp;&nbsp;&nbsp;&nbsp;<small>#{
 							(["<a href='#{url}&act=resolve'>исправить :)</a>","<a href='#{url}&act=check'>проверить :)</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='#{url}&act=unresolve'>пересмотр :(</a>","<a href='#{url}&act=delete'>удалить :)</a>"])[resolved] }
 						</small></h3><h4>Описание:</h4>#{e.content.force_encoding('UTF-8')}<h4>Ответ:</h4><pre>#{e.resolution.force_encoding('UTF-8')}</pre><h4>Картинки:</h4>#{e.images}</div>"
 			end
