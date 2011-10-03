@@ -4,6 +4,7 @@ production:
   database: rabbit
   username: rabbit
   password: love4meand663
+  encoding: utf8
 
 development:
   adapter: mysql
@@ -11,6 +12,7 @@ development:
   database: rabbit_development
   username: rabbit
   password: love4meand663
+  encoding: utf8
 
 test:
   adapter: mysql
@@ -18,6 +20,7 @@ test:
   database: rabbit_test
   username: rabbit
   password: love4meand663
+  encoding: utf8
 
 stat:
   adapter: mysql
@@ -25,3 +28,4 @@ stat:
   database: rabbit_stat
   username: rabbit
   password: love4meand663
+  encoding: utf8

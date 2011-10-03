@@ -32,7 +32,12 @@ class Application
 		def call(env)
 			begin
 				request = Rack::Request.new(env)
-				[200, { "Content-Type" => "text/html" }, [_call(request)]]
+				response = _call(request)
+				if response.is_a? Array
+					response
+				else
+					[200, { "Content-Type" => "text/html" }, [response]]
+				end
 			rescue =>ex
 				[200, { "Content-Type" => "text/html" }, DEVELOPMENT ? \
 							["E_FATAL<pre>#{ex} \n#{ex.backtrace.join(?\n)}"]	: ["E_FATAL"]]
