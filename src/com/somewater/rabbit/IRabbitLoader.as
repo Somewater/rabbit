@@ -1,6 +1,7 @@
 package com.somewater.rabbit
 {
 	import com.somewater.control.IClear;
+	import com.somewater.net.IServerHandler;
 	import com.somewater.social.SocialUser;
 	
 	import flash.display.DisplayObject;
@@ -70,6 +71,8 @@ package com.somewater.rabbit
 		function get cursors():Sprite
 			
 		function get swfADs():Array
+
+		function get serverHandler():IServerHandler
 		
 		/**
 		 * ПОлучив идентификатор файла, возвращает путь, по которому этот файл можно загрузить

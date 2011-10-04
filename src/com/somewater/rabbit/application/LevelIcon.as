@@ -66,7 +66,7 @@ package com.somewater.rabbit.application
 			
 			if(!locked)
 			{
-				levelTF.text = _data.number;
+				levelTF.text = _data.number.toString();
 				scoreTF.text = "999";//TODO запросить, сколько очков у юзера по тому или иному уровню
 				hint = _data.desc;
 			}

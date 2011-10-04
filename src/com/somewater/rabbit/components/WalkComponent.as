@@ -90,7 +90,7 @@ package com.somewater.rabbit.components
 		
 		private function onWalkError():void
 		{
-			if(_port)
+			if(_port != null)
 				_port(null);
 		}
 	}

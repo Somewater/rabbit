@@ -47,25 +47,13 @@ class Application
 		private
 		def _call(request)
 			method = request.path
-			method = method[1, method.size - 1]
+			method = method[1, method.size - 1] if method
 
 			case method
-				when "version"
-					"0.0.0"
-				when /^ls/
-					`echo "<pre>" && ls -la`
-				when "test"
-					require "test.rb"
-					Test.call request
-				when "calc"
-					time = Time.new
-					i = 0
-					n = ""
-					while i < 10000
-						n += i.to_s
-						i += 1
-					end
-					"time=#{(Time.new - time).to_f}"
+				when "init"
+					InitializeController.new(request).call
+				when "levels"
+					LevelsController.new(request).call
 				when /errors/
 					ErrorsController.new.call request
 				else

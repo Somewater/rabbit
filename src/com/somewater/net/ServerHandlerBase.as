@@ -1,4 +1,4 @@
-package com.somewater.rabbit.net
+package com.somewater.net
 {
 	
 	import com.adobe.serialization.json.JSON;

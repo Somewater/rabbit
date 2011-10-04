@@ -5,7 +5,7 @@ package com.somewater.rabbit.storage
 	public class LevelDef extends InfoDef
 	{
 		public var id:int = -1;
-		public var name:String;
+		public var number:uint;// нумерация с "1"
 		public var desc:String;
 		
 		public var file:String = "LevelPack";
@@ -53,11 +53,6 @@ package com.somewater.rabbit.storage
 				this.group.@name = groupName;
 			}
 		}
-		
-		public function get number():String
-		{
-			return (id + 1).toString();
-		}
 
 		public function get toXML():XML
 		{
@@ -69,7 +64,7 @@ package com.somewater.rabbit.storage
 		 */
 		public function get groupName():String
 		{
-			return "LevelCreatures_" + id.toString();
+			return "LevelCreatures_" + (id < 0 ? "_minus_" : "") + Math.abs(id).toString();
 		}
 	}
 }

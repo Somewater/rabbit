@@ -88,7 +88,8 @@ class ErrorsController < Application
 
 private
 	def create_form(inputs, act, error = nil)
-		"<p><form width='100%' method='post'>
+		"<p><h1><a href='/errors'>ERROR TRACKER #2</a></h1></p>
+			<p><form width='100%' method='post'>
 			<table width='100%'>
 				#{ inputs.map{|input|
 					"<tr width='100%'>

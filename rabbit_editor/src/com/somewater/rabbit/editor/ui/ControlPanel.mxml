@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" width="200" height="700" label="EDITOR"
-		  title="{selectedLevel.name + ' (' + selectedLevel.id + ')'}"
+		  title="Level #{selectedLevel.number + ' (id=' + selectedLevel.id + ')  '
+		  	+ ((selectedLevel.desc == null || 10 &gt; selectedLevel.desc.length ? selectedLevel.desc : selectedLevel.desc.substr(0,10) + '...'))}"
 		  implements="com.somewater.rabbit.IRabbitEditor">
 	<mx:Script>
 		<![CDATA[
@@ -132,7 +133,22 @@
 		}
 
 		private function saveLevel():void {
-			Config.application.message("TODO: save level #" + selectedLevel.id);
+			selectedLevel.completed
+			Config.loader.serverHandler.call('levels',
+				{
+					"number":selectedLevel.number,
+					"xml":XML(selectedLevel.group).toString(),
+					"desc":selectedLevel.desc,
+					"width":selectedLevel.width,
+					"height":selectedLevel.height,
+					"file":(selectedLevel.file == null || selectedLevel.file == "LevelPack" || selectedLevel.file.length == 0 ? null : selectedLevel.file),
+					"password":console.text
+				}
+			, function(succ:Object):void{
+				Config.application.message("Level saved!");
+			}, function(err:Object):void{
+				Config.application.message("Level save error");
+			})
 		}
 
 		public function show():void {

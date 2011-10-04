@@ -103,7 +103,7 @@ package com.somewater.rabbit.iso
 		private var clearCallbacksFlag:Boolean = true;
 		public function setDestination(value:Point, onSuccess:Function, onError:Function = null):void
 		{
-			if(onDestinatedError && onError != onDestinatedError)// если новые колбэк onerror не совпадает со старым, вызываем старый
+			if(onDestinatedError != null && onError != onDestinatedError)// если новые колбэк onerror не совпадает со старым, вызываем старый
 				onDestinatedError();
 			
 			onDestinatedSuccess = onSuccess;

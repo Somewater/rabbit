@@ -1,7 +1,7 @@
 package com.somewater.rabbit.loader
 {
 	
-	import com.somewater.control.IClear;
+	import com.somewater.net.IServerHandler;
 	import com.somewater.net.UrlQueueLoader;
 	import com.somewater.rabbit.IRabbitApplication;
 	import com.somewater.rabbit.IRabbitGame;
@@ -10,7 +10,6 @@ package com.somewater.rabbit.loader
 	import com.somewater.social.SocialUser;
 	
 	import flash.display.DisplayObject;
-	import flash.display.DisplayObjectContainer;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
 	import flash.display.MovieClip;
@@ -20,24 +19,12 @@ package com.somewater.rabbit.loader
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
-	import flash.events.SecurityErrorEvent;
 	import flash.net.URLRequest;
-	import flash.net.registerClassAlias;
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
 	import flash.system.Security;
 	import flash.system.SecurityDomain;
-	import flash.text.TextField;
-	import flash.text.TextFormat;
-	import flash.ui.ContextMenu;
-	import flash.utils.ByteArray;
-	import flash.utils.describeType;
-	import flash.utils.getDefinitionByName;
-	import flash.utils.getQualifiedClassName;
-	
-	
-	
-	
+
 	public class RabbitLoaderBase extends Sprite implements IRabbitLoader
 	{
 		
@@ -111,7 +98,8 @@ package com.somewater.rabbit.loader
 		protected var _popups:Sprite;
 		protected var _tooltips:Sprite;
 		protected var _cursors:Sprite;
-		
+
+		protected var _serverHandler:IServerHandler;
 		private var _basePath:String = null;
 		
 		/**
@@ -224,13 +212,23 @@ package com.somewater.rabbit.loader
 			setProgress(0, 1);
 			
 			createSpecificPaths();
+			initializeServerHandler();
 			
 			if(swfs == null || filePaths == null)
 				throw new Error("Lazy localization!");
 			
 			startSwfLoading();
 		}
-		
+
+		protected function initializeServerHandler():void
+		{
+			throw new Error("Must be overriden")
+		}
+
+		public function get serverHandler():IServerHandler
+		{
+			return _serverHandler
+		}
 		
 		protected function createSpecificPaths():void
 		{

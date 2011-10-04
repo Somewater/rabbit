@@ -3,6 +3,7 @@ package
 	import com.somewater.control.IClear;
 	import com.somewater.controller.PopUpManager;
 	import com.somewater.display.Window;
+	import com.somewater.net.ServerHandler;
 	import com.somewater.rabbit.IRabbitApplication;
 	import com.somewater.rabbit.application.AboutPage;
 	import com.somewater.rabbit.application.GameGUI;
@@ -13,7 +14,7 @@ package
 	import com.somewater.rabbit.application.PageBase;
 	import com.somewater.rabbit.application.WindowBackground;
 	import com.somewater.rabbit.application.windows.PauseMenuWindow;
-	import com.somewater.rabbit.net.ServerHandler;
+	import com.somewater.rabbit.net.AppServerHandler;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.Lib;
@@ -159,8 +160,7 @@ package
 				processLevelsXML();
 				
 				// инициализировать ServerHandler и выполнить запрос к серверу
-				ServerHandler.init(SocialAdapter.instance.user_id, SocialAdapter.instance.authentication_key);
-				ServerHandler.instance.initRequest(onInitResponseComplete, function(error:Object):void{
+				AppServerHandler.initRequest(onInitResponseComplete, function(error:Object):void{
 					// на запрос профайла сервер вернул ошибку
 					fatalError(Lang.t("ERROR_INIT_LOADING_PROFILE"));
 				});

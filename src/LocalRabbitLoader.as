@@ -1,5 +1,6 @@
 package
 {
+	import com.somewater.net.ServerHandler;
 	import com.somewater.rabbit.loader.RabbitLoaderBase;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.social.LocalSocialAdapter;
@@ -46,13 +47,14 @@ package
 							,"LevelPack":"LevelPack.xml"
 						}
 		}
-		
-		
-		
-		
-		
-		
-		
+
+		override protected function initializeServerHandler():void
+		{
+			_serverHandler = new ServerHandler();
+			_serverHandler.base_path = "http://localhost:3000/";
+			_serverHandler.init(SocialAdapter.instance.user_id, SocialAdapter.instance.authentication_key);
+		}
+
 		//////////////////////////////////////////////////////////////////
 		//																//
 		//		S O C I A L     A P I    I M P L E M E N T A T I O N 	//

@@ -25,11 +25,11 @@
 	<mx:VBox width="100%" height="100%">
 		<mx:VBox id="holder" width="100%" height="100%" verticalGap="1">
 			<mx:Label text="id:"></mx:Label>
-			<mx:TextInput id="level_id" text="{level.id}" restrict="-0123456789" maxChars="3" width="100%"></mx:TextInput>
+			<mx:Label id="level_id" text="{level.id}"   width="100%"></mx:Label>
 			<mx:Spacer></mx:Spacer>
 
-			<mx:Label text="name:"></mx:Label>
-			<mx:TextInput id="level_name" text="{level.name}" width="100%"></mx:TextInput>
+			<mx:Label text="number:"></mx:Label>
+			<mx:TextInput id="level_number" text="{level.number}" restrict="-0123456789" maxChars="3" width="100%"></mx:TextInput>
 			<mx:Spacer></mx:Spacer>
 
 			<mx:Label text="description:"></mx:Label>

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="30"
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="40"
 		verticalScrollPolicy="off"
 		horizontalScrollPolicy="off"
 		creationComplete="init();">
@@ -13,7 +13,8 @@
 			private function init():void {
 				level = data as LevelDef;
 				if(!level) level = XmlController.instance.getNewLevel();
-				text.text = level.name + " (" + level.id + ")";
+				text.text = "level #" + level.number + " (id=" + level.id + ")\n" +
+						(level.desc == null || level.desc.length < 30 ? level.desc : level.desc.substr(0,30) + "...");
 			}
 		]]>
 	</mx:Script>
