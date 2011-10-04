@@ -12,6 +12,13 @@ class ErrorsController < Application
 	# ) ENGINE=MyISAM AUTO_INCREMENT=99 DEFAULT CHARSET=utf8
 
 	def call request
+		header = authorized(request)
+		return [200, header, "<html><body><form method='post'><table>
+					<tr><td>Login:</td><td><input name='login'></input></td></tr>
+					<tr><td>Password:</td><td><input name='pass' type='password'></input></td></tr>
+					<tr><td></td><td><input type='submit' value='OK'></input></td></tr>
+				</table></form></body></html>"] if header
+
 		res = ""
 		error = {}
 
@@ -78,7 +85,8 @@ class ErrorsController < Application
 						   ], act, error)
 		[200, {"Content-Type" => "text/html; charset=UTF-8"}, "<html><head></head><body style='font-size: 14px;'>#{form}#{res}</body></html>"]
 	end
-	
+
+private
 	def create_form(inputs, act, error = nil)
 		"<p><form width='100%' method='post'>
 			<table width='100%'>
@@ -103,6 +111,20 @@ class ErrorsController < Application
 					}
 			</table>
 		</form></p><p></p>"
+	end
+
+	def authorized request
+		require 'digest/md5'
+		if request.cookies['error-login-hash'] == Digest::MD5.hexdigest("hello#{Time.new.yday}world")
+			nil
+		elsif request['login'] && (
+				(request['login'].downcase == 'kate' && Digest::MD5.hexdigest(request['pass']) == '7a57ccbb278a3eede95d4a341cf93813') ||
+				(request['login'].downcase == 'dev' && Digest::MD5.hexdigest(request['pass']) == '8f00d0955e699c1ce25d2c1ea76f5330')
+				)
+			{'Location' => '/errors', 'Set-Cookie' => "error-login-hash=#{Digest::MD5.hexdigest("hello#{Time.new.yday}world")}; path=/errors"}
+		else
+			{}
+		end
 	end
 end
 
