@@ -1,4 +1,4 @@
-class ErrorsController < Application
+class ErrorsController
 
 	ERROR_PATH = '/errors'
 	# CREATE TABLE `errors` (
@@ -122,9 +122,9 @@ private
 				(request['login'].downcase == 'kate' && Digest::MD5.hexdigest(request['pass']) == '7a57ccbb278a3eede95d4a341cf93813') ||
 				(request['login'].downcase == 'dev' && Digest::MD5.hexdigest(request['pass']) == '8f00d0955e699c1ce25d2c1ea76f5330')
 				)
-			{'Location' => '/errors', 'Set-Cookie' => "error-login-hash=#{Digest::MD5.hexdigest("hello#{Time.new.yday}world")}; path=/errors"}
+			{'Content-Type' => 'text/html; charset=UTF-8', 'Location' => '/errors', 'Set-Cookie' => "error-login-hash=#{Digest::MD5.hexdigest("hello#{Time.new.yday}world")}; path=/errors"}
 		else
-			{}
+			{'Content-Type' => 'text/html; charset=UTF-8'}
 		end
 	end
 end

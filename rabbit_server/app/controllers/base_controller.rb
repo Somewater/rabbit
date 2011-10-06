@@ -1,6 +1,6 @@
 require "json"
 
-class BaseController < Application
+class BaseController
 
 	def initialize request
 		@params = request.params || {}

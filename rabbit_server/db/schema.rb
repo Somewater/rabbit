@@ -13,7 +13,6 @@
 ActiveRecord::Schema.define(:version => 20111001024600) do
 
   create_table "levels", :force => true do |t|
-    t.string  "name"
     t.string  "description"
     t.integer "number",      :default => 0
     t.integer "version",     :default => 0

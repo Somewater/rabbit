@@ -1,7 +1,6 @@
 class CreateBaseStructure < ActiveRecord::Migration
 	def self.up
 		create_table :levels do |t|
-			t.string  :name
 			t.string  :description
 
 			t.integer :number,  :default => 0
