@@ -4,20 +4,18 @@ package com.somewater.rabbit.storage
 
 	public class LevelDef extends InfoDef
 	{
-		public var id:int = -1;
-		public var number:uint;// нумерация с "1"
-		public var desc:String;
+		public var id:int;
+		public var number:uint = 0;// нумерация с "1"
+		public var description:String;
 		
-		public var file:String = "LevelPack";
+		public var author:String = "nobody";
 		
 		public var width:int = 12;
 		public var height:int = 12;
 		
 		public var conditions:Array;
 		
-		public var group:*;
-
-		private var _xml:XML;
+		public var group:XML;
 		
 		///////////////////////////////////
 		//
@@ -30,6 +28,8 @@ package com.somewater.rabbit.storage
 		public function LevelDef(xml:XML)
 		{
 			id = xml.attribute("id");
+			if(id == 0)
+				id = -Math.random() * 1000;
 			
 			for each(var xmlField:XML in xml.*)
 			{
@@ -56,7 +56,18 @@ package com.somewater.rabbit.storage
 
 		public function get toXML():XML
 		{
-			return Config.loader.getXML("Description");
+			throw new Error("TODO");
+		}
+
+		/**
+		 * Преобразовать conditions в XML (напримре, для отсылки на сервер)
+		 */
+		public function get conditionsToXML():XML
+		{
+			var xml:XML = XML(<conditions></conditions>);
+			for(var name:String in conditions)
+				xml.appendChild(new XML("<" + name + ">" + conditions[name] + "</" + name + ">"));
+			return xml;
 		}
 
 		/**

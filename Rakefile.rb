@@ -1,6 +1,6 @@
 ROOT = File.dirname( File.expand_path( __FILE__ ) )
 $:.unshift("#{ROOT}/lib/tasks")
-Dir["#{ROOT}/lib/tasks/*.rake"].sort.each { |x| import x }
+Dir["#{ROOT}/rabbit_server/lib/tasks/*.rake"].sort.each { |x| import x }
 
 task :default => ["flash:compile"]
 
@@ -64,5 +64,17 @@ namespace :srv do
 		["production.log","development.log","test.log"].each {|file| FileUtils.touch("#{ROOT}/logs/#{file}")}
 		FileUtils.mkdir("#{ROOT}/tmp")
 		["always_restart.txt","restart.txt"].each {|file| FileUtils.touch("#{ROOT}/tmp/#{file}")}
+	end
+
+	desc "Update source and restart server"
+	task :update do
+		`git push`
+		ssh = Execution.new("ssh root@asflash.ru")
+		puts ssh.cmd "cd rabbit"
+		puts ssh.cmd "git pull", 5
+		puts ssh.cmd "\n"
+		puts ssh.cmd "qlementina27\n"
+		puts ssh.cmd "touch tmp/restart.txt"
+		puts ssh.cmd "exit"
 	end
 end

@@ -51,7 +51,7 @@ package
 		override protected function initializeServerHandler():void
 		{
 			_serverHandler = new ServerHandler();
-			_serverHandler.base_path = "http://localhost:3000/";
+			_serverHandler.base_path = /asflash.ru/.test(loaderInfo.url) ? "http://rabbit.asflash.ru/" : "http://localhost:3000/";
 			_serverHandler.init(SocialAdapter.instance.user_id, SocialAdapter.instance.authentication_key);
 		}
 

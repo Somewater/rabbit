@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(:version => 20111001024600) do
     t.integer "version",     :default => 0
     t.integer "width"
     t.integer "height"
-    t.string  "file"
+    t.string  "author"
     t.text    "conditions"
     t.text    "group"
     t.boolean "enabled",     :default => true

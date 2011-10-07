@@ -2,9 +2,9 @@
 <levels version="0">
 
 
-	<level id="0">
+	<level id="1">
 		<name>Это самый первый уровень</name>
-		<desc>Ну, дело в том, что это такой вот уровень</desc>
+		<description>Ну, дело в том, что это такой вот уровень</description>
 		<conditions>
 			<carrot>1</carrot>
 			<time>360</time>
@@ -19,15 +19,20 @@
 		</group>
 	</level>
 	
-	<level id="1">
-		<group>Everything</group>
+	<level id="2">
 		<name>Это самый первый уровень</name>
-		<desc>А это второй уровень игры, самый сложный</desc>
+		<description>А это второй уровень игры, самый сложный</description>
 		<conditions>
 			<carrot>5</carrot>
 		</conditions>
 		<width>20</width>
 		<height>20</height>
+		<group>
+				<objectReference name="Crow" x="8" y="8"/>
+				<objectReference name="WatchDog" x="4" y="4"/>
+				<objectReference name="Hedgehog" x="4" y="4" />
+				<objectReference name="Hero" x="2" y="0" />
+		</group>
 	</level>
 	
 </levels>

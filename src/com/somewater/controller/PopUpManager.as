@@ -98,7 +98,7 @@ package com.somewater.controller
 		}
 		
 		public static function message(text:String, title:String = null):Window{
-			var window:Window = new Window(text.substr(0,300), title);
+			var window:Window = new Window(text.length > 300 ? text.substr(0,300) + "..." : text, title);
 			window.width = (text.length < 300?400:500);
 			addPopUp(window,true);
 			centre(window);

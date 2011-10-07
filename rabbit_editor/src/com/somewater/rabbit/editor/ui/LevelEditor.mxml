@@ -33,11 +33,11 @@
 			<mx:Spacer></mx:Spacer>
 
 			<mx:Label text="description:"></mx:Label>
-			<mx:TextArea id="level_desc" text="{level.desc}" width="100%"></mx:TextArea>
+			<mx:TextArea id="level_desc" text="{level.description}" width="100%"></mx:TextArea>
 			<mx:Spacer></mx:Spacer>
 
-			<mx:Label text="filename:"></mx:Label>
-			<mx:TextInput id="level_file" text="{level.file}" width="100%"></mx:TextInput>
+			<mx:Label text="author:"></mx:Label>
+			<mx:TextInput id="level_author" text="{level.author}" width="100%"></mx:TextInput>
 			<mx:Spacer></mx:Spacer>
 
 			<mx:Label text="width:"></mx:Label>

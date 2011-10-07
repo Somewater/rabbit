@@ -52,8 +52,10 @@ class Application
 			case method
 				when "init"
 					InitializeController.new(request).call
-				when "levels"
+				when "levels/manage"
 					LevelsController.new(request).call
+				when /levels/
+					LevelsController.view
 				when /errors/
 					ErrorsController.new.call request
 				else

@@ -8,14 +8,17 @@
 		import com.somewater.rabbit.editor.xml.XmlController;
 		import com.somewater.rabbit.storage.LevelDef;
 
-			public var level:LevelDef;
+		public var level:LevelDef;
 
-			private function init():void {
-				level = data as LevelDef;
-				if(!level) level = XmlController.instance.getNewLevel();
-				text.text = "level #" + level.number + " (id=" + level.id + ")\n" +
-						(level.desc == null || level.desc.length < 30 ? level.desc : level.desc.substr(0,30) + "...");
+		private function init():void {
+			level = data as LevelDef;
+			if (!level) {
+				level = XmlController.instance.getNewLevel();
+				level.conditions["carrot"] = 1;// для предотвращения мгновенного завершения
 			}
+			text.text = "level #" + level.number + " (id=" + level.id + ")\n" +
+					(level.description == null || level.description.length < 30 ? level.description : level.description.substr(0, 30) + "...");
+		}
 		]]>
 	</mx:Script>
 

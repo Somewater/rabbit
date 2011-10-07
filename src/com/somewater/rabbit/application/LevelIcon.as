@@ -68,7 +68,7 @@ package com.somewater.rabbit.application
 			{
 				levelTF.text = _data.number.toString();
 				scoreTF.text = "999";//TODO запросить, сколько очков у юзера по тому или иному уровню
-				hint = _data.desc;
+				hint = _data.description;
 			}
 			else
 			{

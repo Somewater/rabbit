@@ -9,7 +9,7 @@ class CreateBaseStructure < ActiveRecord::Migration
 			t.integer :width
 			t.integer :height
 
-			t.string  :file
+			t.string  :author
 			t.text	  :conditions
 			t.text	  :group
 

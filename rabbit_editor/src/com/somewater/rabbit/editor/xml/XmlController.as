@@ -44,7 +44,7 @@ package com.somewater.rabbit.editor.xml {
 
 	public function getNewLevel():LevelDef
 	{
-		return new LevelDef(<level id="-1"><name>new level</name></level>);
+		return new LevelDef(<level id="0"><name>new level</name></level>);
 	}
 
 
