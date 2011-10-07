@@ -5,6 +5,7 @@ production:
   username: rabbit
   password: love4meand663
   encoding: utf8
+  reconnect: true
 
 development:
   adapter: mysql
@@ -13,6 +14,7 @@ development:
   username: rabbit
   password: love4meand663
   encoding: utf8
+  reconnect: true
 
 test:
   adapter: mysql
