@@ -20,6 +20,10 @@ class BaseController
 			authorized
 			# обработать JSON
 			parce @params['json']
+
+			# что-то делаем
+			@response = {}
+			process
 		end
 	end
 
@@ -39,20 +43,20 @@ class BaseController
 		end
 	end
 
-	def generate(hash = nil)
+	def call
 		begin
-			JSON.generate(hash ? hash : @json)
+			JSON.generate(@response)
 		rescue
 			'{"error":"E_JSON_GENERATING"}'
 		end
 	end
 
 =begin
-	Генерация ответа
+	Генерация ответа. Инфу для клиента надо оформить в виде хэша
 =end
-	def call
+	def process
 		# ping-pong
-		JSON.generate(@json)
+		@response = @json
 	end
 
 =begin
@@ -63,7 +67,7 @@ class BaseController
 	end
 
 =begin
-	ействия на авторизованный запрос (перед парсингом json)
+	действия на авторизованный запрос (перед парсингом json)
 =end
 	def authorized
 		# do nothing

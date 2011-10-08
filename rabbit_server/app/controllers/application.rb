@@ -54,10 +54,11 @@ class Application
 					InitializeController.new(request).call
 				when "levels/manage"
 					LevelsController.new(request).call
-				when /levels/
-					LevelsController.view
-				when /errors/
-					ErrorsController.new.call request
+				when "levels.xml"
+					LevelsAdminController.generate_xml_file
+				# ADMIN AREA
+				when /^admin/
+					AdminController.new.call request
 				else
 					Hello.new.call request
 			end

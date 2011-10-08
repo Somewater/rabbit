@@ -1,5 +1,5 @@
 class LevelsController < BaseController
-	def call
+	def process
 		return "E_AUTH" unless check_password
 
 		case @json['operation']
@@ -42,15 +42,6 @@ private
 							:group => @json['group']
 						  })
 		level.save
-		self.generate :number => level.number, :author => level.author, :version => version, :id => level.id
-	end
-
-	def self.view
-		res = ""
-		(Level.all || []).each do |l|
-			res += "LEVEL ##{l.number} version=#{l.version} author=\"#{l.author}\" size=#{l.width}x#{l.height}\n" +
-					"DESCRIPTION:\n#{l.description}\n\nCONDITIONS:\n#{l.conditions}\n\nGROUP\n:#{l.group}\n\n\n\n"
-		end
-		[200, {"Content-Type" => "text; charset=UTF-8"}, res]
+		@response = {:number => level.number, :author => level.author, :version => version, :id => level.id}
 	end
 end

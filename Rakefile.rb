@@ -69,11 +69,13 @@ namespace :srv do
 	desc "Update source and restart server"
 	task :update do
 		`git push`
+		sleep(5) #KLUDGE
 		ssh = Execution.new("ssh root@asflash.ru")
 		puts ssh.cmd "cd rabbit"
-		puts ssh.cmd "git pull", 5
+		puts ssh.cmd "git pull", 10
 		puts ssh.cmd "\n"
 		puts ssh.cmd "qlementina27\n"
+		sleep(5)
 		puts ssh.cmd "touch tmp/restart.txt"
 		puts ssh.cmd "exit"
 	end
