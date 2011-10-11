@@ -32,9 +32,9 @@ class LevelsAdminController < AdminController::Base
 		@levels = Level.all(:order => 'number, version')
 
 		# определяем head
-		head_levels = all_head.map(&:id)
+		head_levels_arr = LevelsAdminController.all_head.map(&:id)
 		@levels.each do |lvl|
-			lvl.head = head_levels.index(lvl.id)
+			lvl.head = head_levels_arr.index(lvl.id)
 		end
 
 		template <<-EOF
@@ -60,7 +60,7 @@ class LevelsAdminController < AdminController::Base
 
 	# генерировать содержание файла левелов (наиболее новой версии, в соответствии с БД)
 	def self.generate_xml_file
-		head_levels = all_head
+		head_levels = LevelsAdminController.all_head
 		content = head_levels.map{|lvl| lvl.to_xml }
 		[
 		 200,
