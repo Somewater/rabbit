@@ -45,7 +45,7 @@ class BaseController
 
 	def call
 		begin
-			JSON.generate(@response)
+			JSON.fast_generate(@response)
 		rescue
 			'{"error":"E_JSON_GENERATING"}'
 		end

@@ -41,7 +41,7 @@ package
 					}
 			
 			filePaths = {
-							 "Levels":"levels.xml"
+							 "Levels":"/levels.xml"
 							,"Managers":"Managers.xml"
 							,"Description":"Description.xml"
 							,"LevelPack":"LevelPack.xml"

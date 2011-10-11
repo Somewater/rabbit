@@ -5,7 +5,7 @@
 		creationComplete="init();">
 	<mx:Script>
 		<![CDATA[
-		import com.somewater.rabbit.editor.xml.XmlController;
+		import com.somewater.rabbit.xml.XmlController;
 		import com.somewater.rabbit.storage.LevelDef;
 
 		public var level:LevelDef;

@@ -16,7 +16,7 @@ class CreateBaseStructure < ActiveRecord::Migration
 			t.boolean :enabled, :default => true
 		end
 		
-		Application.connect_to "test" do
+		Application.connect_to "stat" do
 			create_table :errors do |t|
 				t.string  :title
 				t.text :content
@@ -34,7 +34,7 @@ class CreateBaseStructure < ActiveRecord::Migration
 	def self.down
 		drop_table 'levels'
 		
-		Application.connect_to "test" do
+		Application.connect_to "stat" do
 			drop_table 'errors'
 		end
 		

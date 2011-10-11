@@ -81,9 +81,15 @@ package com.somewater.rabbit.debug {
 				// создать ентити
 				var newEntity:IEntity = PBE.templateManager.instantiateEntity(template.@name);
 				newEntity.owningGroup = PBE.lookup(Config.game.level.groupName) as PBGroup;
+				
+				// остановить процессор (который включается больно умным TemplateManager)
+				Config.game.pause();
+
+				// потикать контрллеры нового entity
+				throw "TODO: tick new enity components"
 
 				// отпозиционировать ентити в нужный тайл
-				IsoSpatial(newEntity.lookupComponentByName("Spatial")).position = tile.clone();
+				IsoSpatial(newEntity.lookupComponentByName("Spatial")).tile = tile.clone();
 
 				// убрать курсор и диспатчить конец процесса
 				mode = 0;
@@ -96,13 +102,23 @@ package com.somewater.rabbit.debug {
 		{
 			if(mode == 1) return null;
 
-			this.template = template;
-			setListeners();
-			mode = 1;
+			if(template == null)
+			{
+				// просто выключить курсор
+				this.template = null;
+				mode = 0;
+				removeIcon();
+			}
+			else
+			{
+				this.template = template;
+				setListeners();
+				mode = 1;
 
-			setIcon(template..slug);
+				setIcon(template..slug);
 
-			return this;
+				return this;
+			}
 		}
 
 		private function setIcon(slug:String):void
@@ -156,5 +172,11 @@ package com.somewater.rabbit.debug {
 			mouseListeners = false;
 		}
 
+		/**
+		 * Вызывается один раз, при старте RabbitEditor
+		 */
+		public function init():void {
+
+		}
 	}
 }

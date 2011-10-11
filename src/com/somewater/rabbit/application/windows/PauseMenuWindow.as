@@ -6,6 +6,7 @@ package com.somewater.rabbit.application.windows
 	import com.somewater.rabbit.application.buttons.SoundSwitchButton;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
+	import com.somewater.rabbit.storage.LevelInstanceDef;
 	import com.somewater.storage.Lang;
 	
 	import flash.events.Event;
@@ -113,7 +114,7 @@ package com.somewater.rabbit.application.windows
 		{
 			close();
 			
-			Config.game.finishLevel(false);
+			Config.game.finishLevel(LevelInstanceDef.DUMMY_FATAL_LEVEL);
 			Config.application.startPage("main_menu");
 		}
 		
@@ -123,7 +124,7 @@ package com.somewater.rabbit.application.windows
 			close();
 			
 			var level:LevelDef = Config.game.level;
-			Config.game.finishLevel(false);
+			Config.game.finishLevel(LevelInstanceDef.DUMMY_FATAL_LEVEL);
 			Config.application.startGame(level);
 		}
 		

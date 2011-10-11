@@ -37,8 +37,6 @@ package com.somewater.rabbit.storage
 			
 			instance = this;
 			
-			levelId = data.level;
-			
 			applicationRef = Config.application;
 		}
 		
@@ -125,13 +123,10 @@ package com.somewater.rabbit.storage
 		}
 		
 		
-		override public function set levelId(value:int):void
+		override public function addLevelInstance(levelInst:LevelInstanceDef):void
 		{
-			if(_levelId != value)
-			{
-				_levelId = value;
-				dispatchChange();
-			}
+			super.addLevelInstance(levelInst);
+			dispatchChange();
 		}
 		
 		override public function set score(value:int):void
@@ -159,7 +154,10 @@ package com.somewater.rabbit.storage
 		
 		public function canPlayWithLevel(level:LevelDef):Boolean
 		{
-			return _levelId + 1 >= level.id;
+			for each(var inst:LevelInstanceDef in levelInstances)
+				if(inst.levelDef.number + 1 >= level.number)
+					return true;
+			return level.number == 1;
 		}
 	}
 }

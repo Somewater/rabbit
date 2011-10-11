@@ -6,6 +6,7 @@ require "yaml"
 
 # const ROOT must be initialize abowe!
 SERVER_ROOT = "#{ROOT}/rabbit_server"
+TEMPLATE_ROOT = "#{SERVER_ROOT}/app/views"
 CONFIG_DIR = "#{SERVER_ROOT}/config"
 DB_CONF = YAML.load(File.read("#{CONFIG_DIR}/database.yml"))
 CONFIG  = YAML.load(File.read("#{CONFIG_DIR}/config.yml"))
@@ -22,7 +23,8 @@ require 'active_record'
 #require "active_record/connection_adapters/postgresql_adapter"
 ActiveRecord::Base.configurations = DB_CONF
 ActiveRecord::Base.establish_connection(
-  DB_CONF[APP_ENV]
+  DB_CONF["development"] # development db forever
+  #DB_CONF[APP_ENV]
 )
 
 

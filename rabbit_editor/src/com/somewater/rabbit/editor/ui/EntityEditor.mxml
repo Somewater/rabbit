@@ -9,7 +9,7 @@
 		import com.pblabs.engine.entity.IEntity;
 		import com.pblabs.engine.entity.PropertyReference;
 		import com.somewater.rabbit.editor.events.EntitySelectedEvent;
-		import com.somewater.rabbit.editor.xml.XmlController;
+		import com.somewater.rabbit.xml.XmlController;
 		import com.somewater.rabbit.events.EditorEvent;
 		import com.somewater.rabbit.storage.Config;
 		import com.somewater.rabbit.storage.LevelDef;
@@ -22,6 +22,7 @@
 		private var description:Array;
 		private var editorModuleChangeListener:Boolean = false;
 		private var selectedTemplate:XML;
+		private var escLIstener:Boolean = false;
 
 		private function init():void
 		{
@@ -42,6 +43,20 @@
 				icon.addEventListener(EntitySelectedEvent.ENTITY_SELECTED_EVENT, onEntitySelected)
 
 				holder.addChild(icon);
+			}
+
+			if(!escLIstener)
+			{
+			    (Config.loader as Sprite).stage.addEventListener(KeyboardEvent.KEY_DOWN, onESCPressed)
+				escLIstener = true;
+			}
+		}
+
+		private function onESCPressed(event:KeyboardEvent):void {
+			if(event.keyCode == Keyboard.ESCAPE && selectedTemplate)
+			{
+				Config.game.setTemplateTool(null);
+				selectedTemplate = null;
 			}
 		}
 
@@ -67,6 +82,9 @@
 			child.@hash = entity.hash;
 			var group:XML = ControlPanel.instance.level.group;
 			group.appendChild(child);
+
+			// стартовать тот же самый тул еще раз
+			onEntitySelected(new EntitySelectedEvent(selectedTemplate.copy()));
 		}
 
 		]]>

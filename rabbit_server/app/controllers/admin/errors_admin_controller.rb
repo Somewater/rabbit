@@ -17,57 +17,57 @@ class ErrorsAdminController < AdminController::Base
 		# act = new, edit, resolve, unresolve, check, delete
 		act = request['act']
 
-		Application.connect_to "stat" do
-			case act
-				when "new"
-					if request['title'] && request['title'].length > 3
-						error = Error.new
-						error.attributes = {:title => request['title'], :content => request['content'],
-												:resolution => request['resolution'], :resolved => 0}
-						error.save
-						error = {}
-					end
-				when "edit"
-					error = Error.find(request['id']) if request['id'] && request['id'].length > 0
-					if request.post?
-						error.attributes = {:title => request['title'], :content => request['content'],
-											:resolution => request['resolution'], :resolved => request['resolved']}
-						error.save
-						act = 'new'
-						error = {}
-					end
-				when "resolve"
-					error = Error.find(request['id'])
-					error.resolved = 1
+		case act
+			when "new"
+				if request['title'] && request['title'].length > 3
+					error = Error.new
+					error.attributes = {:title => request['title'], :content => request['content'],
+											:resolution => request['resolution'], :resolved => 0}
 					error.save
 					error = {}
-				when "unresolve"
-					error = Error.find(request['id'])
-					error.resolved = 0
+				else
+					return "<html></body>ERROR: very short title \"#{request['title']}\"<br><a href='#{ERROR_PATH}'>back</a></body></html>"
+				end
+			when "edit"
+				error = Error.find(request['id']) if request['id'] && request['id'].length > 0
+				if request.post?
+					error.attributes = {:title => request['title'], :content => request['content'],
+										:resolution => request['resolution'], :resolved => request['resolved']}
 					error.save
+					act = 'new'
 					error = {}
-				when "check"
-					error = Error.find(request['id'])
-					error.resolved = 2
-					error.save
-					error = {}
-				when "delete"
-					error = Error.find(request['id'])
-					error.delete
-					error = {}
-			end
+				end
+			when "resolve"
+				error = Error.find(request['id'])
+				error.resolved = 1
+				error.save
+				error = {}
+			when "unresolve"
+				error = Error.find(request['id'])
+				error.resolved = 0
+				error.save
+				error = {}
+			when "check"
+				error = Error.find(request['id'])
+				error.resolved = 2
+				error.save
+				error = {}
+			when "delete"
+				error = Error.find(request['id'])
+				error.delete
+				error = {}
+		end
 
-			errors = Error.find(:all, :order => "resolved")
+		errors = Error.find(:all, :order => "resolved")
 
-			errors.each_with_index do |e, index|
-				#error = e if e['id'] == request['id']
-				url = ERROR_PATH + "?id=" + e['id'].to_s
-				resolved = e.resolved || 0
-				res += "<div style=\"background: #{resolved == 2 ? '#EEEEEE' : (resolved == 1 ? '#CCFFCC' : '#FFCCFF')}\"><h3>
-						<a href='#{url}&act=edit'>#{e.title ? e.title : nil}</a>&nbsp;&nbsp;&nbsp;&nbsp;<small>#{
-							(["<a href='#{url}&act=resolve'>resolve :)</a>","<a href='#{url}&act=check'>check :)</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='#{url}&act=unresolve'>unresolve :(</a>","<a href='#{url}&act=delete'>delete :)</a>"])[resolved] }
-						</small></h3><h4>Content:</h4>#{e.content ? e.content : nil}<h4>Resolution:</h4><i>#{e.resolution ? e.resolution : nil}</i><h4>Images:</h4>#{e.images}</div>"
-			end
+		errors.each_with_index do |e, index|
+			#error = e if e['id'] == request['id']
+			url = ERROR_PATH + "?id=" + e['id'].to_s
+			resolved = e.resolved || 0
+			res += "<div style=\"background: #{resolved == 2 ? '#EEEEEE' : (resolved == 1 ? '#CCFFCC' : '#FFCCFF')}\"><h3>
+					<a href='#{url}&act=edit'>#{e.title ? e.title : nil}</a>&nbsp;&nbsp;&nbsp;&nbsp;<small>#{
+						(["<a href='#{url}&act=resolve'>resolve :)</a>","<a href='#{url}&act=check'>check :)</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='#{url}&act=unresolve'>unresolve :(</a>","<a href='#{url}&act=delete'>delete :)</a>"])[resolved] }
+					</small></h3><h4>Content:</h4>#{e.content ? e.content : nil}<h4>Resolution:</h4><i>#{e.resolution ? e.resolution : nil}</i><h4>Images:</h4>#{e.images}</div>"
 		end
 
 		form = create_form([{:value => error['title']	, :name => 'title', :title => 'Title', :type => 'input'},

@@ -16,8 +16,12 @@
 			level = data as LevelDef;
 		}
 
-		private function restartLevel():void {
-			ControlPanel.instance.restartLevel(level, true);
+		private function onSomeChanged(arg:Event = null):void
+		{
+			level.number = uint(level_number.text);
+			level.description = level_desc.text;
+			level.width = uint(level_width.text);
+			level.height = uint(level_height.text);
 		}
 
 		]]>
@@ -29,26 +33,22 @@
 			<mx:Spacer></mx:Spacer>
 
 			<mx:Label text="number:"></mx:Label>
-			<mx:TextInput id="level_number" text="{level.number}" restrict="-0123456789" maxChars="3" width="100%"></mx:TextInput>
+			<mx:TextInput id="level_number" change="onSomeChanged()" text="{level.number}" restrict="-0123456789" maxChars="3" width="100%"></mx:TextInput>
 			<mx:Spacer></mx:Spacer>
 
 			<mx:Label text="description:"></mx:Label>
-			<mx:TextArea id="level_desc" text="{level.description}" width="100%"></mx:TextArea>
-			<mx:Spacer></mx:Spacer>
-
-			<mx:Label text="author:"></mx:Label>
-			<mx:TextInput id="level_author" text="{level.author}" width="100%"></mx:TextInput>
+			<mx:TextArea id="level_desc" change="onSomeChanged()" text="{level.description}" width="100%"></mx:TextArea>
 			<mx:Spacer></mx:Spacer>
 
 			<mx:Label text="width:"></mx:Label>
-			<mx:TextInput id="level_width" text="{level.width}" restrict="0123456789" maxChars="2" width="100%"></mx:TextInput>
+			<mx:TextInput id="level_width" change="onSomeChanged()" text="{level.width}" restrict="0123456789" maxChars="2" width="100%"></mx:TextInput>
 			<mx:Spacer></mx:Spacer>
 
 			<mx:Label text="height:"></mx:Label>
-			<mx:TextInput id="level_height" text="{level.height}" restrict="0123456789" maxChars="2" width="100%"></mx:TextInput>
-		</mx:VBox>
-		<mx:VBox width="100%">
-			<mx:Button label="Restart level" click="restartLevel()" width="100%"></mx:Button>
+			<mx:TextInput id="level_height" change="onSomeChanged()" text="{level.height}" restrict="0123456789" maxChars="2" width="100%"></mx:TextInput>
+
+			<mx:Spacer></mx:Spacer>
+			<mx:Label text="CONDITIONS"></mx:Label>
 		</mx:VBox>
 	</mx:VBox>
 </mx:Canvas>

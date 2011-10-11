@@ -25,11 +25,27 @@ class LevelsAdminController < AdminController::Base
 				lvl = Level.find(@request['id'])
 				lvl.enabled = false
 				lvl.save
+			when 'delete_request'
+				@sure = "delete current level(id=#{@request['id']})"
+				@yes = "#{LEVELS_PATH}?id=#{@request['id']}&act=delete"
+				@no = "#{LEVELS_PATH}"
+				return html{template File.read("#{TEMPLATE_ROOT}/admin/levels_admin_dialog.erb")}
+			when 'delete'
+				lvl = Level.find(@request['id'], :conditions => 'visible = TRUE')
+				lvl.visible = false
+				lvl.save
+			when 'delete_all_request'
+				@sure = "delete current level(id=#{@request['id']}) and older levels"
+				@yes = "#{LEVELS_PATH}?id=#{@request['id']}&act=delete_all"
+				@no = "#{LEVELS_PATH}"
+				return html{template File.read("#{TEMPLATE_ROOT}/admin/levels_admin_dialog.erb")}
+			when 'delete_all'
+				delete_current_and_anchestors(@request['id'])
 			when 'head'
 				head_level(@request['id'])
 		end
 
-		@levels = Level.all(:order => 'number, version')
+		@levels = Level.all(:order => 'number, version', :conditions => (@request['hidden'] ? nil : 'visible = TRUE'))
 
 		# определяем head
 		head_levels_arr = LevelsAdminController.all_head.map(&:id)
@@ -37,25 +53,7 @@ class LevelsAdminController < AdminController::Base
 			lvl.head = head_levels_arr.index(lvl.id)
 		end
 
-		template <<-EOF
-<h1><a href='<%= LEVELS_PATH %>'>LEVELS</a></h1>
-<% @levels.each_with_index do |level, index| %>
-<div style="background: #<%= COLORS[level.number % 10] %>">
-	<p><%=level.head ? '<b>' : nil%><a href='<%= LEVELS_PATH %>?id=<%= level.id%>&act=show'>level #<%= level.number %> </a><small><i>(version=<%= level.version %>, id=<%= level.id %>)</i></small>
-<a href='<%= LEVELS_PATH %>?id=<%= level.id%>&act=<%= level.enabled ? 'disable' : 'enable' %>'><%= level.enabled ? 'disable' : 'enable' %></a>
-<% unless level.head %>
-	<a href='<%= LEVELS_PATH %>?id=<%= level.id%>&act=head'>HEAD</a>
-<% end %>
-	<%=level.head ? '</b>' : nil%></p>
-	<% if @showed && level.id == @showed.id %>
-		<p><small><i><%= level.description %></i></small></p>
-		<p>GROUP:<br><small><pre><%= CGI::escapeHTML(level.group || '') %></pre></small></p>
-		<p>CONDITIONS:<br><small><pre><%= CGI::escapeHTML(level.conditions || '') %></pre></small></p>
-	<% end %>
-</div>
-<% end %>
-		EOF
-
+		template File.read("#{TEMPLATE_ROOT}/admin/levels_admin_show.erb")
 	end
 
 	# генерировать содержание файла левелов (наиболее новой версии, в соответствии с БД)
@@ -73,18 +71,17 @@ class LevelsAdminController < AdminController::Base
 		def head_level(level_id)
 			lvl = Level.find(level_id)
 			lvl.enabled = true
+			lvl.visible = true
 			lvl.save
 
-			family = Level.find(:all, :order => "version", :conditions => "number = #{lvl.number} AND version > #{lvl.version}")
-
-		    family.each {|l| l.enabled = false; l.save}
+			Level.update_all('enabled = FALSE', "number = #{lvl.number} AND version > #{lvl.version} AND visible = TRUE")
 		end
 
 		# возвратить все "ведущие" уровни
 		def self.all_head
 			added = {}
 			result = []
-			levels = Level.all(:order => 'number, version DESC', :conditions => 'enabled = TRUE')
+			levels = Level.all(:order => 'number, version DESC', :conditions => 'enabled = TRUE AND visible = TRUE')
 			levels.each do |lvl|
 				unless added[lvl.number]
 					result << lvl
@@ -92,5 +89,13 @@ class LevelsAdminController < AdminController::Base
 				end
 			end
 			result
+		end
+
+		def delete_current_and_anchestors(level_id)
+		  	lvl = Level.find(level_id)
+			lvl.visible = false
+			lvl.save
+
+			Level.update_all('visible = FALSE', "number = #{lvl.number} AND version < #{lvl.version}")
 		end
 end

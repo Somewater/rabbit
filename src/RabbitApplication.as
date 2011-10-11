@@ -56,10 +56,10 @@ package
 		
 		private var _content:Sprite;
 		
-		private var _levels:Array;// массив всех уровней игры
-		private var _levelsById:Array;
-		public function get levels():Array{ return _levels; }//array of LevelDef (sort by id)
-		public function getLevelById(id:int):LevelDef{ return _levelsById[id]; }
+		private var _levels:Array = [new LevelDef(<level></level>)];// массив всех уровней игры
+		private var _levelsByNumber:Array;
+		public function get levels():Array{ return _levels; }//array of LevelDef (sort by number)
+		public function getLevelByNumber(number:int):LevelDef{ return _levelsByNumber[number]; }
 		
 		/**
 		 * Колбэки на смену свойств вида propertyCallbacks["propertyName"] === Array
@@ -177,12 +177,12 @@ package
 		{
 			var levels:XML = Config.loader.getXML("Levels");
 			_levels = [];
-			_levelsById = [];
+			_levelsByNumber = [];
 			for each (var level:XML in levels.*)
 			{
 				var l:LevelDef = new LevelDef(level);
 				_levels.push(l);
-				_levelsById[l.id] = l;
+				_levelsByNumber[l.number] = l;
 			}
 		}
 		
@@ -233,7 +233,6 @@ package
 		{
 			Config.application.hideSplash();
 			message(msg);
-			throw new Error("TODO");
 		}
 		
 		

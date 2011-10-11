@@ -146,7 +146,7 @@ package com.somewater.rabbit.loader
 		
 		public function get swfADs():Array{ return _swfADs;}
 		
-		public function getFilePath(fileId:String):String{ return filePaths[fileId]; }
+		public function getFilePath(fileId:String):String{ return rightFilePath(filePaths[fileId]); }
 		
 		protected function createLayers():void
 		{
@@ -164,6 +164,9 @@ package com.somewater.rabbit.loader
 		}
 		
 		private function onAddedToStage(e:Event):void{
+			
+			if(!_basePath)
+				_basePath = loaderInfo.url.substr(0, loaderInfo.url.lastIndexOf("/") + 1);
 			
 			graphics.beginFill(0xE7E7E7);
 			graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
@@ -330,7 +333,7 @@ package com.somewater.rabbit.loader
 		protected function loadNextSwf(event:Object):void
 		{
 			var swfToLoading:Object = _loadSwfsQueue[_loadSwfsQueueIterator];			
-			var url:String = swfToLoading.url;
+			var url:String = rightFilePath(swfToLoading.url);
 			var name:String = swfToLoading.name;
 			
 			if(event)
@@ -370,9 +373,7 @@ package com.somewater.rabbit.loader
 				swfToLoading.url = swfs[swfToLoading.name].url;
 			}
 			
-			url = swfToLoading.url;
-			if(url.substr(0,4) != "http" && _basePath && _basePath.length)
-				url = (_basePath.substr(_basePath.length - 1,1) == "/" ? _basePath : _basePath + "/") + url;
+			url = rightFilePath(swfToLoading.url);
 			name = swfToLoading.name;
 			
 			//проверить, не была ли swf загружена ранее
@@ -596,6 +597,34 @@ package com.somewater.rabbit.loader
 		public function set basePath(value:String):void
 		{
 			_basePath = value;
+		}
+		
+		public function get basePath():String
+		{
+			if(_basePath && _basePath.length)
+				return (_basePath.substr(_basePath.length - 1,1) == "/" ? _basePath : _basePath + "/");
+			else
+				return "";
+		}
+		
+		/**
+		 * Относительные пути преобразует в абсолютные
+		 * /file => <http://asflash.ru>/file
+		 * file => <base path> + file
+		 */
+		protected function rightFilePath(path:String):String
+		{
+			if(path == null) return null;
+			var bp:String = basePath;
+			if(path.toLowerCase().substr(0,7) == "http://")
+				return path;
+			else if(path.charAt(0) == "/" && bp.substr(0,7) == "http://")
+			{
+				bp = bp.substring(0,bp.indexOf("/", 7) + 1);
+				return bp + path.substr(1);
+			}
+			else
+				return bp + path;
 		}
 	}
 }

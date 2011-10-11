@@ -61,7 +61,7 @@ package com.somewater.rabbit.application
 			addChild(rightStuporArrow);
 			
 			friends = UserProfile.instance.appFriends;
-			friends.sortOn("levelId", Array.NUMERIC | Array.DESCENDING);
+			friends.sortOn("levelNumber", Array.NUMERIC | Array.DESCENDING);
 			
 			for(var i:int = 0;i<ITEMS;i++)
 			{

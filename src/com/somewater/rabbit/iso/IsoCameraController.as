@@ -114,7 +114,13 @@ package com.somewater.rabbit.iso
 		private var mouseMoveTempPos:Point = new Point();
 		private function onMouseMove(e:MouseEvent):void
 		{
-			if(Config.game.isTicking && mouseStartPos)
+			var gameIsTicking:Boolean = Config.game.isTicking;
+			CONFIG::debug
+			{
+				if(Config.editor)
+					gameIsTicking = true;
+			}
+			if(gameIsTicking && mouseStartPos)
 			{
 				var dx:Number = PBE.mainStage.mouseX - mouseStartPos.x;
 				var dy:Number = PBE.mainStage.mouseY - mouseStartPos.y;

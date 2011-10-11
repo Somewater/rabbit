@@ -22,6 +22,7 @@ class Application
 					yield
 					ActiveRecord::Base.establish_connection(DB_CONF[prev_db])
 				else
+					raise "Achtung!!!"
 					ActiveRecord::Base.establish_connection(DB_CONF[database])
 				end
 			else
@@ -59,6 +60,8 @@ class Application
 				# ADMIN AREA
 				when /^admin/
 					AdminController.new.call request
+				when "crossdomain.xml"
+					File.read("#{ROOT}/bin-debug/crossdomain.xml")
 				else
 					Hello.new.call request
 			end

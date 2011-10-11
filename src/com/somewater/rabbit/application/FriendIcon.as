@@ -154,7 +154,7 @@ package com.somewater.rabbit.application
 				photo.source = user.socialUser.photoMedium;
 				nameText.text = user.socialUser.name;
 				nameText.y = 15 + (45 - nameText.height) * 0.5
-				starText.text = user.levelId.toString();
+				starText.text = user.levelNumber.toString();
 				scoreText.text = user.score.toString();
 				setMode(1);
 			}

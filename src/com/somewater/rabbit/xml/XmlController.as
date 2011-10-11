@@ -1,15 +1,6 @@
-/**
- * Created by IntelliJ IDEA.
- * User: pav
- * Date: 9/13/11
- * Time: 1:10 AM
- * To change this template use File | Settings | File Templates.
- */
-package com.somewater.rabbit.editor.xml {
+package com.somewater.rabbit.xml {
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
-
-	import mx.collections.ArrayCollection;
 
 	public class XmlController {
 
@@ -17,7 +8,6 @@ package com.somewater.rabbit.editor.xml {
 
 	private static var _instance:XmlController;
 
-	private var levels:ArrayCollection;
 	private var description:Array;
 
 	public static function get instance():XmlController
@@ -33,13 +23,15 @@ package com.somewater.rabbit.editor.xml {
 
 	}
 
-	public function getLevels():ArrayCollection
+	public function calculateAliens(level:LevelDef):int
 	{
-		if(!levels || levels.length == 0)
+		var aliens:int = 0;
+		var groupXML:XML = level.group;
+		for each(var objectReference:XML in groupXML.objectReference.*)
 		{
-			levels = new ArrayCollection(Config.application.levels);
+			throw new Error("Not implemented")
 		}
-		return levels;
+		return aliens;
 	}
 
 	public function getNewLevel():LevelDef

@@ -2,6 +2,7 @@ package com.somewater.rabbit.application
 {
 	import com.somewater.controller.PopUpManager;
 	import com.somewater.rabbit.storage.Config;
+	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.rabbit.storage.UserProfile;
 	import com.somewater.storage.Lang;
@@ -70,7 +71,9 @@ package com.somewater.rabbit.application
 			{
 				case 	Lang.t("START_GAME"):
 				case 	Lang.t("CONTINUE_GAME"):
-					 	Config.application.startGame(UserProfile.instance.level);
+						var levelNumber:int = UserProfile.instance.levelNumber;
+						var nextLevel:LevelDef = Config.application.getLevelByNumber(levelNumber + 1);
+					 	Config.application.startGame(nextLevel ? nextLevel : Config.application.getLevelByNumber(levelNumber));
 						break;
 				case Lang.t("LEVEL_SELECTION"):
 						Config.application.startPage("levels");

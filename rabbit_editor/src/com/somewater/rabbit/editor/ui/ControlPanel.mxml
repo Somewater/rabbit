@@ -7,7 +7,7 @@
 		<![CDATA[
 		import com.adobe.serialization.json.JSON;
 		import com.somewater.rabbit.IRabbitEditor;
-		import com.somewater.rabbit.editor.xml.XmlController;
+		import com.somewater.rabbit.xml.XmlController;
 		import com.somewater.rabbit.storage.Config;
 		import com.somewater.rabbit.storage.LevelDef;
 
@@ -22,11 +22,15 @@
 		public var menuData:ArrayCollection;
 
 		public static var instance:IRabbitEditor;
+		private var editorModuleStarted:Boolean = false;
 
 		public function start():void {
 			enabled = false;
 			instance = this;
-			Config.editor = this;
+			CONFIG::debug
+			{
+				Config.editor = this;
+			}
 			stage.frameRate = Config.FRAME_RATE;
 			if (Config.application) {
 				Config.application.addEventListener("applicationInited", function(e:Event):void {
@@ -80,9 +84,10 @@
 		private function selectLevel():void {
 			holder.removeAllChildren();
 			holder.addChild(new LevelIcon()).addEventListener(MouseEvent.CLICK, onLevelSelected)
-			for (var i:int = 0; i < XmlController.instance.getLevels().length; i++) {
+			var levels:Array = Config.application.levels;
+			for (var i:int = 0; i < levels.length; i++) {
 				var b:LevelIcon = new LevelIcon();
-				b.data = XmlController.instance.getLevels()[i];
+				b.data = levels[i];
 				b.addEventListener(MouseEvent.CLICK, onLevelSelected)
 				holder.addChild(b);
 			}
@@ -107,6 +112,12 @@
 		private function startLevel(level:LevelDef):void {
 			Config.application.startGame(level);
 			needStartLevel = false;
+
+			if(!editorModuleStarted)
+			{
+				Config.game.initializeEditorModule();
+				editorModuleStarted = true;
+			}
 		}
 
 		private function showLevelProperties():void {
@@ -170,6 +181,10 @@
 		public function get level():LevelDef {
 			return selectedLevel;
 		}
+
+		private function relaunchLevel():void {
+			ControlPanel.instance.restartLevel(level, true);
+		}
 		]]>
 	</mx:Script>
 	<mx:ComboBox id="menu" width="100%" close="onMainMenuChanged(event);" tabEnabled="false">
@@ -184,6 +199,10 @@
 			</mx:TextInput>
 			<mx:Button id="submit" width="25" height="25">
 			</mx:Button>
+		</mx:HBox>
+		<mx:HBox width="100%">
+			<mx:Button width="100%" label="restart" click="relaunchLevel()" enabled="{selectedLevel != null}"></mx:Button>
+			<mx:Button width="100%" label="play/pause" click="Config.game.isTicking ? Config.game.pause() : Config.game.start()" enabled="{selectedLevel != null}"></mx:Button>
 		</mx:HBox>
 		<mx:HBox width="100%">
 			<mx:Button width="100%" label="SAVE" click="saveLevel()" enabled="{selectedLevel != null}"></mx:Button>

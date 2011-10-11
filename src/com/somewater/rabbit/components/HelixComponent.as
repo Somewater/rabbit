@@ -2,6 +2,7 @@ package com.somewater.rabbit.components
 {
 	import com.pblabs.engine.PBE;
 	import com.pblabs.engine.components.TickedComponent;
+	import com.pblabs.engine.core.PBGroup;
 	import com.pblabs.engine.core.TemplateManager;
 	import com.pblabs.engine.entity.EntityComponent;
 	import com.pblabs.engine.entity.IEntity;
@@ -11,6 +12,7 @@ package com.somewater.rabbit.components
 	import com.somewater.rabbit.iso.IsoSpatial;
 	import com.somewater.rabbit.logic.SenseEvent;
 	import com.somewater.rabbit.logic.SentientComponent;
+	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.util.GeomUtil;
 	import com.somewater.rabbit.util.RandomizeUtil;
 	
@@ -114,6 +116,7 @@ package com.somewater.rabbit.components
 				shell = PBE.templateManager.instantiateEntity(shellType);
 				if(shell)
 				{
+					shell.owningGroup = PBE.lookup(Config.game.level.groupName) as PBGroup;
 					shellSpatial = shell.lookupComponentByName("Spatial") as IsoSpatial; 
 					if(shellSpatial)
 					{

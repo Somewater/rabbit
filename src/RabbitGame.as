@@ -20,6 +20,7 @@ package
 	import com.somewater.rabbit.managers.InitializeManager;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
+	import com.somewater.rabbit.storage.LevelInstanceDef;
 	import com.somewater.rabbit.ui.GameUIComponent;
 	import com.somewater.rabbit.util.RandomizeUtil;
 	import com.somewater.storage.Lang;
@@ -98,7 +99,7 @@ package
 		}
 		
 		
-		public function finishLevel(success:Boolean):void
+		public function finishLevel(event:LevelInstanceDef):void
 		{
 			Config.gameModuleActive = false;
 			PBE.processManager.stop();
@@ -216,8 +217,14 @@ package
 			Logger.error(reporter, method, message);
 		}
 
+		public function initializeEditorModule():void
+		{
+			EditorModule.instance.init();
+		}
+
 		public function setTemplateTool(template:XML):IEventDispatcher
 		{
+			pause();
 			return EditorModule.instance.setTemplateTool(template);
 		}
 		

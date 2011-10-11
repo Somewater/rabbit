@@ -1,6 +1,7 @@
 package com.somewater.rabbit
 {
 	import com.somewater.rabbit.storage.LevelDef;
+	import com.somewater.rabbit.storage.LevelInstanceDef;
 
 	import flash.events.IEventDispatcher;
 
@@ -26,7 +27,7 @@ package com.somewater.rabbit
 		/**
 		 * Закончить игру и переключиться на страницу уровней в приложении
 		 */
-		function finishLevel(success:Boolean):void
+		function finishLevel(event:LevelInstanceDef):void
 		
 		/**
 		 * Уровень, который включен в игре в данный момент
@@ -40,6 +41,8 @@ package com.somewater.rabbit
 		function get isTicking():Boolean
 			
 		function logError(reporter:*, method:String, message:String):void
+
+		function initializeEditorModule():void
 
 		function setTemplateTool(template:XML):IEventDispatcher
 	}

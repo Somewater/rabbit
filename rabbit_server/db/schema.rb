@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 1) do
+ActiveRecord::Schema.define(:version => 2) do
 
   create_table "levels", :force => true do |t|
     t.string  "description"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(:version => 1) do
     t.text    "conditions"
     t.text    "group"
     t.boolean "enabled",     :default => true
+    t.boolean "visible",     :default => true
   end
 
 end

@@ -3,10 +3,10 @@ class Level < ActiveRecord::Base
 
 	def to_xml
 		formatted_conditions = ''
-		conditions.each_line{|line| formatted_conditions += "\t#{line}"} if conditions
+		conditions.each_line{|line| formatted_conditions += (formatted_conditions.size>0 ? "\t#{line}" : formatted_conditions)} if conditions
 
 		formatted_group = ''
-		group.each_line{|line| formatted_group += "\t#{line}"} if group
+		group.each_line{|line| formatted_group += (formatted_group.size>0 ? "\t#{line}" : formatted_group)} if group
 
 "<level id=\"#{id}\" version=\"#{version}\">
 	<description>#{description}</description>

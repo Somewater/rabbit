@@ -1,0 +1,10 @@
+<% raise "arguments error, must be @sure, @yes, @no" unless @sure && @yes && @no %>
+<div>
+	<p>Are you sure <%= @sure %> ?</p>
+	<table>
+		<tr>
+			<td><a href="<%= @yes %>">Yes, I`m sure</a></td>
+			<td><a href="<%= @no %>">No, cancel action!</a></td>
+		</tr>
+	</table>
+</div>
