@@ -9,12 +9,17 @@ class Execution
 		@reader.expect(pattern ? pattern : "*4*~@%&", pattern ? 60 : 1)	
 	end
 	
-	def cmd(command, timeout = 1)
+	def cmd(command, timeout = 1, pattern = nil)
 		@writer.puts command
-		answ = ""
-		while c = @reader.expect("", timeout)
-			answ += c[0]
-		end	
+		answ = nil
+		if(pattern)
+			answ = @reader.expect(patter, timeout)
+		else
+			answ = ""
+			while c = @reader.expect("", timeout)
+				answ += c[0]
+			end	
+		end
 		answ
 	end
 end
