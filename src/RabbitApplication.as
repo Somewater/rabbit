@@ -19,6 +19,7 @@ package
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.rabbit.storage.UserProfile;
+	import com.somewater.rabbit.xml.XmlController;
 	import com.somewater.social.SocialAdapter;
 	import com.somewater.storage.Lang;
 	import com.somewater.text.EmbededTextField;
@@ -56,7 +57,7 @@ package
 		
 		private var _content:Sprite;
 		
-		private var _levels:Array = [new LevelDef(<level></level>)];// массив всех уровней игры
+		private var _levels:Array;// массив всех уровней игры
 		private var _levelsByNumber:Array;
 		public function get levels():Array{ return _levels; }//array of LevelDef (sort by number)
 		public function getLevelByNumber(number:int):LevelDef{ return _levelsByNumber[number]; }
@@ -180,13 +181,28 @@ package
 			_levelsByNumber = [];
 			for each (var level:XML in levels.*)
 			{
-				var l:LevelDef = new LevelDef(level);
-				_levels.push(l);
-				_levelsByNumber[l.number] = l;
+				addLevel(new LevelDef(level));
 			}
+
+			if(_levels.length == 0)// вносим один пустой уровень
+				addLevel(XmlController.instance.getNewLevel());
 		}
-		
-		
+
+		public function addLevel(level:LevelDef):void
+		{
+			var replacement:Boolean = false;
+			for (var i:int = 0; i < _levels.length; i++)
+				if(LevelDef(_levels[i]).number == level.number)
+				{
+					_levels.splice(i, 1, level);
+					replacement = true;
+					break;
+				}
+			if(!replacement)
+				_levels.push(level);
+			_levelsByNumber[level.number] = level;
+		}
+
 		
 		private function onInitResponseComplete(response:Object):void
 		{
@@ -313,8 +329,19 @@ package
 			if(propertyCallbacks[propertyName])
 				propertyCallbacks[propertyName].splice(propertyCallbacks[propertyName].indexOf(callback),1)
 		}
-		
-		private function dispatchPropertyChange(propertyName:String):void
+
+		/**
+		 * Возможные события:
+		 * "music" 			изменение громкости музыки
+		 * "musicEnabled"   вкл/выкл музыки
+		 * "sound" 			изменение громкости звука
+		 * "soundEnabled"   вкл/выкл звука
+		 * "levelChanged"	стартовал очередной уровень
+		 * "game.start"     игра стартовала (в смысле - старт после паузы, рестарт левела не вызывает данный эвент)
+		 * "game.pause"     игра переведена на паузу
+		 * "game.switch"    игра стартовала (после паузы) или поставлена на паузу
+		 */
+		public function dispatchPropertyChange(propertyName:String):void
 		{
 			if(propertyCallbacks[propertyName])
 			{

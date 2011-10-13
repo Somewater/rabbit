@@ -29,9 +29,12 @@ package com.somewater.rabbit
 		// массив всех уровней игры
 		function get levels():Array
 		function getLevelByNumber(id:int):LevelDef
+		function addLevel(level:LevelDef):void
 			
 		function addPropertyListener(propertyName:String, callback:Function):void
 		function removePropertyListener(propertyName:String, callback:Function):void
+		function dispatchPropertyChange(propertyName:String):void
+
 			
 		function set sound(value:Number):void
 		function get sound():Number

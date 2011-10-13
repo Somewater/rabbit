@@ -2,6 +2,8 @@ package com.somewater.rabbit.xml {
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
 
+	import flash.utils.Dictionary;
+
 	public class XmlController {
 
 	public static const EXCLUDED_TEMPLATES:Array = ["Animal","Iso","IsoMover","Kennel","Rabbit","RabbitBase"];
@@ -9,6 +11,7 @@ package com.somewater.rabbit.xml {
 	private static var _instance:XmlController;
 
 	private var description:Array;
+	private var descriptionByName:Dictionary;
 
 	public static function get instance():XmlController
 	{
@@ -23,20 +26,37 @@ package com.somewater.rabbit.xml {
 
 	}
 
+
+	/**
+	 * Посчтитать, сколько на уровне предположительно врагов
+	 * @param level
+	 * @return
+	 */
 	public function calculateAliens(level:LevelDef):int
 	{
 		var aliens:int = 0;
 		var groupXML:XML = level.group;
+		if(this.description == null)
+			getDescription();
+		var descByName:Dictionary = descriptionByName;
 		for each(var objectReference:XML in groupXML.objectReference.*)
 		{
-			throw new Error("Not implemented")
+			// враг это тот, у кого есть компонент "Attack" с выставленным свойством "victimName" == "Hero"
+			for each(var component:XML in objectReference.*)
+			{
+				if(String(component.@name) == "Attack" && String(component.victimName) == "Hero")
+				{
+					aliens++;
+					break;
+				}
+			}
 		}
 		return aliens;
 	}
 
 	public function getNewLevel():LevelDef
 	{
-		return new LevelDef(<level id="0"><name>new level</name></level>);
+		return new LevelDef(<level id="0" number="1"><description>New Level</description><conditions><time>300</time></conditions></level>);
 	}
 
 
@@ -64,11 +84,13 @@ package com.somewater.rabbit.xml {
 			}
 
 			description = [];
+			descriptionByName = new Dictionary();
 
 			for (name in allDescription) {
 				var template:XML = allDescription[name];
 				if(EXCLUDED_TEMPLATES.indexOf(name) != -1) continue;
 				description.push(template);
+				descriptionByName[name] = template;
 			}
 		}
 		return description;

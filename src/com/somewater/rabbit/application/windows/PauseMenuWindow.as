@@ -124,7 +124,7 @@ package com.somewater.rabbit.application.windows
 			close();
 			
 			var level:LevelDef = Config.game.level;
-			Config.game.finishLevel(LevelInstanceDef.DUMMY_FATAL_LEVEL);
+			Config.game.finishLevel(LevelInstanceDef.DUMMY_FATAL_LEVEL, true);
 			Config.application.startGame(level);
 		}
 		

@@ -3,7 +3,7 @@
 		width="100%" height="100%"
 		verticalScrollPolicy="off"
 		horizontalScrollPolicy="off"
-		creationComplete="init();">
+		creationComplete="init();"  implements="com.somewater.control.IClear">
 	<mx:Script>
 		<![CDATA[
 		import com.somewater.rabbit.storage.LevelDef;
@@ -22,6 +22,11 @@
 			level.description = level_desc.text;
 			level.width = uint(level_width.text);
 			level.height = uint(level_height.text);
+		}
+
+		public function clear():void
+		{
+			level = null;
 		}
 
 		]]>

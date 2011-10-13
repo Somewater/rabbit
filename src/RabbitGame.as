@@ -98,8 +98,12 @@ package
 			loadAssets();
 		}
 		
-		
-		public function finishLevel(event:LevelInstanceDef):void
+		/**
+		 * @param event
+		 * @param supressBack не открывать страницу "Уровни". Предполагается, что вызывающая
+		 * 					  функция сама распорядится поведением, после конца уровня 
+		 */
+		public function finishLevel(event:LevelInstanceDef, supressLevelsPageTransition:Boolean = false):void
 		{
 			Config.gameModuleActive = false;
 			PBE.processManager.stop();
@@ -107,10 +111,11 @@ package
 			
 			// асинхронный вызов функци, т.к. иначе не дотикают неокторые контроллеры в processManager
 			// (он остановится не мгновенно, а доведет до конца текущий тик)
-			addEventListener(Event.ENTER_FRAME, function(e:Event):void{
-				e.currentTarget.removeEventListener(e.type, arguments.callee);
-				Config.application.startPage("levels");
-			});
+			if(!supressLevelsPageTransition)
+				addEventListener(Event.ENTER_FRAME, function(e:Event):void{
+					e.currentTarget.removeEventListener(e.type, arguments.callee);
+					Config.application.startPage("levels");
+				});
 		}
 		
 		
@@ -190,6 +195,7 @@ package
 			InitializeManager.restartLevel();
 			
 			onLevelStartedCallback && onLevelStartedCallback();
+			Config.application.dispatchPropertyChange("levelChanged");
 		}
 		
 		
@@ -198,12 +204,16 @@ package
 		{
 			if(!PBE.processManager.isTicking)
 				PBE.processManager.start();
+			Config.application.dispatchPropertyChange("game.start");
+			Config.application.dispatchPropertyChange("game.switch");
 		}
 		
 		public function pause():void
 		{
 			if(PBE.processManager.isTicking)
 				PBE.processManager.stop();
+			Config.application.dispatchPropertyChange("game.pause");
+			Config.application.dispatchPropertyChange("game.switch");
 		}
 		
 		
@@ -219,13 +229,20 @@ package
 
 		public function initializeEditorModule():void
 		{
-			EditorModule.instance.init();
+			CONFIG::debug
+			{
+				EditorModule.instance.init();
+			}
 		}
 
 		public function setTemplateTool(template:XML):IEventDispatcher
 		{
-			pause();
-			return EditorModule.instance.setTemplateTool(template);
+			CONFIG::debug
+			{
+				pause();
+				return EditorModule.instance.setTemplateTool(template);
+			}
+			return null;
 		}
 		
 		override public function get width():Number{return Config.WIDTH;}

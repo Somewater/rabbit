@@ -6,6 +6,7 @@
 	<mx:Script>
 		<![CDATA[
 		import com.adobe.serialization.json.JSON;
+		import com.somewater.control.IClear;
 		import com.somewater.rabbit.IRabbitEditor;
 		import com.somewater.rabbit.xml.XmlController;
 		import com.somewater.rabbit.storage.Config;
@@ -23,6 +24,7 @@
 
 		public static var instance:IRabbitEditor;
 		private var editorModuleStarted:Boolean = false;
+		private var _supressLevelrestart:Boolean;// очень некрасивый способ обойти циклическую ошибку при включении левела не через эдитор
 
 		public function start():void {
 			enabled = false;
@@ -44,10 +46,27 @@
 					enabled = true;
 					callLater(onMainMenuChanged);
 				})
+				Config.application.addPropertyListener("levelChanged", onLevelStarted);
 
 			}
 			else
 				callLater(start);
+		}
+
+
+		private function onLevelStarted():void
+		{
+			if(!editorModuleStarted)
+			{
+				Config.game.initializeEditorModule();
+				editorModuleStarted = true;
+			}
+			if(!selectedLevel || selectedLevel != Config.game.level)// включили новый уровень, не через эдитор
+			{
+				_supressLevelrestart = true;
+				restartLevel(Config.game.level, true);
+				_supressLevelrestart = false;
+			}
 		}
 
 		public function restartLevel(newLevel:LevelDef = null, force:Boolean = false):void {
@@ -82,7 +101,7 @@
 		}
 
 		private function selectLevel():void {
-			holder.removeAllChildren();
+			clearHolder();
 			holder.addChild(new LevelIcon()).addEventListener(MouseEvent.CLICK, onLevelSelected)
 			var levels:Array = Config.application.levels;
 			for (var i:int = 0; i < levels.length; i++) {
@@ -99,7 +118,7 @@
 		}
 
 		private function editLevel():void {
-			holder.removeAllChildren();
+			clearHolder();
 			if (selectedLevel == null) {
 				selectedLevel = XmlController.instance.getNewLevel();
 				needStartLevel = true;
@@ -110,18 +129,13 @@
 		}
 
 		private function startLevel(level:LevelDef):void {
-			Config.application.startGame(level);
+			if(!_supressLevelrestart)
+				Config.application.startGame(level);
 			needStartLevel = false;
-
-			if(!editorModuleStarted)
-			{
-				Config.game.initializeEditorModule();
-				editorModuleStarted = true;
-			}
 		}
 
 		private function showLevelProperties():void {
-			holder.removeAllChildren();
+			clearHolder();
 
 			var propEditor:LevelEditor = new LevelEditor();
 			propEditor.data = selectedLevel;
@@ -129,7 +143,7 @@
 		}
 
 		private function showEntitiesInLevel():void {
-			holder.removeAllChildren();
+			clearHolder();
 
 			var entityList:EntityList = new EntityList();
 			entityList.data = selectedLevel;
@@ -137,7 +151,7 @@
 		}
 
 		private function showEntitiesEditor():void {
-			holder.removeAllChildren();
+			clearHolder();
 
 			var entityEditor:EntityEditor = new EntityEditor();
 			entityEditor.data = selectedLevel;
@@ -185,6 +199,20 @@
 		private function relaunchLevel():void {
 			ControlPanel.instance.restartLevel(level, true);
 		}
+
+
+		private function clearHolder():void
+		{
+			while(holder.numChildren)
+			{
+				var child:DisplayObject = holder.getChildAt(0);
+				if(child is IClear)
+					IClear(child).clear();
+				if(child.parent == holder)
+					child.parent.removeChild(child);
+			}
+		}
+
 		]]>
 	</mx:Script>
 	<mx:ComboBox id="menu" width="100%" close="onMainMenuChanged(event);" tabEnabled="false">

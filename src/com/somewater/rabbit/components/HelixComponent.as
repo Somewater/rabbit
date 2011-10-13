@@ -116,7 +116,7 @@ package com.somewater.rabbit.components
 				shell = PBE.templateManager.instantiateEntity(shellType);
 				if(shell)
 				{
-					shell.owningGroup = PBE.lookup(Config.game.level.groupName) as PBGroup;
+					shell.owningGroup = owner.owningGroup;
 					shellSpatial = shell.lookupComponentByName("Spatial") as IsoSpatial; 
 					if(shellSpatial)
 					{

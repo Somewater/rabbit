@@ -183,6 +183,7 @@ package com.somewater.rabbit.loader
 			}
 			
 			Config.loader = this;
+			Config.stage = stage;
 			Config.WIDTH = stage.stageWidth;
 			Config.HEIGHT = stage.stageHeight;
 			

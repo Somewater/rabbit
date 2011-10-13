@@ -7,9 +7,13 @@
  */
 package com.somewater.rabbit.debug {
 	import com.pblabs.engine.PBE;
+	import com.pblabs.engine.core.IAnimatedObject;
 	import com.pblabs.engine.core.PBGroup;
 	import com.pblabs.engine.entity.IEntity;
+	import com.pblabs.rendering2D.DisplayObjectRenderer;
 	import com.somewater.rabbit.events.EditorEvent;
+	import com.somewater.rabbit.iso.IsoCameraController;
+	import com.somewater.rabbit.iso.IsoRenderer;
 	import com.somewater.rabbit.iso.IsoSpatial;
 	import com.somewater.rabbit.iso.scene.IsoSpatialManager;
 	import com.somewater.rabbit.storage.Config;
@@ -29,6 +33,7 @@ package com.somewater.rabbit.debug {
 	import flash.geom.Point;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.utils.Dictionary;
 
 	[Event(name="change", type="flash.events.Event")]
 
@@ -48,6 +53,7 @@ package com.somewater.rabbit.debug {
 		private var template:XML;
 		private var mouseIcon:Bitmap;
 		private var mouseListeners:Boolean = false;
+		private var _inited:Boolean = false;
 
 		public function EditorModule() {
 			if(_instance != null)
@@ -72,7 +78,7 @@ package com.somewater.rabbit.debug {
 		}
 
 		private function onMouseClick(event:MouseEvent):void {
-			if(mode == 1)
+ 			if(mode == 1)
 			{
 				var tile:Point = IsoSpatialManager.globalToIso(new Point(PBE.cachedMainStage.mouseX, PBE.cachedMainStage.mouseY));
 				tile.x = int(tile.x);
@@ -86,7 +92,7 @@ package com.somewater.rabbit.debug {
 				Config.game.pause();
 
 				// потикать контрллеры нового entity
-				throw "TODO: tick new enity components"
+				tickVisualComponents(newEntity);
 
 				// отпозиционировать ентити в нужный тайл
 				IsoSpatial(newEntity.lookupComponentByName("Spatial")).tile = tile.clone();
@@ -100,22 +106,24 @@ package com.somewater.rabbit.debug {
 
 		public function setTemplateTool(template:XML):IEventDispatcher
 		{
-			if(mode == 1) return null;
-
 			if(template == null)
 			{
 				// просто выключить курсор
 				this.template = null;
 				mode = 0;
 				removeIcon();
+				return null;
 			}
 			else
 			{
+				if(mode == 1) return null;
+
 				this.template = template;
 				setListeners();
 				mode = 1;
 
 				setIcon(template..slug);
+				onMouseMove(null);
 
 				return this;
 			}
@@ -176,7 +184,71 @@ package com.somewater.rabbit.debug {
 		 * Вызывается один раз, при старте RabbitEditor
 		 */
 		public function init():void {
+			if(_inited) return;
+			_inited = true;
 
+			// вешаем листенер и старательно тикаем IsoCameraController
+			Config.application.addPropertyListener("game.pause", onGamePause);
+			Config.application.addPropertyListener("game.start", onGameStart);
+
+			// парсим
+		}
+
+		/**
+		 * Начать тикать всё, что нуждается в тиканье, даже если игра на паузе
+		 */
+		private function onGamePause():void
+		{
+			if(!Config.stage.hasEventListener(Event.ENTER_FRAME))
+				Config.stage.addEventListener(Event.ENTER_FRAME, onTickDuringPause)
+		}
+
+		/**
+		 * Закончить тикать то, что тикалось из-за функции onGameStart
+		 */
+		private function onGameStart():void
+		{
+			Config.stage.removeEventListener(Event.ENTER_FRAME, onTickDuringPause)
+		}
+
+		/**
+		 * Вызывается во время паузы PBE.processManager
+		 */
+		private function onTickDuringPause(e:Event):void
+		{
+			var deltaTime:Number = 1/30;
+
+			// тикаем рендеры персонажей
+			var forDelete:Array = [];
+			var entity:IEntity;
+			for(var key:* in tickVisualQueue)
+			{
+				entity = key;
+				if(tickVisualQueue[entity] > 0)
+				{
+					var components:Array = entity.lookupComponentsByType(DisplayObjectRenderer);
+					for each(var renderer:DisplayObjectRenderer in components)
+						renderer.onFrame(deltaTime);
+				}
+				else
+					forDelete.push(entity);
+			}
+
+			for each(entity in forDelete)
+				delete(tickVisualQueue[entity]);
+
+			// тикаем сцену и камеру
+			IsoCameraController(PBE.lookup("Camera")).onTick(deltaTime);
+			(PBE.scene as IAnimatedObject).onFrame(deltaTime);
+		}
+
+		/**
+		 * Протикать визуальные контроллеры объекта, чтобы он засиял
+		 */
+		private var tickVisualQueue:Dictionary = new Dictionary();
+		private function tickVisualComponents(entity:IEntity):void
+		{
+			tickVisualQueue[entity] = 5;// тикнуть 5 раз
 		}
 	}
 }

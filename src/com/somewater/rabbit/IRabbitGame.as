@@ -2,7 +2,7 @@ package com.somewater.rabbit
 {
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
-
+	
 	import flash.events.IEventDispatcher;
 
 	/**
@@ -27,7 +27,7 @@ package com.somewater.rabbit
 		/**
 		 * Закончить игру и переключиться на страницу уровней в приложении
 		 */
-		function finishLevel(event:LevelInstanceDef):void
+		function finishLevel(event:LevelInstanceDef, supressLevelsPageTransition:Boolean = false):void
 		
 		/**
 		 * Уровень, который включен в игре в данный момент
