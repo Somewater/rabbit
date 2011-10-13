@@ -25,18 +25,16 @@
 		private var escLIstener:Boolean = false;
 		private var editorModule:IEventDispatcher;
 
-		private function init():void
-		{
+		private function init():void {
 			level = data as LevelDef;
 			description = XmlController.instance.getDescription();
 			var descriptionKeys:Array = [];
 			var key:String;
-			for(key in description)
+			for (key in description)
 				descriptionKeys.push(key);
 			descriptionKeys.sort();
 
-			for(var i:int = 0;i<descriptionKeys.length;i++)
-			{
+			for (var i:int = 0; i < descriptionKeys.length; i++) {
 				key = descriptionKeys[i];
 				var template:XML = description[key];
 				var icon:EntityIcon = new EntityIcon();
@@ -46,22 +44,19 @@
 				holder.addChild(icon);
 			}
 
-			if(!escLIstener)
-			{
-			    (Config.loader as Sprite).stage.addEventListener(KeyboardEvent.KEY_DOWN, onESCPressed)
+			if (!escLIstener) {
+				(Config.loader as Sprite).stage.addEventListener(KeyboardEvent.KEY_DOWN, onESCPressed)
 				escLIstener = true;
 			}
 		}
 
 		private function onESCPressed(event:KeyboardEvent):void {
-			if(event.keyCode == Keyboard.ESCAPE && selectedTemplate)
-			{
+			if (event.keyCode == Keyboard.ESCAPE) {
 				cancelTool();
 			}
 		}
 
-		private function cancelTool():void
-		{
+		private function cancelTool():void {
 			Config.game.setTemplateTool(null);
 			selectedTemplate = null;
 		}
@@ -70,10 +65,37 @@
 			selectedTemplate = event.template;
 
 			ControlPanel.instance.hide();
-			editorModule = Config.game.setTemplateTool(selectedTemplate);
-			if(!editorModuleChangeListener)
-			{
+			setEditorModile = Config.game.setTemplateTool("create", selectedTemplate);
+		}
+
+		public function clear():void {
+			if (editorModule) {
+				editorModule.removeEventListener(Event.CHANGE, onChangeEditorEvent);
+				editorModule.removeEventListener('delete', onDeleteEditorEvent);
+				editorModule.removeEventListener('move', onMoveEditorEvent);
+			}
+			(Config.loader as Sprite).stage.removeEventListener(KeyboardEvent.KEY_DOWN, onESCPressed)
+			cancelTool();
+		}
+
+
+		private function onDeleteToolClicked():void {
+			ControlPanel.instance.hide();
+			setEditorModile = Config.game.setTemplateTool("delete", selectedTemplate);
+		}
+
+		private function onMoveToolClicked():void {
+			ControlPanel.instance.hide();
+			setEditorModile = Config.game.setTemplateTool("move", selectedTemplate);
+		}
+
+
+		private function set setEditorModile(editorModule:IEventDispatcher):void {
+			if (!editorModuleChangeListener) {
+				this.editorModule = editorModule;
 				editorModule.addEventListener(Event.CHANGE, onChangeEditorEvent);
+				editorModule.addEventListener('delete', onDeleteEditorEvent);
+				editorModule.addEventListener('move', onMoveEditorEvent);
 				editorModuleChangeListener = true;
 			}
 		}
@@ -93,17 +115,22 @@
 			onEntitySelected(new EntitySelectedEvent(selectedTemplate.copy()));
 		}
 
-		public function clear():void
-		{
-			if(editorModule)
-				editorModule.removeEventListener(Event.CHANGE, onChangeEditorEvent);
-			cancelTool();
+		private function onDeleteEditorEvent(event:EditorEvent):void {
+			throw "TODO: записать в xml, стартовать тул еще раз"
 		}
 
+		private function onMoveEditorEvent(event:EditorEvent):void {
+			throw "TODO: записать в xml, стартовать тул еще раз"
+		}
 		]]>
 	</mx:Script>
 	<mx:Canvas horizontalScrollPolicy="off" width="100%" height="100%">
-		<mx:VBox width="100%" height="100%" id="holder">
+		<mx:VBox width="100%" height="100%">
+			<mx:HBox width="100%" height="20">
+				<mx:Button label="delete" height="20" click="onDeleteToolClicked()"></mx:Button>
+				<mx:Button label="move" height="20" click="onMoveToolClicked()"></mx:Button>
+			</mx:HBox>
+			<mx:VBox width="100%" height="100%" id="holder"></mx:VBox>
 		</mx:VBox>
 	</mx:Canvas>
 </mx:Canvas>

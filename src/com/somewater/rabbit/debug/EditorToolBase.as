@@ -5,7 +5,8 @@ package com.somewater.rabbit.debug {
 
 	public class EditorToolBase implements IClear{
 
-		private var template:XML;
+		public var cleared:Boolean = false;
+		protected var template:XML;
 
 		public function EditorToolBase(template:XML = null) {
 			this.template = template;
@@ -23,7 +24,10 @@ package com.somewater.rabbit.debug {
 
 		public function clear():void
 		{
+			cleared = true;
+
 			template = null;
+			EditorModule.instance.setTemplateTool(null);
 		}
 	}
 }

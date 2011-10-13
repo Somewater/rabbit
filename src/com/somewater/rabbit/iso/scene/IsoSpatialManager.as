@@ -268,7 +268,7 @@ package com.somewater.rabbit.iso.scene
 							continue;// не соответствует маске
 						
 						results.push(spatial);
-						
+						added[spatial] = true;
 						foundAny = true;
 					}
 					
@@ -286,16 +286,21 @@ package com.somewater.rabbit.iso.scene
 		{
 			var objects:Array = mapSpatial[int(worldPosition.x)][int(worldPosition.y)];
 			var foundAny:Boolean = false;
+
+			var added:Dictionary = new Dictionary();// хранит уже добавленные в ответ объекты
 			
 			for(var k:int = 0; k<objects.length; k++)
 			{
 				var spatial:IsoSpatial = objects[k];
 
+				if(added[spatial])
+					continue;// уже добавлен в массив result
+
 				if(mask && ((spatial._objectMask._bits & mask._bits) == 0))
 					continue;// не соответствует маске
 				
 				results.push(spatial);
-				
+				added[spatial] = true;
 				foundAny = true;
 			}
 			

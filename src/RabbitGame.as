@@ -13,6 +13,7 @@ package
 	import com.somewater.rabbit.components.GenocideComponent;
 	import com.somewater.rabbit.components.RandomActComponent;
 	import com.somewater.rabbit.debug.ConsoleUtils;
+	import com.somewater.rabbit.debug.CreateTool;
 	import com.somewater.rabbit.debug.EditorModule;
 	import com.somewater.rabbit.iso.IsoCameraController;
 	import com.somewater.rabbit.iso.scene.IsoSpatialManager;
@@ -235,12 +236,12 @@ package
 			}
 		}
 
-		public function setTemplateTool(template:XML):IEventDispatcher
+		public function setTemplateTool(toolname:String, template:XML = null):IEventDispatcher
 		{
 			CONFIG::debug
 			{
 				pause();
-				return EditorModule.instance.setTemplateTool(template);
+				return EditorModule.instance.setTemplateTool(toolname, template);
 			}
 			return null;
 		}

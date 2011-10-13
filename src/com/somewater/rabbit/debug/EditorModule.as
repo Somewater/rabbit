@@ -1,10 +1,3 @@
-/**
- * Created by IntelliJ IDEA.
- * User: pav
- * Date: 9/24/11
- * Time: 1:01 AM
- * To change this template use File | Settings | File Templates.
- */
 package com.somewater.rabbit.debug {
 	import com.pblabs.engine.PBE;
 	import com.pblabs.engine.core.IAnimatedObject;
@@ -23,6 +16,7 @@ package com.somewater.rabbit.debug {
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Stage;
 	import flash.events.Event;
@@ -46,15 +40,10 @@ package com.somewater.rabbit.debug {
 	public class EditorModule extends EventDispatcher{
 
 		private static var _instance:EditorModule;
+		private static const tools:Object = {"create":CreateTool, "delete":DeleteTool, "move":MoveTool}
 
-		/**
-		 * Текущий режим
-		 * 0 нормальный (стартовый)
-		 * 1 перетаскивание иконки над сценой
-		 */
-		private var mode:int = 0;
 		private var template:XML;
-		private var mouseIcon:Bitmap;
+		private var mouseIcon:DisplayObject;
 		private var mouseListeners:Boolean = false;
 		private var _inited:Boolean = false;
 		private var tool:EditorToolBase;
@@ -77,69 +66,71 @@ package com.somewater.rabbit.debug {
 
 
 		private function onMouseMove(event:MouseEvent):void {
-			mouseIcon.x = stage.mouseX - mouseIcon.width * 0.5;
-			mouseIcon.y = stage.mouseY - mouseIcon.height * 0.5;
-		}
+			if(mouseIcon)
+			{
+				mouseIcon.x = stage.mouseX - mouseIcon.width * 0.5;
+				mouseIcon.y = stage.mouseY - mouseIcon.height * 0.5;
+			}
 
-		private function onMouseClick(event:MouseEvent):void {
- 			if(mode == 1)
+			if(tool)
 			{
 				var tile:Point = IsoSpatialManager.globalToIso(new Point(PBE.cachedMainStage.mouseX, PBE.cachedMainStage.mouseY));
 				tile.x = int(tile.x);
 				tile.y = int(tile.y);
 
-				// создать ентити
-				var newEntity:IEntity = PBE.templateManager.instantiateEntity(template.@name);
-				newEntity.owningGroup = PBE.lookup(Config.game.level.groupName) as PBGroup;
-				
-				// остановить процессор (который включается больно умным TemplateManager)
-				Config.game.pause();
-
-				// потикать контрллеры нового entity
-				tickVisualComponents(newEntity);
-
-				// отпозиционировать ентити в нужный тайл
-				IsoSpatial(newEntity.lookupComponentByName("Spatial")).tile = tile.clone();
-
-				// вызвать внутренний колбэк на создание нового ентити
-				onNewEntityCreated(newEntity);
-
-				// убрать курсор и диспатчить конец процесса
-				mode = 0;
-				removeIcon();
-				dispatchEvent(new EditorEvent(Event.CHANGE, newEntity));
+				tool.onMove(tile);
 			}
 		}
 
-		public function setTemplateTool(template:XML):IEventDispatcher
+		private function onMouseClick(event:MouseEvent):void {
+ 			if(tool)
+			{
+				var tile:Point = IsoSpatialManager.globalToIso(new Point(PBE.cachedMainStage.mouseX, PBE.cachedMainStage.mouseY));
+				tile.x = int(tile.x);
+				tile.y = int(tile.y);
+
+				tool.onClick(tile);
+			}
+		}
+
+		public function setTemplateTool(toolName:String, template:XML = null):IEventDispatcher
 		{
-			if(template == null)
+			if(tool)
+			{
+				removeIcon();
+				removeListeners();
+				if(!tool.cleared)
+					tool.clear();
+				tool = null;
+				this.template = null;
+			}
+
+			if(toolName == null)
 			{
 				// просто выключить курсор
-				this.template = null;
-				mode = 0;
-				removeIcon();
 				return null;
 			}
 			else
 			{
-				if(mode == 1) return null;
-
+				var toolClass:Class = tools[toolName];
+				tool = new toolClass(template);
 				this.template = template;
 				setListeners();
-				mode = 1;
 
-				setIcon(template..slug);
 				onMouseMove(null);
 
 				return this;
 			}
 		}
 
-		private function setIcon(slug:String):void
+		internal function setIcon(slug:*):void
 		{
 			removeIcon();
-			mouseIcon = createIconFromSlug(slug, 0.7);
+			if(slug is DisplayObject)
+				mouseIcon = slug
+			else
+				mouseIcon = createIconFromSlug(slug, 0.7);
+
 			stage.addChild(mouseIcon);
 			setListeners();
 		}
@@ -148,7 +139,6 @@ package com.somewater.rabbit.debug {
 		{
 			if(mouseIcon && mouseIcon.parent)
 				mouseIcon.parent.removeChild(mouseIcon);
-			removeListeners();
 		}
 
 		private function get stage():Stage
@@ -264,7 +254,7 @@ package com.somewater.rabbit.debug {
 		 * Протикать визуальные контроллеры объекта, чтобы он засиял
 		 */
 		private var tickVisualQueue:Dictionary = new Dictionary();
-		private function tickVisualComponents(entity:IEntity):void
+		internal function tickVisualComponents(entity:IEntity):void
 		{
 			tickVisualQueue[entity] = 5;// тикнуть 5 раз
 		}
@@ -273,10 +263,18 @@ package com.somewater.rabbit.debug {
 		 * Колбэк на создания нового ентити
 		 * @param newEntity
 		 */
-		private function onNewEntityCreated(newEntity:IEntity):void {
+		internal function onNewEntityCreated(newEntity:IEntity):void {
 			var hero:IEntity = PBE.lookupEntity("Hero");
 			if(hero)
 				IsoCameraController.getInstance().trackObject = hero.getProperty(new PropertyReference("@Spatial"));
+		}
+
+		/**
+		 * Колбэк на удаление инстансов
+		 */
+		internal function onEntitiesDeleted(entities:Array):void
+		{
+
 		}
 	}
 }
