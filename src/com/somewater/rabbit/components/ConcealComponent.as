@@ -6,6 +6,7 @@ package com.somewater.rabbit.components
 	import com.pblabs.engine.core.IQueuedObject;
 	import com.pblabs.engine.debug.Logger;
 	import com.pblabs.engine.entity.PropertyReference;
+	import com.somewater.rabbit.States;
 	import com.somewater.rabbit.iso.IsoMover;
 	import com.somewater.rabbit.iso.IsoRenderer;
 	import com.somewater.rabbit.iso.IsoSpatial;
@@ -90,8 +91,12 @@ package com.somewater.rabbit.components
 		 * Время "рождения", мс с момента старта флешки
 		 */
 		private var bornTime:uint = 0;
-		
-		
+
+		/**
+		 * Стейт рендера, который был у объекта в последний стейт "при жизни"
+		 * (для исправления визуального бага с исчезающей сидячей, а не летящей, вороной)
+		 */
+		private var lastAliveRenderState:String;
 		
 		/**
 		 * Время жизни (мс), в продолжении которого компонент не стремится спрятаться
@@ -295,7 +300,10 @@ package com.somewater.rabbit.components
 			
 			createRenderRef();
 			if(renderRef)
+			{
 				show();
+				renderRef.state = lastAliveRenderState;// мы насильно ранее перевели объект в стейт "walk", теперь возвращаем как было
+			}
 			
 			isAlive = true;
 		}
@@ -320,13 +328,17 @@ package com.somewater.rabbit.components
 				IsoSpatialManager.instance.refreshRegistration(spatialRef, p.x, p.y, s.x, s.y, 0.0, 0.0, 0.0, 0.0, 1); 
 			}
 			
-			createRenderRef();
-			if(renderRef)
-				hide();
-			
 			// а также остановить любое движение
 			owner.setProperty(new PropertyReference("@Mover.destination"), null);
-			
+
+			createRenderRef();
+			if(renderRef)
+			{
+				hide();
+				lastAliveRenderState = renderRef.state;
+				renderRef.state = States.WALK;// Чтобы исчезала летящая ворона, а не сидящая на месте
+			}
+
 			isAlive = false;
 			
 			// и поставить таймер на последующее "оживление"
@@ -376,6 +388,8 @@ package com.somewater.rabbit.components
 		private function show():void
 		{
 			renderRef.visible = true;
+			renderRef.alpha = 0;
+			TweenMax.to(renderRef, 0.4,{"alpha":1})
 		}
 		
 		private function hide():void

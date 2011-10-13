@@ -274,6 +274,10 @@
 				<_>harvest</_>
 			</harvestType>
 		</component>
+		<component name="Spatial">
+			<passMask>4</passMask>
+			<occupyMask>4</occupyMask>
+		</component>
 	</template>
 	
 	

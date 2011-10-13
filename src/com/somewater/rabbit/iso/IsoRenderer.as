@@ -246,7 +246,6 @@ package com.somewater.rabbit.iso
 			{
 				if(slug)
 					clip = Lib.createMC(slug);
-				return;
 			}
 			
 			if(_clipDirty)

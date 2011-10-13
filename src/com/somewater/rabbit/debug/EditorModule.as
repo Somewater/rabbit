@@ -10,6 +10,7 @@ package com.somewater.rabbit.debug {
 	import com.pblabs.engine.core.IAnimatedObject;
 	import com.pblabs.engine.core.PBGroup;
 	import com.pblabs.engine.entity.IEntity;
+	import com.pblabs.engine.entity.PropertyReference;
 	import com.pblabs.rendering2D.DisplayObjectRenderer;
 	import com.somewater.rabbit.events.EditorEvent;
 	import com.somewater.rabbit.iso.IsoCameraController;
@@ -28,11 +29,13 @@ package com.somewater.rabbit.debug {
 
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
+	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.ui.Keyboard;
 	import flash.utils.Dictionary;
 
 	[Event(name="change", type="flash.events.Event")]
@@ -54,6 +57,7 @@ package com.somewater.rabbit.debug {
 		private var mouseIcon:Bitmap;
 		private var mouseListeners:Boolean = false;
 		private var _inited:Boolean = false;
+		private var tool:EditorToolBase;
 
 		public function EditorModule() {
 			if(_instance != null)
@@ -96,6 +100,9 @@ package com.somewater.rabbit.debug {
 
 				// отпозиционировать ентити в нужный тайл
 				IsoSpatial(newEntity.lookupComponentByName("Spatial")).tile = tile.clone();
+
+				// вызвать внутренний колбэк на создание нового ентити
+				onNewEntityCreated(newEntity);
 
 				// убрать курсор и диспатчить конец процесса
 				mode = 0;
@@ -191,7 +198,18 @@ package com.somewater.rabbit.debug {
 			Config.application.addPropertyListener("game.pause", onGamePause);
 			Config.application.addPropertyListener("game.start", onGameStart);
 
-			// парсим
+			// вешаем кое-какие хоткеи
+			Config.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown)
+		}
+
+		private function onKeyDown(event:KeyboardEvent):void {
+			if(event.charCode == String("p").charCodeAt())
+			{
+				if(Config.game.isTicking)
+					Config.game.pause();
+				else
+					Config.game.start();
+			}
 		}
 
 		/**
@@ -249,6 +267,16 @@ package com.somewater.rabbit.debug {
 		private function tickVisualComponents(entity:IEntity):void
 		{
 			tickVisualQueue[entity] = 5;// тикнуть 5 раз
+		}
+
+		/**
+		 * Колбэк на создания нового ентити
+		 * @param newEntity
+		 */
+		private function onNewEntityCreated(newEntity:IEntity):void {
+			var hero:IEntity = PBE.lookupEntity("Hero");
+			if(hero)
+				IsoCameraController.getInstance().trackObject = hero.getProperty(new PropertyReference("@Spatial"));
 		}
 	}
 }

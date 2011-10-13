@@ -56,9 +56,14 @@
 		private function onESCPressed(event:KeyboardEvent):void {
 			if(event.keyCode == Keyboard.ESCAPE && selectedTemplate)
 			{
-				Config.game.setTemplateTool(null);
-				selectedTemplate = null;
+				cancelTool();
 			}
+		}
+
+		private function cancelTool():void
+		{
+			Config.game.setTemplateTool(null);
+			selectedTemplate = null;
 		}
 
 		private function onEntitySelected(event:EntitySelectedEvent):void {
@@ -92,6 +97,7 @@
 		{
 			if(editorModule)
 				editorModule.removeEventListener(Event.CHANGE, onChangeEditorEvent);
+			cancelTool();
 		}
 
 		]]>

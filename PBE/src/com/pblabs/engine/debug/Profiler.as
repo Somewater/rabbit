@@ -46,7 +46,7 @@ package com.pblabs.engine.debug
          {
             // Hack - if they press, then release insert, start/stop and dump
             // the profiler.
-            if(PBE.isKeyDown(InputKey.P))
+            if(PBE.isKeyDown(InputKey.F))
             {
                if(!enabled)
                {
