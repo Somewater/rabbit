@@ -77,6 +77,8 @@ namespace :srv do
 		puts ssh.cmd "qlementina27\n"
 		sleep(5)
 		puts ssh.cmd "touch tmp/restart.txt"
-		puts ssh.cmd "exit"
+		sleep(1)
+		puts ssh.cmd "exit" rescue "== EXITED =="
+		scp = Execution.new("scp -v #{ROOT}/bin-debug/*.swf root@asflash.ru:/srv/www/rabbit.asflash.ru/bin-debug/", /debug1\: Exit status 0/);
 	end
 end

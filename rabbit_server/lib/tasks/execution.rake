@@ -2,11 +2,11 @@ class Execution
 	require 'pty'
 	require 'expect'
 	
-	def initialize(cmd, pattern = nil, pw = nil)
+	def initialize(cmd, pattern = nil, pw = nil, timeout = 1)
 		@reader, @writer, @pid = PTY.spawn(cmd)
 		result=@reader.expect("")
 		@writer.puts pw if pw
-		@reader.expect(pattern ? pattern : "*4*~@%&", pattern ? 60 : 1)	
+		@reader.expect(pattern ? pattern : "*4*~@%&", pattern ? 60 : timeout)
 	end
 	
 	def cmd(command, timeout = 1, pattern = nil)
