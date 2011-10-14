@@ -17,23 +17,6 @@ package com.somewater.rabbit.debug {
 	public class DeleteTool extends EditorToolBase{
 
 		private static var _filter:ColorMatrixFilter;
-		private static function get red_filter():ColorMatrixFilter{
-			if(!_filter)
-			{
-				var matrix:Array = new Array();
-				matrix = matrix.concat([1, 0, 0, 0, 0]); // red
-				matrix = matrix.concat([0, 0, 0, 0, 0]); // green
-				matrix = matrix.concat([0, 0, 0, 0, 0]); // blue
-				matrix = matrix.concat([0, 0, 0, 1, 0]); // alpha
-				_filter = new ColorMatrixFilter(matrix);
-			}
-			return _filter;
-    }
-
-		/**
-		 * Ранее подсвеченные объекты
-		 */
-		private var lastDIsplayObjects:Array = []
 
 		public function DeleteTool(template:XML) {
 			super(template);
@@ -65,57 +48,20 @@ package com.somewater.rabbit.debug {
 
 		override public function clear():void {
 			super.clear();
-			clearLastDisplayObjects();
 		}
 
 
-		private function highlightObjects(tile:Point):void
-		{
-			clearLastDisplayObjects();
-			lastDIsplayObjects = isoSpatialsToDIsplayObjects(getObjectsUnderCursor(tile));
-			for each(var dor:DisplayObject in lastDIsplayObjects)
-				dor.filters = [red_filter];
-		}
-
-		private function getObjectsUnderCursor(tile:Point):Array
-		{
-			var result:Array = [];
-			IsoSpatialManager.instance.getObjectsUnderPoint(tile, result);
-			return result;
-		}
-
-
-		private function isoSpatialsToDIsplayObjects(spatials:Array):Array
-		{
-			var displayObjects:Array = [];
-			for each(var spatial:IsoSpatial in spatials)
+		override protected function get getHighlightFilter():* {
+			if(!_filter)
 			{
-				var isoRender:IsoRenderer = IsoRenderer(spatial.owner.lookupComponentByName("Render"))
-				if(isoRender.displayObject && displayObjects.indexOf(isoRender.displayObject) == -1)
-					displayObjects.push(isoRender.displayObject);
+				var matrix:Array = new Array();
+				matrix = matrix.concat([1, 0, 0, 0, 0]); // red
+				matrix = matrix.concat([0, 0.2, 0, 0, 0]); // green
+				matrix = matrix.concat([0, 0, 0.2, 0, 0]); // blue
+				matrix = matrix.concat([0, 0, 0, 1, 0]); // alpha
+				_filter = new ColorMatrixFilter(matrix);
 			}
-			return displayObjects;
-		}
-
-		private function isoSpatialsToEntities(spatials:Array):Array
-		{
-			var entities:Array = [];
-			for each(var spatial:IsoSpatial in spatials)
-			{
-				var entity:IEntity = spatial.owner;
-				if(entity && entities.indexOf(entity) == -1)
-					entities.push(entity);
-			}
-			return entities;
-		}
-
-		private function clearLastDisplayObjects():void
-		{
-		 	for each(var dor:DisplayObject in lastDIsplayObjects)
-			{
-				dor.filters = [];
-			}
-			lastDIsplayObjects = [];
+			return _filter;
 		}
 	}
 }

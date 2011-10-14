@@ -16,7 +16,7 @@ package com.somewater.rabbit.debug {
 		public function CreateTool(template:XML) {
 			super(template);
 
-			EditorModule.instance.setIcon(template..slug);
+			EditorModule.instance.setIcon(createIconFromSlug(template..slug));
 		}
 
 

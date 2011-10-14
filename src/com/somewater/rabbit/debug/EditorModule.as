@@ -78,6 +78,9 @@ package com.somewater.rabbit.debug {
 				tile.x = int(tile.x);
 				tile.y = int(tile.y);
 
+				if(tile.x < 0 || tile.y < 0 || tile.x >= IsoSpatialManager.instance.width || tile.y >= IsoSpatialManager.instance.height)
+					return;// точка за пределами карты
+
 				tool.onMove(tile);
 			}
 		}
@@ -88,6 +91,9 @@ package com.somewater.rabbit.debug {
 				var tile:Point = IsoSpatialManager.globalToIso(new Point(PBE.cachedMainStage.mouseX, PBE.cachedMainStage.mouseY));
 				tile.x = int(tile.x);
 				tile.y = int(tile.y);
+
+				if(tile.x < 0 || tile.y < 0 || tile.x >= IsoSpatialManager.instance.width || tile.y >= IsoSpatialManager.instance.height)
+					return;// точка за пределами карты
 
 				tool.onClick(tile);
 			}
@@ -123,13 +129,10 @@ package com.somewater.rabbit.debug {
 			}
 		}
 
-		internal function setIcon(slug:*):void
+		internal function setIcon(icon:DisplayObject):void
 		{
 			removeIcon();
-			if(slug is DisplayObject)
-				mouseIcon = slug
-			else
-				mouseIcon = createIconFromSlug(slug, 0.7);
+			mouseIcon = icon
 
 			stage.addChild(mouseIcon);
 			setListeners();
@@ -145,21 +148,6 @@ package com.somewater.rabbit.debug {
 		{
 			return PBE.cachedMainStage;
 		}
-
-		private function createIconFromSlug(slug:String, size:Number = 1):Bitmap
-		{
-			var mc:MovieClip = Lib.createMC(slug);
-			MovieClipHelper.stopAll(mc);
-		    var bounds:Rectangle = mc.getBounds(mc);
-			var bmp:BitmapData = new BitmapData(bounds.width, bounds.height, true, 0);
-			var m:Matrix = new Matrix(1, 0, 0, 1, -bounds.x, -bounds.y);
-            bmp.draw(mc, m);
-
-			var bitmap:Bitmap = new Bitmap(bmp);
-			bitmap.scaleX = bitmap.scaleY = size;
-			return bitmap;
-		}
-
 
 		private function setListeners():void
 		{
@@ -273,6 +261,14 @@ package com.somewater.rabbit.debug {
 		 * Колбэк на удаление инстансов
 		 */
 		internal function onEntitiesDeleted(entities:Array):void
+		{
+
+		}
+
+		/**
+		 * Колбэк на перемещение инстанса
+		 */
+		internal function onEntitieMoved(entity:IEntity):void
 		{
 
 		}

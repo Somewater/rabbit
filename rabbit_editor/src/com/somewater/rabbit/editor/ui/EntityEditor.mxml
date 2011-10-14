@@ -9,6 +9,7 @@
 		import com.pblabs.engine.entity.IEntity;
 		import com.pblabs.engine.entity.PropertyReference;
 		import com.somewater.rabbit.editor.events.EntitySelectedEvent;
+		import com.somewater.rabbit.iso.IsoSpatial;
 		import com.somewater.rabbit.xml.XmlController;
 		import com.somewater.rabbit.events.EditorEvent;
 		import com.somewater.rabbit.storage.Config;
@@ -116,11 +117,35 @@
 		}
 
 		private function onDeleteEditorEvent(event:EditorEvent):void {
-			throw "TODO: записать в xml, стартовать тул еще раз"
+			var entities:Array = event.data as Array;
+			var group:XML = ControlPanel.instance.level.group;
+			for each(var entity:IEntity in entities)
+			{
+				try
+				{
+					delete group.descendants("objectReference").(@hash == entity.hash)[0];
+				}catch(err:Error){
+					Config.game.logError(this, "onDeleteEditorEvent", "XML Node (hash='" + entity.hash + "') deleting error")
+				}
+			}
+			// стартовать тот же самый тул еще раз
+			onDeleteToolClicked();
 		}
 
 		private function onMoveEditorEvent(event:EditorEvent):void {
-			throw "TODO: записать в xml, стартовать тул еще раз"
+			var entity:IEntity = event.data as IEntity;
+			var group:XML = ControlPanel.instance.level.group;
+			try
+			{
+				var spatialPos:Point = (entity.lookupComponentByName("Spatial") as IsoSpatial).tile;
+				var ref:XML = XML(group.descendants("objectReference").(@hash == entity.hash)[0]);
+				ref.@x = spatialPos.x;
+				ref.@y = spatialPos.y;
+			}catch(err:Error){
+				Config.game.logError(this, "onMoveEditorEvent", "XML Node (hash='" + entity.hash + "') moving error")
+			}
+			// стартовать тот же самый тул еще раз
+			onMoveToolClicked();
 		}
 		]]>
 	</mx:Script>
