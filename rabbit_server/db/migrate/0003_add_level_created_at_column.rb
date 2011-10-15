@@ -1,6 +1,6 @@
 class AddLevelCreatedAtColumn < ActiveRecord::Migration
 	def self.up
-		add_column :levels, :created_at, :boolean, :default => true
+		add_column :levels, :created_at, :datetime
 	end
 
 	def self.down

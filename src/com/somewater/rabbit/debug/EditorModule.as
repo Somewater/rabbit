@@ -175,6 +175,8 @@ package com.somewater.rabbit.debug {
 			// вешаем листенер и старательно тикаем IsoCameraController
 			Config.application.addPropertyListener("game.pause", onGamePause);
 			Config.application.addPropertyListener("game.start", onGameStart);
+			if(!Config.game.isTicking)
+				onGamePause();
 
 			// вешаем кое-какие хоткеи
 			Config.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown)

@@ -10,19 +10,20 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 2) do
+ActiveRecord::Schema.define(:version => 3) do
 
   create_table "levels", :force => true do |t|
-    t.string  "description"
-    t.integer "number",      :default => 0
-    t.integer "version",     :default => 0
-    t.integer "width"
-    t.integer "height"
-    t.string  "author"
-    t.text    "conditions"
-    t.text    "group"
-    t.boolean "enabled",     :default => true
-    t.boolean "visible",     :default => true
+    t.string   "description"
+    t.integer  "number",      :default => 0
+    t.integer  "version",     :default => 0
+    t.integer  "width"
+    t.integer  "height"
+    t.string   "author"
+    t.text     "conditions"
+    t.text     "group"
+    t.boolean  "enabled",     :default => true
+    t.boolean  "visible",     :default => true
+    t.datetime "created_at"
   end
 
 end

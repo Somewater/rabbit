@@ -3,7 +3,8 @@
 	<% @levels.each_with_index do |level, index| %>
 		<tr style="background: #<%= COLORS[level.number % 10] %>"  width='100%'>
 				<td>
-					<%=level.head ? '<b>' : nil%><a href='<%= LEVELS_PATH %>?id=<%= level.id%>&act=<%= @showed && level.id == @showed.id ? nil : 'show' %>'>level #<%= level.number %> </a><small><i>(version=<%= level.version %>, id=<%= level.id %>)</i></small>
+					<%=level.head ? '<b>' : nil%><a href='<%= LEVELS_PATH %>?id=<%= level.id%>&act=<%= @showed && level.id == @showed.id ? nil : 'show' %>'>level #<%= level.number %> </a>
+								<small><i>(version=<%= level.version %>, id=<%= level.id %>; <%= (level.created_at ? level.created_at.to_formatted_s(:short) : nil) %> - <%= level.author %>)</i></small>
 				</td>
 				<td>
 					<%=level.head ? '<b>' : nil%><a href='<%= LEVELS_PATH %>?id=<%= level.id%>&act=<%= level.enabled ? 'disable' : 'enable' %>'><%= level.enabled ? 'enabled' : 'disabled' %></a>

@@ -33,16 +33,18 @@ package com.somewater.rabbit.debug {
 		override public function onClick(tile:Point):void {
 			highlightObjects(tile);
 
-			var entities:Array =isoSpatialsToEntities(getObjectsUnderCursor(tile));
+			var entities:Array = isoSpatialsToEntities(getObjectsUnderCursor(tile));
 			for each(var entity:IEntity in entities)
 			{
 				entity.destroy();
 			}
 
-			EditorModule.instance.onEntitiesDeleted(entities);
+			if(entities.length)
+				EditorModule.instance.onEntitiesDeleted(entities);
 
 			clear();
-			EditorModule.instance.dispatchEvent(new EditorEvent("delete", entities));
+			if(entities.length)
+				EditorModule.instance.dispatchEvent(new EditorEvent("delete", entities));
 		}
 
 

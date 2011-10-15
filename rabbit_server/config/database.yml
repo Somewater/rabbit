@@ -23,6 +23,7 @@ test:
   username: rabbit
   password: love4meand663
   encoding: utf8
+  reconnect: true
 
 stat:
   adapter: mysql
@@ -31,3 +32,4 @@ stat:
   username: rabbit
   password: love4meand663
   encoding: utf8
+  reconnect: true

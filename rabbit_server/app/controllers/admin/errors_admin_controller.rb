@@ -80,7 +80,7 @@ class ErrorsAdminController < AdminController::Base
 
 private
 	def create_form(inputs, act, error = nil)
-		"<p><h1><a href='/errors'>ERROR TRACKER #2</a></h1></p>
+		"<p><h1><a href='#{ERROR_PATH}'>ERROR TRACKER #2</a></h1></p>
 			<p><form width='100%' method='post'>
 			<table width='100%'>
 				#{ inputs.map{|input|

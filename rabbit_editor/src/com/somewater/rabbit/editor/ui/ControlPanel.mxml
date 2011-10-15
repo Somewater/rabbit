@@ -11,6 +11,7 @@
 		import com.somewater.rabbit.xml.XmlController;
 		import com.somewater.rabbit.storage.Config;
 		import com.somewater.rabbit.storage.LevelDef;
+		import com.somewater.utils.XMLUtils;
 
 		import mx.collections.ArrayCollection;
 		import mx.core.Application;
@@ -165,7 +166,7 @@
 						"operation":"create",
 
 						"number":selectedLevel.number,
-						"group":XML(selectedLevel.group).toXMLString(),
+						"group":processGroupXMLbeforeSave(selectedLevel.group).toXMLString(),
 						"description":selectedLevel.description,
 						"conditions":selectedLevel.conditionsToXML.toXMLString(),
 						"width":selectedLevel.width,
@@ -178,6 +179,22 @@
 						Config.application.message("Level save error:\n" + JSON.encode(err));
 					}
 				)
+		}
+
+		private function processGroupXMLbeforeSave(group:XML):XML
+		{
+			var xml:XML = group.copy();
+			delete(xml.@name);
+
+			// отсортировать чайлдов сначала по name, затем по хэшу
+			return XMLUtils.sortXMLByAttribute(xml, function(a:XML, b:XML):int{
+				var aName:String = a.@name;
+				var bName:String = b.@name;
+				if(aName == bName)
+					return String(a.@hash) < String(b.@hash) ? -1 : 1;
+				else
+					return aName < bName ? -1 : 1;
+			})
 		}
 
 		public function show():void {
