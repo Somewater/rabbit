@@ -18,10 +18,26 @@
 
 		private function onSomeChanged(arg:Event = null):void
 		{
-			level.number = uint(level_number.text);
+			level.number = level_number.value;
 			level.description = level_desc.text;
-			level.width = uint(level_width.text);
-			level.height = uint(level_height.text);
+			level.width = level_width.value;
+			level.height = level_height.value;
+
+			// воссоздаем xml conditions
+			var conditions:Array = [];
+			conditions['time'] = level_time.value;
+			if(level_fastTime.value)
+				conditions['fastTime'] = level_fastTime.value;
+			conditions['carrotMin'] = level_carrotMin.value;
+			conditions['carrotMiddle'] = level_carrotMiddle.value;
+			if(level_carrotMax.value)
+				conditions['carrotMax'] = level_carrotMax.value;
+
+			level.conditions = conditions;// переприсваиваем conditions
+
+			level_fastTime.errorString = (level_fastTime.value && level_fastTime.value >= level_time.value ? "error" : "");
+			level_carrotMiddle.errorString = (level_carrotMiddle.value <= level_carrotMin.value ? "error" : "");
+			level_carrotMax.errorString = (level_carrotMax.value && level_carrotMax.value <= level_carrotMiddle.value ? "error" : "");
 		}
 
 		public function clear():void
@@ -33,27 +49,61 @@
 	</mx:Script>
 	<mx:VBox width="100%" height="100%">
 		<mx:VBox id="holder" width="100%" height="100%" verticalGap="1">
-			<mx:Label text="id:"></mx:Label>
-			<mx:Label id="level_id" text="{level.id}"   width="100%"></mx:Label>
-			<mx:Spacer></mx:Spacer>
+			<mx:HBox>
+				<mx:Label text="id:" width="95"></mx:Label>
+				<mx:Label id="level_id" text="{level.id}"   width="55"></mx:Label>
+			</mx:HBox>
 
-			<mx:Label text="number:"></mx:Label>
-			<mx:TextInput id="level_number" change="onSomeChanged()" text="{level.number}" restrict="-0123456789" maxChars="3" width="100%"></mx:TextInput>
-			<mx:Spacer></mx:Spacer>
+			<mx:HBox horizontalGap="0">
+				<mx:Label text="number:" width="95"></mx:Label>
+				<mx:NumericStepper id="level_number" change="onSomeChanged()" value="{level.number}" maxChars="3" minimum="1" maximum="999" width="100%"></mx:NumericStepper>
+			</mx:HBox>
 
 			<mx:Label text="description:"></mx:Label>
+			<mx:Spacer height="-7"></mx:Spacer>
 			<mx:TextArea id="level_desc" change="onSomeChanged()" text="{level.description}" width="100%"></mx:TextArea>
 			<mx:Spacer></mx:Spacer>
 
-			<mx:Label text="width:"></mx:Label>
-			<mx:TextInput id="level_width" change="onSomeChanged()" text="{level.width}" restrict="0123456789" maxChars="2" width="100%"></mx:TextInput>
-			<mx:Spacer></mx:Spacer>
+			<mx:HBox horizontalGap="0">
+				<mx:Label text="width:" width="95"></mx:Label>
+				<mx:NumericStepper id="level_width" change="onSomeChanged()" value="{level.width}" minimum="5" maximum="99" maxChars="2" width="55"></mx:NumericStepper>
+			</mx:HBox>
 
-			<mx:Label text="height:"></mx:Label>
-			<mx:TextInput id="level_height" change="onSomeChanged()" text="{level.height}" restrict="0123456789" maxChars="2" width="100%"></mx:TextInput>
+			<mx:HBox horizontalGap="0">
+				<mx:Label text="height:" width="95"></mx:Label>
+				<mx:NumericStepper id="level_height" change="onSomeChanged()" value="{level.height}" minimum="5" maximum="99" maxChars="2" width="55"></mx:NumericStepper>
+			</mx:HBox>
 
-			<mx:Spacer></mx:Spacer>
+			<mx:Spacer height="15"></mx:Spacer>
 			<mx:Label text="CONDITIONS"></mx:Label>
+			<mx:HBox horizontalGap="0">
+				<mx:Label text="time (sec):" width="95" textAlign="right"></mx:Label>
+				<mx:NumericStepper id="level_time" value="{level.conditions['time']}"
+						minimum="1" maximum="999" width="55" maxChars="3" change="onSomeChanged()"></mx:NumericStepper>
+			</mx:HBox>
+			<mx:HBox horizontalGap="0">
+				<mx:Label text="fastTime (sec):" width="95" textAlign="right"></mx:Label>
+				<mx:NumericStepper id="level_fastTime" value="{level.conditions['fastTime'] ? level.conditions['fastTime'] : 0}"
+						minimum="0" maximum="999" width="55"  maxChars="3" change="onSomeChanged()"></mx:NumericStepper>
+				<mx:Label text="opt"></mx:Label>
+			</mx:HBox>
+
+			<mx:HBox horizontalGap="0">
+				<mx:Label text="carrotMin:" width="95" textAlign="right"></mx:Label>
+				<mx:NumericStepper id="level_carrotMin" value="{level.conditions['carrotMin'] ? level.conditions['carrotMin'] : level.conditions['carrot']}"
+						minimum="1" maximum="99" width="55" maxChars="2" change="onSomeChanged()"></mx:NumericStepper>
+			</mx:HBox>
+			<mx:HBox horizontalGap="0">
+				<mx:Label text="carrotMiddle:" width="95" textAlign="right"></mx:Label>
+				<mx:NumericStepper id="level_carrotMiddle" value="{level.conditions['carrotMiddle']}"
+						minimum="2" maximum="99" width="55" maxChars="2" change="onSomeChanged()"></mx:NumericStepper>
+			</mx:HBox>
+			<mx:HBox horizontalGap="0">
+				<mx:Label text="carrotMax:" width="95" textAlign="right"></mx:Label>
+				<mx:NumericStepper id="level_carrotMax" value="{level.conditions['carrotMax'] ? level.conditions['carrotMax'] : 0}"
+						minimum="0" maximum="99" width="55" maxChars="2" change="onSomeChanged()"></mx:NumericStepper>
+				<mx:Label text="opt"></mx:Label>
+			</mx:HBox>
 		</mx:VBox>
 	</mx:VBox>
 </mx:Canvas>

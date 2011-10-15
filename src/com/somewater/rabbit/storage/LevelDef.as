@@ -28,6 +28,7 @@ package com.somewater.rabbit.storage
 		public function LevelDef(xml:XML)
 		{
 			id = xml.attribute("id");
+			number = xml.attribute("number");
 			if(id == 0)
 				id = -Math.random() * 1000;
 			

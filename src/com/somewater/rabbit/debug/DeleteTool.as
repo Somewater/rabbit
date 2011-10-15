@@ -18,10 +18,19 @@ package com.somewater.rabbit.debug {
 
 		private static var _filter:ColorMatrixFilter;
 
-		public function DeleteTool(template:XML) {
-			super(template);
+		public function DeleteTool(template:XML, objectReference:XML = null) {
+			super(template, objectReference);
 
-			EditorModule.instance.setIcon(new DeleteToolIcon());
+			if(objectReference)
+			{
+				// просто удалить указанного и самоудалиться
+				var entity:IEntity = findEntityByHash(objectReference.@hash);
+				entity.destroy();
+				EditorModule.instance.onEntitiesDeleted([entity]);
+				clear();
+			}
+			else
+				EditorModule.instance.setIcon(new DeleteToolIcon());
 		}
 
 

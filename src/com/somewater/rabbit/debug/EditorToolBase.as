@@ -1,9 +1,12 @@
 package com.somewater.rabbit.debug {
+	import com.pblabs.engine.PBE;
+	import com.pblabs.engine.core.PBGroup;
 	import com.pblabs.engine.entity.IEntity;
 	import com.somewater.control.IClear;
 	import com.somewater.rabbit.iso.IsoRenderer;
 	import com.somewater.rabbit.iso.IsoSpatial;
 	import com.somewater.rabbit.iso.scene.IsoSpatialManager;
+	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.utils.MovieClipHelper;
 
@@ -22,14 +25,16 @@ package com.somewater.rabbit.debug {
 
 		public var cleared:Boolean = false;
 		protected var template:XML;
+		protected var objectReference:XML;
 
 		/**
 		 * Ранее подсвеченные объекты
 		 */
 		private var lastDIsplayObjects:Array = []
 
-		public function EditorToolBase(template:XML = null) {
+		public function EditorToolBase(template:XML = null, objectReference:XML = null) {
 			this.template = template;
+			this.objectReference = objectReference;
 		}
 
 		public function onMove(tile:Point):void
@@ -47,9 +52,24 @@ package com.somewater.rabbit.debug {
 			cleared = true;
 
 			template = null;
+			objectReference = null;
 			EditorModule.instance.setTemplateTool(null);
 
 			clearLastDisplayObjects();
+		}
+
+		protected function findEntityByHash(hash:String):IEntity
+		{
+			var currentGroup:PBGroup = PBE.lookup(Config.game.level.groupName) as PBGroup
+			if(currentGroup)
+			{
+				for (var i:int = 0; i < currentGroup.length; i++) {
+					var entity:IEntity = currentGroup.getItem(i) as IEntity;
+					if(entity && entity.hash == hash)
+						return entity;
+				}
+			}
+			return null;
 		}
 
 		protected function highlightObjects(tile:Point):void

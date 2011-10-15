@@ -282,7 +282,7 @@ package com.pblabs.engine.core
 			if (_things[name])
 			{
 				Logger.warn(this, "AddXML", "An XML object description with name " + name + " has already been added.");
-				return;
+				//return; // FIX 15.10.11: refresh level, if level xml modified
 			}
 
 			var thing:ThingReference=new ThingReference();

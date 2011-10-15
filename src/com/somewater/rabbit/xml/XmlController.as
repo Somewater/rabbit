@@ -1,4 +1,5 @@
 package com.somewater.rabbit.xml {
+	import com.somewater.rabbit.debug.EntityDef;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
 
@@ -35,23 +36,34 @@ package com.somewater.rabbit.xml {
 	public function calculateAliens(level:LevelDef):int
 	{
 		var aliens:int = 0;
-		var groupXML:XML = level.group;
-		if(this.description == null)
-			getDescription();
-		var descByName:Dictionary = descriptionByName;
-		for each(var objectReference:XML in groupXML.objectReference.*)
-		{
-			// враг это тот, у кого есть компонент "Attack" с выставленным свойством "victimName" == "Hero"
-			for each(var component:XML in objectReference.*)
-			{
+		map(level, function(template:XML, objectReference:XML):Boolean{
+			iterateComponents(template, function(component:XML):Boolean{
 				if(String(component.@name) == "Attack" && String(component.victimName) == "Hero")
 				{
 					aliens++;
-					break;
+					return true
 				}
-			}
-		}
+				return false;
+			})
+			return false;// на самоом деле нам нужен просто итератор а не map. Не заставляем делать модели EntityDef
+		});
 		return aliens;
+	}
+
+	/**
+	 * Посчитать, сколько морковки на уровне
+	 * @param level
+	 * @return
+	 */
+	public function calculateCarrots(level:LevelDef):int
+	{
+		var carrots:int = 0;
+		map(level, function(template:XML, objectReference:XML):Boolean{
+			if(String(template.@templates).split(",").indexOf("Carrot") != -1)
+				carrots++;
+			return false;// на самоом деле нам нужен просто итератор а не map. Не заставляем делать модели EntityDef
+		});
+		return carrots;
 	}
 
 	public function getNewLevel():LevelDef
@@ -64,36 +76,54 @@ package com.somewater.rabbit.xml {
 	{
 		if(!description)
 		{
-			var xml:XML = Config.loader.getXML("Description");
-			var xmlArray:Array = [];
-			var allDescription:Array = [];
-			var child:XML;
-			var name:String;
-			for each(child in xml.*)
-			{
-				xmlArray[child.@name] = child;
-			}
-			// решаем зависимости
-			for(name in xmlArray)
-			{
-				child = XML(xmlArray[name]);
-				//trace("CHILD:" + child + "\n");
-				allDescription[name] = initiateXML(new XML(<template></template>), name, xmlArray);
-				allDescription[name].@name = name;
-				//trace("TEMPLATE " + name + ":\n" + description[name] + "\n\n");
-			}
-
-			description = [];
-			descriptionByName = new Dictionary();
-
-			for (name in allDescription) {
-				var template:XML = allDescription[name];
-				if(EXCLUDED_TEMPLATES.indexOf(name) != -1) continue;
-				description.push(template);
-				descriptionByName[name] = template;
-			}
+			createDescription();
 		}
 		return description;
+	}
+
+	public function getDescriptionByName():Dictionary
+	{
+		if(!descriptionByName)
+		{
+			createDescription();
+		}
+		return descriptionByName;
+	}
+
+	/**
+	 * Создает полное описание темплейтов и следующие дополнительные атрибуты:
+	 * @templates = "RabbitBase,Animal,Iso" все темплейты, использованные в построении данного (заканчивая базовым)
+	 */
+	private function createDescription():void
+	{
+		var xml:XML = Config.loader.getXML("Description");
+		var xmlArray:Array = [];
+		var allDescription:Array = [];
+		var child:XML;
+		var name:String;
+		for each(child in xml.*)
+		{
+			xmlArray[child.@name] = child;
+		}
+		// решаем зависимости
+		for(name in xmlArray)
+		{
+			child = XML(xmlArray[name]);
+			//trace("CHILD:" + child + "\n");
+			allDescription[name] = initiateXML(new XML(<template></template>), name, xmlArray);
+			allDescription[name].@name = name;
+			//trace("TEMPLATE " + name + ":\n" + description[name] + "\n\n");
+		}
+
+		description = [];
+		descriptionByName = new Dictionary();
+
+		for (name in allDescription) {
+			var template:XML = allDescription[name];
+			if(EXCLUDED_TEMPLATES.indexOf(name) != -1) continue;
+			description.push(template);
+			descriptionByName[name] = template;
+		}
 	}
 
 	private function initiateXML(processedXML:XML, templateName:String, descriptionRef:Array):XML
@@ -107,6 +137,8 @@ package com.somewater.rabbit.xml {
 				var nextTemplateName:String = template.@template;
 				if(nextTemplateName && nextTemplateName.length)
 				{
+					var templates:String = processedXML.@templates
+					processedXML.@templates = (templates && templates.length ? templates : templateName) + "," + nextTemplateName;
 					initiateXML(processedXML, nextTemplateName, descriptionRef);
 				}
 				for each(var component:XML in template.*)
@@ -170,6 +202,48 @@ package com.somewater.rabbit.xml {
 				xml.replace(name, field);
 			else
 				xml.appendChild(field);
+		}
+	}
+
+	/**
+	 * Итератор по персонажам уровня
+	 * @param level
+	 * @param callback (template:XML, objectReference:XML):Boolean надо ли добавить entity в результирующий массив
+	 * @return array of EntityDef
+	 */
+	private function map(level:LevelDef, callback:Function):Array
+	{
+		var arr:Array = [];
+		var groupXML:XML = level.group;
+		if(this.descriptionByName == null)
+			getDescription();
+		var descByName:Dictionary = descriptionByName;
+		for each(var objectReference:XML in groupXML.*)
+		{
+			var template:XML = descByName[String(objectReference.@name)];
+			if(callback(template, objectReference))
+			{
+				var ed:EntityDef = new EntityDef()
+				ed.template = template;
+				ed.objectReference = objectReference;
+				arr.push(ed);
+			}
+		}
+		return arr;
+	}
+
+
+	/**
+	 * Итератор компонентов темплейта
+	 * @param template
+	 * @param callback (component:XML):Boolean - возвращает true, если надо закончить итерации
+	 */
+	private function iterateComponents(template:XML, callback:Function):void
+	{
+		for each(var component:XML in template.*)
+		{
+			if(callback(component))
+				break;
 		}
 	}
 }

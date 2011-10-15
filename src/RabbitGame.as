@@ -236,12 +236,12 @@ package
 			}
 		}
 
-		public function setTemplateTool(toolname:String, template:XML = null):IEventDispatcher
+		public function setTemplateTool(toolname:String, template:XML = null, objectReference:XML = null):IEventDispatcher
 		{
 			CONFIG::debug
 			{
 				pause();
-				return EditorModule.instance.setTemplateTool(toolname, template);
+				return EditorModule.instance.setTemplateTool(toolname, template, objectReference);
 			}
 			return null;
 		}

@@ -72,13 +72,24 @@ package com.somewater.rabbit.managers
 				conditionsRef[key] = Config.game.level.conditions[key];
 			if(conditionsRef["time"] == null)
 				conditionsRef["time"] = 60;
+
+			if(conditionsRef["carrotMax"] == null)
+				conditionsRef["carrotMax"] = XmlController.instance.calculateCarrots(Config.game.level);
+			if(conditionsRef['carrotMiddle'] == null)
+				conditionsRef['carrotMiddle'] = conditionsRef['carrotMax'] - 1;
+			if(conditionsRef['carrotMin'] == null)
+				conditionsRef['carrotMin'] = conditionsRef['carrot'] ? conditionsRef['carrot'] : conditionsRef['carrotMiddle'] - 1;
 			
 			conditionsRef["time"] *= 1000;// расчеты в мс
+			if(conditionsRef['fastTime'])
+				conditionsRef["fastTime"] *= 1000;// расчеты в мс
+
 			_levelFinished = false;
 			rabbitInited = false;
 
+			// что может являться причиной успешного завершения уровня
 			completeConditions = [];
-			completeConditions["time"] = true;
+			completeConditions["time"] = true; // в том смысле, что НЕ(время закончилось)
 			completeConditions["carrotMax"] = true;
 		}
 			

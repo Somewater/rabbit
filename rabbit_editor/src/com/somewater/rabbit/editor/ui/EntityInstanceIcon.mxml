@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" backgroundColor="#FFCCCC"
+		width="100%" height="35"
+		verticalScrollPolicy="off"
+		horizontalScrollPolicy="off"
+		creationComplete="init();">
+	<mx:Script>
+		<![CDATA[
+		import com.somewater.rabbit.editor.events.EntitySelectedEvent;
+		import com.somewater.rabbit.storage.Config;
+		import com.somewater.rabbit.storage.LevelDef;
+		import com.somewater.rabbit.storage.Lib;
+		import com.somewater.utils.MovieClipHelper;
+
+		import flash.display.MovieClip;
+
+		private var template:XML;
+		private var objectReference:XML;
+
+
+		private function init():void {
+			template = data['template'];
+			objectReference = data['objectReference']
+			template_name.text = template.@name;
+			template_icon.addChild(createIconFromSlug(template..slug));
+			object_reference_x.text = objectReference.@x;
+			object_reference_y.text = objectReference.@y;
+		}
+
+		private function onRollOut():void {
+			var ev:EntitySelectedEvent = new EntitySelectedEvent(template, objectReference);
+			ev.data = {"command":"deselect"};
+			dispatchEvent(ev);
+		}
+
+		private function onRollOver():void {
+			var ev:EntitySelectedEvent = new EntitySelectedEvent(template, objectReference);
+			ev.data = {"command":"select"};
+			dispatchEvent(ev);
+		}
+
+		private function onButtonDeleteClick():void {
+			var ev:EntitySelectedEvent = new EntitySelectedEvent(template, objectReference);
+			ev.data = {"command":"delete"};
+			dispatchEvent(ev);
+		}
+
+		private function onCoordinateChanged():void
+		{
+			var ev:EntitySelectedEvent = new EntitySelectedEvent(template, objectReference);
+			ev.data = {"command":"move", "x":int(object_reference_x.text), "y":int(object_reference_y.text)};
+			dispatchEvent(ev);
+		}
+
+		private function createIconFromSlug(slug:String):Bitmap
+		{
+			var mc:MovieClip = Lib.createMC(slug);
+			MovieClipHelper.stopAll(mc);
+		    var bounds:Rectangle = mc.getBounds(mc);
+			var bmp:BitmapData = new BitmapData(bounds.width, bounds.height, true, 0);
+			var m:Matrix = new Matrix(1, 0, 0, 1, -bounds.x, -bounds.y);
+            bmp.draw(mc, m);
+
+			var bitmap:Bitmap = new Bitmap(bmp);
+			bounds = bmp.rect;
+			bitmap.scaleX = bitmap.scaleY = Math.min(template_icon.width / bounds.width, template_icon.height / bounds.height);
+
+			bitmap.x = -bounds.x + (template_icon.width - bitmap.width) * 0.5;
+			bitmap.y = -bounds.y + (template_icon.height - bitmap.height) * 0.5;
+
+			return bitmap;
+		}
+		]]>
+	</mx:Script>
+
+	<mx:Button width="100%" height="100%" id="button" rollOver="onRollOver()" rollOut="onRollOut()">
+	</mx:Button>
+
+	<mx:Button width="30" height="18" fontSize="8" id="button_delete" right="0" label="x" color="#FF0000" click="onButtonDeleteClick()" rollOver="onRollOver()">
+	</mx:Button>
+
+	<mx:UIComponent id="template_icon" width="80%" height="25" mouseEnabled="false" mouseChildren="false" alpha="0.8" right="0">
+	</mx:UIComponent>
+
+	<mx:Label id="template_name" mouseEnabled="false" mouseChildren="false"></mx:Label>
+
+	<mx:HBox y="15" horizontalGap="-5">
+		<mx:Label id="object_reference_x_lbl" mouseEnabled="false" mouseChildren="false" text="x:"></mx:Label>
+		<mx:TextInput id="object_reference_x" fontSize="8" width="20" height="18" maxChars="2"
+					  restrict="0123456789" change="onCoordinateChanged()"></mx:TextInput>
+
+		<mx:Spacer width="11"></mx:Spacer>
+
+		<mx:Label id="object_reference_y_lbl" mouseEnabled="false" mouseChildren="false" text="y:"></mx:Label>
+		<mx:TextInput id="object_reference_y" fontSize="8" width="20" height="18" maxChars="2"
+					  restrict="0123456789" change="onCoordinateChanged()"></mx:TextInput>
+	</mx:HBox>
+</mx:Canvas>

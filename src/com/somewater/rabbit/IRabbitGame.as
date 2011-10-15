@@ -44,6 +44,6 @@ package com.somewater.rabbit
 
 		function initializeEditorModule():void
 
-		function setTemplateTool(toolname:String, template:XML = null):IEventDispatcher
+		function setTemplateTool(toolname:String, template:XML = null, objectReference:XML = null):IEventDispatcher
 	}
 }

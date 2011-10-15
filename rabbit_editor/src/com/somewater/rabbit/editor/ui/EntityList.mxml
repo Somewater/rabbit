@@ -3,18 +3,121 @@
 		width="100%" height="100%"
 		verticalScrollPolicy="off"
 		horizontalScrollPolicy="off"
-		creationComplete="init();">
+		creationComplete="init();" implements="com.somewater.control.IClear">
 	<mx:Script>
 		<![CDATA[
+		import com.pblabs.engine.entity.IEntity;
+		import com.somewater.rabbit.editor.events.EntitySelectedEvent;
+		import com.somewater.rabbit.iso.IsoRenderer;
+		import com.somewater.rabbit.storage.Config;
 		import com.somewater.rabbit.storage.LevelDef;
+		import com.somewater.rabbit.xml.XmlController;
 
-		private var level:LevelDef
+		private var level:LevelDef;
 
-		private function init():void
-		{
+		private var selectedEntities:Array = [];
+
+		private function init():void {
 			level = data as LevelDef;
+			var group:XML = level.group;
+			var descriptionByName:Dictionary = XmlController.instance.getDescriptionByName();
+			for each(var objectReference:XML in group.*) {
+				var template:XML = descriptionByName[String(objectReference.@name)];
+				var icon:EntityInstanceIcon = new EntityInstanceIcon();
+				icon.data = {"template":template, "objectReference":objectReference};
+				icon.addEventListener(EntitySelectedEvent.ENTITY_SELECTED_EVENT, onEntitySelected)
+
+				holder.addChild(icon);
+			}
 		}
 
+		public function clear():void {
+			onEntitySelected_byDeselect(null);
+		}
+
+		private function onEntitySelected(event:EntitySelectedEvent):void {
+			switch (event.data.command) {
+				case "delete":
+					onEntitySelected_byDeselect();
+					onEntitySelected_byDelete(event);
+					break;
+				case "select":
+					onEntitySelected_bySelected(event);
+					break;
+				case "deselect":
+					onEntitySelected_byDeselect(event);
+					break;
+				case "move":
+					onEntitySelected_byDeselect();
+					onEntitySelected_byMove(event);
+					break;
+				default:
+				// hello
+			}
+		}
+
+		private function onEntitySelected_bySelected(event:EntitySelectedEvent):void {
+			// проверить, что такая ентити не была выделена ранее
+			for each (var objectReference:XML in selectedEntities) {
+				if(String(objectReference.@hash) == String(event.objectReference.@hash))
+					return;// уже под выделением
+			}
+			Config.game.setTemplateTool("select_tool", event.template, event.objectReference);
+			selectedEntities.push(event.objectReference);
+		}
+
+		/**
+		 * Если event == null, то филтры удаляются со всех выделений
+		 * @param event
+		 */
+		private function onEntitySelected_byDeselect(event:EntitySelectedEvent = null):void {
+			var i:int = 0;
+			while (i < selectedEntities.length) {
+				var objectReference:XML = selectedEntities[i];
+				if (event == null || String(objectReference.@hash) == String(event.objectReference.@hash)) {
+					Config.game.setTemplateTool("deselect_tool", null, objectReference);
+					selectedEntities.splice(i, 1);
+				}
+				else
+					i++;
+			}
+		}
+
+		private function onEntitySelected_byMove(event:EntitySelectedEvent):void {
+			var objectReference:XML = level.group.descendants("objectReference").(@hash == String(event.objectReference.@hash))[0];
+			if(objectReference)
+			{
+				objectReference.@x = event.data['x'];
+				objectReference.@y = event.data['y'];
+
+				Config.game.setTemplateTool("move", event.template, objectReference);
+			}
+			else
+				throw new Error("Can`t find entity: " + event.objectReference);
+		}
+
+		private function onEntitySelected_byDelete(event:EntitySelectedEvent):void {
+			var objectReference:XML = level.group.descendants("objectReference").(@hash == String(event.objectReference.@hash))[0]
+			delete level.group.descendants("objectReference").(@hash == String(event.objectReference.@hash))[0];
+			var icon:EntityInstanceIcon = event.target as EntityInstanceIcon;
+			icon.parent.removeChild(icon);
+
+			Config.game.setTemplateTool("delete", event.template, objectReference);
+		}
+
+		private function findObjectReferenceByHash(hash:String):XML
+		{
+			var group:XML = level.group;
+			for each(var objectReference:XML in group.*) {
+				if(String(objectReference.@hash) == hash)
+					return objectReference;
+			}
+			return null;
+		}
 		]]>
 	</mx:Script>
+	<mx:Canvas horizontalScrollPolicy="off" width="100%" height="100%">
+		<mx:VBox id="holder" width="100%" height="100%">
+		</mx:VBox>
+	</mx:Canvas>
 </mx:Canvas>

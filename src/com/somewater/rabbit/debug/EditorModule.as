@@ -40,9 +40,13 @@ package com.somewater.rabbit.debug {
 	public class EditorModule extends EventDispatcher{
 
 		private static var _instance:EditorModule;
-		private static const tools:Object = {"create":CreateTool, "delete":DeleteTool, "move":MoveTool}
+		private static const tools:Object = {	"create":CreateTool,
+												"delete":DeleteTool,
+												"move":MoveTool,
+												"select_tool":SelectTool,
+												"deselect_tool":DeselectTool
+											}
 
-		private var template:XML;
 		private var mouseIcon:DisplayObject;
 		private var mouseListeners:Boolean = false;
 		private var _inited:Boolean = false;
@@ -99,7 +103,7 @@ package com.somewater.rabbit.debug {
 			}
 		}
 
-		public function setTemplateTool(toolName:String, template:XML = null):IEventDispatcher
+		public function setTemplateTool(toolName:String, template:XML = null, objectReference:XML = null):IEventDispatcher
 		{
 			if(tool)
 			{
@@ -108,25 +112,29 @@ package com.somewater.rabbit.debug {
 				if(!tool.cleared)
 					tool.clear();
 				tool = null;
-				this.template = null;
 			}
 
 			if(toolName == null)
 			{
 				// просто выключить курсор
-				return null;
 			}
 			else
 			{
 				var toolClass:Class = tools[toolName];
-				tool = new toolClass(template);
-				this.template = template;
-				setListeners();
+				tool = new toolClass(template, objectReference);
+				if(tool.cleared) // если тул самоудалился после создания
+				{
+					tool = null;
+				}
+				else
+				{
+					setListeners();
 
-				onMouseMove(null);
-
-				return this;
+					onMouseMove(null);
+				}
 			}
+
+			return this;
 		}
 
 		internal function setIcon(icon:DisplayObject):void
@@ -198,7 +206,8 @@ package com.somewater.rabbit.debug {
 		private function onGamePause():void
 		{
 			if(!Config.stage.hasEventListener(Event.ENTER_FRAME))
-				Config.stage.addEventListener(Event.ENTER_FRAME, onTickDuringPause)
+				Config.stage.addEventListener(Event.ENTER_FRAME, onTickDuringPause);
+			setHeroTrackObject(false);
 		}
 
 		/**
@@ -207,6 +216,7 @@ package com.somewater.rabbit.debug {
 		private function onGameStart():void
 		{
 			Config.stage.removeEventListener(Event.ENTER_FRAME, onTickDuringPause)
+			setHeroTrackObject(true);
 		}
 
 		/**
@@ -254,9 +264,8 @@ package com.somewater.rabbit.debug {
 		 * @param newEntity
 		 */
 		internal function onNewEntityCreated(newEntity:IEntity):void {
-			var hero:IEntity = PBE.lookupEntity("Hero");
-			if(hero)
-				IsoCameraController.getInstance().trackObject = hero.getProperty(new PropertyReference("@Spatial"));
+			if(Config.game.isTicking)
+				setHeroTrackObject(true);
 		}
 
 		/**
@@ -272,7 +281,23 @@ package com.somewater.rabbit.debug {
 		 */
 		internal function onEntitieMoved(entity:IEntity):void
 		{
+			tickVisualComponents(entity);
+		}
 
+
+		/**
+		 * Заставить камеру следить за Hero (если он имеется), либо лотменить такое поведение
+		 */
+		private function setHeroTrackObject(set:Boolean):void
+		{
+			if(set)
+			{
+				var hero:IEntity = PBE.lookupEntity("Hero");
+				if(hero)
+					IsoCameraController.getInstance().trackObject = hero.getProperty(new PropertyReference("@Spatial"));
+			}
+			else
+				IsoCameraController.getInstance().trackObject = null;
 		}
 	}
 }

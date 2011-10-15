@@ -22,10 +22,19 @@ package com.somewater.rabbit.debug {
 
 		private var selectedEntity:IEntity;
 
-		public function MoveTool(template:XML) {
-			super(template);
+		public function MoveTool(template:XML, objectReference:XML = null) {
+			super(template, objectReference);
 
-			EditorModule.instance.setIcon(new MoveToolIcon(template ? template..slug : null));
+			if(objectReference)
+			{
+				// просто переместить указанного и самоудалиться
+				var entity:IEntity = findEntityByHash(objectReference.@hash);
+				(entity.lookupComponentByName("Spatial") as IsoSpatial).tile = new Point(int(objectReference.@x), int(objectReference.@y));
+				EditorModule.instance.onEntitieMoved(entity);
+				clear();
+			}
+			else
+				EditorModule.instance.setIcon(new MoveToolIcon(template ? template..slug : null));
 		}
 
 

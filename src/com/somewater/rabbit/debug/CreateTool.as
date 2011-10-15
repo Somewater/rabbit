@@ -16,8 +16,8 @@ package com.somewater.rabbit.debug {
 
 		private static var _filter:ColorMatrixFilter;
 
-		public function CreateTool(template:XML) {
-			super(template);
+		public function CreateTool(template:XML, objectReference:XML = null) {
+			super(template, objectReference);
 
 			EditorModule.instance.setIcon(createIconFromSlug(template..slug));
 		}

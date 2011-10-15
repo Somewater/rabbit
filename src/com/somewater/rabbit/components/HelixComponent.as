@@ -106,7 +106,7 @@ package com.somewater.rabbit.components
 			if(shell)
 				return;
 			
-			if(owner.lookupComponentByName("Spatial"))
+			if(owner && owner.lookupComponentByName("Spatial"))
 			{
 				var position:Point = IsoSpatial(owner.lookupComponentByName("Spatial")).tile;
 				

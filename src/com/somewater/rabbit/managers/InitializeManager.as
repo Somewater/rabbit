@@ -269,12 +269,13 @@ package com.somewater.rabbit.managers
 				
 				if(PBE.templateManager.getXML(lastLevelGroup) == null)
 					PBE.templateManager.addXML(group, lastLevelGroup, 0);
+				
+				CONFIG::debug
+				{
+					PBE.templateManager.addXML(group, lastLevelGroup, 0);
+				}
+				
 				PBE.templateManager.instantiateGroup(lastLevelGroup);
-			}
-			else if(level.group is String)
-			{
-				lastLevelGroup = level.group;
-				PBE.templateManager.instantiateGroup(level.group);
 			}
 			else
 				throw new Error("Level #" + level.id + " instantiation error. Wrong type of group field");
