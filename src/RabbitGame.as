@@ -113,8 +113,7 @@ package
 			// асинхронный вызов функци, т.к. иначе не дотикают неокторые контроллеры в processManager
 			// (он остановится не мгновенно, а доведет до конца текущий тик)
 			if(!supressLevelsPageTransition)
-				addEventListener(Event.ENTER_FRAME, function(e:Event):void{
-					e.currentTarget.removeEventListener(e.type, arguments.callee);
+				Config.callLater(function():void{
 					Config.application.startPage("levels");
 				});
 		}
@@ -151,8 +150,7 @@ package
 		private function loadXML():void
 		{
 			var paths:Object = {
-					"LevelPack":Config.loader.getFilePath("LevelPack")
-					,"Description":Config.loader.getFilePath("Description")
+					"Description":Config.loader.getFilePath("Description")// вообщето обязано (!) быть загружено ранее
 					,"Managers":Config.loader.getFilePath("Managers")
 			};
 			var pathsToLoad:Array = [];

@@ -13,10 +13,14 @@ package
 	import com.somewater.rabbit.application.OrangeGround;
 	import com.somewater.rabbit.application.PageBase;
 	import com.somewater.rabbit.application.WindowBackground;
+	import com.somewater.rabbit.application.windows.LevelFinishFailWindow;
+	import com.somewater.rabbit.application.windows.LevelFinishSuccessWindow;
+	import com.somewater.rabbit.application.windows.LevelStartWindow;
 	import com.somewater.rabbit.application.windows.PauseMenuWindow;
 	import com.somewater.rabbit.net.AppServerHandler;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
+	import com.somewater.rabbit.storage.LevelInstanceDef;
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.rabbit.storage.UserProfile;
 	import com.somewater.rabbit.xml.XmlController;
@@ -203,6 +207,28 @@ package
 			_levelsByNumber[level.number] = level;
 		}
 
+		public function levelStartMessage(level:LevelDef):void
+		{
+			new LevelStartWindow(level);
+		}
+
+		public function levelFinishMessage(levelInstance:LevelInstanceDef):void
+		{
+			if(levelInstance.success)
+			{
+				new LevelFinishSuccessWindow(levelInstance);
+			}
+			else
+			{
+				new LevelFinishFailWindow(levelInstance);
+			}
+		}
+
+		public function addFinishedLevel(levelInstance:LevelInstanceDef):void
+		{
+			UserProfile.instance.addLevelInstance(levelInstance);
+		}
+
 		
 		private function onInitResponseComplete(response:Object):void
 		{
@@ -266,11 +292,22 @@ package
 		/**
 		 * Запускает игру, если та еще не была запущена
 		 * в т.ч., добавляет игру на сцену
+		 * если аргумент не задан, вычисляется и запускается следующий непройденный (и доступный) уровень
 		 */
-		public function startGame(level:LevelDef):void
+		public function startGame(level:LevelDef = null):void
 		{
+			if(level == null)
+			{
+				var levelNumber:int = UserProfile.instance.levelNumber;
+				level = getLevelByNumber(levelNumber + 1);
+				if(level == null)
+					level = getLevelByNumber(levelNumber);
+				if(level == null)
+					level = Config.application.levels[0];
+			}
+
 			clearContent();
-			PopUpManager.showSlash();
+			showSlash(-1);
 			
 			var game:DisplayObject = Config.game as DisplayObject;
 			_content.addChild(game);
@@ -292,7 +329,8 @@ package
 			function onGameStarted():void
 			{
 				_content.addChild(new GameGUI());
-				setTimeout(PopUpManager.hideSplash, 500);
+				hideSplash();
+				levelStartMessage(level);
 			}
 		}
 		private var __gameAlreadyRun:Boolean = false;

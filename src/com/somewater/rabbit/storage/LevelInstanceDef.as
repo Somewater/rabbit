@@ -24,7 +24,7 @@ package com.somewater.rabbit.storage
 		public var carrotHarvested:int;
 		public var aliensPassed:int;// сколько врагов было на уровне (и, соответственно, пройдено)
 		public var timeSpended:int;// число миллисекунд с момента старта игры
-		public var stars:int = 0;// Сколько звездочек получено за прохождение уровня (не менее 1, если уровень завершен успешно)
+		public var stars:int = 0;// Сколько звездочек получено за прохождение уровня (минимум 1, если уровень завершен успешно)
 		public var bonuses:Array = [];// бонусы за прохождение уровня
 		
 		public function LevelInstanceDef(data:Object=null)

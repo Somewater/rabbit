@@ -71,13 +71,7 @@ package com.somewater.rabbit.application
 			{
 				case 	Lang.t("START_GAME"):
 				case 	Lang.t("CONTINUE_GAME"):
-						var levelNumber:int = UserProfile.instance.levelNumber;
-						var nextLevel:LevelDef = Config.application.getLevelByNumber(levelNumber + 1);
-						if(nextLevel == null)
-							nextLevel = Config.application.getLevelByNumber(levelNumber);
-						if(nextLevel == null)
-							nextLevel = Config.application.levels[0];
-					 	Config.application.startGame(nextLevel);
+					 	Config.application.startGame();
 						break;
 				case Lang.t("LEVEL_SELECTION"):
 						Config.application.startPage("levels");

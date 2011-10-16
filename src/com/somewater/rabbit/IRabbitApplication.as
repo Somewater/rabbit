@@ -1,7 +1,8 @@
 package com.somewater.rabbit
 {
 	import com.somewater.rabbit.storage.LevelDef;
-	
+	import com.somewater.rabbit.storage.LevelInstanceDef;
+
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 
@@ -15,6 +16,12 @@ package com.somewater.rabbit
 		function run():void
 			
 		function message(msg:String):Sprite
+
+		function levelStartMessage(level:LevelDef):void
+
+		function levelFinishMessage(levelInstance:LevelInstanceDef):void
+
+		function addFinishedLevel(levelInstance:LevelInstanceDef):void
 			
 		function showSlash(process:Number):void
 			
@@ -24,7 +31,7 @@ package com.somewater.rabbit
 			
 		function startPage(name:String):void
 			
-		function startGame(level:LevelDef):void
+		function startGame(level:LevelDef = null):void
 			
 		// массив всех уровней игры
 		function get levels():Array

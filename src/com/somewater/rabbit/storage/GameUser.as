@@ -25,7 +25,8 @@ package com.somewater.rabbit.storage
 		
 		public function addLevelInstance(levelInst:LevelInstanceDef):void
 		{
-			_levelInstances.push(levelInst);
+			if(levelInst.success)
+				_levelInstances.push(levelInst);
 		}
 		public function get levelInstances():Array {return _levelInstances.slice();}
 

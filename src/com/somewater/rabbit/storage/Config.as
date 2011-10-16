@@ -6,7 +6,9 @@ package com.somewater.rabbit.storage
 	import com.somewater.rabbit.IRabbitLoader;
 
 	import flash.display.Stage;
-	
+	import flash.events.Event;
+	import flash.events.IEventDispatcher;
+
 
 	/**
 	 * Хранилище статичных конфигов игры
@@ -69,5 +71,13 @@ package com.somewater.rabbit.storage
 		
 		public static const FONT_PRIMARY:String = "a_FuturaRound";
 		public static const FONT_SECONDARY:String = "Arial";
+
+		public static function callLater(callback, args:Array = null):void
+		{
+			stage.addEventListener(Event.ENTER_FRAME, function(event:Event):void{
+				IEventDispatcher(event.currentTarget).removeEventListener(event.type, arguments.callee);
+				callback.apply(null, args);
+			})
+		}
 	}
 }

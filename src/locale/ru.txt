@@ -2,7 +2,6 @@ ERROR=ОШИБКА
 ALERT=ВНИМАНИЕ
 OK=OK
 PAUSE=ПАУЗА
-
 ###################
 #
 #	ERROR MASSAGES
@@ -47,3 +46,12 @@ INVITE_BUTTON_TEXT=ХОЧУ ИГРАТЬ
 ERROR_LOCKED_HINT=Уровень заблокирован. Сначала пройди предыдущий уровень
 BACK_TO_MAIN_MENU=Назад в главное меню
 GLOBAL_SCORE_COUNTER_HINT=Всего собрано морковок\n/\nМаксимальное количество
+###################
+#
+#	WINDOWS
+#
+#####################
+LEVEL_NUMBER=Уровень {level}
+LEVEL_FATAL_CARROT_DESC=Ты проворонил морковку.\nПопробуй еще раз
+LEVEL_FATAL_LIFE_DESC=Кролик устал. Смертельно.\nПопробуй еще раз
+LEVEL_FATAL_TIME_DESC=Твое время вышло.\nПопробуй еще раз

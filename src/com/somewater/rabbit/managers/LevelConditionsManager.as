@@ -223,7 +223,9 @@ package com.somewater.rabbit.managers
 			event.aliensPassed = (success ? XmlController.instance.calculateAliens(event.levelDef) : 0);
 			event.carrotHarvested = HeroDataComponent.instance ? HeroDataComponent.instance.carrot : 0;
 			event.timeSpended = time;
-			event.stars = (event.carrotHarvested >= conditionsRef['carrotMax'] ? 3 : (event.carrotHarvested >= conditionsRef['carrotMiddle'] ? 2 : (event.carrotHarvested >= conditionsRef['carrotMin'] ? 1 : 0) ))
+			event.stars = (event.carrotHarvested >= conditionsRef['carrotMax'] ? 3
+								: (event.carrotHarvested >= conditionsRef['carrotMiddle'] ? 2
+								: (event.carrotHarvested >= conditionsRef['carrotMin'] ? 1 : 0) ))
 
 			// вычисляем и выдаем бонусы
 			if(conditionsRef['fastTime'] && conditionsRef['fastTime'] <= event.timeSpended)
@@ -232,8 +234,18 @@ package com.somewater.rabbit.managers
 				event.bonuses.push(LevelInstanceDef.BONUS_ALIENS_PASSED);
 
 			PBE.processManager.schedule(2000, this, function():void{
-				Config.application.message(Lang.t(flag));
-				Config.game.finishLevel(event);
+				Config.application.levelFinishMessage(event);
+				Config.application.addFinishedLevel(event);
+				if(event.success)
+				{
+					// если левел пройден успешно, открываем следующий, а не страницу левелов
+					Config.game.finishLevel(event, true);
+					Config.application.startGame();
+				}
+				else
+				{
+					Config.game.finishLevel(event);
+				}
 			});
 		}
 	}

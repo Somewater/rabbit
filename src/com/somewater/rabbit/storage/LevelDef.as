@@ -7,6 +7,7 @@ package com.somewater.rabbit.storage
 		public var id:int;
 		public var number:uint = 0;// нумерация с "1"
 		public var description:String;
+		public var image:String;// идентификатор картинки уровня
 		
 		public var author:String = "nobody";
 		

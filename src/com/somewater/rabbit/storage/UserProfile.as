@@ -125,8 +125,11 @@ package com.somewater.rabbit.storage
 		
 		override public function addLevelInstance(levelInst:LevelInstanceDef):void
 		{
-			super.addLevelInstance(levelInst);
-			dispatchChange();
+			if(levelInst.success)
+			{
+				super.addLevelInstance(levelInst);
+				dispatchChange();
+			}
 		}
 		
 		override public function set score(value:int):void

@@ -31,10 +31,23 @@ package com.somewater.storage
 		/**
 		 * Получить слово по введенному ключу. Согласно текущему словарю
 		 */
-		public static function t(key:String):String{
+		public static function t(key:String, args:Object = null):String{
 			var dict:Object = instance.dictionry;
-			if (dict.hasOwnProperty(key))
-				return dict[key];
+			if (dict[key])
+			{
+				if(args == null)
+				{
+					return dict[key];
+				}
+				else
+				{
+					var result:String = dict[key];
+					for (var name:String in args) {
+						result.replace(new RegExp("\{" + name + "\}", "g"), args[name])
+					}
+					return result;
+				}
+			}
 			else
 				return key.length?key:"T_NULL";
 		}
