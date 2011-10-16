@@ -46,6 +46,11 @@ namespace :flash do
 	  puts "=== Compilation success! ==="
 	end
 
+	desc "Encode all files"
+	task :encode do
+		RProtector.new.encode_files("#{ROOT}/logs")
+	end
+
 	def compile_file(filename)
 		puts %x[#{MXMLC_COMMON_COMMANDLINE_ARGS} -output=bin-debug/#{filename}.swf src/#{filename}.as]
 	end
