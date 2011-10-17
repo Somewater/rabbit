@@ -1,6 +1,7 @@
 package com.somewater.rabbit.application.windows {
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
+	import com.somewater.rabbit.storage.Lib;
 
 	import flash.events.Event;
 
@@ -21,7 +22,7 @@ package com.somewater.rabbit.application.windows {
 		}
 
 		override protected function createContent():void {
-
+			createIcon(Lib.createMC("interface.LevelStarIcon_success"))
 		}
 
 

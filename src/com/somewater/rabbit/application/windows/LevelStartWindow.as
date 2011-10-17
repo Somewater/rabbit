@@ -1,7 +1,9 @@
 package com.somewater.rabbit.application.windows {
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
+	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.storage.Lang;
+	import com.somewater.text.EmbededTextField;
 
 	import flash.events.Event;
 
@@ -20,6 +22,14 @@ package com.somewater.rabbit.application.windows {
 		}
 
 		override protected function createContent():void {
+			createIcon(Lib.createMC("interface.LevelStarIcon_number"));
+			var iconLevelNumber:EmbededTextField = new EmbededTextField(null, 0xD8F776, 85, false, false, false, false, "center")
+			iconLevelNumber.x = 6;
+			iconLevelNumber.y = 34;
+			iconLevelNumber.width = 155;
+			iconLevelNumber.text = level.number.toString();
+			starIcon.addChild(iconLevelNumber);
+			if(level.number > 9) starIcon.x = -40;
 			createTextAndImage(levelToString(level), level.description, level.image);
 		}
 

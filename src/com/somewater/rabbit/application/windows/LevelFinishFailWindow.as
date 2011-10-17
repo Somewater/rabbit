@@ -1,6 +1,8 @@
 package com.somewater.rabbit.application.windows {
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
+	import com.somewater.rabbit.storage.Lib;
+	import com.somewater.storage.Lang;
 
 	import flash.events.Event;
 
@@ -21,11 +23,12 @@ package com.somewater.rabbit.application.windows {
 		}
 
 		override protected function createContent():void {
-			var failText:String = levelInstance.finalFlag + "_DESC";
+			createIcon(Lib.createMC("interface.LevelStarIcon_fail"));
+			var failText:String = Lang.t(levelInstance.finalFlag + "_DESC");
 			var failImage:String =
-					(levelInstance.finalFlag == LevelInstanceDef.LEVEL_FATAL_CARROT ? "LevelFatalCarrot"
-					:(levelInstance.finalFlag == LevelInstanceDef.LEVEL_FATAL_LIFE ? "LevelFatalLife"
-					:(levelInstance.finalFlag == LevelInstanceDef.LEVEL_FATAL_TIME ? "LevelFatalTime" : null)));
+					(levelInstance.finalFlag == LevelInstanceDef.LEVEL_FATAL_CARROT ? "interface.LevelFailIcon_carrot"
+					:(levelInstance.finalFlag == LevelInstanceDef.LEVEL_FATAL_LIFE ? "interface.LevelFailIcon_life"
+					:(levelInstance.finalFlag == LevelInstanceDef.LEVEL_FATAL_TIME ? "interface.LevelFailIcon_time" : null)));
 			createTextAndImage(levelToString(level), failText, failImage);
 		}
 

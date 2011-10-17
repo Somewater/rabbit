@@ -26,7 +26,7 @@ package com.somewater.rabbit.application.windows {
 		protected var level:LevelDef;
 		protected var levelInstance:LevelInstanceDef;
 
-		protected var starIcon:DisplayObject;
+		protected var starIcon:DisplayObjectContainer;
 		protected var okButton:OrangeButton;
 
 		public function LevelSwitchWindow() {
@@ -69,27 +69,32 @@ package com.somewater.rabbit.application.windows {
 			super.clear();
 		}
 
-		protected function createIcon(iconClass:Class):void
+		protected function createIcon(starIcon:DisplayObject):void
 		{
-			starIcon = new iconClass();
-			var starIconMask:DisplayObject = Lib.createMC("todo");
+			this.starIcon = starIcon as DisplayObjectContainer;
+			var starIconMask:DisplayObject = Lib.createMC("interface.LevelStarIcon_mask");
 			addChildAt(starIconMask, getChildIndex(ground) + 1);
-			addChildAt(starIcon, getChildIndex(ground) + 1);
+			addChildAt(starIcon, getChildIndex(starIconMask) + 1);
+			starIcon.x = -55;
+			starIcon.y = -28;
+			starIcon.mask = starIconMask;
 		}
 
-		protected function createTextAndImage(title:String, text:String = null, image:String = null):void
+		protected function createTextAndImage(title:String, text:String = null, image:* = null):void
 		{
 			var titleTF:EmbededTextField = new EmbededTextField(null, 0xDB661B, 21);
 			var tf:EmbededTextField = new EmbededTextField(Config.FONT_SECONDARY, 0x42591E, 14, true, true);
 			var imageDisplayObject:DisplayObject;
 
-			if(image)
+			if(image is DisplayObject)
+				imageDisplayObject = image;
+			else
 				imageDisplayObject = getImage(image);
 
 			addChild(titleTF);
 			titleTF.htmlText = title;
 			titleTF.x = (WIDTH - titleTF.width) * 0.5;
-			titleTF.y = 50;
+			titleTF.y = 45;
 
 
 			addChild(tf);
@@ -98,14 +103,19 @@ package com.somewater.rabbit.application.windows {
 			tf.width = (imageDisplayObject ? 245 : 445);
 			tf.htmlText = text;
 
+			if(tf.textHeight < 40 || tf.textWidth < tf.width * 0.8)
+			{
+				tf.x = tf.x + (tf.width - tf.textWidth) * 0.5
+			}
+
 			if(imageDisplayObject)
 			{
-				var border:DisplayObjectContainer = Lib.createMC("");
+				var border:DisplayObjectContainer = Lib.createMC("interface.LevelSwitchImage");
 				border.x = 347;
 				border.y = 115;
 				addChild(border);
 
-				var photo:Photo = new Photo(null, Photo.ORIENTED_CENTER | Photo.SIZE_MAX, 185, 125);
+				var photo:Photo = new Photo(null, Photo.ORIENTED_CENTER, 175, 115, 185/2, 125/2);
 				border.addChild(photo);
 				photo.source = imageDisplayObject;
 			}
@@ -113,6 +123,8 @@ package com.somewater.rabbit.application.windows {
 
 		private function getImage(image:String):DisplayObject
 		{
+			if(image && image.substring(0,10) == 'interface.')
+				return Lib.createMC(image)
 			var s:Sprite = new Sprite();
 			s.graphics.beginFill(0);
 			s.graphics.drawRect(0,0,50,100);

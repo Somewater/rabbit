@@ -43,7 +43,7 @@ package com.somewater.storage
 				{
 					var result:String = dict[key];
 					for (var name:String in args) {
-						result.replace(new RegExp("\{" + name + "\}", "g"), args[name])
+						result = result.replace(new RegExp("\{" + name + "\}", "g"), args[name])
 					}
 					return result;
 				}
