@@ -105,9 +105,10 @@ package com.somewater.rabbit.debug {
 
 
 		override protected function get getHighlightFilter():* {
+			var matrix:Array;
 			if(!_redFilter)
 			{
-				var matrix:Array = new Array();
+				matrix = new Array();
 				matrix = matrix.concat([1, 0, 0, 0, 0]); // red
 				matrix = matrix.concat([0, 0.2, 0, 0, 0]); // green
 				matrix = matrix.concat([0, 0, 0.2, 0, 0]); // blue
@@ -116,7 +117,7 @@ package com.somewater.rabbit.debug {
 			}
 			if(!_greenFilter)
 			{
-				var matrix:Array = new Array();
+				matrix = new Array();
 				matrix = matrix.concat([0.5, 0, 0, 0, 0]); // red
 				matrix = matrix.concat([0, 1, 0, 0, 0]); // green
 				matrix = matrix.concat([0, 0, 0.5, 0, 0]); // blue

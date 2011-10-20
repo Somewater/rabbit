@@ -87,3 +87,22 @@ namespace :srv do
 		scp = Execution.new("scp -v #{ROOT}/bin-debug/*.swf root@asflash.ru:/srv/www/rabbit.asflash.ru/bin-debug/", /debug1\: Exit status 0/);
 	end
 end
+
+
+desc "Protect"
+namespace :protect do
+
+	desc "Compile Test"
+	task :compile do
+		#`stripper -i #{ROOT}/bin-debug/_RProtector.swf -o #{ROOT}/bin-debug/_RProtector.swf`
+		`tdsi -i #{ROOT}/bin-debug/_RProtector.swf -o #{ROOT}/bin-debug/RProtector.swf`
+		`stripper -i #{ROOT}/bin-debug/RProtector.swf -o #{ROOT}/bin-debug/RProtector.swf`
+	end
+
+	desc "Dump test"
+	task :dump => [:compile] do
+		#`dump -i #{ROOT}/bin-debug/_RProtector.swf -o #{ROOT}/tmp/dump -abc`
+		`dump -i #{ROOT}/bin-debug/RProtector.swf -o #{ROOT}/tmp/dump -abc`
+	end
+
+end
