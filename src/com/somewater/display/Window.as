@@ -253,6 +253,14 @@ package com.somewater.display
 			else
 				close()
 		}
+
+		public function defaultButtonPress():void
+		{
+			if(buttons
+			   && buttons.length == 1
+			   && buttons[0] is DisplayObject)
+					simulateButtonPress(DisplayObject(buttons[0]));
+		}
 		
 		protected function startBlur():void
 		{

@@ -16,6 +16,7 @@ package
 	import com.somewater.rabbit.application.windows.LevelFinishFailWindow;
 	import com.somewater.rabbit.application.windows.LevelFinishSuccessWindow;
 	import com.somewater.rabbit.application.windows.LevelStartWindow;
+	import com.somewater.rabbit.application.windows.LevelSwitchWindow;
 	import com.somewater.rabbit.application.windows.PauseMenuWindow;
 	import com.somewater.rabbit.net.AppServerHandler;
 	import com.somewater.rabbit.storage.Config;
@@ -135,6 +136,7 @@ package
 			Window.GROUND_CLASS = WindowBackground;
 			
 			Hint.init(Config.loader.tooltips);
+			LevelDef.langCallback = Lang.t
 		}
 		
 		
@@ -458,6 +460,8 @@ package
 				{
 					if(PopUpManager.activeWindow is PauseMenuWindow)
 						PauseMenuWindow(PopUpManager.activeWindow).simulateCloseButtonClick();
+					else if(PopUpManager.activeWindow is LevelStartWindow)
+						LevelSwitchWindow(PopUpManager.activeWindow).defaultButtonPress();
 					else if(!PopUpManager.activeWindow && Config.game.isTicking)
 						new PauseMenuWindow();
 				}
@@ -468,11 +472,8 @@ package
 				{
 					// "нажать" кнопку в окне
 					var activeWindow:Window = PopUpManager.activeWindow;
-					if(activeWindow 
-					   && activeWindow.buttons
-					   && activeWindow.buttons.length == 1
-					   && activeWindow.buttons[0] is DisplayObject)
-						activeWindow.simulateButtonPress(DisplayObject(activeWindow.buttons[0]));
+					if(activeWindow)
+						activeWindow.defaultButtonPress();
 				}
 			}
 		}

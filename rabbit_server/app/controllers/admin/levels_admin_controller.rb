@@ -21,10 +21,22 @@ class LevelsAdminController < AdminController::Base
 				lvl = Level.find(@request['id'])
 				lvl.enabled = true
 				lvl.save
+				on_level_changed
+			when 'update'
+				lvl = Level.find(@request['id'])
+				lvl.description = @request['description']
+				lvl.width = @request['width']
+				lvl.height = @request['height']
+				lvl.image = @request['image']
+				lvl.group = @request['group']
+				lvl.conditions = @request['conditions']
+				lvl.save
+				on_level_changed
 			when 'disable'
 				lvl = Level.find(@request['id'])
 				lvl.enabled = false
 				lvl.save
+				on_level_changed
 			when 'delete_request'
 				@sure = "delete current level(id=#{@request['id']})"
 				@yes = "#{LEVELS_PATH}?id=#{@request['id']}&act=delete"
@@ -34,6 +46,7 @@ class LevelsAdminController < AdminController::Base
 				lvl = Level.find(@request['id'], :conditions => 'visible = TRUE')
 				lvl.visible = false
 				lvl.save
+				on_level_changed
 			when 'delete_all_request'
 				@sure = "delete current level(id=#{@request['id']}) and older levels"
 				@yes = "#{LEVELS_PATH}?id=#{@request['id']}&act=delete_all"
@@ -75,6 +88,7 @@ class LevelsAdminController < AdminController::Base
 			lvl.save
 
 			Level.update_all('enabled = FALSE', "number = #{lvl.number} AND version > #{lvl.version} AND visible = TRUE")
+			on_level_changed
 		end
 
 		# возвратить все "ведущие" уровни
@@ -97,5 +111,10 @@ class LevelsAdminController < AdminController::Base
 			lvl.save
 
 			Level.update_all('visible = FALSE', "number = #{lvl.number} AND version < #{lvl.version}")
+			on_level_changed
+		end
+
+		def on_level_changed
+			# надо перегенирировать файл левелов, т.к. один или более левелов изменились
 		end
 end

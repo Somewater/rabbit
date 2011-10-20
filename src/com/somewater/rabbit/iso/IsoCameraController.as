@@ -44,6 +44,11 @@ package com.somewater.rabbit.iso
 		 * Объекь, за которым передвигается экран
 		 */
 		public var trackObject:IsoSpatial;
+
+		/**
+		 * Отцентровать относительно trackObject мгновенно, а не плавно
+		 */
+		public var centreTrackObjectImmediately:Boolean = false;
 		
 		
 		
@@ -190,8 +195,14 @@ package com.somewater.rabbit.iso
 					return;
 				
 				USE_RESERVE = 1;
-				
-				setPositionAnimated(movePos);
+
+				if(centreTrackObjectImmediately)
+				{
+					centreTrackObjectImmediately = false;
+					position = movePos;
+				}
+				else
+					setPositionAnimated(movePos);
 			}
 		}
 		

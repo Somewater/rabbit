@@ -11,26 +11,25 @@
 		[Bindable]
 		private var level:LevelDef
 
-		private function init():void
-		{
+		private function init():void {
 			level = data as LevelDef;
 		}
 
-		private function onSomeChanged(arg:Event = null):void
-		{
+		private function onSomeChanged(arg:Event = null):void {
 			level.number = level_number.value;
 			level.description = level_desc.text;
 			level.width = level_width.value;
 			level.height = level_height.value;
+			level.image = level_image.text;
 
 			// воссоздаем xml conditions
 			var conditions:Array = [];
 			conditions['time'] = level_time.value;
-			if(level_fastTime.value)
+			if (level_fastTime.value)
 				conditions['fastTime'] = level_fastTime.value;
 			conditions['carrotMin'] = level_carrotMin.value;
 			conditions['carrotMiddle'] = level_carrotMiddle.value;
-			if(level_carrotMax.value)
+			if (level_carrotMax.value)
 				conditions['carrotMax'] = level_carrotMax.value;
 
 			level.conditions = conditions;// переприсваиваем conditions
@@ -40,11 +39,9 @@
 			level_carrotMax.errorString = (level_carrotMax.value && level_carrotMax.value <= level_carrotMiddle.value ? "error" : "");
 		}
 
-		public function clear():void
-		{
+		public function clear():void {
 			level = null;
 		}
-
 		]]>
 	</mx:Script>
 	<mx:VBox width="100%" height="100%">
@@ -73,6 +70,11 @@
 				<mx:Label text="height:" width="95"></mx:Label>
 				<mx:NumericStepper id="level_height" change="onSomeChanged()" value="{level.height}" minimum="5" maximum="99" maxChars="2" width="55"></mx:NumericStepper>
 			</mx:HBox>
+
+			<mx:Label text="image:"></mx:Label>
+			<mx:Spacer height="-7"></mx:Spacer>
+			<mx:TextInput id="level_image" change="onSomeChanged()" text="{level.image}" width="100%"></mx:TextInput>
+			<mx:Spacer></mx:Spacer>
 
 			<mx:Spacer height="15"></mx:Spacer>
 			<mx:Label text="CONDITIONS"></mx:Label>

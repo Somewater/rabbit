@@ -171,6 +171,7 @@
 						"conditions":selectedLevel.conditionsToXML.toXMLString(),
 						"width":selectedLevel.width,
 						"height":selectedLevel.height,
+						"image":selectedLevel.image,
 						"author":selectedLevel.author,
 						"password":console.text
 					},function(succ:Object):void {

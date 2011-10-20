@@ -4,6 +4,12 @@ package com.somewater.rabbit.storage
 
 	public class LevelDef extends InfoDef
 	{
+		/**
+		 * Функция языкового менеджера
+		 * @return
+		 */
+		public static var langCallback:Function;
+
 		public var id:int;
 		public var number:uint = 0;// нумерация с "1"
 		public var description:String;
@@ -39,6 +45,8 @@ package com.somewater.rabbit.storage
 				{
 					try{
 						this[xmlField.localName()] = xmlField.toString();
+						if(xmlField.toString().substr(0,2) == 'T_' && langCallback != null)
+							this[xmlField.localName()] = langCallback(xmlField.toString());
 					}catch(err:Error){}
 				}
 			}

@@ -55,3 +55,7 @@ LEVEL_NUMBER=УРОВЕНЬ {level}
 LEVEL_FATAL_CARROT_DESC=Ты проворонил морковку.\nПопробуй еще раз
 LEVEL_FATAL_LIFE_DESC=Кролик устал. Смертельно.\nПопробуй еще раз
 LEVEL_FATAL_TIME_DESC=Твое время вышло.\nПопробуй еще раз
+LEVEL_COMPLETED=УРОВЕНЬ ПРОЙДЕН!
+LEVEL_COMPLETED_MAX=ОТЛИЧНЫЙ РЕЗУЛЬТАТ!
+LEVEL_COMPLETED_MID=ХОРОШИЙ РЕЗУЛЬТАТ!
+LEVEL_COMPLETED_MIN=НЕПЛОХОЙ РЕЗУЛЬТАТ

@@ -37,6 +37,7 @@ private
 							:version => version,
 							:width => @json['width'],
 							:height => @json['height'],
+							:image => @json['image'],
 							:author => (@json['author'] == nil || @json['author'].size == 0 || @json['author'] == 'nobody'? @author : @json['author']),
 							:conditions => @json['conditions'],
 							:group => @json['group']

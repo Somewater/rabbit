@@ -27,9 +27,33 @@
 		<% if @showed && level.id == @showed.id %>
 			<tr style="background: #<%= COLORS[level.number % 10] %>"  width='100%'>
 				<td>
-					<p><small><i><%= level.description %></i></small></p>
-					<p>GROUP:<br><small><pre><%= CGI::escapeHTML(level.group || '') %></pre></small></p>
-					<p>CONDITIONS:<br><small><pre><%= CGI::escapeHTML(level.conditions || '') %></pre></small></p>
+					<!--p><small>Description: <i><%= level.description %></i></small></p>
+					<p><small>Size: <i><%= "#{level.width} x #{level.height}" %></i></small></p>
+					<p><small>Image: <i><%= level.image %></i></small></p-->
+					<form method="post" action="<%= LEVELS_PATH %>?id=<%= level.id%>&act=update">
+						<p>
+							Description:<br>
+							<textarea name="description" rows="3" cols="100"><%= CGI::escapeHTML(level.description || '') %></textarea>
+						</p>
+						<p>
+							Size:&nbsp;&nbsp;&nbsp;&nbsp;
+							Width <input type="text" name="width" maxlength="2" value="<%= level.width %>" size="3"></input>
+							&nbsp;&nbsp;
+							Height <input type="text" name="height" maxlength="2" value="<%= level.height %>" size="3"></input>
+						</p>
+						<p>
+							Image:<input type="text" name="image" value="<%= level.image %>" size="60"></input>
+						</p>
+						<p>
+							GROUP:<br>
+							<textarea name="group" rows="8" cols="100"><%= CGI::escapeHTML(level.group || '') %></textarea>
+						</p>
+						<p>
+							CONDITIONS:<br>
+							<textarea name="conditions" rows="5" cols="100"><%= CGI::escapeHTML(level.conditions || '') %></textarea>
+						</p>
+						<input type="submit" value="Update"></input>
+					</form>
 				</td>
 			</tr>
 		<% end %>

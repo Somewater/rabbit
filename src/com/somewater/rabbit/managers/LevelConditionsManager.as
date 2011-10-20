@@ -234,18 +234,9 @@ package com.somewater.rabbit.managers
 				event.bonuses.push(LevelInstanceDef.BONUS_ALIENS_PASSED);
 
 			PBE.processManager.schedule(2000, this, function():void{
-				Config.application.levelFinishMessage(event);
 				Config.application.addFinishedLevel(event);
-				if(event.success)
-				{
-					// если левел пройден успешно, открываем следующий, а не страницу левелов
-					Config.game.finishLevel(event, true);
-					Config.application.startGame();
-				}
-				else
-				{
-					Config.game.finishLevel(event);
-				}
+				Config.application.levelFinishMessage(event);
+				Config.game.finishLevel(event, true);
 			});
 		}
 	}

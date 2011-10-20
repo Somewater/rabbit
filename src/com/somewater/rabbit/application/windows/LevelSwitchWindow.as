@@ -8,9 +8,11 @@ package com.somewater.rabbit.application.windows {
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.storage.Lang;
 	import com.somewater.text.EmbededTextField;
+	import com.somewater.utils.MovieClipHelper;
 
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
+	import flash.display.MovieClip;
 	import flash.display.Shape;
 	import flash.display.Sprite;
 
@@ -30,7 +32,7 @@ package com.somewater.rabbit.application.windows {
 		protected var okButton:OrangeButton;
 
 		public function LevelSwitchWindow() {
-			super(null, null, onWindowClosed, []);
+			super(null, null, null, []);
 
 			setSize(WIDTH, HEIGHT);
 
@@ -48,7 +50,13 @@ package com.somewater.rabbit.application.windows {
 			open();
 		}
 
+
+		override public function defaultButtonPress():void {
+			onOkClicked(null);
+		}
+
 		private function onOkClicked(event:MouseEvent):void {
+			onWindowClosed();
 			close();
 		}
 
@@ -84,12 +92,12 @@ package com.somewater.rabbit.application.windows {
 		{
 			var titleTF:EmbededTextField = new EmbededTextField(null, 0xDB661B, 21);
 			var tf:EmbededTextField = new EmbededTextField(Config.FONT_SECONDARY, 0x42591E, 14, true, true);
-			var imageDisplayObject:DisplayObject;
+			var imageSource:*;
 
 			if(image is DisplayObject)
-				imageDisplayObject = image;
+				imageSource = image;
 			else
-				imageDisplayObject = getImage(image);
+				imageSource = getImage(image);
 
 			addChild(titleTF);
 			titleTF.htmlText = title;
@@ -100,7 +108,7 @@ package com.somewater.rabbit.application.windows {
 			addChild(tf);
 			tf.x = 75;
 			tf.y = 105;
-			tf.width = (imageDisplayObject ? 245 : 445);
+			tf.width = (imageSource ? 245 : 445);
 			tf.htmlText = text;
 
 			if(tf.textHeight < 40 || tf.textWidth < tf.width * 0.8)
@@ -108,7 +116,7 @@ package com.somewater.rabbit.application.windows {
 				tf.x = tf.x + (tf.width - tf.textWidth) * 0.5
 			}
 
-			if(imageDisplayObject)
+			if(imageSource)
 			{
 				var border:DisplayObjectContainer = Lib.createMC("interface.LevelSwitchImage");
 				border.x = 347;
@@ -117,20 +125,26 @@ package com.somewater.rabbit.application.windows {
 
 				var photo:Photo = new Photo(null, Photo.ORIENTED_CENTER, 175, 115, 185/2, 125/2);
 				border.addChild(photo);
-				photo.source = imageDisplayObject;
+				photo.source = imageSource;
 			}
 		}
 
-		private function getImage(image:String):DisplayObject
+		private function getImage(image:String):*
 		{
-			if(image && image.substring(0,10) == 'interface.')
-				return Lib.createMC(image)
-			var s:Sprite = new Sprite();
-			s.graphics.beginFill(0);
-			s.graphics.drawRect(0,0,50,100);
-			s.graphics.beginFill(0xFF0000);
-			s.graphics.drawRect(0,0,100,50)
-			return s;
+			if(image == null) return null;
+			if(image.substr(0,7) == 'http://')
+				return image;
+			else if(image.substr(0,2) == 'T_' && Lang.t(image).substr(0,2) != 'T_')
+				return getImage( Lang.t(image));
+			else if(Lib.hasMC(image))
+			{
+				var mc:DisplayObject = Lib.createMC(image);
+				if(mc is MovieClip)
+					MovieClipHelper.stopAll(mc as MovieClip);
+				return mc;
+			}
+			else
+				return null;
 		}
 
 		protected function levelToString(level:LevelDef):String

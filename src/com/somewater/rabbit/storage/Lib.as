@@ -63,6 +63,16 @@ package com.somewater.rabbit.storage
 			else
 				return cl;
 		}
+
+		public static function hasMC(className:String, library:String = null):Boolean
+		{
+			try
+			{
+				var ad:ApplicationDomain = library && swfADs[library]?swfADs[library]: ApplicationDomain.currentDomain;
+				return ad.hasDefinition(className);
+			}catch(e:Error){}
+			return false;
+		}
 		
 	}
 }

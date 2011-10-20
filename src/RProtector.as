@@ -61,19 +61,7 @@ package
 
 		function loop():void
 		{
-			var i:int = 0;
-			__asm('l1:')
-
-			trace('i=' + i);
-			i++
-			__asm(Jump('l2'))
-
-			graphics.beginFill(0xFF0000);
-			graphics.drawRect(0,0,40,40);
-			__asm(ReturnVoid)
-			__asm('l2:');
-			graphics.beginFill(0x00FF00);
-			graphics.drawRect(0,0,10,10);
+			trace("Hello man");
 		}
 	}
 }

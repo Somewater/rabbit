@@ -191,7 +191,10 @@ package com.somewater.rabbit.managers
 																int((level.height - Config.T_HEIGHT)*0.5));// создаем камеру и центрируем (если надо) игровое поле
 			var hero:IEntity = PBE.lookupEntity("Hero");
 			if(hero)
+			{
 				IsoCameraController.getInstance().trackObject = hero.getProperty(new PropertyReference("@Spatial"));
+				IsoCameraController.getInstance().centreTrackObjectImmediately = true;
+			}
 			else
 			{
 				Logger.error(InitializeManager, "restartLevel", "Hero looking failed");

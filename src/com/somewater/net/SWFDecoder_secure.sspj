@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_10" class="java.beans.XMLDecoder"> 
+ <object class="secureSWF.settings.SwfProcessingSettings"> 
+  <void property="aggressiveRenaming"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="codeWrapIntensity"> 
+   <int>2</int> 
+  </void> 
+  <void property="controlFlowObfuscation"> 
+   <int>30</int> 
+  </void> 
+  <void property="forceCompression"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="performOptimization"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="publicize"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="removeDeadCode"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="removeFunctionParameters"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="removeMetadata"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="renameIdentifiers"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="renameProtectedNamespaces"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="renamingLevel"> 
+   <int>10</int> 
+  </void> 
+  <void property="swfFiles"> 
+   <array class="secureSWF.settings.SwfFileInfo" length="1"> 
+    <void index="0"> 
+     <object class="secureSWF.settings.SwfFileInfo"> 
+      <void property="as3"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void property="as3Packages"> 
+       <array class="secureSWF.settings.Identifier" length="1"> 
+        <void index="0"> 
+         <object class="secureSWF.settings.Identifier"> 
+          <void property="members"> 
+           <array class="secureSWF.settings.Identifier" length="1"> 
+            <void index="0"> 
+             <object class="secureSWF.settings.Identifier"> 
+              <void property="members"> 
+               <array class="secureSWF.settings.Identifier" length="1"> 
+                <void index="0"> 
+                 <object class="secureSWF.settings.Identifier"> 
+                  <void property="changed"> 
+                   <boolean>true</boolean> 
+                  </void> 
+                  <void property="name"> 
+                   <string>load</string> 
+                  </void> 
+                  <void property="occurrences"> 
+                   <int>1</int> 
+                  </void> 
+                  <void property="renameSelectedValue"> 
+                   <boolean>true</boolean> 
+                  </void> 
+                  <void property="type"> 
+                   <string>Public Function</string> 
+                  </void> 
+                 </object> 
+                </void> 
+               </array> 
+              </void> 
+              <void property="name"> 
+               <string>SWFDecoderLoader</string> 
+              </void> 
+              <void property="occurrences"> 
+               <int>4</int> 
+              </void> 
+              <void property="renameSelectedValue"> 
+               <boolean>true</boolean> 
+              </void> 
+              <void property="type"> 
+               <string>Class</string> 
+              </void> 
+             </object> 
+            </void> 
+           </array> 
+          </void> 
+          <void property="occurrences"> 
+           <int>23</int> 
+          </void> 
+          <void property="renameSelectedValue"> 
+           <boolean>true</boolean> 
+          </void> 
+          <void property="type"> 
+           <string>Package</string> 
+          </void> 
+         </object> 
+        </void> 
+       </array> 
+      </void> 
+      <void property="backgroundColor"> 
+       <string>FFFFFF</string> 
+      </void> 
+      <void property="compressed"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void property="encryptionLiteralStrings"> 
+       <array class="secureSWF.settings.EncryptionString" length="4"> 
+        <void index="0"> 
+         <object class="secureSWF.settings.EncryptionString"> 
+          <void property="encrypted"> 
+           <boolean>true</boolean> 
+          </void> 
+          <void property="occurrences"> 
+           <int>1</int> 
+          </void> 
+          <void property="stringValue"> 
+           <string>scalar</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void index="1"> 
+         <object class="secureSWF.settings.EncryptionString"> 
+          <void property="encrypted"> 
+           <boolean>true</boolean> 
+          </void> 
+          <void property="occurrences"> 
+           <int>1</int> 
+          </void> 
+          <void property="stringValue"> 
+           <string>CWS</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void index="2"> 
+         <object class="secureSWF.settings.EncryptionString"> 
+          <void property="encrypted"> 
+           <boolean>true</boolean> 
+          </void> 
+          <void property="occurrences"> 
+           <int>1</int> 
+          </void> 
+          <void property="stringValue"> 
+           <string>FWS</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void index="3"> 
+         <object class="secureSWF.settings.EncryptionString"> 
+          <void property="encrypted"> 
+           <boolean>true</boolean> 
+          </void> 
+          <void property="occurrences"> 
+           <int>2</int> 
+          </void> 
+          <void property="stringValue"> 
+           <string>34534.345.65654.16147.567567.4566.53246.65466</string> 
+          </void> 
+         </object> 
+        </void> 
+       </array> 
+      </void> 
+      <void property="fileFullName"> 
+       <string>F:\Work\LAB\Congratulator\src\com\somewater\net\SWFDecoderLoader.swf</string> 
+      </void> 
+      <void property="fileName"> 
+       <string>SWFDecoderLoader.swf</string> 
+      </void> 
+      <void property="frameCount"> 
+       <int>1</int> 
+      </void> 
+      <void property="frameRate"> 
+       <string>24.0</string> 
+      </void> 
+      <void property="metadata"> 
+       <string>Not Present</string> 
+      </void> 
+      <void property="movieClips"> 
+       <array class="secureSWF.settings.SwfMovieClip" length="1"> 
+        <void index="0"> 
+         <object class="secureSWF.settings.SwfMovieClip"> 
+          <void property="movieClipName"> 
+           <string>Time Line</string> 
+          </void> 
+         </object> 
+        </void> 
+       </array> 
+      </void> 
+      <void property="movieDimensions"> 
+       <string>500 X 375</string> 
+      </void> 
+      <void property="swfSize"> 
+       <long>3190</long> 
+      </void> 
+      <void property="version"> 
+       <int>9</int> 
+      </void> 
+     </object> 
+    </void> 
+   </array> 
+  </void> 
+  <void property="useAsKeywords"> 
+   <boolean>true</boolean> 
+  </void> 
+ </object> 
+</java> 

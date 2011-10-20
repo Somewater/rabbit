@@ -1,10 +1,12 @@
 package com.somewater.rabbit.application.windows {
 	import com.somewater.rabbit.storage.Config;
+	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.storage.Lang;
 
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 
 	/**
 	 * Появляется при неуспешном завершении уровня (проигрыше)
@@ -12,9 +14,10 @@ package com.somewater.rabbit.application.windows {
 	 * Нажатие кнопки ОК или закрытие окна запускает уровень еще раз
 	 */
 	public class LevelFinishFailWindow extends LevelSwitchWindow{
+
 		public function LevelFinishFailWindow(levelInstance:LevelInstanceDef) {
 			this.levelInstance = levelInstance;
-			this.level = levelInstance.levelDef;
+			this.level = levelInstance.levelDef || Config.game.level;
 			super();
 		}
 
@@ -32,9 +35,16 @@ package com.somewater.rabbit.application.windows {
 			createTextAndImage(levelToString(level), failText, failImage);
 		}
 
+		override protected function onCloseBtnClick(e:MouseEvent):void {
+			super.onCloseBtnClick(e);
+			// открываем страницу левелов
+			Config.application.startPage('levels');
+		}
+
 
 		override protected function onWindowClosed(e:Event = null):void {
-			Config.application.startGame();
+			// стартуем тот же уровень, что был в игре на момент старта окна
+			Config.application.startGame(level);
 		}
 	}
 }
