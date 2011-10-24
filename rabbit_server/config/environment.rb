@@ -12,6 +12,7 @@ DB_CONF = YAML.load(File.read("#{CONFIG_DIR}/database.yml"))
 CONFIG  = YAML.load(File.read("#{CONFIG_DIR}/config.yml"))
 RAILS_ENV = APP_ENV = (ENV['RACK_ENV'] =~ /(production|development|test)/ ? ENV['RACK_ENV'] : "development")
 DEVELOPMENT = (APP_ENV == 'development' ? true : false)
+PRODUCTION = (APP_ENV == 'production' ? true : false)
 
 ##################################
 #

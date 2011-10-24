@@ -107,7 +107,7 @@ package com.somewater.rabbit.application.windows {
 
 			addChild(tf);
 			tf.x = 75;
-			tf.y = 105;
+			tf.y = 110;
 			tf.width = (imageSource ? 245 : 445);
 			tf.htmlText = text;
 

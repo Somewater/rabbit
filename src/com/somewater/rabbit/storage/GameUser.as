@@ -30,6 +30,14 @@ package com.somewater.rabbit.storage
 		}
 		public function get levelInstances():Array {return _levelInstances.slice();}
 
+		public function getLevelInsanceByNumber(levelNumber:int):LevelInstanceDef
+		{
+			for each(var li:LevelInstanceDef in _levelInstances)
+				if(li.levelDef.number == levelNumber)
+					return li;
+			return null;
+		}
+
 		public function set score(value:int):void
 		{
 			_score = value;

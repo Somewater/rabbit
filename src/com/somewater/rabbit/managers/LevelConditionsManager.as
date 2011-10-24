@@ -11,6 +11,7 @@ package com.somewater.rabbit.managers
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
+	import com.somewater.rabbit.storage.LevelInstanceDef;
 	import com.somewater.rabbit.ui.HorizontRender;
 	import com.somewater.rabbit.xml.XmlController;
 	import com.somewater.storage.Lang;
@@ -148,7 +149,8 @@ package com.somewater.rabbit.managers
 			//////////////////////////
 			if(time > conditionsRef["time"])
 			{
-				finishLevel(false, LevelInstanceDef.LEVEL_FATAL_TIME);
+				// еслибыло собрано минимальное кол-во морковок, уровень заканчивается удачно
+				finishLevel(heroDataRef && heroDataRef.carrot >= conditionsRef['carrotMin'], LevelInstanceDef.LEVEL_FATAL_TIME);
 			}
 			else
 				completed["time"] = true;// по времени уровень заврешен (от противного - НЕ(уравень проигран из-за окончания времени) )
@@ -227,13 +229,12 @@ package com.somewater.rabbit.managers
 								: (event.carrotHarvested >= conditionsRef['carrotMiddle'] ? 2
 								: (event.carrotHarvested >= conditionsRef['carrotMin'] ? 1 : 0) ))
 
-			// вычисляем и выдаем бонусы
-			if(conditionsRef['fastTime'] && conditionsRef['fastTime'] <= event.timeSpended)
-				event.bonuses.push(LevelInstanceDef.BONUS_FAST_TIME);
-			if(event.aliensPassed)
-				event.bonuses.push(LevelInstanceDef.BONUS_ALIENS_PASSED);
+			PBE.processManager.schedule(flag == LevelInstanceDef.LEVEL_FATAL_TIME ? 0 : 2000, this, function():void{
 
-			PBE.processManager.schedule(2000, this, function():void{
+				// специально для случаев, когда во время delay игрок еще подсобрал морковок более, чем carrotMax (причем время еще не кончилось)
+				if(time <= conditionsRef["time"] && event.stars == 3)
+					event.carrotHarvested = HeroDataComponent.instance ? HeroDataComponent.instance.carrot : 0;
+
 				Config.application.addFinishedLevel(event);
 				Config.application.levelFinishMessage(event);
 				Config.game.finishLevel(event, true);

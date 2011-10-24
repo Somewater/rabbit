@@ -102,13 +102,8 @@ package com.somewater.rabbit.application
 				if(value > _timeEnd)
 					_timeEnd = value;
 				_time = value;
-				var timeLeft:int = _timeEnd - _time;
-				
-				var minLeft:int = timeLeft / 60;
-				var secLeft:int = timeLeft - (minLeft * 60);
-				
-				timeTF.text = (minLeft > 9?minLeft:"0" + minLeft) 
-													+ ":" + (secLeft > 9?secLeft:"0" + secLeft);
+
+				timeTF.text = secondsToFormattedTime(_timeEnd - _time);
 				
 				var part:Number = value / _timeEnd;
 				var t_part:Number = Math.PI * 2 * part;
@@ -154,6 +149,14 @@ package com.somewater.rabbit.application
 		public function set carrot(value:int):void
 		{
 			carrotTF.text = value.toString();
+		}
+
+		public static function secondsToFormattedTime(seconds:int):String
+		{
+			var minutes:int = seconds / 60;
+			seconds = seconds - (minutes * 60);
+			return (minutes > 9?minutes:"0" + minutes)
+				+ ":" + (seconds > 9?seconds:"0" + seconds);
 		}
 	}
 }

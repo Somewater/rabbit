@@ -1,10 +1,15 @@
 class Application
+
+	def logger
+		self.class.logger
+	end
+
 	class << self
 
 		def logger
 			unless @logger
-				@logger = Logger.new(DEVELOPMENT ? File.join(ROOT, %w{ logs development.log}) : STDOUT)
-				if DEVELOPMENT
+				@logger = Logger.new(File.join(ROOT, %W{ logs #{APP_ENV}.log}))
+				if PRODUCTION
 				  @logger.level = Logger::INFO
 				else
 				  @logger.level = Logger::DEBUG

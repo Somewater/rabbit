@@ -61,7 +61,7 @@ class LevelsAdminController < AdminController::Base
 		@levels = Level.all(:order => 'number, version', :conditions => (@request['hidden'] ? nil : 'visible = TRUE'))
 
 		# определяем head
-		head_levels_arr = LevelsAdminController.all_head.map(&:id)
+		head_levels_arr = Level.all_head.map(&:id)
 		@levels.each do |lvl|
 			lvl.head = head_levels_arr.index(lvl.id)
 		end
@@ -71,7 +71,7 @@ class LevelsAdminController < AdminController::Base
 
 	# генерировать содержание файла левелов (наиболее новой версии, в соответствии с БД)
 	def self.generate_xml_file
-		head_levels = LevelsAdminController.all_head
+		head_levels = Level.all_head
 		content = head_levels.map{|lvl| lvl.to_xml }
 		[
 		 200,
@@ -89,20 +89,6 @@ class LevelsAdminController < AdminController::Base
 
 			Level.update_all('enabled = FALSE', "number = #{lvl.number} AND version > #{lvl.version} AND visible = TRUE")
 			on_level_changed
-		end
-
-		# возвратить все "ведущие" уровни
-		def self.all_head
-			added = {}
-			result = []
-			levels = Level.all(:order => 'number, version DESC', :conditions => 'enabled = TRUE AND visible = TRUE')
-			levels.each do |lvl|
-				unless added[lvl.number]
-					result << lvl
-					added[lvl.number] = true
-				end
-			end
-			result
 		end
 
 		def delete_current_and_anchestors(level_id)

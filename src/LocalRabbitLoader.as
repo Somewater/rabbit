@@ -37,7 +37,7 @@ package
 						,"Editor":{priority:1, preload:true, url:"RabbitEditor.swf"}
 						
 						,"Font":{priority:1000, preload:true, url:"assets/fonts_ru.swf"}
-						,"Font":{priority:1000, preload:true, url:"assets/fonts_ru.swf"}
+						//,"Font":{priority:1000, preload:true, url:"assets/fonts_ru.swf"}
 					}
 			
 			filePaths = {

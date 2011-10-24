@@ -66,6 +66,16 @@ package com.somewater.rabbit.xml {
 		return carrots;
 	}
 
+	/**
+	 * ПОсчитать время уровня в секундах
+	 * @param level
+	 * @return
+	 */
+	public function calculateLevelTime(level:LevelDef):int
+	{
+		return level.conditions ? level.conditions['time'] : 60;
+	}
+
 	public function getNewLevel():LevelDef
 	{
 		return new LevelDef(<level id="0" number="1"><description>New Level</description><conditions><time>300</time></conditions></level>);

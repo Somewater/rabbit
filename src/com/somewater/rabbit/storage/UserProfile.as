@@ -24,6 +24,11 @@ package com.somewater.rabbit.storage
 		private var dispatcher:EventDispatcher;
 		
 		private var applicationRef:IRabbitApplication;
+
+		/**
+		 * Имеющиеся у юзера награды
+		 */
+		private var _rewards:Array;
 		
 		
 		public function UserProfile(data:Object)
@@ -131,6 +136,8 @@ package com.somewater.rabbit.storage
 				dispatchChange();
 			}
 		}
+
+
 		
 		override public function set score(value:int):void
 		{

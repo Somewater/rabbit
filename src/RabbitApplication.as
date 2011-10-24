@@ -12,6 +12,7 @@ package
 	import com.somewater.rabbit.application.OrangeButton;
 	import com.somewater.rabbit.application.OrangeGround;
 	import com.somewater.rabbit.application.PageBase;
+	import com.somewater.rabbit.application.ServerLogic;
 	import com.somewater.rabbit.application.WindowBackground;
 	import com.somewater.rabbit.application.windows.LevelFinishFailWindow;
 	import com.somewater.rabbit.application.windows.LevelFinishSuccessWindow;
@@ -23,6 +24,7 @@ package
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
 	import com.somewater.rabbit.storage.Lib;
+	import com.somewater.rabbit.storage.RewardDef;
 	import com.somewater.rabbit.storage.UserProfile;
 	import com.somewater.rabbit.xml.XmlController;
 	import com.somewater.social.SocialAdapter;
@@ -228,6 +230,8 @@ package
 
 		public function addFinishedLevel(levelInstance:LevelInstanceDef):void
 		{
+			ServerLogic.addRewardsToLevelInstance(levelInstance);
+
 			UserProfile.instance.addLevelInstance(levelInstance);
 		}
 

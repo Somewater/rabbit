@@ -18,4 +18,18 @@ class Level < ActiveRecord::Base
 	#{formatted_group}
 </level>"
 	end
+
+	# возвратить все "ведущие" уровни
+	def self.all_head
+		added = {}
+		result = []
+		levels = Level.all(:order => 'number, version DESC', :conditions => 'enabled = TRUE AND visible = TRUE')
+		levels.each do |lvl|
+			unless added[lvl.number]
+				result << lvl
+				added[lvl.number] = true
+			end
+		end
+		result
+	end
 end
