@@ -18,6 +18,7 @@ package com.somewater.rabbit.application.windows {
 
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.geom.Rectangle;
 	import flash.text.TextField;
 
 	public class LevelSwitchWindow extends Window{
@@ -47,6 +48,7 @@ package com.somewater.rabbit.application.windows {
 			addChild(okButton);
 			okButton.addEventListener(MouseEvent.CLICK, onOkClicked);
 
+			individual = true;
 			open();
 		}
 
@@ -92,6 +94,7 @@ package com.somewater.rabbit.application.windows {
 		{
 			var titleTF:EmbededTextField = new EmbededTextField(null, 0xDB661B, 21);
 			var tf:EmbededTextField = new EmbededTextField(Config.FONT_SECONDARY, 0x42591E, 14, true, true);
+			tf.size = 14 + int(text && text.length ? (1 - Math.min(1,text.length / 200)) * 6 : 0)
 			var imageSource:*;
 
 			if(image is DisplayObject)
@@ -141,7 +144,12 @@ package com.somewater.rabbit.application.windows {
 				var mc:DisplayObject = Lib.createMC(image);
 				if(mc is MovieClip)
 					MovieClipHelper.stopAll(mc as MovieClip);
-				return mc;
+				var wrapper:Sprite = new Sprite()
+				wrapper.addChild(mc);
+				var bounds:Rectangle = mc.getBounds(mc);
+				mc.x = -bounds.x;
+				mc.y = -bounds.y;
+				return wrapper;
 			}
 			else
 				return null;

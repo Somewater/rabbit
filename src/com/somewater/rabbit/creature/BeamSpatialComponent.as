@@ -140,7 +140,7 @@ package com.somewater.rabbit.creature
 		{
 			//super.onTick(deltaTime);
 			
-			if(lastCheckHasGuests || age++ % 5 == 0)
+			if(lastCheckHasGuests || age++ % 2 == 0)
 			{
 				// каждый десятый тик делаем проверку
 				box.x = _position.x;
@@ -152,7 +152,7 @@ package com.somewater.rabbit.creature
 				
 				// спустить в исходное состояние песонажей, которые ранее числились на бревне
 				while(guestsPositionOffset.length)
-					Point(guestsPositionOffset.pop()).y = 0;
+					(guestsPositionOffset.pop() as IsoRenderer).positionOffset = new Point();
 				
 				// запрос вернет как минимум 1 объект - само бревно
 				if(guests.length > 1)
@@ -172,13 +172,15 @@ package com.somewater.rabbit.creature
 						
 						// позиционируем guest
 						var x_abs:Number = (x < 0? -x:x);
-						var positionOffset:Point = IsoRenderer(guest.owner.lookupComponentByName("Render"))._positionOffset;
+						var isoRender:IsoRenderer = IsoRenderer(guest.owner.lookupComponentByName("Render"));
+						var positionOffset:Point = isoRender.positionOffset;
 						positionOffset.y = 
 							x_abs >= 1 ? 0 : (-0.5 + 0.5 * x * rotation);
 										/*    -0.5 высота пенька
 										 *    0.5 коэф.  поднятия от повотора бревна
 										 */
-						guestsPositionOffset.push(positionOffset);
+						//isoRender.positionOffset = positionOffset;
+						guestsPositionOffset.push(isoRender);
 					}
 					
 					if(Math.abs(vector) < 0.2)

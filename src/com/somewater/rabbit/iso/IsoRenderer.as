@@ -59,6 +59,13 @@ package com.somewater.rabbit.iso
 		
 		
 		public var stateToIndex:Array = [];
+
+		/**
+		 * Смещение в результате того, что объект имеет не точечный размер
+		 * (смещение измеряется в тайлах, как и размер объекта)
+		 */
+		protected var _sizePositionOffsetValue:Point = new Point();
+		protected var _sizePositionOffset:Boolean = false;// true если размер объекта не точечный
 		
 		/**
 		 * TODO: сделать сеттером, который не позволяет установить стейт,
@@ -452,8 +459,10 @@ package com.somewater.rabbit.iso
 			_size.y = value.y;
 			
 			// HARDCODE: чтобы где то еще использовать positionOffser тут надо делать += а не =
-			_positionOffset.x = value.x * 0.5;
-			_positionOffset.y = value.y * 0.5;
+			_sizePositionOffsetValue.x = value.x * 0.5;
+			_sizePositionOffsetValue.y = value.y * 0.5;
+
+			_sizePositionOffset = _sizePositionOffsetValue.x != 0 || _sizePositionOffsetValue.y != 0;
 			
 			_transformDirty = true;
 		}
@@ -484,14 +493,14 @@ package com.somewater.rabbit.iso
 			_transformMatrix.scale(tmpScaleX, tmpScaleY);
 			_transformMatrix.translate(-_registrationPoint.x * tmpScaleX, -_registrationPoint.y * tmpScaleY);
 			//_transformMatrix.rotate(_rotation * Math.PI * 0.0055555555555555555555 + _rotationOffset);
-			tempIsoScreenPoint.x = _position.x + _positionOffset.x;
-			tempIsoScreenPoint.y = _position.y + _positionOffset.y;
-			isoToScreen(tempIsoScreenPoint);	
+			tempIsoScreenPoint.x = _position.x + _sizePositionOffsetValue.x;
+			tempIsoScreenPoint.y = _position.y + _sizePositionOffsetValue.y;
+			isoToScreen(tempIsoScreenPoint);
 			
 			if(_displayObject.x != 0 && _displayObject.y != 0)// если происходит НЕ инициализация позиции персонажа
 				__direction = pointToDirection(tempIsoScreenPoint.x - _displayObject.x, tempIsoScreenPoint.y - _displayObject.y);
 			
-			_transformMatrix.translate(tempIsoScreenPoint.x, tempIsoScreenPoint.y);
+			_transformMatrix.translate(tempIsoScreenPoint.x + _positionOffset.x, tempIsoScreenPoint.y + _positionOffset.y);
 			_displayObject.transform.matrix = _transformMatrix;
 			_displayObject.alpha = _alpha;
 			_displayObject.blendMode = _blendMode;

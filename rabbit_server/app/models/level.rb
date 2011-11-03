@@ -14,6 +14,7 @@ class Level < ActiveRecord::Base
 	<author>#{author}</author>
 	<width>#{width}</width>
 	<height>#{height}</height>
+	<image>#{image}</image>
 	#{formatted_conditions}
 	#{formatted_group}
 </level>"

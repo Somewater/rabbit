@@ -33,10 +33,10 @@ package
 							preload:true,url:"RabbitApplication.swf"}
 						,"Interface":{preload:true, url:"assets/interface.swf"}
 						,"Assets":{preload:true, url:"assets/rabbit_asset.swf"}
-						,"Lang":{priority:1000, preload:true, url:"lang_ru.swf"}
+						,"Lang":{priority:100, preload:true, url:"lang_ru.swf"}
 						,"Editor":{priority:1, preload:true, url:"RabbitEditor.swf"}
 						
-						,"Font":{priority:1000, preload:true, url:"assets/fonts_ru.swf"}
+						,"Font":{priority:100, preload:true, url:"assets/fonts_ru.swf"}
 						//,"Font":{priority:1000, preload:true, url:"assets/fonts_ru.swf"}
 					}
 			

@@ -10,7 +10,7 @@ class Application
 			unless @logger
 				@logger = Logger.new(File.join(ROOT, %W{ logs #{APP_ENV}.log}))
 				if PRODUCTION
-				  @logger.level = Logger::INFO
+				  @logger.level = Logger::DEBUG
 				else
 				  @logger.level = Logger::DEBUG
 				end

@@ -70,7 +70,7 @@
 		<component name="Render">
 			<slug>rabbit.BushActor</slug>
 			<frameRate>15</frameRate>
-			<useDirection>1</useDirection>
+			<useDirection>4</useDirection>
 		</component>
 		<component name="Spatial">
 			<objectMask childType="String">

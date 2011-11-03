@@ -336,7 +336,7 @@ package com.somewater.display
 				ratio = Math.min(ratioX,ratioY);
 			else if(scaleType & SIZE_WIDTH)
 				ratio = ratioX;
-			else if(scaleType * SIZE_HEIGHT)
+			else if(scaleType & SIZE_HEIGHT)
 				ratio = ratioY;
 			
 			w = image.width * ratio;

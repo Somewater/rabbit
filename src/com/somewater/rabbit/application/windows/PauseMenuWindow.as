@@ -58,7 +58,7 @@ package com.somewater.rabbit.application.windows
 			
 			soundSlider = new SlideBar();
 			soundSlider.value = Config.application.sound;
-			soundSlider.x = soundButton.x + soundButton.width + 30;
+			soundSlider.x = restartLevelButton.x + restartLevelButton.width - soundSlider.width;
 			soundSlider.y = soundButton.y + soundButton.height * 0.5;
 			soundSlider.addEventListener(Event.CHANGE, onSoundChange);
 			addChild(soundSlider);
@@ -66,7 +66,7 @@ package com.somewater.rabbit.application.windows
 			
 			musicSlider = new SlideBar();
 			musicSlider.value = Config.application.music;
-			musicSlider.x = musicButton.x + musicButton.width + 30;
+			musicSlider.x = soundSlider.x;
 			musicSlider.y = musicButton.y + musicButton.height * 0.5;
 			musicSlider.addEventListener(Event.CHANGE, onMusicChange);
 			addChild(musicSlider);

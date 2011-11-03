@@ -4,6 +4,7 @@ package com.somewater.rabbit.ui
 	import com.pblabs.rendering2D.DisplayObjectRenderer;
 	import com.somewater.rabbit.iso.IsoCameraController;
 	import com.somewater.rabbit.iso.scene.IsoSpatialManager;
+	import com.somewater.rabbit.managers.InitializeManager;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Lib;
 	
@@ -82,6 +83,7 @@ package com.somewater.rabbit.ui
 			registerForUpdates = false;
 			PBE.lookupEntity("SceneDB").eventDispatcher.addEventListener(IsoSpatialManager.EVENT_SCENE_RESIZE, onResize);
 			IsoCameraController.getInstance().addCallback(onSceneMove);
+			InitializeManager.bindRestartLevel(onLevelRestarted);
 		}
 		
 		
@@ -89,6 +91,7 @@ package com.somewater.rabbit.ui
 		{
 			PBE.lookupEntity("SceneDB").eventDispatcher.removeEventListener(IsoSpatialManager.EVENT_SCENE_RESIZE, onResize);
 			IsoCameraController.getInstance().removeCallback(onSceneMove);
+			InitializeManager.unbindRestartLevel(onLevelRestarted);
 			super.onRemove();
 			
 			if(sky)
@@ -100,6 +103,11 @@ package com.somewater.rabbit.ui
 				sky = null;
 				sun = null;
 			}
+		}
+
+		private function onLevelRestarted():void {
+			// снова делаем светлый горизонт
+			darkness = 0;
 		}
 		
 		
@@ -162,6 +170,7 @@ package com.somewater.rabbit.ui
 					barrier = barriers[i];
 					if(!barrier)
 					{
+
 						barrier = Lib.createMC("rabbit.Barrier");
 						barrierHolder.addChild(barrier);
 						barriers.push(barrier);
