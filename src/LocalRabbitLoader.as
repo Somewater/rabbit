@@ -33,6 +33,7 @@ package
 							preload:true,url:"RabbitApplication.swf"}
 						,"Interface":{preload:true, url:"assets/interface.swf"}
 						,"Assets":{preload:true, url:"assets/rabbit_asset.swf"}
+						,"Rewards":{preload:false, url:"assets/rabbit_reward.swf"}
 						,"Lang":{priority:100, preload:true, url:"lang_ru.swf"}
 						,"Editor":{priority:1, preload:true, url:"RabbitEditor.swf"}
 						

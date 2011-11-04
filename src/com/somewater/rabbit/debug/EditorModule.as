@@ -247,7 +247,8 @@ package com.somewater.rabbit.debug {
 
 			// тикаем сцену и камеру
 			IsoCameraController(PBE.lookup("Camera")).onTick(deltaTime);
-			(PBE.scene as IAnimatedObject).onFrame(deltaTime);
+			if(Config.game.level && Config.game.level.type == 'Level')
+				(PBE.scene as IAnimatedObject).onFrame(deltaTime);
 		}
 
 		/**

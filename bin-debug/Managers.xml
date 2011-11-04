@@ -19,12 +19,18 @@
 	
 	<!--
 
-		CLOCK
-
+		MANAGERS:
+		"Managers" - initiate once
 	-->
 	
+	<group name="Managers">
+	</group>
 	
 	<group name="LevelManagers">
+		<objectReference name="Horizont"/>
+	</group>
+	
+	<group name="RewardLevelManagers">
 		<objectReference name="Horizont"/>
 	</group>
 

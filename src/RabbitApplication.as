@@ -12,6 +12,7 @@ package
 	import com.somewater.rabbit.application.OrangeButton;
 	import com.somewater.rabbit.application.OrangeGround;
 	import com.somewater.rabbit.application.PageBase;
+	import com.somewater.rabbit.application.RewardLevelGUI;
 	import com.somewater.rabbit.application.ServerLogic;
 	import com.somewater.rabbit.application.WindowBackground;
 	import com.somewater.rabbit.application.windows.LevelFinishFailWindow;
@@ -59,6 +60,10 @@ package
 										,
 										"about":AboutPage
 									}
+		private const LEVELS_GUI:Object = {
+												'Level':GameGUI,
+												'RewardLevel':RewardLevelGUI
+											}
 			
 		public var currentPage:DisplayObject;
 		
@@ -108,29 +113,7 @@ package
 			Font.registerFont(Lib.createMC("font.FuturaRound_font", null, false));
 			Font.registerFont(Lib.createMC("font.Arial_font", null, false));
 			trace("FONTS: " + Font.enumerateFonts().map(function(font:Font, ...args):String{return font.fontName}));
-			var blurScreen:Sprite = new Sprite();
-			blurScreen.graphics.beginFill(0, 0.09);
-			blurScreen.graphics.drawRect(0, 0, Config.WIDTH, Config.HEIGHT);
 			
-			var preloader:* = Config.loader.allocatePreloader();
-			PageBase.Initialize(preloader);
-			var splashIcon:DisplayObject = preloader.logo;
-			var splashBar:MovieClip = preloader.bar;
-			for(var i:int = 0;i<10;i++) splashBar.removeChild(splashBar["carrot" + i]);
-			var splashHolder:Sprite = new Sprite();
-			splashHolder.graphics.beginFill(0, 0.3);
-			splashHolder.graphics.drawRect(0, 0, Config.WIDTH, Config.HEIGHT);
-			splashHolder.addChild(splashIcon);
-			splashHolder.addChild(splashBar);
-			var splashBar_x_diff:Number = (Config.WIDTH - splashBar.width) * 0.5 - splashBar.x;
-			splashBar.x += splashBar_x_diff;
-			splashIcon.x += splashBar_x_diff;
-			splashIcon.y = (Config.HEIGHT - splashIcon.height) * 0.5 - 50;
-			splashBar.y = splashIcon.y + splashIcon.height + 40;
-			Config.loader.addChild(splashHolder);
-			splashHolder.visible = false;
-			
-			PopUpManager.Initialize(Config.loader.popups, _content, Config.WIDTH, Config.HEIGHT, blurScreen, splashHolder);
 			if(Config.loader.popups.stage)
 				addGlobalListeners(Config.loader.popups.stage);
 			Window.BTN_CLASS = OrangeButton;
@@ -258,6 +241,27 @@ package
 		
 		private function clearLoader():void
 		{
+			var preloader:* = Config.loader.allocatePreloader();
+			PageBase.Initialize(preloader);
+			var splashIcon:DisplayObject = preloader.logo;
+			var splashBar:MovieClip = preloader.bar;
+			for(var i:int = 0;i<10;i++) splashBar.removeChild(splashBar["carrot" + i]);
+			var blurScreen:Sprite = new Sprite();
+			blurScreen.graphics.beginFill(0, 0.09);
+			blurScreen.graphics.drawRect(0, 0, Config.WIDTH, Config.HEIGHT);
+			var splashHolder:Sprite = new Sprite();
+			splashHolder.graphics.beginFill(0, 0.3);
+			splashHolder.graphics.drawRect(0, 0, Config.WIDTH, Config.HEIGHT);
+			splashHolder.addChild(splashIcon);
+			splashHolder.addChild(splashBar);
+			var splashBar_x_diff:Number = (Config.WIDTH - splashBar.width) * 0.5 - splashBar.x;
+			splashBar.x += splashBar_x_diff;
+			splashIcon.x += splashBar_x_diff;
+			splashIcon.y = (Config.HEIGHT - splashIcon.height) * 0.5 - 50;
+			splashBar.y = splashIcon.y + splashIcon.height + 40;
+			Config.loader.addChild(splashHolder);
+			splashHolder.visible = false;			
+			PopUpManager.Initialize(Config.loader.popups, _content, Config.WIDTH, Config.HEIGHT, blurScreen, splashHolder);
 			Config.loader.clear();
 		}
 		
@@ -334,9 +338,14 @@ package
 			}
 			function onGameStarted():void
 			{
-				_content.addChild(new GameGUI());
 				hideSplash();
-				levelStartMessage(level);
+
+				var guiClass:Class = LEVELS_GUI[level.type];
+				if(guiClass)
+					_content.addChild(new guiClass());
+
+				if(level.type == 'Level')
+					levelStartMessage(level);
 			}
 		}
 		private var __gameAlreadyRun:Boolean = false;

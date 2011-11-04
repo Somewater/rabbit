@@ -4,6 +4,7 @@ package com.somewater.rabbit.application
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.Lib;
+	import com.somewater.rabbit.storage.RewardLevelDef;
 	import com.somewater.rabbit.storage.UserProfile;
 	import com.somewater.storage.Lang;
 	
@@ -77,7 +78,7 @@ package com.somewater.rabbit.application
 						Config.application.startPage("levels");
 						break;
 				case Lang.t("MY_ACHIEVEMENTS"):
-						PopUpManager.message("TODO: раздел в разработке");
+						Config.application.startGame(new RewardLevelDef());
 						break;
 				case Lang.t("ABOUT_GAME"):
 						Config.application.startPage("about");

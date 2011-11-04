@@ -94,15 +94,7 @@ package com.somewater.rabbit.ui
 			InitializeManager.unbindRestartLevel(onLevelRestarted);
 			super.onRemove();
 			
-			if(sky)
-			{
-				if(sky.parent)
-					sky.parent.removeChild(sky);
-				if(sun.parent)
-					sun.parent.removeChild(sun);
-				sky = null;
-				sun = null;
-			}
+			clearHill();
 		}
 
 		private function onLevelRestarted():void {
@@ -116,7 +108,22 @@ package com.somewater.rabbit.ui
 		 */
 		override protected function onReset():void
 		{
-			// очищаем от старых заборов и холмов - для разнообразия
+			clearHill();
+			recreateHill();
+		}
+
+		private function clearHill():void
+		{
+			if(sky)
+			{
+				if(sky.parent)
+					sky.parent.removeChild(sky);
+				if(sun.parent)
+					sun.parent.removeChild(sun);
+				sky = null;
+				sun = null;
+			}
+
 			var i:int = 0;
 			for(i = 0;i<barriers.length;i++)
 				DisplayObject(barriers[i]).parent.removeChild(barriers[i]);
@@ -128,7 +135,10 @@ package com.somewater.rabbit.ui
 			maxBarrierPos = int.MIN_VALUE;
 			minHillPos = int.MAX_VALUE;
 			maxHillPos = int.MIN_VALUE;
-			
+		}
+
+		private function recreateHill():void
+		{
 			if(!sky)
 			{
 				sky = Lib.createMC("rabbit.SkyHorizont");

@@ -72,7 +72,10 @@ package com.somewater.net
 				{
 					try
 					{
-						responseObject = JSON.decode(response);
+						if(response.substr(0,2) == 'E_')
+							responseObject = {error: response};
+						else
+							responseObject = JSON.decode(response);
 					}catch(e:Error){
 						if(onError != null)
 							onError({error: "E_PARSING"});

@@ -38,7 +38,6 @@ package com.somewater.rabbit.managers
 	import com.somewater.rabbit.logic.SentientComponent;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
-	import com.somewater.rabbit.ui.GameUIComponent;
 	import com.somewater.rabbit.ui.HorizontRender;
 	import com.somewater.rabbit.util.RandomizeUtil;
 	
@@ -60,6 +59,7 @@ package com.somewater.rabbit.managers
 		private static var restartLevelCallbacks:Array;
 		
 		private static var lastLevelGroup:String;// название группы, которая была инициализирована при прошлом запуске
+		private static var lastLevelManagers:String;// название группы менеджеров, которые были инициированы при запуске прошлого уровня
 		
 		
 		/**
@@ -157,9 +157,9 @@ package com.somewater.rabbit.managers
 		 */
 		private static function initLevel():void
 		{
-			PBE.templateManager.instantiateGroup("LevelManagers");
-			GameUIComponent.recreate();
-			
+			PBE.templateManager.instantiateGroup("Managers");
+			IsoCameraController.getInstance();
+
 			new LevelConditionsManager();
 			CONFIG::debug
 			{
@@ -176,6 +176,9 @@ package com.somewater.rabbit.managers
 			
 			if(lastLevelGroup && PBE.nameManager.lookup(lastLevelGroup))
 				PBGroup(PBE.nameManager.lookup(lastLevelGroup)).destroy();
+
+			if(lastLevelManagers && PBE.nameManager.lookup(lastLevelManagers))
+				PBGroup(PBE.nameManager.lookup(lastLevelManagers)).destroy();
 			
 			IsoSpatialManager.instance.setSize(level.width, level.height);
 			
@@ -265,6 +268,9 @@ package com.somewater.rabbit.managers
 		 */
 		private static function instantiateLevel(level:LevelDef):void
 		{
+			lastLevelManagers = level.type+ "Managers";
+			PBE.templateManager.instantiateGroup(lastLevelManagers);
+
 			if(level.group is XML)
 			{
 				lastLevelGroup = level.groupName;

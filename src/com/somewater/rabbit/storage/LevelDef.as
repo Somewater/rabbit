@@ -87,5 +87,22 @@ package com.somewater.rabbit.storage
 		{
 			return "LevelCreatures_" + (id < 0 ? "_minus_" : "") + Math.abs(id).toString();
 		}
+
+		/**
+		 * Флаг для того, чтобы отличать обычные уровни от фиктивных заглушек
+		 * (например, поляна наград)
+		 */
+		public function get type():String
+		{
+			return 'Level';
+		}
+
+		/**
+		 * Список файлов и т.д., необходимый левелу для старта
+		 */
+		public function get additionSwfs():Array
+		{
+			return [{name:"Assets"}, {name:"Interface"}];
+		}
 	}
 }

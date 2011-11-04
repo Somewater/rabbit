@@ -22,7 +22,6 @@ package
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
-	import com.somewater.rabbit.ui.GameUIComponent;
 	import com.somewater.rabbit.util.RandomizeUtil;
 	import com.somewater.storage.Lang;
 	
@@ -133,8 +132,11 @@ package
 		private function loadAssets():void
 		{
 			Config.application.showSlash(0);
-			
-			Config.loader.loadSwfs([{name:"Assets"}, {name:"Interface"}], function():void{
+
+			var swfs:Array = [];
+			swfs = swfs.concat(_level.additionSwfs);
+
+			Config.loader.loadSwfs(swfs, function():void{
 				// complete
 				loadXML();
 			}, function():void{

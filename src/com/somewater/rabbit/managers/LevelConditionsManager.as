@@ -85,7 +85,7 @@ package com.somewater.rabbit.managers
 			if(conditionsRef['fastTime'])
 				conditionsRef["fastTime"] *= 1000;// расчеты в мс
 
-			_levelFinished = false;
+			_levelFinished = Config.game.level.type != 'Level';// для всех "необычных" уровней, блочим логику менеджера
 			rabbitInited = false;
 
 			// что может являться причиной успешного завершения уровня
