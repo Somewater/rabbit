@@ -6,6 +6,7 @@ gem 'mysql2', '>= 0.3.6'
 gem 'mysql', '2.8.1'
 gem 'activerecord', '>= 3.0.9'
 gem 'activesupport', '>= 3.0.9'
+gem 'harleytt-ansitags', '>= 0.1.5'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'

@@ -31,7 +31,8 @@ class BaseController
 		if DEVELOPMENT
 			params['uid'] && params['key']
 		else
-			raise "TODO: implement authorization"#TODO: implement authrization
+			#raise "TODO: implement authorization"#TODO: implement authrization
+			Application.logger.warn "TODO: Implement authorization"
 		end
 	end
 

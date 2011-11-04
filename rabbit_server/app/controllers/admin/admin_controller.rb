@@ -27,6 +27,8 @@ class AdminController
 				ErrorsAdminController.new(@request).call
 			when /^levels/
 				LevelsAdminController.new(@request).call
+			when /^logs/
+				LogsAdminController.new(@request).call
 			else
 				Base.new(@request).call
 		end
@@ -70,12 +72,9 @@ class AdminController
 		def call
 			html do
 				r = ""
-				r += tag "p" do
-					tag "a", :href => '/admin/errors', :value => 'errors'
-				end
-				r += tag "p" do
-					tag "a", :href => '/admin/levels', :value => 'levels'
-				end
+				r += tag("p") { tag "a", :href => '/admin/errors', :value => 'errors' }
+				r += tag("p") { tag "a", :href => '/admin/levels', :value => 'levels' }
+				r += tag("p") { tag "a", :href => '/admin/logs', :value => 'logs' }
 				r
 			end
 		end
