@@ -5,6 +5,7 @@ package com.somewater.rabbit
 
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
+	import flash.text.TextField;
 
 	[Event(name="applicationInited", type="flash.events.Event")]
 
@@ -54,6 +55,8 @@ package com.somewater.rabbit
 			
 		function set soundEnabled(value:Boolean):void
 		function get soundEnabled():Boolean
+
+		function createTextField(font:String = null,color:* = null,size:int = 12,bold:Boolean = false,multiline:Boolean = false, selectable:Boolean = false,input:Boolean = false,align:String = "left",bitmapText:Boolean = false):TextField
 			
 	}
 }

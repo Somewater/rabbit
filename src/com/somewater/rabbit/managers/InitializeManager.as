@@ -39,6 +39,7 @@ package com.somewater.rabbit.managers
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.ui.HorizontRender;
+	import com.somewater.rabbit.ui.RewardHorizontRender;
 	import com.somewater.rabbit.util.RandomizeUtil;
 	
 	import flash.display.Sprite;
@@ -147,6 +148,7 @@ package com.somewater.rabbit.managers
 			PBE.registerType(SwitchableAttackComponent);
 			PBE.registerType(HarvestableComponent);
 			PBE.registerType(CarrotAttackComponent);
+			PBE.registerType(RewardHorizontRender);
 			
 			RandomizeUtil.initialize();				
 			ResourcesRabbit.instance;

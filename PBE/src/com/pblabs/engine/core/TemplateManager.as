@@ -592,6 +592,8 @@ package com.pblabs.engine.core
 			}
 			if(hash && hash.length == 10)
 				entity.setHash(hash);
+
+			entity.deserialize(objectXML);
 		}
 
 		public function getIndividualHash():String

@@ -239,7 +239,32 @@
 			</size>		
 		</component>
 	</template>
+
+
+
 	
+	<!--
+
+		AWARD
+
+	-->
+	<template name="Award" template="Iso" sets="wall">
+		<component name="Render">
+			<slug>null</slug>
+			<useDirection>1</useDirection>
+			<height>-1</height>
+		</component>
+		<component name="Spatial">
+			<passMask>1</passMask>
+			<occupyMask>3</occupyMask>
+			<size>
+				<x>1</x>
+				<y>1</y>
+			</size>		
+		</component>
+	</template>	
+	
+
 	
 	
 	<!--

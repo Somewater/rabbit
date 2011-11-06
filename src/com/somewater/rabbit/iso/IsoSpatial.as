@@ -125,7 +125,7 @@ package com.somewater.rabbit.iso
 					throw new Error("Must be initialized before size property");
 			}
 			// обновить регистрационные массивы
-			if(value.x != _size.x || value.y != _size.y)
+			if(value.x != _size.x || value.y != _size.y || value == _size)// если value,_size один объект Point, на всякий случай применяем изменения (например, они сделаны в TemplateManager)
 				IsoSpatialManager.instance.refreshRegistration(this, _position.x, _position.y, _size.x, _size.y, _position.x, _position.y, value.x, value.y);
 			
 			_size.x = value.x;

@@ -41,6 +41,7 @@ package
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.text.Font;
+	import flash.text.TextField;
 	import flash.ui.Keyboard;
 	import flash.utils.setTimeout;
 
@@ -489,6 +490,14 @@ package
 						activeWindow.defaultButtonPress();
 				}
 			}
+		}
+
+		public function createTextField(font:String = null,color:* = null,
+										size:int = 12,bold:Boolean = false,
+										multiline:Boolean = false, selectable:Boolean = false,
+										input:Boolean = false,align:String = "left",bitmapText:Boolean = false):TextField
+		{
+			return new EmbededTextField(font, color,size, bold, multiline, selectable, input,align, bitmapText);
 		}
 	}
 }

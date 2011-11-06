@@ -15,6 +15,12 @@
 		</component>	
 	</entity>
 	
+	<entity name="RewardHorizont">
+		<component name="Render" type="com.somewater.rabbit.ui.RewardHorizontRender">
+			<layerIndex>0</layerIndex>
+		</component>	
+	</entity>
+	
 	
 	
 	<!--
@@ -31,7 +37,7 @@
 	</group>
 	
 	<group name="RewardLevelManagers">
-		<objectReference name="Horizont"/>
+		<objectReference name="RewardHorizont"/>
 	</group>
 
 </things>

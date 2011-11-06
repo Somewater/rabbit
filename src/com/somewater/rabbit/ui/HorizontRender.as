@@ -20,8 +20,8 @@ package com.somewater.rabbit.ui
 	 */
 	public class HorizontRender extends DisplayObjectRenderer
 	{
-		private static const BARRIER_WIDTH:int = 900;
-		private static const HILL_WIDTH:int = 985;
+		protected static const BARRIER_WIDTH:int = 900;
+		protected static const HILL_WIDTH:int = 985;
 		
 		// забор
 		private var barrierHolder:Sprite;
@@ -161,15 +161,75 @@ package com.somewater.rabbit.ui
 		{
 			//super.onFrame(elapsed);
 		}
+
+		/**
+		 * Сила затемнения гориизонта
+		 */
+		public function set darkness(value:Number):void
+		{
+			if(_darkness != value)
+			{
+				_darkness = value;
+
+				if(_darkness < 0.01)
+				{
+					horizontGroundHolder.transform.colorTransform = new ColorTransform();
+				}
+				else
+				{
+					var v:Number = 1 - value * 0.7;
+					horizontGroundHolder.transform.colorTransform = new ColorTransform(v,v,v);
+				}
+
+				sun.y = sun_y + (value * Config.TILE_HEIGHT * 2);
+			}
+		}
+
+		public function get darkness():Number
+		{
+			return _darkness;
+		}
 		
-		private function onSceneMove(shift:Point):void
+		protected function onSceneMove(shift:Point):void
 		{
 			var shift_x:int = -shift.x;
 			if(shift_x < 0) shift_x = 0;
 			horizontGroundHolder.x = shift_x;
+
+			checkAndCreateBarriers(shift_x);
+			checkAndCreateHill(shift_x);
+		}
+		
+		protected function createHillDisplayObject():DisplayObject
+		{
+			var hill:DisplayObjectContainer = Lib.createMC("rabbit.Hill");
+			var randomTreesAll:int;
+			var randomTrees:int = randomTreesAll = Math.random() * 4 + 3;
+			var lastTreePos:int = 100;
+			while(randomTrees >= 0)
+			{
+				var tree:DisplayObject = Lib.createMC("rabbit.HillTree_" + (Math.random() > 0.5?"0":"1"));
+				hill.addChild(tree);
+				tree.y = -25 * Math.random() - 10;
+				lastTreePos = lastTreePos + Math.random() * (HILL_WIDTH / (1 + randomTreesAll) * 0.75);
+				if(randomTrees == 0 || lastTreePos + 100 > HILL_WIDTH)
+				{
+					tree.x = HILL_WIDTH;
+					break;
+				}
+				else
+					tree.x = lastTreePos;
+				lastTreePos += (HILL_WIDTH / (1 + randomTreesAll) * 0.25);
+				randomTrees--;
+			}
+			return hill
+		}
+
+		protected function checkAndCreateBarriers(shift_x:int):void
+		{
 			var barrier:DisplayObject;
-			var hill:DisplayObject;
 			var i:int;
+
 			if(shift_x < minBarrierPos)
 			{
 				// слева область без забора
@@ -209,7 +269,13 @@ package com.somewater.rabbit.ui
 				barriers.push(barrier);
 				maxBarrierPos = minBarrierPos + barriers.length * BARRIER_WIDTH;
 			}
-			
+		}
+
+		protected function checkAndCreateHill(shift_x:int):void
+		{
+			var hill:DisplayObject;
+			var i:int;
+
 			// логика холмов практически идентична логике заборов. Однако, к холмам добавляются деревья, холдмы на паренте лежат в порядке следования по оси x
 			if(shift_x < minHillPos)
 			{
@@ -249,60 +315,6 @@ package com.somewater.rabbit.ui
 				hills.push(hill);
 				maxHillPos = minHillPos + hills.length * HILL_WIDTH;
 			}
-		}
-		
-		private function createHillDisplayObject():DisplayObject
-		{
-			var hill:DisplayObjectContainer = Lib.createMC("rabbit.Hill");
-			var randomTreesAll:int;
-			var randomTrees:int = randomTreesAll = Math.random() * 4 + 1;
-			var lastTreePos:int = 100;
-			while(randomTrees >= 0)
-			{
-				var tree:DisplayObject = Lib.createMC("rabbit.HillTree_" + (Math.random() > 0.5?"0":"1"));
-				hill.addChild(tree);
-				tree.y = -15 * Math.random() - 10;
-				lastTreePos = lastTreePos + Math.random() * (HILL_WIDTH / (1 + randomTreesAll) * 0.75);
-				if(randomTrees == 0 || lastTreePos + 100 > HILL_WIDTH)
-				{
-					tree.x = HILL_WIDTH;
-					break;
-				}
-				else
-					tree.x = lastTreePos;
-				lastTreePos += (HILL_WIDTH / (1 + randomTreesAll) * 0.25);
-				randomTrees--;
-			}
-			return hill
-		}
-		
-		
-		/**
-		 * Сила затемнения гориизонта
-		 */
-		public function set darkness(value:Number):void
-		{
-			if(_darkness != value)
-			{
-				_darkness = value;
-				
-				if(_darkness < 0.01)
-				{
-					horizontGroundHolder.transform.colorTransform = new ColorTransform();
-				}
-				else
-				{
-					var v:Number = 1 - value * 0.7;
-					horizontGroundHolder.transform.colorTransform = new ColorTransform(v,v,v);
-				}
-				
-				sun.y = sun_y + (value * Config.TILE_HEIGHT * 2);
-			}
-		}
-		
-		public function get darkness():Number
-		{
-			return _darkness;
 		}
 	}
 }
