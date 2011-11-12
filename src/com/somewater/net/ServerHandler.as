@@ -1,18 +1,16 @@
 package com.somewater.net
 {
-	import com.somewater.rabbit.net.*;
 	import com.adobe.serialization.json.JSON;
 	import com.somewater.net.IServerHandler;
-
+	import com.somewater.rabbit.net.*;
+	
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	import flash.events.IOErrorEvent;
 	import flash.events.SecurityErrorEvent;
-
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
-
 	import flash.net.URLVariables;
 
 	public class ServerHandler implements IServerHandler
@@ -23,6 +21,9 @@ package com.somewater.net
 		public  static var instance:ServerHandler;
 		protected var uid:String;
 		protected var key:String;
+		protected var net:int;
+
+		private var ping:int = 0;
 		
 		public function ServerHandler()
 		{
@@ -32,10 +33,11 @@ package com.somewater.net
 				instance = this;
 		}
 		
-		public function init(uid:String, key:String):void
+		public function init(uid:String, key:String, net:int):void
 		{
 			this.uid = uid;
 			this.key = key;
+			this.net = net;
 		}
 
 		public function set base_path(value:String):void
@@ -45,12 +47,7 @@ package com.somewater.net
 		
 		public function call(method:String, data:Object = null, onComplete:Function = null, onError:Function = null, base_path:String = null, params:Object = null):void
 		{
-			var variables:URLVariables = new URLVariables();
-			if(data == null)
-				data = {};
-			variables['json'] = JSON.encode(data);
-			variables['uid'] = uid;
-			variables['key'] = key;
+			var variables:URLVariables = createUrlVariables(method, data, params);
 
 			var loader:URLLoader = new URLLoader();
 			loader.addEventListener(Event.COMPLETE, onCompleteHandler);
@@ -61,7 +58,14 @@ package com.somewater.net
 			request.method = URLRequestMethod.POST;
 			request.data = variables;
 			request.url = (base_path ? base_path : _base_path) + method;
-			loader.load(request);
+			try
+			{
+				loader.load(request);
+			}catch(err:SecurityError)
+			{
+				if(onError != null)
+					onError({error: "E_SECURITY"});
+			}
 
 			function onCompleteHandler(e:Event):void
 			{
@@ -119,6 +123,33 @@ package com.somewater.net
 				l.removeEventListener(IOErrorEvent.IO_ERROR, onErrorHandler);
 				l.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, onErrorHandler);
 			}
+		}
+
+		protected function createUrlVariables(method:String, data:Object = null, params:Object = null):URLVariables
+		{
+			var variables:URLVariables = new URLVariables();
+			if(data == null)
+				data = {};
+			variables['json'] = JSON.encode(data);
+			variables['uid'] = uid;
+			variables['key'] = key;
+			variables['net'] = net;
+			variables['ping'] = getPing();
+			return variables;
+		}
+
+		protected function getPing():int
+		{
+			ping++;
+			return ping;
+		}
+
+		public function resetUid(uid:String):void
+		{
+			if(this.uid == null || this.uid.length == 0 || this.uid == '0' || this.uid == 'null')
+				this.uid = uid;
+			else
+				throw new Error('Uid already specificated');
 		}
 	}
 }

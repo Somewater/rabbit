@@ -14,7 +14,31 @@ end
 #
 ##########################
 namespace :flash do
-	MXMLC_COMMON_COMMANDLINE_ARGS="mxmlc -warnings=false -static-link-runtime-shared-libraries -default-background-color=#FFFFFF -default-frame-rate=30 -default-size 810 550 -target-player=10.0.0 -compiler.debug=true -use-network=true -define+=CONFIG::release,false  --keep-as3-metadata+=TypeHint,EditorData,Embed -benchmark=true -optimize=true -source-path+=src -source-path+=PBE/src -library-path+=src/assets/swc/library.swc -library-path+=lib/binding.swc -define+=CONFIG::debug,true"
+	MXMLC_COMMON_COMMANDLINE_ARGS="mxmlc \
+-warnings=false \
+-static-link-runtime-shared-libraries \
+-default-background-color=#FFFFFF \
+-default-frame-rate=30 \
+-default-size 810 550 \
+-target-player=10.0.0 \
+-compiler.debug=true \
+-use-network=true \
+-define+=CONFIG::release,false \
+-define+=CONFIG::debug,true \
+--keep-as3-metadata+=TypeHint,EditorData,Embed \
+-benchmark=true \
+-optimize=true \
+-source-path+=src \
+-source-path+=PBE/src \
+-source-path+=soc \
+-library-path+=src/assets/swc/library.swc \
+-library-path+=lib/binding.swc \
+-library-path+=soc/Social.swc"
+
+	COMPC_COMMON_COMMANDLINE_ARGS="compc \
+-target-player=10.0 \
+-compiler.debug=true \
+-optimize"
 
 	desc "Compile game [modulename]/all"
 	task :compile, :filename do |task, args|
@@ -49,6 +73,13 @@ namespace :flash do
 	desc "Encode all files"
 	task :encode do
 		RProtector.new.encode_files("#{ROOT}/logs")
+	end
+	
+	desc "Compile social lib"
+	task :compile_social do
+		puts %x[#{COMPC_COMMON_COMMANDLINE_ARGS} -source-path #{ROOT}/soc \
+-include-classes Social \
+-output #{ROOT}/soc/Social.swc]
 	end
 
 	def compile_file(filename)

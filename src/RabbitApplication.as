@@ -20,7 +20,7 @@ package
 	import com.somewater.rabbit.application.windows.LevelStartWindow;
 	import com.somewater.rabbit.application.windows.LevelSwitchWindow;
 	import com.somewater.rabbit.application.windows.PauseMenuWindow;
-	import com.somewater.rabbit.net.AppServerHandler;
+	import com.somewater.rabbit.application.AppServerHandler;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
@@ -42,6 +42,7 @@ package
 	import flash.events.MouseEvent;
 	import flash.text.Font;
 	import flash.text.TextField;
+	import flash.text.TextFieldAutoSize;
 	import flash.ui.Keyboard;
 	import flash.utils.setTimeout;
 
@@ -122,7 +123,16 @@ package
 			Window.GROUND_CLASS = WindowBackground;
 			
 			Hint.init(Config.loader.tooltips);
-			LevelDef.langCallback = Lang.t
+
+			CONFIG::debug
+			{
+				var loaderHint:TextField = new TextField();
+				loaderHint.autoSize = TextFieldAutoSize.LEFT;
+				loaderHint.text = Config.loader.toString();
+				loaderHint.x = 0;
+				loaderHint.y = Config.stage.stageHeight - loaderHint.height;
+				Config.stage.addChild(loaderHint);
+			}
 		}
 		
 		
@@ -154,10 +164,12 @@ package
 				
 				// инициализировать ServerHandler и выполнить запрос к серверу
 				AppServerHandler.initRequest(onInitResponseComplete, function(error:Object):void{
+					clearLoader();
 					// на запрос профайла сервер вернул ошибку
 					fatalError(Lang.t("ERROR_INIT_LOADING_PROFILE"));
 				});
 			}, function():void{
+				clearLoader();
 				// ошибка загрузки статики
 				fatalError(Lang.t("ERROR_INIT_LOADING_STATIC"));
 			}, function(value:Number):void{
@@ -224,11 +236,7 @@ package
 		{
 			Config.loader.setProgress(3, 1);
 			clearLoader();
-			
-			var userData:Object = response;
-			
-			new UserProfile(userData);
-			
+
 			startPage("main_menu");
 
 			dispatchEvent(new Event("applicationInited"))
@@ -498,6 +506,11 @@ package
 										input:Boolean = false,align:String = "left",bitmapText:Boolean = false):TextField
 		{
 			return new EmbededTextField(font, color,size, bold, multiline, selectable, input,align, bitmapText);
+		}
+
+		public function translate(key:String, args:Object = null):String
+		{
+			return Lang.t(key, args)
 		}
 	}
 }

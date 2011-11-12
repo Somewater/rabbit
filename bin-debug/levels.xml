@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<levels version="0">
+<level id="21" version="12">
+	<description>New Level</description>
+	<number>1</number>
+	<author>nobody</author>
+	<width>12</width>
+	<height>12</height>
+
+	<image>rabbit.WatchDogActor</image>
+	<conditions>
+	  <carrotMiddle>2</carrotMiddle>
+	  <time>300</time>
+	  <carrotMin>1</carrotMin>
+	</conditions>
+	<group>
+
+	  <objectReference x="3" y="3" name="Beam" hash="008qm7qxw5"/>
+	  <objectReference x="5" y="6" name="Bush" hash="3rbm6zxwy4"/>
+	  <objectReference x="3" y="0" name="Bush" hash="4aztkknx8a"/>
+	  <objectReference x="3" y="6" name="Bush" hash="7qyr3z432k"/>
+	  <objectReference x="0" y="2" name="Bush" hash="bksgshowg3"/>
+	  <objectReference x="1" y="1" name="Bush" hash="fyltpyaat4"/>
+	  <objectReference x="1" y="6" name="Bush" hash="kc71hlxlh7"/>
+	  <objectReference x="2" y="9" name="Bush" hash="wnpm4177fx"/>
+	  <objectReference x="5" y="8" name="Bush" hash="x5y9aam5kw"/>
+
+	  <objectReference x="2" y="3" name="Hero" hash="2zn6juhti3"/>
+	  <objectReference x="6" y="3" name="WatchDog" hash="nogfpmrmb8"/>
+	</group>
+</level>
+<level id="22" version="0">
+	<description>New Level</description>
+	<number>2</number>
+	<author>nobody</author>
+
+	<width>12</width>
+	<height>12</height>
+	<image></image>
+	<conditions>
+	  <time>300</time>
+	  <carrotMin>1</carrotMin>
+	  <carrotMiddle>2</carrotMiddle>
+
+	</conditions>
+	<group>
+	  <objectReference x="4" y="5" name="Carrot" hash="1xglsxusju"/>
+	  <objectReference x="2" y="7" name="Carrot" hash="szknwdshmz"/>
+	  <objectReference x="7" y="2" name="Carrot" hash="u5i494pan4"/>
+	  <objectReference x="5" y="8" name="Carrot" hash="wsbxvnev4o"/>
+	  <objectReference x="7" y="8" name="Carrot" hash="yywmz13121"/>
+	  <objectReference x="6" y="6" name="Hedgehog" hash="2vw0ahp8kg"/>
+	  <objectReference x="6" y="4" name="Hedgehog" hash="81f63xgoio"/>
+
+	  <objectReference x="4" y="8" name="Hedgehog" hash="fsid5pljoi"/>
+	  <objectReference x="3" y="3" name="Hero" hash="psbhevqqje"/>
+	</group>
+</level>
+</levels>

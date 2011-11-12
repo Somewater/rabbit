@@ -19,3 +19,5 @@ bin-debug/*.swf
 *.lock
 logs/*
 tmp/*
+
+soc/Social.swc

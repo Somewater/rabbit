@@ -24,6 +24,7 @@ package com.somewater.rabbit.loader
 	import flash.system.LoaderContext;
 	import flash.system.Security;
 	import flash.system.SecurityDomain;
+	import flash.utils.getQualifiedClassName;
 
 	public class RabbitLoaderBase extends Sprite implements IRabbitLoader
 	{
@@ -554,6 +555,11 @@ package com.somewater.rabbit.loader
 		//			S O C I A L     A P I			//
 		//											//
 		//////////////////////////////////////////////
+
+		public function get net():int
+		{
+			return 0;// 0 - значит локально, для тестов; такой номер в продакшн базе недопустим
+		}
 		
 		public function get hasUserApi():Boolean
 		{
@@ -579,13 +585,18 @@ package com.somewater.rabbit.loader
 		{
 			throw new Error("Must be overriden");
 		}
+
+		public function setUser(user:SocialUser):void
+		{
+			throw new Error("User save not implemented");
+		}
 			
 		public function showInviteWindow():void
 		{
 			throw new Error("Must be overriden");
 		}
 			
-		public function pay(quantity:Object, onSuccess:Function, onFailure:Function):void
+		public function pay(quantity:Object, onSuccess:Function, onFailure:Function, params:Object = null):void
 		{
 			throw new Error("Must be overriden");
 		}
@@ -606,6 +617,11 @@ package com.somewater.rabbit.loader
 				return (_basePath.substr(_basePath.length - 1,1) == "/" ? _basePath : _basePath + "/");
 			else
 				return "";
+		}
+		
+		override public function toString():String
+		{
+			return '[' + getQualifiedClassName(this) + ']';
 		}
 		
 		/**

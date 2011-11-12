@@ -24,12 +24,13 @@ require 'active_record'
 #require "active_record/connection_adapters/postgresql_adapter"
 ActiveRecord::Base.configurations = DB_CONF
 ActiveRecord::Base.establish_connection(
-  DB_CONF["development"] # development db forever
+  DB_CONF[APP_ENV == 'test' ? 'test' : 'development'] # development db forever
   #DB_CONF[APP_ENV]
 )
 
 
 Dir["#{SERVER_ROOT}/app/*"].each{|a| $:.unshift(a)}
+Dir["#{SERVER_ROOT}/app/{controllers,models}/super/*.rb"].sort.each { |x| require x }
 Dir["#{SERVER_ROOT}/app/{controllers,models}/*.rb"].sort.each { |x| require x }
 Dir["#{SERVER_ROOT}/app/{controllers,models}/**/*.rb"].sort.each { |x| require x }
 

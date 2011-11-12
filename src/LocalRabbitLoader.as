@@ -2,13 +2,16 @@ package
 {
 	import com.somewater.net.ServerHandler;
 	import com.somewater.rabbit.loader.RabbitLoaderBase;
+	import com.somewater.rabbit.net.LocalServerHandler;
 	import com.somewater.rabbit.storage.Config;
-	import com.somewater.social.LocalSocialAdapter;
 	import com.somewater.social.SocialAdapter;
 	import com.somewater.social.SocialUser;
 	
 	import flash.events.Event;
-	
+
+	/**
+	 * Эмуляция работы сервера и сошл. апи
+	 */
 	[SWF(width="810", height="650", backgroundColor="#FFFFFF", frameRate="30")]
 	public class LocalRabbitLoader extends RabbitLoaderBase
 	{
@@ -20,8 +23,7 @@ package
 		
 		override protected function netInitialize():void
 		{
-			new LocalSocialAdapter();
-			SocialAdapter.instance.init(this, onNetInitializeComplete, onNetInitializeError);
+			onNetInitializeComplete()
 		}
 		
 		override protected function createSpecificPaths():void
@@ -42,7 +44,7 @@ package
 					}
 			
 			filePaths = {
-							 "Levels":"/levels.xml"
+							 "Levels":"levels.xml"
 							,"Managers":"Managers.xml"
 							,"Description":"Description.xml"
 							,"LevelPack":"LevelPack.xml"
@@ -51,9 +53,8 @@ package
 
 		override protected function initializeServerHandler():void
 		{
-			_serverHandler = new ServerHandler();
-			_serverHandler.base_path = /asflash.ru/.test(loaderInfo.url) ? "http://rabbit.asflash.ru/" : "http://localhost:3000/";
-			_serverHandler.init(SocialAdapter.instance.user_id, SocialAdapter.instance.authentication_key);
+			_serverHandler = new LocalServerHandler();
+			_serverHandler.init(getUser().id, 'embed', net);
 		}
 
 		//////////////////////////////////////////////////////////////////
@@ -94,7 +95,7 @@ package
 			trace("[SOCIAL] Invite window opened");
 		}
 		
-		override public function pay(quantity:Object, onSuccess:Function, onFailure:Function):void
+		override public function pay(quantity:Object, onSuccess:Function, onFailure:Function, params:Object = null):void
 		{
 			recreateFakeUsers();
 			trace("[SOCIAL] payment: " + quantity);

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 4) do
+ActiveRecord::Schema.define(:version => 5) do
 
   create_table "levels", :force => true do |t|
     t.string   "description"
@@ -26,5 +26,24 @@ ActiveRecord::Schema.define(:version => 4) do
     t.datetime "created_at"
     t.string   "image"
   end
+
+  create_table "users", :force => true do |t|
+    t.integer  "net",                                                           :null => false
+    t.string   "uid",                                                           :null => false
+    t.string   "first_name"
+    t.string   "last_name"
+    t.text     "level_instances"
+    t.text     "awards"
+    t.integer  "score",                                          :default => 0
+    t.integer  "money",                                          :default => 0
+    t.integer  "level",                                          :default => 1
+    t.decimal  "roll",            :precision => 10, :scale => 0, :default => 0
+    t.integer  "friends_invited",                                :default => 0
+    t.integer  "postings",                                       :default => 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "users", ["uid", "net"], :name => "index_users_on_uid_and_net", :unique => true
 
 end

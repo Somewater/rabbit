@@ -2,6 +2,7 @@ ERROR=ОШИБКА
 ALERT=ВНИМАНИЕ
 OK=OK
 PAUSE=ПАУЗА
+RABBIT=Кролик
 ###################
 #
 #	ERROR MASSAGES

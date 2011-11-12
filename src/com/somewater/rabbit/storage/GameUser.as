@@ -9,6 +9,7 @@ package com.somewater.rabbit.storage
 		
 		protected var _score:int;
 		protected var _levelInstances:Array = [];
+		protected var _rewards:Array = [];
 		
 		public function GameUser(data:Object = null)
 		{
@@ -54,6 +55,19 @@ package com.somewater.rabbit.storage
 				if(inst.levelDef.number > max)
 					max = inst.levelDef.number;
 			return max;
+		}
+
+		/**
+		 * Array of RewardDef
+		 */
+		public function get rewards():Array
+		{
+			return _rewards;
+		}
+
+		public function addReward(reward:RewardDef):void
+		{
+			_rewards.push(reward);
 		}
 	}
 }

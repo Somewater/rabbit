@@ -151,6 +151,73 @@ package com.pblabs.engine.core
 		}
 
 		/**
+		 * FIX: 7.11.11. Для переписывания компонентов в пределах objectReference, например
+		 * 	<objectReference x="3" y="5">
+		 * 	    <component name="Render" type="some.Class"/>
+		 * 	</objectReference>
+		 * @param objectReference
+		 * @return
+		 */
+		public function instantiateEntityFromObjectReference(objectReference:XML):IEntity
+		{
+			Profiler.enter("instantiateEntityFromObjectReference");
+			var name:String = objectReference.attribute("name");
+			try
+			{
+				// Check for a callback.
+				if (_things[name])
+				{
+					if (_things[name].groupCallback)
+						throw new Error("Thing '" + name + "' is a group callback!");
+
+					if (_things[name].entityCallback)
+					{
+						var instantiated:IEntity=_things[name].entityCallback();
+						Profiler.exit("instantiateEntityFromObjectReference");
+						return instantiated;
+					}
+				}
+
+				var xml:XML = getXML(name, "template", "entity");
+				// обработать xml, переписав атрибуты type согласно значениям в  objectReference
+				var componentXML:XML;
+				var componentName:String;
+				var overridenTypes:Array = [];
+				for each(componentXML in objectReference.*)
+				{
+					componentName = componentXML.attribute('name');
+					var componentType:String = componentXML.attribute('type');
+					if(componentType && componentType.length)
+						overridenTypes[componentName] = componentType;
+				}
+				for each(componentXML in xml.*)
+				{
+					componentName = componentXML.attribute('name');
+					if(overridenTypes[componentName])
+						componentXML.@type = overridenTypes[componentName];
+				}
+
+				if (!xml)
+				{
+					Logger.error(this, "instantiateEntity", "Unable to find a template or entity with the name " + name + ".");
+					Profiler.exit("instantiateEntityFromObjectReference");
+					return null;
+				}
+
+				var entity:IEntity=instantiateEntityFromXML(xml);
+				Profiler.exit("instantiateEntityFromObjectReference");
+			}
+			catch (e:Error)
+			{
+				Logger.error(this, "instantiateEntity", "Failed instantiating '" + name + "' due to: " + e.toString() + "\n" + e.getStackTrace());
+				entity=null;
+				Profiler.exit("instantiateEntityFromObjectReference");
+			}
+
+			return entity;
+		}
+
+		/**
 		 * Given an XML literal, construct a valid entity from it.
 		 */
 		public function instantiateEntityFromXML(xml:XML):IEntity
@@ -556,7 +623,7 @@ package com.pblabs.engine.core
 				{
 					_inGroup=true;
 					// FIX 11.03.2011 Обеспечить ввод координат в xml файле, отвечающем за описание левела
-					var entity:IEntity = instantiateEntity(childName);
+					var entity:IEntity = instantiateEntityFromObjectReference(objectXML);
 					setEntityParams(entity, objectXML);
 					group.push(entity);
 					_inGroup=false;

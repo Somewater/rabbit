@@ -1,4 +1,4 @@
-<% raise "arguments error, must be @sure, @yes, @no" unless @sure && @yes && @no %>
+<% raise ArgumentError, "arguments error, must be @sure, @yes, @no" unless @sure && @yes && @no %>
 <div>
 	<p>Are you sure <%= @sure %> ?</p>
 	<table>

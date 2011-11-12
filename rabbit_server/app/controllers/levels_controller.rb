@@ -6,7 +6,7 @@ class LevelsController < BaseController
 			when 'create'
 				create
 			else
-				raise "E_METHOD"
+				raise MethodError, "E_METHOD"
 		end
 	end
 

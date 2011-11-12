@@ -16,7 +16,7 @@ package com.somewater.rabbit.storage
 						<group>
 							<objectReference x="3" y="2" name="Hero"/>
 							<objectReference x="1" y="1" name="Award">
-								<component name="Render">
+								<component name="Render" type="com.somewater.rabbit.awards.RabbitHoleRenderer">
 									<slug>rabbit.RabbitHole</slug>
 								</component>
 								<component name="Spatial">

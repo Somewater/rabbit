@@ -83,9 +83,13 @@ package com.somewater.rabbit
 			
 		function allocatePreloader():*
 			
+		function toString():String
+			
 		/**
 		 * Социальные данные
 		 */
+		function get net():int
+
 		function get hasUserApi():Boolean
 		
 		function get hasFriendsApi():Boolean
@@ -95,10 +99,12 @@ package com.somewater.rabbit
 		function getAppFriends():Array
 			
 		function getUser():SocialUser
+
+		function setUser(user:SocialUser):void
 			
 		function showInviteWindow():void
 			
-		function pay(quantity:Object, onSuccess:Function, onFailure:Function):void
+		function pay(quantity:Object, onSuccess:Function, onFailure:Function, params:Object = null):void
 			
 		function getUsers(uids:Array, onComplete:Function, onError:Function):void
 	}

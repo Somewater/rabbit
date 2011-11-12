@@ -199,7 +199,12 @@ package com.somewater.display
 				pictureLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, onPictureLoad,false,0,true);
 				pictureLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, errorHandler,false,0,true);
 				pictureLoader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, errorHandler,false,0,true);
-				pictureLoader.load(pictureRequest, Photo.context);
+				try
+				{
+					pictureLoader.load(pictureRequest, Photo.context);
+				}catch(err:SecurityError){
+					source = new Sprite();
+				}
 			} else if (value is DisplayObject){
 				cls();
 				image = value;
