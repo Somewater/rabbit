@@ -1,5 +1,6 @@
 package com.somewater.net
 {
+	import com.adobe.crypto.MD5;
 	import com.adobe.serialization.json.JSON;
 	import com.somewater.net.IServerHandler;
 	import com.somewater.rabbit.net.*;
@@ -135,7 +136,18 @@ package com.somewater.net
 			variables['key'] = key;
 			variables['net'] = net;
 			variables['ping'] = getPing();
+			if(params && params['secure'])
+				variables['secure'] = createSecureHash(variables['json']);
 			return variables;
+		}
+
+		private function createSecureHash(jsonString:String):String {
+			var str:String = "";
+			for(var i:int = jsonString.length - 1; i >= 0; i--)
+			{
+				str += jsonString.charAt(i);
+			}
+			return MD5.encrypt('lorem ' + str + ' ipsum ' + uid.toString() + ' ' + net.toString());
 		}
 
 		protected function getPing():int

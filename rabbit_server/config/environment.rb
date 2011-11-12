@@ -8,6 +8,7 @@ require "yaml"
 SERVER_ROOT = "#{ROOT}/rabbit_server"
 TEMPLATE_ROOT = "#{SERVER_ROOT}/app/views"
 CONFIG_DIR = "#{SERVER_ROOT}/config"
+PUBLIC_DIR = "#{ROOT}/bin-debug"
 DB_CONF = YAML.load(File.read("#{CONFIG_DIR}/database.yml"))
 CONFIG  = YAML.load(File.read("#{CONFIG_DIR}/config.yml"))
 RAILS_ENV = APP_ENV = (ENV['RACK_ENV'] =~ /(production|development|test)/ ? ENV['RACK_ENV'] : "development")
@@ -37,6 +38,13 @@ Dir["#{SERVER_ROOT}/app/{controllers,models}/**/*.rb"].sort.each { |x| require x
 ActiveRecord::Base.logger = Application.logger
 RAILS_ROOT = SERVER_ROOT
 RAILS_DEFAULT_LOGGER = Application.logger
+
+#######################################################
+#
+#	M A N A G E R S		I N I T I A L I Z A T I O N
+#
+#######################################################
+RewardManager.instance
 
 Application.logger.info { "Initialization complete [#{RUBY_VERSION}/#{RUBY_PLATFORM}] at #{Time.new}" }
 

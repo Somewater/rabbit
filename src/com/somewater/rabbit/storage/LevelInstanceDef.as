@@ -15,11 +15,18 @@ package com.somewater.rabbit.storage
 
 		private var _levelDef:LevelDef;
 
+		///////////////////
+		//
+		//		ДАННЫЕ СОХРАНЯЮЩИЕСЯ В БАЗЕ
+		//
+		//////////////////
+		public var timeSpended:int;// число миллисекунд с момента старта игры
+		public var carrotHarvested:int;// морковок собрано на уровне
+
 		private var _success:Boolean;
 		public var finalFlag:String;// КОнстанта из класса LevelConditionsManager
-		public var carrotHarvested:int;
+		public var carrotIncrement:int;// на сколько морковок собрано больше, чем в предыдущий раз
 		public var aliensPassed:int;// сколько врагов было на уровне (и, соответственно, пройдено)
-		public var timeSpended:int;// число миллисекунд с момента старта игры
 		public var stars:int = 0;// Сколько звездочек получено за прохождение уровня (минимум 1, если уровень завершен успешно)
 		public var rewards:Array = [];// бонусы за прохождение уровня
 		

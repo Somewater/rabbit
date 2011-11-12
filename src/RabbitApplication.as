@@ -6,6 +6,7 @@ package
 	import com.somewater.net.ServerHandler;
 	import com.somewater.rabbit.IRabbitApplication;
 	import com.somewater.rabbit.application.AboutPage;
+	import com.somewater.rabbit.application.AppServerHandler;
 	import com.somewater.rabbit.application.GameGUI;
 	import com.somewater.rabbit.application.LevelsPage;
 	import com.somewater.rabbit.application.MainMenuPage;
@@ -13,6 +14,7 @@ package
 	import com.somewater.rabbit.application.OrangeGround;
 	import com.somewater.rabbit.application.PageBase;
 	import com.somewater.rabbit.application.RewardLevelGUI;
+	import com.somewater.rabbit.application.RewardManager;
 	import com.somewater.rabbit.application.ServerLogic;
 	import com.somewater.rabbit.application.WindowBackground;
 	import com.somewater.rabbit.application.windows.LevelFinishFailWindow;
@@ -20,7 +22,6 @@ package
 	import com.somewater.rabbit.application.windows.LevelStartWindow;
 	import com.somewater.rabbit.application.windows.LevelSwitchWindow;
 	import com.somewater.rabbit.application.windows.PauseMenuWindow;
-	import com.somewater.rabbit.application.AppServerHandler;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
@@ -144,7 +145,7 @@ package
 			//		- Levels
 			//		- Managers
 			//		- Description
-			//		- LevelPack
+			//		- Rewards
 			// 2. профайл пользователя с сервера
 			//
 			
@@ -153,7 +154,7 @@ package
 				"Levels":Config.loader.getFilePath("Levels")
 				,"Managers":Config.loader.getFilePath("Managers")
 				,"Description":Config.loader.getFilePath("Description")
-				,"LevelPack":Config.loader.getFilePath("LevelPack")
+				,"Rewards":Config.loader.getFilePath("Rewards")
 			}, function(data:Object):void{
 				// статика загружена
 				Config.loader.setProgress(2, 1);
@@ -190,6 +191,8 @@ package
 
 			if(_levels.length == 0)// вносим один пустой уровень
 				addLevel(XmlController.instance.getNewLevel());
+
+			RewardManager.instance.initialize(Config.loader.getXML('Rewards'))
 		}
 
 		public function addLevel(level:LevelDef):void
@@ -226,7 +229,7 @@ package
 
 		public function addFinishedLevel(levelInstance:LevelInstanceDef):void
 		{
-			ServerLogic.addRewardsToLevelInstance(levelInstance);
+			ServerLogic.addRewardsToLevelInstance(UserProfile.instance, levelInstance);
 
 			UserProfile.instance.addLevelInstance(levelInstance);
 		}

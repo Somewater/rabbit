@@ -7,7 +7,7 @@ package com.somewater.rabbit.xml {
 
 	public class XmlController {
 
-	public static const EXCLUDED_TEMPLATES:Array = ["Animal","Iso","IsoMover","Kennel","Rabbit","RabbitBase"];
+	public static const EXCLUDED_TEMPLATES:Array = ["Animal","Iso","IsoMover","Kennel","Rabbit","RabbitBase","Reward"];
 
 	private static var _instance:XmlController;
 

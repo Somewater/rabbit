@@ -623,7 +623,8 @@ package com.pblabs.engine.core
 				{
 					_inGroup=true;
 					// FIX 11.03.2011 Обеспечить ввод координат в xml файле, отвечающем за описание левела
-					var entity:IEntity = instantiateEntityFromObjectReference(objectXML);
+					//var entity:IEntity = instantiateEntityFromObjectReference(objectXML);
+					var entity:IEntity = instantiateEntity(childName);
 					setEntityParams(entity, objectXML);
 					group.push(entity);
 					_inGroup=false;

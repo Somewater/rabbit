@@ -248,7 +248,7 @@
 		AWARD
 
 	-->
-	<template name="Award" template="Iso" sets="wall">
+	<template name="Reward" template="Iso" sets="wall">
 		<component name="Render">
 			<slug>null</slug>
 			<useDirection>1</useDirection>
@@ -262,7 +262,7 @@
 				<y>1</y>
 			</size>		
 		</component>
-	</template>	
+	</template>
 	
 
 	

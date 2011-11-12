@@ -66,6 +66,9 @@ package com.somewater.rabbit.iso
 		 */
 		protected var _sizePositionOffsetValue:Point = new Point();
 		protected var _sizePositionOffset:Boolean = false;// true если размер объекта не точечный
+
+		private var lastAppliedPositionOffsetScreen:Point = new Point();
+		private var positionOffsetScreen:Point = new Point();
 		
 		/**
 		 * TODO: сделать сеттером, который не позволяет установить стейт,
@@ -493,14 +496,27 @@ package com.somewater.rabbit.iso
 			_transformMatrix.scale(tmpScaleX, tmpScaleY);
 			_transformMatrix.translate(-_registrationPoint.x * tmpScaleX, -_registrationPoint.y * tmpScaleY);
 			//_transformMatrix.rotate(_rotation * Math.PI * 0.0055555555555555555555 + _rotationOffset);
-			tempIsoScreenPoint.x = _position.x + _sizePositionOffsetValue.x;
-			tempIsoScreenPoint.y = _position.y + _sizePositionOffsetValue.y;
+			tempIsoScreenPoint.x = _position.x + _sizePositionOffsetValue.x + _positionOffset.x;
+			tempIsoScreenPoint.y = _position.y + _sizePositionOffsetValue.y + _positionOffset.y;
 			isoToScreen(tempIsoScreenPoint);
+
+			positionOffsetScreen.x = _positionOffset.x;
+			positionOffsetScreen.y = _positionOffset.y;
+			isoToScreen(positionOffsetScreen);
+
+			// учитываем влияние _positionOffset на координату и вычитаем это влияние при просчете pointToDirection
+			// (потому что _positionOffset не дорлжна влиять на direction персонажа, а просто на смещение)
+			var _positionOffsetScreen:Point = isoToScreen(_positionOffset.clone());
 			
 			if(_displayObject.x != 0 && _displayObject.y != 0)// если происходит НЕ инициализация позиции персонажа
-				__direction = pointToDirection(tempIsoScreenPoint.x - _displayObject.x, tempIsoScreenPoint.y - _displayObject.y);
+				__direction = pointToDirection(
+					  tempIsoScreenPoint.x - positionOffsetScreen.x - _displayObject.x + lastAppliedPositionOffsetScreen.x
+					, tempIsoScreenPoint.y - positionOffsetScreen.y - _displayObject.y + lastAppliedPositionOffsetScreen.y);
+
+			lastAppliedPositionOffsetScreen.x = positionOffsetScreen.x;
+			lastAppliedPositionOffsetScreen.y = positionOffsetScreen.y;
 			
-			_transformMatrix.translate(tempIsoScreenPoint.x + _positionOffset.x, tempIsoScreenPoint.y + _positionOffset.y);
+			_transformMatrix.translate(tempIsoScreenPoint.x, tempIsoScreenPoint.y);
 			_displayObject.transform.matrix = _transformMatrix;
 			_displayObject.alpha = _alpha;
 			_displayObject.blendMode = _blendMode;

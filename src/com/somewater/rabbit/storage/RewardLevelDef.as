@@ -15,17 +15,7 @@ package com.somewater.rabbit.storage
 						</conditions>
 						<group>
 							<objectReference x="3" y="2" name="Hero"/>
-							<objectReference x="1" y="1" name="Award">
-								<component name="Render" type="com.somewater.rabbit.awards.RabbitHoleRenderer">
-									<slug>rabbit.RabbitHole</slug>
-								</component>
-								<component name="Spatial">
-									<size>
-										<x>2</x>
-										<y>2</y>
-									</size>
-								</component>
-							</objectReference>
+							<objectReference x="1" y="1" name="RewardRabbitHole"/>
 						</group>
 						<width>10</width>
 						<height>10</height>

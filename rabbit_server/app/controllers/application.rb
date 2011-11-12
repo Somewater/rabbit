@@ -59,8 +59,10 @@ class Application
 			case method
 				when "init"
 					InitializeController.new(request).call
-				when "levels/manage"
+				when "levels/complete"
 					LevelsController.new(request).call
+				when "levels/manage"
+					LevelsManageController.new(request).call
 				when "levels.xml"
 					LevelsAdminController.generate_xml_file
 				# ADMIN AREA

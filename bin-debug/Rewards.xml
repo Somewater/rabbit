@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reward version="0">
+	<!--
+		TYPES:
+			fast_time
+			all_carrots
+			carrot_pack
+			special
+	-->
+
+	<template name="RewardRabbitHole" template="Reward" id="0" type="special" degree="0" index="0">
+		<component name="Render" type="com.somewater.rabbit.awards.RabbitHoleRenderer">
+			<slug>rabbit.RabbitHole</slug>
+		</component>
+		<component name="Spatial">
+			<size>
+				<x>2</x>
+				<y>2</y>
+			</size>
+		</component>
+	</template>
+
+</reward>

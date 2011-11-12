@@ -47,7 +47,7 @@ package
 							 "Levels":"levels.xml"
 							,"Managers":"Managers.xml"
 							,"Description":"Description.xml"
-							,"LevelPack":"LevelPack.xml"
+							,"Rewards":"Rewards.xml"
 						}
 		}
 

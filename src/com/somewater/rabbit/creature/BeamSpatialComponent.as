@@ -179,7 +179,7 @@ package com.somewater.rabbit.creature
 										/*    -0.5 высота пенька
 										 *    0.5 коэф.  поднятия от повотора бревна
 										 */
-						//isoRender.positionOffset = positionOffset;
+						isoRender.positionOffset = positionOffset;
 						guestsPositionOffset.push(isoRender);
 					}
 					
