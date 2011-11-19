@@ -160,7 +160,10 @@
 		}
 
 		private function saveLevel():void {
-			selectedLevel.completed
+			selectedLevel.conditions['carrotMax'] = XmlController.instance.calculateMaxCarrots(selectedLevel);
+			selectedLevel.conditions['carrotMiddle'] = XmlController.instance.calculateMiddleCarrots(selectedLevel);
+			selectedLevel.conditions['carrotMin'] = XmlController.instance.calculateMinCarrots(selectedLevel);
+
 			Config.loader.serverHandler.call('levels/manage',
 					{
 						"operation":"create",

@@ -153,6 +153,7 @@ package
 		{
 			var paths:Object = {
 					"Description":Config.loader.getFilePath("Description")// вообщето обязано (!) быть загружено ранее
+					,"Rewards":Config.loader.getFilePath('Rewards')
 					,"Managers":Config.loader.getFilePath("Managers")
 			};
 			var pathsToLoad:Array = [];

@@ -69,23 +69,22 @@ package com.somewater.rabbit.managers
 		{
 			startLevelTime = PBE.processManager.virtualTime;
 			conditionsRef = [];
-			for (var key:String in Config.game.level.conditions)
-				conditionsRef[key] = Config.game.level.conditions[key];
+			var levelRef:LevelDef = Config.game.level;
+
+			for (var key:String in levelRef.conditions)
+				conditionsRef[key] = levelRef.conditions[key];
 			if(conditionsRef["time"] == null)
 				conditionsRef["time"] = 60;
 
-			if(conditionsRef["carrotMax"] == null)
-				conditionsRef["carrotMax"] = XmlController.instance.calculateCarrots(Config.game.level);
-			if(conditionsRef['carrotMiddle'] == null)
-				conditionsRef['carrotMiddle'] = conditionsRef['carrotMax'] - 1;
-			if(conditionsRef['carrotMin'] == null)
-				conditionsRef['carrotMin'] = conditionsRef['carrot'] ? conditionsRef['carrot'] : conditionsRef['carrotMiddle'] - 1;
+			conditionsRef["carrotMax"] = XmlController.instance.calculateMaxCarrots(levelRef);
+			conditionsRef['carrotMiddle'] = XmlController.instance.calculateMiddleCarrots(levelRef);
+			conditionsRef['carrotMin'] = XmlController.instance.calculateMinCarrots(levelRef);
 			
 			conditionsRef["time"] *= 1000;// расчеты в мс
 			if(conditionsRef['fastTime'])
 				conditionsRef["fastTime"] *= 1000;// расчеты в мс
 
-			_levelFinished = Config.game.level.type != 'Level';// для всех "необычных" уровней, блочим логику менеджера
+			_levelFinished = levelRef.type != 'Level';// для всех "необычных" уровней, блочим логику менеджера
 			rabbitInited = false;
 
 			// что может являться причиной успешного завершения уровня

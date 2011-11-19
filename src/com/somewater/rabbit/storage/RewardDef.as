@@ -1,4 +1,8 @@
 package com.somewater.rabbit.storage {
+	import com.somewater.rabbit.xml.XmlController;
+
+	import flash.geom.Point;
+
 	/**
 	 * Отвечает за различные типы бонусов, выдаваемые клинетом (и, синхронно, сервером)
 	 * после успешного прохождения уровня
@@ -14,14 +18,13 @@ package com.somewater.rabbit.storage {
 
 		private var _type:String;
 		private var _degree:int;
-		private var _index:int;
+		public var template:XML;
 
-		public function RewardDef(id:int, type:String, degree:int, index:int) {
+		public function RewardDef(id:int, type:String, degree:int) {
 
 			this._id = id;
 			this._type = type;
 			this._degree = degree;
-			this._index = index;
 		}
 
 		/**
@@ -48,12 +51,9 @@ package com.somewater.rabbit.storage {
 			return _degree;
 		}
 
-		/**
-		 * Для нескольких наград одного тапа и одной ступени, позволяет их отличать друг от друга
-		 */
-		public function get index():int
+		public function get size():Point
 		{
-			return _index;
+			return XmlController.instance.calculateRewardSize(id);
 		}
 	}
 }

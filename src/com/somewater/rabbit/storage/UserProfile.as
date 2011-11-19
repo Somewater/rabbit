@@ -24,6 +24,8 @@ package com.somewater.rabbit.storage
 		private var dispatcher:EventDispatcher;
 		
 		private var applicationRef:IRabbitApplication;
+
+		private var roll:uint;
 		
 		
 		public function UserProfile(data:Object)
@@ -166,9 +168,19 @@ package com.somewater.rabbit.storage
 		}
 
 
-		override public function addReward(reward:RewardDef):void {
+		override public function addReward(reward:RewardInstanceDef):void {
 			super.addReward(reward);
 			dispatchChange();
+		}
+
+		override public function getRoll():Number
+		{
+			var roll:uint = this.roll;
+			if(roll == 0)
+				roll = parseInt(this.uid) + 1024;
+			roll = ((roll * 16147) % 2147483647)
+			this.roll = roll;
+			return roll / 2147483647;
 		}
 	}
 }

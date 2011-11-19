@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(:version => 5) do
     t.string   "first_name"
     t.string   "last_name"
     t.text     "level_instances"
-    t.text     "awards"
+    t.text     "rewards"
     t.integer  "score",                                          :default => 0
     t.integer  "money",                                          :default => 0
     t.integer  "level",                                          :default => 1

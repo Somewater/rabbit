@@ -65,9 +65,19 @@ package com.somewater.rabbit.storage
 			return _rewards;
 		}
 
-		public function addReward(reward:RewardDef):void
+		public function addReward(reward:RewardInstanceDef):void
 		{
 			_rewards.push(reward);
+		}
+
+		public function get uid():String
+		{
+			return socialUser.id;
+		}
+
+		public function getRoll():Number
+		{
+			throw new Error('GameUser not implemented getRoll');
 		}
 	}
 }

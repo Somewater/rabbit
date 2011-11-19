@@ -24,8 +24,6 @@ package com.somewater.rabbit.storage
 		//
 		///////////////////////////////////
 		
-		public var completed:Boolean;
-		
 		public function LevelDef(xml:XML)
 		{
 			id = xml.attribute("id");

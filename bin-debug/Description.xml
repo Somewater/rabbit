@@ -245,7 +245,7 @@
 	
 	<!--
 
-		AWARD
+		REWARD
 
 	-->
 	<template name="Reward" template="Iso" sets="wall">

@@ -2,7 +2,8 @@ package com.somewater.rabbit.application
 {
 	import com.somewater.controller.PopUpManager;
 	import com.somewater.rabbit.storage.Config;
-	
+	import com.somewater.rabbit.xml.XmlController;
+
 	import flash.utils.clearInterval;
 	import flash.utils.setInterval;
 	import flash.utils.setTimeout;

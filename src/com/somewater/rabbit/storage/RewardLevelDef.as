@@ -5,6 +5,9 @@ package com.somewater.rabbit.storage
 	public class RewardLevelDef extends LevelDef
 	{
 
+		public static const WIDTH:int = 10;
+		public static const HEIGHT:int = 10;
+
 		private var uniqId:Number = Math.random();
 
 		public function RewardLevelDef()
@@ -17,8 +20,8 @@ package com.somewater.rabbit.storage
 							<objectReference x="3" y="2" name="Hero"/>
 							<objectReference x="1" y="1" name="RewardRabbitHole"/>
 						</group>
-						<width>10</width>
-						<height>10</height>
+						<width>{WIDTH}</width>
+						<height>{HEIGHT}</height>
 					</xml>);
 		}
 

@@ -4,6 +4,7 @@ package com.somewater.rabbit.application {
 	import com.somewater.display.Photo;
 	import com.somewater.rabbit.storage.RewardDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
+	import com.somewater.rabbit.storage.RewardInstanceDef;
 
 	public class LevelRewardIcon extends HintedSprite implements IClear{
 
@@ -11,10 +12,10 @@ package com.somewater.rabbit.application {
 		public static const HEIGHT:int = 100;
 
 		private var levelInstance:LevelInstanceDef;
-		private var reward:RewardDef;
+		private var reward:RewardInstanceDef;
 		private var photo:Photo;
 
-		public function LevelRewardIcon(levelInstance:LevelInstanceDef, reward:RewardDef) {
+		public function LevelRewardIcon(levelInstance:LevelInstanceDef, reward:RewardInstanceDef) {
 			this.levelInstance = levelInstance;
 			this.reward = reward;
 

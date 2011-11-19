@@ -1,26 +1,11 @@
 class RewardManager
 
-	TYPE_FAST_TIME = 	'fast_time'
-	TYPE_ALL_CARROT = 	'all_carrots'
-	TYPE_CARROT_PACK = 	'carrot_pack'
-	TYPE_SPECIAL = 		'special'
-
 	@@instance = nil
-
-	class Reward
-		attr_reader :id, :type, :degree, :index
-
-		def initialize(attrs)
-			@id = attrs['id'].to_i
-			@type = attrs['type']
-			@degree = attrs['degree'].to_i
-			@index = attrs['index'].to_i
-		end
-	end
 
 	def initialize
 		@rewards_by_type = {}
 		@rewards_by_id = {}
+		@xml_by_id = {}
 		@rewards = []
 		read_files
 	end
@@ -42,6 +27,11 @@ class RewardManager
 		@rewards_by_id[id.to_i]
 	end
 
+	# XML реварда с заданным id
+	def get_xml_by_id(id)
+		@xml_by_id[id.to_i]
+	end
+
 	# массив всех ревардов, отсортированных по id
 	def rewards
 		@rewards
@@ -49,7 +39,6 @@ class RewardManager
 
 private
 	def read_files
-		require 'rexml/document'
 		xml = REXML::Document.new File.read("#{PUBLIC_DIR}/Rewards.xml")
 		xml.each_element 'reward/template' do |reward_xml|
 			reward = Reward.new(reward_xml.attributes)
@@ -57,6 +46,7 @@ private
 			@rewards_by_type[reward.type] << reward
 			raise FormatError, "Double rewards id ##{reward.id}" if @rewards_by_id[reward.id]
 			@rewards_by_id[reward.id] = reward
+			@xml_by_id[reward.id] = reward_xml
 			@rewards << reward
 		end
 

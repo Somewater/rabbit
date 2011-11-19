@@ -1,7 +1,10 @@
 package com.somewater.rabbit.xml {
+	import com.somewater.rabbit.application.RewardManager;
 	import com.somewater.rabbit.debug.EntityDef;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
+
+	import flash.geom.Point;
 
 	import flash.utils.Dictionary;
 
@@ -13,6 +16,7 @@ package com.somewater.rabbit.xml {
 
 	private var description:Array;
 	private var descriptionByName:Dictionary;
+	private var calculateRewardSizeCache:Array = [];
 
 	public static function get instance():XmlController
 	{
@@ -67,6 +71,46 @@ package com.somewater.rabbit.xml {
 	}
 
 	/**
+	 * Сколько морковок требует уровень для завершения с 3-мя звездами (макс. результат)
+	 * @param level
+	 * @return
+	 */
+	public function calculateMaxCarrots(level:LevelDef):int
+	{
+		if(level.conditions['carrotMax'] == null)
+			level.conditions['carrotMax'] = calculateCarrots(level);
+		return level.conditions['carrotMax'];
+	}
+
+	/**
+	 * Сколько морковок требует уровень для завершения с 2-мя звездами
+	 * @param level
+	 * @return
+	 */
+	public function calculateMiddleCarrots(level:LevelDef):int
+	{
+		if(level.conditions['carrotMiddle'] == null)
+			level.conditions['carrotMiddle'] = calculateCarrots(level) - 1;
+		return level.conditions['carrotMiddle']
+	}
+
+	/**
+	 * Сколько морковок требует уровень для завершения с 1-й звездой
+	 * (т.е. минимульное число собранных морковок для прохождения уровня)
+	 * @param level
+	 * @return
+	 */
+	public function calculateMinCarrots(level:LevelDef):int
+	{
+		if(level.conditions['carrotMin'])
+			return level.conditions['carrotMin'];
+		else if(level.conditions['carrot'])
+			return level.conditions['carrot'];
+		else
+			return calculateMiddleCarrots(level) - 1;
+	}
+
+	/**
 	 * ПОсчитать время уровня в секундах
 	 * @param level
 	 * @return
@@ -74,6 +118,34 @@ package com.somewater.rabbit.xml {
 	public function calculateLevelTime(level:LevelDef):int
 	{
 		return level.conditions ? level.conditions['time'] : 60;
+	}
+
+	/**
+	 * Просчитать размер реварда, который он занимает на поле
+	 * @param rewardId
+	 * @return
+	 */
+	public function calculateRewardSize(rewardId:int):Point
+	{
+		if(calculateRewardSizeCache[rewardId] == null)
+		{
+			var template:XML = RewardManager.instance.getXMLById(rewardId);
+			var result:Point = calculateRewardSizeCache[rewardId] = new Point(1,1);
+			iterateComponents(template, function(component:XML):Boolean{
+				if(String(component.@name) == 'Spatial')
+				{
+					var x:String = component.size.x.toString();
+					var y:String = component.size.y.toString();
+					if(x && x.length)
+						result.x = parseInt(x);
+					if(y && y.length)
+						result.y = parseInt(y);
+					return true;
+				}
+				return false;
+			})
+		}
+		return	Point(calculateRewardSizeCache[rewardId]).clone();
 	}
 
 	public function getNewLevel():LevelDef

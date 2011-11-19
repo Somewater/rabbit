@@ -1,0 +1,39 @@
+<h1><a href='<%= USERS_PATH %>'>USERS</a></h1>
+<table width='100%' border='1'>
+	<tr width='100%'>
+		<th>id</th>
+		<th>net</th>
+		<th>uid</th>
+		<th>first_name</th>
+		<th>last_name</th>
+		<th>level_instances</th>
+		<th>rewards</th>
+		<th>score</th>
+		<th>money</th>
+		<th>level</th>
+		<th>roll</th>
+		<th>friends_invited</th>
+		<th>postings</th>
+		<th>created_at</th>
+		<th>updated_at</th>
+	</tr>
+	<% @users.each_with_index do |user, index| %>
+		<tr width='100%'>
+        	<td><%= user.id %></td>
+        	<td><%= user.net %></td>
+        	<td><%= user.uid %></td>
+        	<td><%= user.first_name %></td>
+        	<td><%= user.last_name %></td>
+        	<td><%= user.level_instances %></td>
+        	<td><%= user.rewards %></td>
+        	<td><%= user.score %></td>
+        	<td><%= user.money %></td>
+        	<td><%= user.level %></td>
+        	<td><%= user.roll %></td>
+        	<td><%= user.friends_invited %></td>
+        	<td><%= user.postings %></td>
+        	<td><%= user.created_at %></td>
+        	<td><%= user.updated_at %></td>
+		</tr>
+	<% end %>
+</table>

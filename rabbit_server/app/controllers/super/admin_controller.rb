@@ -29,6 +29,8 @@ class AdminController
 				LevelsAdminController.new(@request).call
 			when /^logs/
 				LogsAdminController.new(@request).call
+			when /^users/
+				UsersAdminController.new(@request).call
 			else
 				Base.new(@request).call
 		end
@@ -75,6 +77,7 @@ class AdminController
 				r += tag("p") { tag "a", :href => '/admin/errors', :value => 'errors' }
 				r += tag("p") { tag "a", :href => '/admin/levels', :value => 'levels' }
 				r += tag("p") { tag "a", :href => '/admin/logs', :value => 'logs' }
+				r += tag("p") { tag "a", :href => '/admin/users', :value => 'users' }
 				r
 			end
 		end

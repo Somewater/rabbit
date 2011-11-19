@@ -25,10 +25,9 @@ package com.somewater.rabbit.storage
 
 		private var _success:Boolean;
 		public var finalFlag:String;// КОнстанта из класса LevelConditionsManager
-		public var carrotIncrement:int;// на сколько морковок собрано больше, чем в предыдущий раз
 		public var aliensPassed:int;// сколько врагов было на уровне (и, соответственно, пройдено)
 		public var stars:int = 0;// Сколько звездочек получено за прохождение уровня (минимум 1, если уровень завершен успешно)
-		public var rewards:Array = [];// бонусы за прохождение уровня
+		public var rewards:Array = [];// бонусы за прохождение уровня (array of RewardInstanceDef)
 		
 		public function LevelInstanceDef(data:Object=null)
 		{

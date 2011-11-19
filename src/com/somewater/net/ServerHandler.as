@@ -136,18 +136,18 @@ package com.somewater.net
 			variables['key'] = key;
 			variables['net'] = net;
 			variables['ping'] = getPing();
-			if(params && params['secure'])
-				variables['secure'] = createSecureHash(variables['json']);
+			if(params && params['secure'] != null)
+				variables['secure'] = createSecureHash(variables['json'], params['secure']);
 			return variables;
 		}
 
-		private function createSecureHash(jsonString:String):String {
+		private function createSecureHash(jsonString:String, roll:int):String {
 			var str:String = "";
 			for(var i:int = jsonString.length - 1; i >= 0; i--)
 			{
 				str += jsonString.charAt(i);
 			}
-			return MD5.encrypt('lorem ' + str + ' ipsum ' + uid.toString() + ' ' + net.toString());
+			return MD5.encrypt('lorem ' + str + ' ipsum ' + uid.toString() + ' ' + net.toString() + ' ' + roll.toString());
 		}
 
 		protected function getPing():int

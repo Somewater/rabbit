@@ -8,7 +8,7 @@
 			special
 	-->
 
-	<template name="RewardRabbitHole" template="Reward" id="0" type="special" degree="0" index="0">
+	<template name="RewardRabbitHole" template="Reward" id="0" type="special" degree="0">
 		<component name="Render" type="com.somewater.rabbit.awards.RabbitHoleRenderer">
 			<slug>rabbit.RabbitHole</slug>
 		</component>

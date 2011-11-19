@@ -6,6 +6,7 @@ package com.somewater.rabbit.application.windows {
 	import com.somewater.rabbit.storage.LevelInstanceDef;
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.rabbit.storage.RewardDef;
+	import com.somewater.rabbit.storage.RewardInstanceDef;
 	import com.somewater.rabbit.storage.UserProfile;
 	import com.somewater.storage.Lang;
 	import com.somewater.text.EmbededTextField;
@@ -145,7 +146,7 @@ package com.somewater.rabbit.application.windows {
 				var BONUS_HOLDER_HEIGHT:int = 123;
 				var bonusPadding:int = (BONUS_HOLDER_WIDTH - bonusLength * LevelRewardIcon.WIDTH) / (bonusLength + 1);
 				var nextX:int = bonusPadding;
-				for each(var reward:RewardDef in levelInstance.rewards)
+				for each(var reward:RewardInstanceDef in levelInstance.rewards)
 				{
 					var bonusIcon:LevelRewardIcon = new LevelRewardIcon(levelInstance, reward);
 					bonusIcon.x = nextX;

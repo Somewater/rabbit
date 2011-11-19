@@ -230,8 +230,6 @@ package
 		public function addFinishedLevel(levelInstance:LevelInstanceDef):void
 		{
 			ServerLogic.addRewardsToLevelInstance(UserProfile.instance, levelInstance);
-
-			UserProfile.instance.addLevelInstance(levelInstance);
 		}
 
 		
