@@ -14,9 +14,9 @@ class LevelInstance
 				:carrotHarvested,   # морковок собрано на уровне
 
 				:success,           #
-				:finalFlag,         # КОнстанта из класса LevelConditionsManager
-				:aliensPassed,      # сколько врагов было на уровне (и, соответственно, пройдено)
-				:stars,             # Сколько звездочек получено за прохождение уровня (минимум 1, если уровень завершен успешно)
+				#:finalFlag,         # КОнстанта из класса LevelConditionsManager
+				#:aliensPassed,      # сколько врагов было на уровне (и, соответственно, пройдено)
+				#:stars,             # Сколько звездочек получено за прохождение уровня (минимум 1, если уровень завершен успешно)
 				:rewards            # бонусы за прохождение уровня (array of RewardDef)
 
 	def initialize(* args)
@@ -28,7 +28,7 @@ class LevelInstance
 
 	def data=(hash)
 		if hash.is_a? Level
-			@levelDef = Level
+			@levelDef = hash
 		else
 			hash.each do |key, value|
 				key = key.to_sym
@@ -39,7 +39,7 @@ class LevelInstance
 				elsif key == :t
 					@timeSpended = value
 				elsif self.respond_to? key
-					self.instance_variable_set(key, value)
+					self.instance_variable_set("@#{key}", value)
 				else
 					raise FormatError, "Unsupported key '#{key}'"
 				end

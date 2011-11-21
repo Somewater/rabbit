@@ -16,27 +16,29 @@ class CreateBaseStructure < ActiveRecord::Migration
 			t.boolean :enabled, :default => true
 		end
 		
-		Application.connect_to "stat" do
-			create_table :errors do |t|
-				t.string  :title
-				t.text :content
-				t.text :resolution
+		if(APP_ENV != 'test')
+			Application.connect_to "stat" do
+				create_table :errors do |t|
+					t.string  :title
+					t.text :content
+					t.text :resolution
 
-				t.string :images
-				t.integer :resolved, :default => 0
+					t.string :images
+					t.integer :resolved, :default => 0
 
-				t.string  :author
+					t.string  :author
+				end
 			end
 		end
-		
 	end
 
 	def self.down
 		drop_table 'levels'
 		
-		Application.connect_to "stat" do
-			drop_table 'errors'
+		if(APP_ENV != 'test')
+			Application.connect_to "stat" do
+				drop_table 'errors'
+			end
 		end
-		
 	end
 end

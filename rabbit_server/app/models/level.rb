@@ -1,6 +1,10 @@
 class Level < ActiveRecord::Base
 	attr_accessor :head # является ли левел ведущим (т.е. именно он применяется при генерации xml)
-
+	
+	@@all_head = nil
+	@@all_head_by_number = nil
+	@@cache = nil
+	
 	def to_xml
 		formatted_conditions = ''
 		conditions.each_line{|line| formatted_conditions += (formatted_conditions.size>0 ? "\t#{line}" : line)} if conditions
@@ -24,7 +28,7 @@ class Level < ActiveRecord::Base
 		unless @conditions_to_hash
 			@conditions_to_hash = {}
 			conditions = REXML::Document.new(self.conditions)
-			conditions.children[0].each{|elem| @conditions_to_hash[elem.name] = elem.get_text }
+			conditions.children[0].each{|elem| @conditions_to_hash[elem.name] = elem.get_text.to_s if elem.is_a? REXML::Element }
 		end
 		@conditions_to_hash
 	end

@@ -34,7 +34,15 @@ package com.somewater.rabbit.application {
 			var levelConditions:Array = [];
 			for (var key:String in levelInstance.levelDef.conditions)
 				levelConditions[key] = levelInstance.levelDef.conditions[key];
-
+			
+			// проверяем, что уровень действительно пройден (судя по времени прох-я и морковкам)
+			var levelCarrotMin:int = XmlController.instance.calculateMinCarrots(levelInstance.levelDef);
+			if(levelConditions['time'] < levelInstance.timeSpended * 0.001 
+				|| levelCarrotMin > levelInstance.carrotHarvested)
+			{
+				return [];// Если уровень пройден с проигрышем, ничего не делаем
+			}
+			
 			// *** T I M E
 			if(levelConditions['fastTime'] && levelConditions['fastTime'] >= levelInstance.timeSpended * 0.001)//если прошел быстрее fastTime
 			{
@@ -68,13 +76,13 @@ package com.somewater.rabbit.application {
 			if(carrotIncrement > 0)
 			{
 				selectedReward = null;
-				for each(reward in RewardManager.instance.getByType(RewardDef.TYPE_ALL_CARROT))
+				for each(reward in RewardManager.instance.getByType(RewardDef.TYPE_CARROT_PACK))
 				{
 					if(reward.degree <= (user.score + carrotIncrement) && (selectedReward == null || selectedReward.degree < reward.degree))
 						selectedReward = reward;
 				}
 				if(selectedReward)
-					checkAddReward(user, levelInstance, lastLevelInstance, RewardDef.TYPE_ALL_CARROT, selectedReward.degree);
+					checkAddReward(user, levelInstance, lastLevelInstance, RewardDef.TYPE_CARROT_PACK, selectedReward.degree);
 			}
 
 			// *** CARROD INCREMENT (увеличить общий счетчик морковок)

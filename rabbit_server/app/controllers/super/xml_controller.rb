@@ -2,7 +2,7 @@ class XmlController
 	@@instance = nil
 
 	def initialize
-		read_files
+		# todo: прочитать и обработать Description.xml аналогично логике клиента
 		@calculate_reward_size_cache = {}
 	end
 
@@ -17,12 +17,12 @@ class XmlController
 		unless level.cache['carrot_all']
 			raise 'Unimplemented calculation logic: all carrot from level'
 		end
-		level.cache['carrot_all']
+		level.cache['carrot_all'].to_i
 	end
 
 	def carrot_max(level)
 		if(level.conditions_to_hash['carrotMax'])
-			level.conditions_to_hash['carrotMax']
+			level.conditions_to_hash['carrotMax'].to_i
 		else
 			carrot_all(level)
 		end
@@ -30,7 +30,7 @@ class XmlController
 
 	def carrot_middle(level)
 		if(level.conditions_to_hash['carrotMiddle'])
-			level.conditions_to_hash['carrotMiddle']
+			level.conditions_to_hash['carrotMiddle'].to_i
 		else
 			carrot_max(level) - 1
 		end
@@ -38,9 +38,9 @@ class XmlController
 
 	def carrot_min(level)
 		if(level.conditions_to_hash['carrotMin'])
-			level.conditions_to_hash['carrotMin']
+			level.conditions_to_hash['carrotMin'].to_i
 		elsif(level.conditions_to_hash['carrot'])
-			level.conditions_to_hash['carrot']
+			level.conditions_to_hash['carrot'].to_i
 		else
 			carrot_middle(level) - 1
 		end

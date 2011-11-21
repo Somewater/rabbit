@@ -14,8 +14,10 @@ class User < ActiveRecord::Base
 	end
 	def get_level_instance_by_number(number)
 		lvl = level_instances[number]
-		lvl = LevelInstance.new(lvl) if lvl
-		lvl.data = Level.by_number(number)
+		if lvl
+			lvl = LevelInstance.new(lvl)
+			lvl.data = Level.by_number(number)
+		end
 		lvl
 	end
 

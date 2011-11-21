@@ -1,11 +1,18 @@
 ROOT = File.dirname( File.expand_path( __FILE__ ) )
 $:.unshift("#{ROOT}/lib/tasks")
 Dir["#{ROOT}/rabbit_server/lib/tasks/*.rake"].sort.each { |x| import x }
+require 'rake'
+require 'spec/rake/spectask'
 
 task :default => ["flash:compile"]
 
 task :environment do
 	require "#{ROOT}/rabbit_server/config/environment.rb"
+end
+
+desc "Run all specs"
+Spec::Rake::SpecTask.new(:spec) do |t|
+  t.spec_files = FileList["#{ROOT}/rabbit_server/spec/**/*.rb"]
 end
 
 ##########################

@@ -6,7 +6,7 @@ class ServerLogic
 =end
 		def addRewardsToLevelInstance(user, levelInstance)
 			reward = nil;
-			selectedReward = nul;
+			selectedReward = nil;
 
 			return [] unless levelInstance.success # Если уровень пройден с проигрышем, ничего не делаем
 
@@ -14,6 +14,14 @@ class ServerLogic
 			lastLevelInstance = user.get_level_instance_by_number(levelInstance.levelDef.number)
 
 			levelConditions = levelInstance.levelDef.conditions_to_hash
+			
+			# проверяем, что уровень действительно пройден (судя по времени прох-я и морковкам)
+			#var levelCarrotMin:int = XmlController.instance.calculateMinCarrots(levelInstance.levelDef);
+			#if(levelConditions['time'] < levelInstance.timeSpended * 0.001 
+			#	|| levelCarrotMin > levelInstance.carrotHarvested)
+			#{
+			#	return [];// Если уровень пройден с проигрышем, ничего не делаем
+			#}
 
 			# *** T I M E
 			if(levelConditions['fastTime'] && levelConditions['fastTime'].to_i >= levelInstance.timeSpended * 0.001)#если прошел быстрее fastTime
@@ -29,29 +37,29 @@ class ServerLogic
 			levelCarrotMiddle = XmlController.instance.carrot_middle(levelInstance.levelDef);
 			levelCarrotMax = XmlController.instance.carrot_max(levelInstance.levelDef);
 			if(levelInstance.carrotHarvested >= levelCarrotMiddle && # если собрано морковок не мнее, чем для получения 2-х звезд
-					lastLevelInstance == null)  # ранее уровень не проходили
+					lastLevelInstance == nil)  # ранее уровень не проходили
 				if(
 						(levelInstance.carrotHarvested >= levelCarrotMax && user.get_roll() > 0.1) ||
 						(user.get_roll() > 0.8)
 					)
-					checkAddReward(user, levelInstance, lastLevelInstance, RewardDef.TYPE_ALL_CARROT);
+					checkAddReward(user, levelInstance, lastLevelInstance, RewardDef::TYPE_ALL_CARROT);
 				end
 			end
 
 			# если левел пройден впервые или с большим кол-ком собраннных морковок, записываем diff (иначе 0)
-			carrotIncrement = (lastLevelInstance == null ? levelInstance.carrotHarvested :
+			carrotIncrement = (lastLevelInstance == nil ? levelInstance.carrotHarvested :
 											Math.max(0, levelInstance.carrotHarvested - lastLevelInstance.carrotHarvested))
 
 			# *** CARROT_PACK (получил очередной уровень по мороквкам: интегрально)
 			if(carrotIncrement > 0)
 				selectedReward = nil;
-				RewardManager.instance.get_by_type(Reward.TYPE_ALL_CARROT).each do |reward|
+				RewardManager.instance.get_by_type(Reward::TYPE_CARROT_PACK).each do |reward|
 					if(reward.degree <= (user.score + carrotIncrement) && (selectedReward == nil || selectedReward.degree < reward.degree))
 						selectedReward = reward;
 					end
 				end
 				if(selectedReward)
-					checkAddReward(user, levelInstance, lastLevelInstance, Reward.TYPE_ALL_CARROT, selectedReward.degree);
+					checkAddReward(user, levelInstance, lastLevelInstance, Reward::TYPE_CARROT_PACK, selectedReward.degree);
 				end
 			end
 
@@ -59,7 +67,7 @@ class ServerLogic
 			user.score = user.score + carrotIncrement if(carrotIncrement > 0)
 
 			# *** LEVEL INCREMENT (увеличть левел)
-			if(lastLevelInstance == null)
+			if(lastLevelInstance == nil)
 				# stub, на сервере действительно пишется в базу
 				user.level = levelInstance.levelDef.number if user.level < levelInstance.levelDef.number
 			else
@@ -96,7 +104,7 @@ class ServerLogic
 				end
 			end
 
-			if(availableRewards.length)
+			if(availableRewards.length > 0)
 				reward = availableRewards[(user.get_roll() * availableRewards.length).to_i];
 				levelInstance.rewards << reward;
 				user.add_reward(reward);

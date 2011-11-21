@@ -12,7 +12,11 @@ CONFIG_DIR = "#{SERVER_ROOT}/config"
 PUBLIC_DIR = "#{ROOT}/bin-debug"
 DB_CONF = YAML.load(File.read("#{CONFIG_DIR}/database.yml"))
 CONFIG  = YAML.load(File.read("#{CONFIG_DIR}/config.yml"))
-RAILS_ENV = APP_ENV = (ENV['RACK_ENV'] =~ /(production|development|test)/ ? ENV['RACK_ENV'] : "development")
+if(defined?(ENV['APP_ENV']) && ENV['APP_ENV'] =~ /(production|development|test)/)
+	RAILS_ENV = APP_ENV = ENV['APP_ENV']
+else
+	RAILS_ENV = APP_ENV = (ENV['RACK_ENV'] =~ /(production|development|test)/ ? ENV['RACK_ENV'] : "development")
+end
 DEVELOPMENT = (APP_ENV == 'development' ? true : false)
 PRODUCTION = (APP_ENV == 'production' ? true : false)
 
@@ -47,6 +51,6 @@ RAILS_DEFAULT_LOGGER = Application.logger
 #######################################################
 RewardManager.instance
 
-Application.logger.info { "Initialization complete [#{RUBY_VERSION}/#{RUBY_PLATFORM}] at #{Time.new}" }
+Application.logger.info { "Initialization complete [#{RUBY_VERSION}/#{RUBY_PLATFORM}/#{APP_ENV}] at #{Time.new}" }
 
 
