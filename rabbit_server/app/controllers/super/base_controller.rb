@@ -49,8 +49,8 @@ class BaseController
 			params['uid'] && params['key']
 		else
 			net = params['net'].to_sym
-			if SOCIAL_API[net]
-				@api = SOCIAL_API[net].new(params)
+			if self.class.api_by_name[net]
+				@api = self.class.api_by_name[net].new(params)
 			elsif params['net'] =~ /local\:\w+/
 				@api = EmbedApi.new(params)
 			else

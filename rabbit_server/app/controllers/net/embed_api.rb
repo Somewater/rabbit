@@ -3,5 +3,5 @@ class EmbedApi < NetApiBase
 		1
 	end
 
-	BaseController.api_by_name[:embed] = BaseController.api_by_id[id] = self
+	BaseController.api_by_name[:embed] = BaseController.api_by_id[id.to_i] = self
 end

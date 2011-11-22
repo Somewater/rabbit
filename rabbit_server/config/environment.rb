@@ -3,6 +3,7 @@ Encoding.default_external = Encoding::UTF_8
 require "rack/timeout"
 require "yaml"
 require 'rexml/document'
+require 'digest/md5'
 
 
 # const ROOT must be initialize abowe!

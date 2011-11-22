@@ -5,6 +5,12 @@ class RewardInstance < Reward
 	def initialize(reward)
 		@x = 0
 		@y = 0
-		super(reward)
+		if reward.instance_of?(Reward)
+			@id = reward.id.to_i
+			@type = reward.type
+			@degree = reward.degree.to_i
+		else
+			super(reward)
+		end
 	end
 end

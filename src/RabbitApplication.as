@@ -278,7 +278,7 @@ package
 		
 		public function message(msg:String):Sprite
 		{
-			return PopUpManager.message(msg);
+			return PopUpManager.message(translate(msg));
 		}
 		
 		public function showSlash(process:Number):void
@@ -295,6 +295,9 @@ package
 		{
 			Config.application.hideSplash();
 			message(msg);
+			Config.application = null;
+			Config.game = null;
+			Config.loader = null;
 		}
 		
 		

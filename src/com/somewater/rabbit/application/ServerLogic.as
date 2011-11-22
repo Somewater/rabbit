@@ -1,5 +1,6 @@
 package com.somewater.rabbit.application {
 	import com.somewater.rabbit.application.RewardManager;
+	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.GameUser;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
 	import com.somewater.rabbit.storage.RewardDef;
@@ -18,7 +19,7 @@ package com.somewater.rabbit.application {
 		/**
 		 * Начислить (если необходимо) награды за прохождение уровня
 		 * @param levelInstance
-		 * @return массив выданных ревардов (array of LevelInstanceDef)
+		 * @return массив выданных ревардов (array of RewardInstanceDef)
 		 */
 		public static function addRewardsToLevelInstance(user:GameUser, levelInstance:LevelInstanceDef):Array
 		{
@@ -42,6 +43,16 @@ package com.somewater.rabbit.application {
 			{
 				return [];// Если уровень пройден с проигрышем, ничего не делаем
 			}
+			if(levelInstance.carrotHarvested > XmlController.instance.calculateCarrots(levelInstance.levelDef))
+			{
+				Config.application.fatalError('ERROR_INVALID_CARROT_HARVEST_VALUE');
+				return null;
+			}
+			if(levelInstance.levelDef.number > user.levelNumber)
+			{
+				Config.application.fatalError(Config.application.translate('ERROR_INACCESSIBLE_LEVEL',{'level':levelInstance.levelDef.number}));
+				return null;
+			}
 			
 			// *** T I M E
 			if(levelConditions['fastTime'] && levelConditions['fastTime'] >= levelInstance.timeSpended * 0.001)//если прошел быстрее fastTime
@@ -61,7 +72,7 @@ package com.somewater.rabbit.application {
 			{
 				if(
 						(levelInstance.carrotHarvested >= levelCarrotMax && user.getRoll() > 0.1) ||
-						(user.getRoll() > 0.8)
+						(levelInstance.carrotHarvested < levelCarrotMax && user.getRoll() > 0.7)
 					)
 				{
 					checkAddReward(user, levelInstance, lastLevelInstance, RewardDef.TYPE_ALL_CARROT);
@@ -159,8 +170,8 @@ package com.somewater.rabbit.application {
 			{
 				// генериурем рандомную позицию на поляне
 				var position:Point = new Point(
-						int(user.getRoll() * RewardLevelDef.WIDTH  + 1 - size.x),
-						int(user.getRoll() * RewardLevelDef.HEIGHT + 1 - size.y));
+						int(Math.random() * RewardLevelDef.WIDTH  + 1 - size.x),
+						int(Math.random() * RewardLevelDef.HEIGHT + 1 - size.y));
 
 				// проверяем на пересечение с норой
 				if(position.x < 3 && position.y < 3)
@@ -187,7 +198,7 @@ package com.somewater.rabbit.application {
 			}
 
 			levelInstance.rewards.push(rewardInstance);
-			user.addReward(rewardInstance);
+			user.addRewardInstance(rewardInstance);
 		}
 	}
 }

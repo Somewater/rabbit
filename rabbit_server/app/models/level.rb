@@ -28,7 +28,7 @@ class Level < ActiveRecord::Base
 		unless @conditions_to_hash
 			@conditions_to_hash = {}
 			conditions = REXML::Document.new(self.conditions)
-			conditions.children[0].each{|elem| @conditions_to_hash[elem.name] = elem.get_text.to_s if elem.is_a? REXML::Element }
+			conditions.children[0].each{|elem| @conditions_to_hash[elem.name] = elem.get_text.to_s.to_i if elem.is_a? REXML::Element }
 		end
 		@conditions_to_hash
 	end

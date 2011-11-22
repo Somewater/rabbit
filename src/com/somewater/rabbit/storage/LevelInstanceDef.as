@@ -22,6 +22,7 @@ package com.somewater.rabbit.storage
 		//////////////////
 		public var timeSpended:int;// число миллисекунд с момента старта игры
 		public var carrotHarvested:int;// морковок собрано на уровне
+		public var version:int;// версия уровня на момент прохождения
 
 		private var _success:Boolean;
 		public var finalFlag:String;// КОнстанта из класса LevelConditionsManager

@@ -5,12 +5,11 @@ class Reward
 	TYPE_CARROT_PACK = 	'carrot_pack'
 	TYPE_SPECIAL = 		'special'
 
-	attr_reader :id, :type, :degree, :index
+	attr_reader :id, :type, :degree
 
 	def initialize(attrs)
 		@id = attrs['id'].to_i
 		@type = attrs['type']
 		@degree = attrs['degree'].to_i
-		@index = attrs['index'].to_i
 	end
 end

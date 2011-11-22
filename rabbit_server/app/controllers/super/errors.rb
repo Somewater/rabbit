@@ -13,3 +13,7 @@ end
 # произошло обращение к методу, требующему переопределение
 class UnimplementedError < RuntimeError;
 end
+
+# кто-то читерит или ошибка в конфиге
+class LogicError < RuntimeError;
+end

@@ -1,5 +1,4 @@
 # дополнительная проверка на переписывания json
-require 'digest/md5'
 module RequestSecurity
 	def authorized
 		# базовая проверка

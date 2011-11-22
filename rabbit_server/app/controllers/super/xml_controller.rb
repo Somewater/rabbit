@@ -14,10 +14,11 @@ class XmlController
 	end
 
 	def carrot_all(level)
-		unless level.cache['carrot_all']
-			raise 'Unimplemented calculation logic: all carrot from level'
+		if(level.conditions_to_hash['carrotAll'])
+			level.conditions_to_hash['carrotAll'].to_i
+		else
+			raise UnimplementedError, 'Calculate all carrot from xml not implemented'
 		end
-		level.cache['carrot_all'].to_i
 	end
 
 	def carrot_max(level)

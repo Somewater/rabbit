@@ -168,8 +168,8 @@ package com.somewater.rabbit.storage
 		}
 
 
-		override public function addReward(reward:RewardInstanceDef):void {
-			super.addReward(reward);
+		override public function addRewardInstance(reward:RewardInstanceDef):void {
+			super.addRewardInstance(reward);
 			dispatchChange();
 		}
 

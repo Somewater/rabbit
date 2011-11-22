@@ -10,8 +10,9 @@ class LevelInstance
 	attr_reader :levelDef,			# инстанс класса Level
 
 						### ДАННЫЕ СОХРАНЯЮЩИЕСЯ В БАЗЕ ###
-				:timeSpended,       # число миллисекунд с момента старта игры
-				:carrotHarvested,   # морковок собрано на уровне
+				#:timeSpended,       # число миллисекунд с момента старта игры
+				#:carrotHarvested,   # морковок собрано на уровне
+				#:version
 
 				:success,           #
 				#:finalFlag,         # КОнстанта из класса LevelConditionsManager
@@ -35,9 +36,11 @@ class LevelInstance
 				if key == :number
 					@levelDef = Level.by_number(value)
 				elsif key == :c
-					@carrotHarvested = value
+					@carrotHarvested = value.to_i
 				elsif key == :t
-					@timeSpended = value
+					@timeSpended = value.to_i
+				elsif key == :v
+					@version = value.to_i
 				elsif self.respond_to? key
 					self.instance_variable_set("@#{key}", value)
 				else
@@ -47,4 +50,15 @@ class LevelInstance
 		end
 	end
 
+	def carrotHarvested
+		@carrotHarvested ? @carrotHarvested.to_i : -1
+	end
+
+	def timeSpended
+		@timeSpended ? @timeSpended.to_i : -1
+	end
+
+	def version
+		@version ? @version.to_i : -1
+	end
 end

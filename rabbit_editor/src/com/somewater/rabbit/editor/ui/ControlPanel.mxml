@@ -163,6 +163,7 @@
 			selectedLevel.conditions['carrotMax'] = XmlController.instance.calculateMaxCarrots(selectedLevel);
 			selectedLevel.conditions['carrotMiddle'] = XmlController.instance.calculateMiddleCarrots(selectedLevel);
 			selectedLevel.conditions['carrotMin'] = XmlController.instance.calculateMinCarrots(selectedLevel);
+			selectedLevel.conditions['carrotAll'] = XmlController.instance.calculateCarrots(selectedLevel);
 
 			Config.loader.serverHandler.call('levels/manage',
 					{

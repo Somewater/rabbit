@@ -50,11 +50,11 @@ package com.somewater.rabbit.storage
 		 */
 		public function get levelNumber():int
 		{
-			var max:int =1;
+			var max:int = 0;
 			for each(var inst:LevelInstanceDef in levelInstances)
 				if(inst.levelDef.number > max)
 					max = inst.levelDef.number;
-			return max;
+			return max + 1;
 		}
 
 		/**
@@ -65,7 +65,7 @@ package com.somewater.rabbit.storage
 			return _rewards;
 		}
 
-		public function addReward(reward:RewardInstanceDef):void
+		public function addRewardInstance(reward:RewardInstanceDef):void
 		{
 			_rewards.push(reward);
 		}

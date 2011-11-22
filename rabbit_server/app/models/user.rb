@@ -44,8 +44,8 @@ class User < ActiveRecord::Base
 		self['rewards'] = JSON.fast_generate(@rewards) 			if @rewards
 	end
 
-	def add_reward(reward)
-		rewards[reward.id] = {'id' => reward.id, 'x' => reward.x, 'y' => reward.y}
+	def add_reward_instance(reward_instance)
+		rewards[reward_instance.id] = {'id' => reward_instance.id, 'x' => reward_instance.x, 'y' => reward_instance.y}
 	end
 
 	def add_level_instance(level_instance)

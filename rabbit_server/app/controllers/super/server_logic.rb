@@ -16,15 +16,16 @@ class ServerLogic
 			levelConditions = levelInstance.levelDef.conditions_to_hash
 			
 			# проверяем, что уровень действительно пройден (судя по времени прох-я и морковкам)
-			#var levelCarrotMin:int = XmlController.instance.calculateMinCarrots(levelInstance.levelDef);
-			#if(levelConditions['time'] < levelInstance.timeSpended * 0.001 
-			#	|| levelCarrotMin > levelInstance.carrotHarvested)
-			#{
-			#	return [];// Если уровень пройден с проигрышем, ничего не делаем
-			#}
+			levelCarrotMin = XmlController.instance.carrot_min(levelInstance.levelDef)
+			if(levelConditions['time'] < levelInstance.timeSpended ||
+					levelCarrotMin > levelInstance.carrotHarvested)
+				return [] # Если уровень пройден с проигрышем, ничего не делаем
+			end
+			raise LogicError, "Unbelievable carrot harvested value = #{levelInstance.carrotHarvested}" if(levelInstance.carrotHarvested > XmlController.instance.carrot_all(levelInstance.levelDef))
+			raise LogicError, "Inaccessible level ##{levelInstance.levelDef.number}" if user.level < levelInstance.levelDef.number
 
 			# *** T I M E
-			if(levelConditions['fastTime'] && levelConditions['fastTime'].to_i >= levelInstance.timeSpended * 0.001)#если прошел быстрее fastTime
+			if(levelConditions['fastTime'] && levelConditions['fastTime'].to_i >= levelInstance.timeSpended)#если прошел быстрее fastTime
 				if(lastLevelInstance == nil ||# если ранее уровень не проходил
 						(levelConditions['fastTime'].to_i < lastLevelInstance.timeSpended \
 								&& lastLevelInstance.timeSpended < levelInstance.timeSpended))# или проходил медленнее, чем fastTime
@@ -40,15 +41,15 @@ class ServerLogic
 					lastLevelInstance == nil)  # ранее уровень не проходили
 				if(
 						(levelInstance.carrotHarvested >= levelCarrotMax && user.get_roll() > 0.1) ||
-						(user.get_roll() > 0.8)
+						(levelInstance.carrotHarvested < levelCarrotMax && user.get_roll() > 0.7)
 					)
-					checkAddReward(user, levelInstance, lastLevelInstance, RewardDef::TYPE_ALL_CARROT);
+					checkAddReward(user, levelInstance, lastLevelInstance, Reward::TYPE_ALL_CARROT);
 				end
 			end
 
 			# если левел пройден впервые или с большим кол-ком собраннных морковок, записываем diff (иначе 0)
 			carrotIncrement = (lastLevelInstance == nil ? levelInstance.carrotHarvested :
-											Math.max(0, levelInstance.carrotHarvested - lastLevelInstance.carrotHarvested))
+											[0, levelInstance.carrotHarvested - lastLevelInstance.carrotHarvested].max)
 
 			# *** CARROT_PACK (получил очередной уровень по мороквкам: интегрально)
 			if(carrotIncrement > 0)
@@ -69,14 +70,14 @@ class ServerLogic
 			# *** LEVEL INCREMENT (увеличть левел)
 			if(lastLevelInstance == nil)
 				# stub, на сервере действительно пишется в базу
-				user.level = levelInstance.levelDef.number if user.level < levelInstance.levelDef.number
+				user.level = levelInstance.levelDef.number + 1 if user.level < levelInstance.levelDef.number + 1
 			else
 				# присвоив новому макс. значения
-				levelInstance.carrotHarvested = Math.max(lastLevelInstance.carrotHarvested, levelInstance.carrotHarvested);
-				levelInstance.timeSpended = Math.min(lastLevelInstance.timeSpended, levelInstance.timeSpended);
+				levelInstance.data = {'c' => [lastLevelInstance.carrotHarvested, levelInstance.carrotHarvested].max,
+										't' => [lastLevelInstance.timeSpended, levelInstance.timeSpended].min}
 
 				# вырезать старый инстанс
-				user.rewards[levelInstance.number] = nil
+				user.rewards[levelInstance.levelDef.number] = nil
 			end
 
 			user.add_level_instance(levelInstance);
@@ -106,8 +107,7 @@ class ServerLogic
 
 			if(availableRewards.length > 0)
 				reward = availableRewards[(user.get_roll() * availableRewards.length).to_i];
-				levelInstance.rewards << reward;
-				user.add_reward(reward);
+				addReward(user, reward, levelInstance)
 			end
 
 			reward
@@ -123,7 +123,7 @@ class ServerLogic
 			# не производит вычисление координат
 			rewardInstance = RewardInstance.new(reward)
 			levelInstance.rewards << rewardInstance;
-			user.add_reward(rewardInstance);
+			user.add_reward_instance(rewardInstance);
 		end
 	end
 end
