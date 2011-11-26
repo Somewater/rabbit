@@ -21,7 +21,7 @@ package com.somewater.rabbit.application
 		
 		public function MainMenuPage()
 		{
-			var beginner:Boolean = false;// если не пройдено не олдного уровня
+			var beginner:Boolean = UserProfile.instance.levelNumber == 1;// если не пройдено не олдного уровня
 			buttons = [beginner?"START_GAME":"CONTINUE_GAME",
 						"LEVEL_SELECTION",
 						"MY_ACHIEVEMENTS",

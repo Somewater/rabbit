@@ -6,7 +6,6 @@ package
 	import com.somewater.rabbit.loader.RabbitLoaderBase;
 	import com.somewater.rabbit.net.LocalServerHandler;
 	import com.somewater.rabbit.storage.Config;
-	import com.somewater.social.SocialAdapter;
 	import com.somewater.social.SocialUser;
 	
 	import flash.events.Event;
@@ -49,7 +48,7 @@ package
 			}
 			
 			filePaths = {
-				"Levels":"levels.xml"
+				"Levels":"/levels.xml"
 				,"Managers":"Managers.xml"
 				,"Description":"Description.xml"
 				,"Rewards":"Rewards.xml"

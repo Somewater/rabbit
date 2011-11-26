@@ -7,18 +7,18 @@ class LevelInstance
 	LEVEL_FATAL_LIFE 	= "LEVEL_FATAL_LIFE" # кролик погиб
 	LEVEL_FATAL_TIME 	= "LEVEL_FATAL_TIME" # время вышло
 
-	attr_reader :levelDef,			# инстанс класса Level
+	attr_reader 	:levelDef			# инстанс класса Level
 
-						### ДАННЫЕ СОХРАНЯЮЩИЕСЯ В БАЗЕ ###
-				#:timeSpended,       # число миллисекунд с момента старта игры
-				#:carrotHarvested,   # морковок собрано на уровне
-				#:version
+							### ДАННЫЕ СОХРАНЯЮЩИЕСЯ В БАЗЕ ###
+					#:timeSpended,       # число миллисекунд с момента старта игры
+					#:carrotHarvested,   # морковок собрано на уровне
+					#:version
 
-				:success,           #
-				#:finalFlag,         # КОнстанта из класса LevelConditionsManager
-				#:aliensPassed,      # сколько врагов было на уровне (и, соответственно, пройдено)
-				#:stars,             # Сколько звездочек получено за прохождение уровня (минимум 1, если уровень завершен успешно)
-				:rewards            # бонусы за прохождение уровня (array of RewardDef)
+	attr_accessor	:success           #
+					#:finalFlag,         # КОнстанта из класса LevelConditionsManager
+					#:aliensPassed,      # сколько врагов было на уровне (и, соответственно, пройдено)
+					#:stars,             # Сколько звездочек получено за прохождение уровня (минимум 1, если уровень завершен успешно)
+	attr_reader		:rewards            # бонусы за прохождение уровня (array of RewardInstanceDef)
 
 	def initialize(* args)
 		@rewards = []
@@ -60,5 +60,15 @@ class LevelInstance
 
 	def version
 		@version ? @version.to_i : -1
+	end
+
+	def to_json
+		json = {'number' => @levelDef.number,
+				'carrotHarvested' => self.carrotHarvested,
+				'timeSpended' => self.timeSpended,
+				'success' => self.success,
+				'version' => @levelDef.version}
+		json['rewards'] = @rewards.map{|r| r.to_json }
+		json
 	end
 end

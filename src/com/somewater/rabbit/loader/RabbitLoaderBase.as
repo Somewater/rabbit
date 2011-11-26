@@ -196,7 +196,7 @@ package com.somewater.rabbit.loader
 				preloader.bar.y -= 15;
 			}
 			
-			_flashVars = this;
+			_flashVars = this.loaderInfo ? this.loaderInfo.parameters : null;
 			CONFIG::debug
 			{
 				DESKTOP_MODE = (loaderInfo.url == null || loaderInfo.url.indexOf("file:///") == 0) && TEST_MODE;
@@ -604,6 +604,13 @@ package com.somewater.rabbit.loader
 		public function getUsers(uids:Array, onComplete:Function, onError:Function):void
 		{
 			throw new Error("Must be overriden");
+		}
+
+		public function posting(user:SocialUser = null, title:String = null, message:String = null,
+						 image:* = null,  imageUrl:String = null, data:String = null,
+						 onComplete:Function = null, onError:Function = null, additionParams:Object = null):void
+		{
+			onError && onError();
 		}
 		
 		public function set basePath(value:String):void

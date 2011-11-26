@@ -3,6 +3,7 @@ package
 	import com.somewater.control.IClear;
 	import com.somewater.controller.PopUpManager;
 	import com.somewater.display.Window;
+	import com.somewater.display.Window;
 	import com.somewater.net.ServerHandler;
 	import com.somewater.rabbit.IRabbitApplication;
 	import com.somewater.rabbit.application.AboutPage;
@@ -28,8 +29,8 @@ package
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.rabbit.storage.RewardDef;
 	import com.somewater.rabbit.storage.UserProfile;
+	import com.somewater.rabbit.storage.UserProfile;
 	import com.somewater.rabbit.xml.XmlController;
-	import com.somewater.social.SocialAdapter;
 	import com.somewater.storage.Lang;
 	import com.somewater.text.EmbededTextField;
 	import com.somewater.text.Hint;
@@ -119,6 +120,7 @@ package
 			
 			if(Config.loader.popups.stage)
 				addGlobalListeners(Config.loader.popups.stage);
+
 			Window.BTN_CLASS = OrangeButton;
 			Window.CLOSE_BTN_CLASS = Lib.createMC("interface.CloseButton", null, false);
 			Window.GROUND_CLASS = WindowBackground;
@@ -134,8 +136,10 @@ package
 				loaderHint.y = Config.stage.stageHeight - loaderHint.height;
 				Config.stage.addChild(loaderHint);
 			}
+
+			Config.loader.serverHandler.addGlobalHandler(false, serverErrorHandler)
 		}
-		
+
 		
 		
 		public function runInitalizeResponses():void
@@ -164,11 +168,12 @@ package
 				processLevelsXML();
 				
 				// инициализировать ServerHandler и выполнить запрос к серверу
-				AppServerHandler.initRequest(onInitResponseComplete, function(error:Object):void{
-					clearLoader();
-					// на запрос профайла сервер вернул ошибку
-					fatalError(Lang.t("ERROR_INIT_LOADING_PROFILE"));
-				});
+				AppServerHandler.instance.initRequest(new UserProfile(Config.loader.getUser()),
+					onInitResponseComplete, function(error:Object):void{
+						clearLoader();
+						// на запрос профайла сервер вернул ошибку
+						fatalError(Lang.t("ERROR_INIT_LOADING_PROFILE"));
+					});
 			}, function():void{
 				clearLoader();
 				// ошибка загрузки статики
@@ -230,6 +235,8 @@ package
 		public function addFinishedLevel(levelInstance:LevelInstanceDef):void
 		{
 			ServerLogic.addRewardsToLevelInstance(UserProfile.instance, levelInstance);
+			if(levelInstance.success)
+				AppServerHandler.instance.onLevelPassed(UserProfile.instance, levelInstance);
 		}
 
 		
@@ -294,7 +301,9 @@ package
 		public function fatalError(msg:String):void
 		{
 			Config.application.hideSplash();
-			message(msg);
+			var wnd:Window = message(msg) as Window;
+			wnd.closeButton.visible = false;
+			wnd.buttons = [];
 			Config.application = null;
 			Config.game = null;
 			Config.loader = null;
@@ -322,9 +331,9 @@ package
 			if(level == null)
 			{
 				var levelNumber:int = UserProfile.instance.levelNumber;
-				level = getLevelByNumber(levelNumber + 1);
+				level = getLevelByNumber(levelNumber);
 				if(level == null)
-					level = getLevelByNumber(levelNumber);
+					level = getLevelByNumber(levelNumber - 1);
 				if(level == null)
 					level = Config.application.levels[0];
 			}
@@ -515,6 +524,14 @@ package
 		public function translate(key:String, args:Object = null):String
 		{
 			return Lang.t(key, args)
+		}
+
+		/**
+		 * Обработка любых серверных ошибок
+		 */
+		private function serverErrorHandler(response:Object):void {
+			if(response.hasOwnProperty('no_callback') && response['no_callback'])
+				this.fatalError(response['error'] ? response['error'] : translate('UNDEFINED_SERVER_ERROR'))
 		}
 	}
 }

@@ -20,6 +20,13 @@ package com.somewater.rabbit.loader{
 			_serverHandler.init(getUser().id, 'embed', net);
 		}
 
+		override public function get flashVars():Object {
+			if(arrow && arrow.flashVars)
+				return arrow.flashVars
+			else
+				return super.flashVars;
+		}
+
 		override public function get hasUserApi():Boolean { return true; }
 
 		override public function get hasFriendsApi():Boolean { return true; }
@@ -52,6 +59,11 @@ package com.somewater.rabbit.loader{
 		override public function getUsers(uids:Array, onComplete:Function, onError:Function):void
 		{
 			arrow.getUsers(uids, onComplete, onError);
+		}
+
+
+		override public function posting(user:SocialUser = null, title:String = null, message:String = null, image:* = null, imageUrl:String = null, data:String = null, onComplete:Function = null, onError:Function = null, additionParams:Object = null):void {
+			arrow.posting(user, title, message, image, imageUrl, data, onComplete, onError, additionParams);
 		}
 	}
 }

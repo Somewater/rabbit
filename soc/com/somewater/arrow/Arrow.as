@@ -1,6 +1,6 @@
 package com.somewater.arrow
 {
-	//import flash.display.*
+	import flash.display.*
 	import com.somewater.social.SocialAdapter;
 	import com.somewater.social.SocialUser;
 
@@ -10,7 +10,7 @@ package com.somewater.arrow
     //import flash.utils.setTimeout;
 
     //[Embed(source="arrow.swf", symbol="HintArrow")]
-	public class Arrow// extends Sprite
+	public class Arrow extends Sprite
 	{
 		protected var social:SocialAdapter;
 		//private var textField:TextField;
@@ -109,6 +109,16 @@ package com.somewater.arrow
 		//		IMPL
 		//
 		///////////////
+
+		public function get data():Object
+		{
+			return social;
+		}
+
+		public function get flashVars():Object
+		{
+			return social.flashVars;
+		}
 		
 		public function init(params:Object):void
 		{
@@ -165,6 +175,10 @@ package com.somewater.arrow
 		public function getUsers(uids:Array, onComplete:Function, onError:Function):void
 		{
 			social.getProfiles(uids, onComplete, onError);
+		}
+
+		public function posting(user:SocialUser = null, title:String = null, message:String = null, image:* = null, imageUrl:String = null, data:String = null, onComplete:Function = null, onError:Function = null, additionParams:Object = null):void {
+			social.wallPost(user, title, message, image, imageUrl, data, onComplete, onError, additionParams);
 		}
 	}
 }

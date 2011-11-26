@@ -1,5 +1,4 @@
 package {
-	import com.somewater.arrow.ArrowVK;
 	import com.somewater.rabbit.loader.SocialRabbitLoader;
 
 	[SWF(width="810", height="650", backgroundColor="#FFFFFF", frameRate="30")]
@@ -9,7 +8,8 @@ package {
 
 		override protected function netInitialize():void
 		{
-			arrow = new ArrowVK();
+			// TODO: на самом еле надо пропустить ArrowVKFactory.create через SWFDecoder
+			arrow = ArrowVKFactory.create;
 		}
 
 		override protected function createSpecificPaths():void

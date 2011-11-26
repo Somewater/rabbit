@@ -47,7 +47,15 @@ package com.somewater.rabbit.storage
 				_levelDef = value as LevelDef;
 			}
 			else
+			{
+				if(value.hasOwnProperty('c'))
+					this.carrotHarvested = value['c'];
+				if(value.hasOwnProperty('t'))
+					this.timeSpended = value['t'];
+				if(value.hasOwnProperty('v'))
+					this.version = value['v'];
 				super.data = value;
+			}
 		}
 
 
@@ -64,6 +72,11 @@ package com.somewater.rabbit.storage
 			var level:LevelInstanceDef = new LevelInstanceDef(new LevelDef(new XML()));
 			level.success = false;
 			return level;
+		}
+
+		public function get number():int
+		{
+			return levelDef.number;
 		}
 	}
 }

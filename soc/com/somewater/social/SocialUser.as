@@ -1,9 +1,5 @@
 package com.somewater.social
 {
-	/**
-	 * Global social user representation
-	 * Uses Netuids
-	 */
 	public class SocialUser{
 		
 		internal static const SEX_NONE : uint = 0;

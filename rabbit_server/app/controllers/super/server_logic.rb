@@ -19,6 +19,7 @@ class ServerLogic
 			levelCarrotMin = XmlController.instance.carrot_min(levelInstance.levelDef)
 			if(levelConditions['time'] < levelInstance.timeSpended ||
 					levelCarrotMin > levelInstance.carrotHarvested)
+				levelInstance.success = false
 				return [] # Если уровень пройден с проигрышем, ничего не делаем
 			end
 			raise LogicError, "Unbelievable carrot harvested value = #{levelInstance.carrotHarvested}" if(levelInstance.carrotHarvested > XmlController.instance.carrot_all(levelInstance.levelDef))

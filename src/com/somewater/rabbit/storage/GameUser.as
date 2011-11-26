@@ -27,16 +27,18 @@ package com.somewater.rabbit.storage
 		public function addLevelInstance(levelInst:LevelInstanceDef):void
 		{
 			if(levelInst.success)
-				_levelInstances.push(levelInst);
+				_levelInstances[levelInst.number] = levelInst;
 		}
-		public function get levelInstances():Array {return _levelInstances.slice();}
+		public function get levelInstances():Array {
+			var arr:Array = [];
+			for each(var li:LevelInstanceDef in _levelInstances)
+				arr.push(li);
+			return arr;
+		}
 
 		public function getLevelInsanceByNumber(levelNumber:int):LevelInstanceDef
 		{
-			for each(var li:LevelInstanceDef in _levelInstances)
-				if(li.levelDef.number == levelNumber)
-					return li;
-			return null;
+			return _levelInstances[levelNumber];
 		}
 
 		public function set score(value:int):void
@@ -51,7 +53,7 @@ package com.somewater.rabbit.storage
 		public function get levelNumber():int
 		{
 			var max:int = 0;
-			for each(var inst:LevelInstanceDef in levelInstances)
+			for each(var inst:LevelInstanceDef in _levelInstances)
 				if(inst.levelDef.number > max)
 					max = inst.levelDef.number;
 			return max + 1;
@@ -62,12 +64,20 @@ package com.somewater.rabbit.storage
 		 */
 		public function get rewards():Array
 		{
-			return _rewards;
+			var arr:Array = [];
+			for each(var r:RewardInstanceDef in _rewards)
+				arr.push(r);
+			return arr;
+		}
+
+		public function getRewardInstanceById(id:int):RewardInstanceDef
+		{
+			return _rewards[id];
 		}
 
 		public function addRewardInstance(reward:RewardInstanceDef):void
 		{
-			_rewards.push(reward);
+			_rewards[reward.id] = reward;
 		}
 
 		public function get uid():String
@@ -78,6 +88,21 @@ package com.somewater.rabbit.storage
 		public function getRoll():Number
 		{
 			throw new Error('GameUser not implemented getRoll');
+		}
+
+		public function setRoll(roll:uint):void
+		{
+			throw new Error('GameUser not implemented setRoll');
+		}
+
+		public function clearLevelInstances():void
+		{
+			_levelInstances = [];
+		}
+
+		public function clearRewards():void
+		{
+			_rewards = [];
 		}
 	}
 }

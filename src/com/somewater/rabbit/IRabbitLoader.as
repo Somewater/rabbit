@@ -107,5 +107,10 @@ package com.somewater.rabbit
 		function pay(quantity:Object, onSuccess:Function, onFailure:Function, params:Object = null):void
 			
 		function getUsers(uids:Array, onComplete:Function, onError:Function):void
+
+		function posting(user:SocialUser = null, title:String = null, message:String = null,
+						 image:* = null,  imageUrl:String = null, data:String = null,
+						 onComplete:Function = null, onError:Function = null, additionParams:Object = null):void
+
 	}
 }

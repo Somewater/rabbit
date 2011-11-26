@@ -77,7 +77,7 @@ package com.somewater.rabbit.xml {
 	 */
 	public function calculateMaxCarrots(level:LevelDef):int
 	{
-		if(level.conditions['carrotMax'] == null)
+		if(level.conditions['carrotMax'] == null || level.conditions['carrotMax'] == 0)
 			level.conditions['carrotMax'] = calculateCarrots(level);
 		return level.conditions['carrotMax'];
 	}
@@ -89,7 +89,7 @@ package com.somewater.rabbit.xml {
 	 */
 	public function calculateMiddleCarrots(level:LevelDef):int
 	{
-		if(level.conditions['carrotMiddle'] == null)
+		if(level.conditions['carrotMiddle'] == null|| level.conditions['carrotMiddle'] == 0)
 			level.conditions['carrotMiddle'] = calculateCarrots(level) - 1;
 		return level.conditions['carrotMiddle']
 	}

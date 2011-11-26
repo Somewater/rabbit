@@ -25,6 +25,9 @@ package com.somewater.net
 		protected var net:int;
 
 		private var ping:int = 0;
+
+		protected var _globalHandlersSuccess:Array = [];
+		protected var _globalHandlersError:Array = [];
 		
 		public function ServerHandler()
 		{
@@ -82,8 +85,8 @@ package com.somewater.net
 						else
 							responseObject = JSON.decode(response);
 					}catch(e:Error){
-						if(onError != null)
-							onError({error: "E_PARSING"});
+						fireCallbacks(false, onError, {error: "E_PARSING"});
+						return;
 					}
 					if(responseObject)
 					{
@@ -91,31 +94,26 @@ package com.somewater.net
 								 && responseObject.error is String
 								 && String(responseObject.error).substr(0,2) == "E_")
 						{
-							if(onError != null)
-								onError(responseObject);
+							fireCallbacks(false, onError, responseObject);
 						}
 						else
 						{
-							if(onComplete != null)
-									onComplete(responseObject);
+							fireCallbacks(true, onComplete, responseObject);
 						}
 					}
 					else
 					{
-						if(onError != null)
-							onError({error: "E_PARSING"});
+						fireCallbacks(false, onError, {error: "E_PARSING"});
 					}
 				}else{
-					if(onError != null)
-						onError({error: "E_EMPTY"});
+					fireCallbacks(false, onError, {error: "E_EMPTY"});
 				}
 			}
 
 			function onErrorHandler(e:Event):void
 			{
 				clearLoader(e.currentTarget);
-				if(onError != null)
-					onError({error: "E_IO"});
+				fireCallbacks(false, onError, {error: "E_IO"});
 			}
 
 			function clearLoader(l:*):void
@@ -141,13 +139,18 @@ package com.somewater.net
 			return variables;
 		}
 
+		private function get secureRoll():int
+		{
+			return 1;
+		}
+
 		private function createSecureHash(jsonString:String, roll:int):String {
 			var str:String = "";
 			for(var i:int = jsonString.length - 1; i >= 0; i--)
 			{
 				str += jsonString.charAt(i);
 			}
-			return MD5.encrypt('lorem ' + str + ' ipsum ' + uid.toString() + ' ' + net.toString() + ' ' + roll.toString());
+			return MD5.encrypt('lorem ' + str + ' ipsum ' + uid.toString() + ' ' + net.toString() + ' ' + secureRoll.toString());
 		}
 
 		protected function getPing():int
@@ -158,10 +161,44 @@ package com.somewater.net
 
 		public function resetUid(uid:String):void
 		{
-			if(this.uid == null || this.uid.length == 0 || this.uid == '0' || this.uid == 'null')
+			if(this.uid == uid)
+			{
+				// nothing
+			}
+			else if(this.uid == null || this.uid.length == 0 || this.uid == '0' || this.uid == 'null')
 				this.uid = uid;
 			else
 				throw new Error('Uid already specificated');
+		}
+
+		public function addGlobalHandler(success:Boolean, callback:Function):void
+		{
+			if(success && _globalHandlersSuccess.indexOf(callback) == -1)
+				_globalHandlersSuccess.push(callback);
+			else if(!success && _globalHandlersError.indexOf(callback) == -1)
+				_globalHandlersError.push(callback);
+		}
+
+		public function toJson(object):String
+		{
+			return JSON.encode(object);
+		}
+
+		public function fromJson(json:String):Object
+		{
+			return JSON.decode(json);
+		}
+
+		private function fireCallbacks(success:Boolean, callback:Function, response:Object):void
+		{
+			if(callback != null)
+				callback(response);
+			else
+				response['no_callback'] = true;
+
+			var handlers:Array = success ? _globalHandlersSuccess : _globalHandlersError;
+			for(var i:int = 0;i<handlers.length;i++)
+				handlers[i](response);
 		}
 	}
 }

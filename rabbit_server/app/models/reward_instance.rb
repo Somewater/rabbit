@@ -13,4 +13,10 @@ class RewardInstance < Reward
 			super(reward)
 		end
 	end
+
+	def to_json
+		json = super
+		json.merge!({'x' => @x, 'y' => @y})
+		json
+	end
 end

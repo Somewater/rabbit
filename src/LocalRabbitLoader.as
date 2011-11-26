@@ -4,7 +4,6 @@ package
 	import com.somewater.rabbit.loader.RabbitLoaderBase;
 	import com.somewater.rabbit.net.LocalServerHandler;
 	import com.somewater.rabbit.storage.Config;
-	import com.somewater.social.SocialAdapter;
 	import com.somewater.social.SocialUser;
 	
 	import flash.events.Event;

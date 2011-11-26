@@ -1,13 +1,11 @@
 package com.somewater.rabbit.storage
 {
-	import com.somewater.rabbit.IRabbitApplication;
 	import com.somewater.social.SocialUser;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
-	import flash.utils.Dictionary;
-	
+
 	[Event(name="changeUserData", type="com.somewater.rabbit.storage.UserProfile")]
 	
 	public class UserProfile extends GameUser implements IEventDispatcher
@@ -23,8 +21,6 @@ package com.somewater.rabbit.storage
 		
 		private var dispatcher:EventDispatcher;
 		
-		private var applicationRef:IRabbitApplication;
-
 		private var roll:uint;
 		
 		
@@ -38,8 +34,6 @@ package com.somewater.rabbit.storage
 			dispatcher = new EventDispatcher();
 			
 			instance = this;
-			
-			applicationRef = Config.application;
 		}
 		
 		
@@ -161,10 +155,7 @@ package com.somewater.rabbit.storage
 		
 		public function canPlayWithLevel(level:LevelDef):Boolean
 		{
-			for each(var inst:LevelInstanceDef in levelInstances)
-				if(inst.levelDef.number + 1 >= level.number)
-					return true;
-			return level.number == 1;
+			return level.number <= levelNumber;
 		}
 
 
@@ -181,6 +172,11 @@ package com.somewater.rabbit.storage
 			roll = ((roll * 16147) % 2147483647)
 			this.roll = roll;
 			return roll / 2147483647;
+		}
+
+
+		override public function setRoll(roll:uint):void {
+			this.roll = roll;
 		}
 	}
 }

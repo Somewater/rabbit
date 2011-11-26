@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
 		@level_instances = hash
 	end
 	def get_level_instance_by_number(number)
-		lvl = level_instances[number]
+		lvl = level_instances[number.to_s]
 		if lvl
 			lvl = LevelInstance.new(lvl)
 			lvl.data = Level.by_number(number)
@@ -45,14 +45,20 @@ class User < ActiveRecord::Base
 	end
 
 	def add_reward_instance(reward_instance)
-		rewards[reward_instance.id] = {'id' => reward_instance.id, 'x' => reward_instance.x, 'y' => reward_instance.y}
+		rewards[reward_instance.id.to_s] = {'id' => reward_instance.id, 'x' => reward_instance.x, 'y' => reward_instance.y}
 	end
 
 	def add_level_instance(level_instance)
 		if level_instance.success
-			level_instances[level_instance.levelDef.number] = {'c' => level_instance.carrotHarvested,
+			level_instances[level_instance.levelDef.number.to_s] = {'c' => level_instance.carrotHarvested,
 															   't' => level_instance.timeSpended,
 															   'v' => level_instance.levelDef.version}
 		end
+	end
+
+	def to_json
+		hash = {};
+		self.attributes.each{|k,v| hash[k] = v.to_s }
+		hash
 	end
 end

@@ -12,4 +12,8 @@ class Reward
 		@type = attrs['type']
 		@degree = attrs['degree'].to_i
 	end
+
+	def to_json
+		{'id' => @id, 'type' => @type, 'degree' => @degree}
+	end
 end

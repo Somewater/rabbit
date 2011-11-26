@@ -29,7 +29,7 @@
 				conditions['fastTime'] = level_fastTime.value;
 			conditions['carrotMin'] = level_carrotMin.value;
 			conditions['carrotMiddle'] = level_carrotMiddle.value;
-			if (level_carrotMax.value)
+			if (level_carrotMax.value && int(level_carrotMax.value) > 0)
 				conditions['carrotMax'] = level_carrotMax.value;
 
 			level.conditions = conditions;// переприсваиваем conditions
@@ -102,7 +102,7 @@
 			</mx:HBox>
 			<mx:HBox horizontalGap="0">
 				<mx:Label text="carrotMax:" width="95" textAlign="right"></mx:Label>
-				<mx:NumericStepper id="level_carrotMax" value="{level.conditions['carrotMax'] ? level.conditions['carrotMax'] : 0}"
+				<mx:NumericStepper id="level_carrotMax" value="{level.conditions['carrotMax'] ? level.conditions['carrotMax'] : 3}"
 						minimum="0" maximum="99" width="55" maxChars="2" change="onSomeChanged()"></mx:NumericStepper>
 				<mx:Label text="opt"></mx:Label>
 			</mx:HBox>

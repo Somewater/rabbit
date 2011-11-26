@@ -192,9 +192,7 @@ class AllSpec
 
 			it "Проверка проходит успешно при правильной авторизаци" do
 				@user.uid = '123'
-				@user.roll = 5
-				roll = (@user.get_roll * 1000).to_i
-				@user.roll = 5
+				roll = 1
 				secure = Digest::MD5.hexdigest("lorem }\"rab\":\"oof\"{ ipsum 1 local:test #{roll}")
 				@request.params = {'net' => 'local:test', 'uid' => 1, 'json' => '{"foo":"bar"}', 'secure' => secure}
 
@@ -223,14 +221,56 @@ class AllSpec
 			it "get_roll() выдает рандомные числа с нормальным распределением" do
 				old = {}
 				sum = 0.0
-				100.times{
+				graph = {}
+				10.times{|i| graph[i] = 0 }
+				iter = 300
+				iter.to_i.times{
 					roll = @user.get_roll
 					raise "Dobling with roll = #{roll}" if old[roll.to_s]
 					old[roll.to_s] = true
 					sum += roll
+					graph[(roll * 10).to_i] += 1
 				}
-				sum.should be_close(50, 5)
+				# неточность не более 4%
+				sum.should be_close(iter / 2, iter / 25)
+				graph.each{|k,v| v.should be_close(iter / 10, iter / 25) }
 			end
+
+			it "get_roll() выдает одинаковые числа, при синхронизации roll" do
+				user = User.new({'uid' => 5})
+				array = []
+				100.times{array << user.get_roll()}
+
+				user.roll = 1024 + 5
+
+				100.times{ |i| user.get_roll() == array[i]}
+			end
+		end
+
+		describe InitializeController do
+			it "Пользователь извлекается из базы, если ранее существовал" do
+
+			end
+
+			it "Пользователь создается, если ранее не существовал" do
+
+			end
+
+			it "Пользователь версии Embed (не соц. сеть) создается, если ранее не существовал" do
+
+			end
+
+			it "Корректно выдаются реварды referrer-у" do
+
+			end
+
+			it "Ответ на запрос содержит информацию по пользователю" do
+
+			end
+		end
+
+		describe LevelsController do
+
 		end
 	end
 end

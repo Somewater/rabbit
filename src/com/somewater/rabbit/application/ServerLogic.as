@@ -41,6 +41,7 @@ package com.somewater.rabbit.application {
 			if(levelConditions['time'] < levelInstance.timeSpended * 0.001 
 				|| levelCarrotMin > levelInstance.carrotHarvested)
 			{
+				levelInstance.success = false;
 				return [];// Если уровень пройден с проигрышем, ничего не делаем
 			}
 			if(levelInstance.carrotHarvested > XmlController.instance.calculateCarrots(levelInstance.levelDef))

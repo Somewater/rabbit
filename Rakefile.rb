@@ -40,6 +40,7 @@ namespace :flash do
 -source-path+=soc \
 -library-path+=src/assets/swc/library.swc \
 -library-path+=lib/binding.swc \
+-library-path+=rprotect/RProtector.swc
 -library-path+=soc/Social.swc"
 
 	COMPC_COMMON_COMMANDLINE_ARGS="compc \
@@ -80,13 +81,6 @@ namespace :flash do
 	desc "Encode all files"
 	task :encode do
 		RProtector.new.encode_files("#{ROOT}/logs")
-	end
-	
-	desc "Compile social lib"
-	task :compile_social do
-		puts %x[#{COMPC_COMMON_COMMANDLINE_ARGS} -source-path #{ROOT}/soc \
--include-classes Social \
--output #{ROOT}/soc/Social.swc]
 	end
 
 	def compile_file(filename)

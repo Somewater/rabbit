@@ -38,8 +38,13 @@ class BaseController
 
 			authorized
 
+			@models_to_save = []
+
 			# что-то делаем
 			process
+
+			# сохраняем результаты работы в базу, перед отправкой на клиент
+			save_data
 		end
 	end
 
@@ -48,7 +53,7 @@ class BaseController
 			@api = EmbedApi.new(params)
 			params['uid'] && params['key']
 		else
-			net = params['net'].to_sym
+			net = params['net'] ? params['net'].to_sym : nil
 			if self.class.api_by_name[net]
 				@api = self.class.api_by_name[net].new(params)
 			elsif params['net'] =~ /local\:\w+/
@@ -85,6 +90,13 @@ class BaseController
 	end
 
 =begin
+    Сохранение всех инстансов ActiveRecord
+=end
+	def save_data
+		@models_to_save.each{|record| record.save() }
+	end
+
+=begin
 	Действия на неавторизованный запрос
 =end
 	def unauthorized
@@ -96,5 +108,13 @@ class BaseController
 =end
 	def authorized
 		# do nothing
+	end
+
+=begin
+	добавить объект типа ActiveRecord в очередь на сохранение
+=end
+	protected
+	def save(active_record)
+		@models_to_save << active_record unless @models_to_save.index(active_record)
 	end
 end
