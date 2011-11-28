@@ -81,6 +81,9 @@ class ServerLogic
 				user.rewards[levelInstance.levelDef.number] = nil
 			end
 
+			# CALCULATE STARS
+			levelInstance.stars = levelInstance.carrotHarvested >= levelCarrotMax ? 3 : (levelInstance.carrotHarvested >= levelCarrotMiddle ? 2 : 1)
+
 			user.add_level_instance(levelInstance);
 
 			levelInstance.rewards.dup;
@@ -100,13 +103,15 @@ class ServerLogic
 
 			RewardManager.instance.get_by_type(rewardType).each do |r|
 				if r.degree == degree
-					unless user.rewards[r.id]
+					unless user.rewards[r.id.to_s]
 						availableRewards << r
 					end
 				end
 			end
 
 			if(availableRewards.length > 0)
+				# сортируем по id
+				availableRewards.sort!{|x,y| x.id <=> y.id }
 				reward = availableRewards[(user.get_roll() * availableRewards.length).to_i];
 				addReward(user, reward, levelInstance)
 			end

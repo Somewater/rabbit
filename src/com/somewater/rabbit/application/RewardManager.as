@@ -50,7 +50,7 @@ package com.somewater.rabbit.application {
 			rewards.sortOn('id', Array.NUMERIC);
 			for each(var typeRewards:Array in rewardsByType)
 			{
-				typeRewards.sortOn(['degree', 'index'], Array.NUMERIC);
+				typeRewards.sortOn(['degree', 'id'], Array.NUMERIC);
 			}
 		}
 

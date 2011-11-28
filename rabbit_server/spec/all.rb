@@ -90,11 +90,11 @@ class AllSpec
 			end
 			
 			it "Учитывается предыдущий уровень, результат перезаписывается лучшим" do
-				@user.level_instances = {@level.number => {'c' => @conditions['carrotMin'], 't' => @conditions['time'], 'v' => 0}}
+				@user.level_instances = {@level.number.to_s => {'c' => @conditions['carrotMin'], 't' => @conditions['time'], 'v' => 0}}
 				@levelInstance.data = {'timeSpended' => @conditions['time'] - 5, 'carrotHarvested' => @conditions['carrotMin'] + 5}
 				server_logic_process()
-				@user.level_instances[@level.number]['c'].should == @levelInstance.carrotHarvested
-				@user.level_instances[@level.number]['t'].should == @levelInstance.timeSpended
+				@user.level_instances[@level.number.to_s]['c'].should == @levelInstance.carrotHarvested
+				@user.level_instances[@level.number.to_s]['t'].should == @levelInstance.timeSpended
 			end
 			
 			it "Выдается ревард за скорость" do
@@ -174,6 +174,13 @@ class AllSpec
 				reward = ServerLogic.checkAddReward(@user, @levelInstance, nil, Reward::TYPE_CARROT_PACK, degree)
 				reward.should_not be_nil
 				reward.degree.should == degree
+			end
+
+			it "Уровню правильно присваивается число звезд" do
+				@levelInstance.data = {'stars' => 3, 'carrotHarvested' => @conditions['carrotMiddle']} # от клиента пришло завышенное число звезд
+				server_logic_process()
+				li = @user.get_level_instance_by_number(@level.number)
+				li.stars.should == 2
 			end
 		end
 		

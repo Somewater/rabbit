@@ -167,8 +167,8 @@ package com.somewater.rabbit.storage
 		override public function getRoll():Number
 		{
 			var roll:uint = this.roll;
-			if(roll == 0)
-				roll = parseInt(this.uid) + 1024;
+			if(roll < 1024)
+				roll = Math.abs(parseInt(this.uid)) + 1024;
 			roll = ((roll * 16147) % 2147483647)
 			this.roll = roll;
 			return roll / 2147483647;

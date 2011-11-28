@@ -54,6 +54,8 @@ package com.somewater.rabbit.storage
 					this.timeSpended = value['t'];
 				if(value.hasOwnProperty('v'))
 					this.version = value['v'];
+				if(value.hasOwnProperty('s'))
+					this.stars = value['s'];
 				super.data = value;
 			}
 		}

@@ -71,6 +71,11 @@ package com.somewater.rabbit.managers
 			conditionsRef = [];
 			var levelRef:LevelDef = Config.game.level;
 
+			_levelFinished = levelRef.type != 'Level';// для всех "необычных" уровней, блочим логику менеджера
+
+			if(levelRef.type != 'Level')
+				return;
+
 			for (var key:String in levelRef.conditions)
 				conditionsRef[key] = levelRef.conditions[key];
 			if(conditionsRef["time"] == null)
@@ -79,13 +84,12 @@ package com.somewater.rabbit.managers
 			conditionsRef["carrotMax"] = XmlController.instance.calculateMaxCarrots(levelRef);
 			conditionsRef['carrotMiddle'] = XmlController.instance.calculateMiddleCarrots(levelRef);
 			conditionsRef['carrotMin'] = XmlController.instance.calculateMinCarrots(levelRef);
+
+			rabbitInited = false;
 			
 			conditionsRef["time"] *= 1000;// расчеты в мс
 			if(conditionsRef['fastTime'])
 				conditionsRef["fastTime"] *= 1000;// расчеты в мс
-
-			_levelFinished = levelRef.type != 'Level';// для всех "необычных" уровней, блочим логику менеджера
-			rabbitInited = false;
 
 			// что может являться причиной успешного завершения уровня
 			completeConditions = [];

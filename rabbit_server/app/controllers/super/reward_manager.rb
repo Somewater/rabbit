@@ -54,7 +54,7 @@ private
 		@rewards_by_type.each do |type, rewards|
 			rewards.sort! do |r1, r2|
 				if r1.degree == r2.degree
-					r1.index <=> r2.index
+					r1.id <=> r2.id
 				else
 					r1.degree <=> r2.degree
 				end

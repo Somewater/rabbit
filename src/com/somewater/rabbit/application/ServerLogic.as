@@ -118,6 +118,9 @@ package com.somewater.rabbit.application {
 				user.rewards.splice(lastLevelInstanceIndex,  1);
 			}
 
+			// CALCULATE STARS
+			levelInstance.stars = levelInstance.carrotHarvested >= levelCarrotMax ? 3 : (levelInstance.carrotHarvested >= levelCarrotMiddle ? 2 : 1)
+
 			user.addLevelInstance(levelInstance);
 
 			return levelInstance.rewards.slice();
@@ -145,6 +148,9 @@ package com.somewater.rabbit.application {
 
 			if(availableRewards.length)
 			{
+				// сортируем по id
+				availableRewards.sortOn(['id'], Array.NUMERIC)
+
 				reward = availableRewards[int(user.getRoll() * availableRewards.length)];
 				addReward(user, reward, levelInstance);
 			}else

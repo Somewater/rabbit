@@ -14,10 +14,10 @@ class LevelInstance
 					#:carrotHarvested,   # морковок собрано на уровне
 					#:version
 
-	attr_accessor	:success           #
+	attr_accessor	:success,           #
 					#:finalFlag,         # КОнстанта из класса LevelConditionsManager
 					#:aliensPassed,      # сколько врагов было на уровне (и, соответственно, пройдено)
-					#:stars,             # Сколько звездочек получено за прохождение уровня (минимум 1, если уровень завершен успешно)
+					:stars             # Сколько звездочек получено за прохождение уровня (минимум 1, если уровень завершен успешно)
 	attr_reader		:rewards            # бонусы за прохождение уровня (array of RewardInstanceDef)
 
 	def initialize(* args)
@@ -41,6 +41,8 @@ class LevelInstance
 					@timeSpended = value.to_i
 				elsif key == :v
 					@version = value.to_i
+				elsif key == :s
+					@stars = value.to_i
 				elsif self.respond_to? key
 					self.instance_variable_set("@#{key}", value)
 				else

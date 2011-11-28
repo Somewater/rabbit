@@ -18,7 +18,7 @@ package com.somewater.rabbit.storage
 						</conditions>
 						<group>
 							<objectReference x="3" y="2" name="Hero"/>
-							<objectReference x="1" y="1" name="RewardRabbitHole"/>
+							<objectReference x="1" y="1" name="reward.RewardRabbitHole"/>
 						</group>
 						<width>{WIDTH}</width>
 						<height>{HEIGHT}</height>

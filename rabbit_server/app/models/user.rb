@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
 
 	before_save :save_structures
 
-	# {'0':{'c' => 3, 't' => 45, 'v' => 0}, ...}
+	# {'0':{'c' => 3, 't' => 45, 'v' => 0, 's' => 1}, ...}
 	def level_instances
 		@level_instances = JSON.parse(super || '{}') unless @level_instances
 		@level_instances
@@ -33,7 +33,7 @@ class User < ActiveRecord::Base
 	# каждый вызов метода создает новое рандомное значение, автозаписывемое в базу
 	def get_roll()
 		roll = self.roll.to_i
-		roll = (self.uid.to_i + 1024) if roll == 0
+		roll = (self.uid.to_i + 1024).abs if roll < 1024
 		self.roll = roll = ((roll * 16147) % 2147483647).to_i
 		(roll.to_f / 2147483647)
 	end
@@ -52,13 +52,16 @@ class User < ActiveRecord::Base
 		if level_instance.success
 			level_instances[level_instance.levelDef.number.to_s] = {'c' => level_instance.carrotHarvested,
 															   't' => level_instance.timeSpended,
-															   'v' => level_instance.levelDef.version}
+															   'v' => level_instance.version,
+															   's' => level_instance.stars}
 		end
 	end
 
 	def to_json
 		hash = {};
 		self.attributes.each{|k,v| hash[k] = v.to_s }
+		hash['level_instances'] = self.level_instances
+		hash['rewards'] = self.rewards
 		hash
 	end
 end

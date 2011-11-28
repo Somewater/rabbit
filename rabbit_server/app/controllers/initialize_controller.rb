@@ -5,16 +5,17 @@ class InitializeController < BaseUserController
 			# базовая реализация поиска юзера
 			begin
 				super
+				check_familiar_reward()
 			rescue AuthError
 				# создать юзера
 				create_user()
-				check_referer()
+				check_referer_reward()
 			end
 		else
 			# сначала присвоим ранее не применяемый :uid
 			@json['user']['uid'] = ((User.maximum(:uid) || 0).to_i + 1).to_s
 			create_user()
-			check_referer()
+			check_referer_reward()
 		end
 	end
 
@@ -33,7 +34,11 @@ class InitializeController < BaseUserController
 		@response['user'] = {:uid => @user.uid, :new => true}
 	end
 
-	def check_referer
+	def check_referer_reward
 		#todo: проверки и выдача бонусов referrer
+	end
+
+	def check_familiar_reward
+		#todo: проверки и выдача бонусов familiar
 	end
 end

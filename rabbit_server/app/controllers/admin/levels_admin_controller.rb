@@ -102,5 +102,6 @@ class LevelsAdminController < AdminController::Base
 
 		def on_level_changed
 			# надо перегенирировать файл левелов, т.к. один или более левелов изменились
+			Level.clear_cache()
 		end
 end
