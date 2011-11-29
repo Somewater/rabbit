@@ -15,6 +15,8 @@ package com.somewater.rabbit.storage
 		 * Идентификатор библиотеки ассетов
 		 */
 		public static const ASSETS:String = "Assets";
+
+		private static var classCache:Array = [];
 		
 		
 		public function Lib()
@@ -48,16 +50,29 @@ package com.somewater.rabbit.storage
 		
 		public static function createMC(className:String, library:String = null, instance:Boolean = true):*
 		{
-			var cl:Class;
-			try
+			var cl:Class = classCache[className]
+			if(cl == null)
 			{
-				var ad:ApplicationDomain = library && swfADs[library]?swfADs[library]: ApplicationDomain.currentDomain;
-				cl = ad.getDefinition(className) as Class;
-			}catch(e:Error){
-				Config.game.logError(Lib, "createMC", "Mc \"" + className + "\" not loaded");
-				trace("[ERROR] MC " + className + " not created");
-				return new MovieClip();
+				for each(var ad:ApplicationDomain in swfADs)
+				{
+					try
+					{
+						cl = ad.getDefinition(className) as Class;
+						if(cl != null)
+							break;
+					}catch(e:Error){}
+				}
+
+				if(cl == null)
+				{
+					Config.game.logError(Lib, "createMC", "Mc \"" + className + "\" not loaded");
+					trace("[ERROR] MC " + className + " not created");
+					return new MovieClip();
+				}
+
+				classCache[className] = cl;
 			}
+
 			if(instance)
 				return new cl();
 			else
@@ -66,12 +81,12 @@ package com.somewater.rabbit.storage
 
 		public static function hasMC(className:String, library:String = null):Boolean
 		{
+			var cl:Class;
 			try
 			{
-				var ad:ApplicationDomain = library && swfADs[library]?swfADs[library]: ApplicationDomain.currentDomain;
-				return ad.hasDefinition(className);
+				cl = createMC(className, null, false) as Class;
 			}catch(e:Error){}
-			return false;
+			return cl != null;
 		}
 		
 	}

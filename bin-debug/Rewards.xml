@@ -15,8 +15,8 @@
 
 	<!-- TYPE_SPECIAL  -->
 
-	<template name="RewardRabbitHole" template="Reward" id="0" type="special" degree="0">
-		<component name="Render" type="com.somewater.rabbit.awards.RabbitHoleRenderer">
+	<template name="reward.RewardRabbitHole" template="Reward" id="0" type="special" degree="0">
+		<component name="Render" type="com.somewater.rabbit.rewards.RabbitHoleRenderer">
 			<slug>reward.RabbitHole</slug>
 		</component>
 		<component name="Spatial">
@@ -136,6 +136,46 @@
 	</template>
 
 	<!-- TYPE_CONSOLING  -->
+
+	<template name="reward.Chuchelo" template="Reward" id="70" type="consoling" degree="0">
+		<component name="Render"><slug>reward.Chuchelo</slug></component>
+	</template>
+
+	<template name="reward.Stog" template="Reward" id="71" type="consoling" degree="0">
+		<component name="Render"><slug>reward.Stog</slug></component>
+	</template>
+
+	<template name="reward.Kuvshin" template="Reward" id="72" type="consoling" degree="0">
+		<component name="Render"><slug>reward.Kuvshin</slug></component>
+	</template>
+
+	<template name="reward.Fonarik" template="Reward" id="73" type="consoling" degree="0">
+		<component name="Render"><slug>reward.Fonarik</slug></component>
+	</template>
+
+	<template name="reward.Bochka" template="Reward" id="74" type="consoling" degree="0">
+		<component name="Render"><slug>reward.Bochka</slug></component>
+	</template>
+
+	<template name="reward.Penek" template="Reward" id="75" type="consoling" degree="0">
+		<component name="Render"><slug>reward.Penek</slug></component>
+	</template>
+
+	<template name="reward.Stul" template="Reward" id="76" type="consoling" degree="0">
+		<component name="Render"><slug>reward.Stul</slug></component>
+	</template>
+
+	<template name="reward.Leyka" template="Reward" id="77" type="consoling" degree="0">
+		<component name="Render"><slug>reward.Leyka</slug></component>
+	</template>
+
+	<template name="reward.Udobrenie" template="Reward" id="78" type="consoling" degree="0">
+		<component name="Render"><slug>reward.Udobrenie</slug></component>
+	</template>
+
+	<template name="reward.Koleso" template="Reward" id="79" type="consoling" degree="0">
+		<component name="Render"><slug>reward.Koleso</slug></component>
+	</template>
 
 
 </reward>

@@ -6,7 +6,11 @@ class User < ActiveRecord::Base
 
 	# {'0':{'c' => 3, 't' => 45, 'v' => 0, 's' => 1}, ...}
 	def level_instances
-		@level_instances = JSON.parse(super || '{}') unless @level_instances
+		unless @level_instances
+			str = super
+			str = '{}' if !str || str.size == 0
+			@level_instances = JSON.parse(str )
+		end
 		@level_instances
 	end
 	def level_instances=(hash)
@@ -21,9 +25,13 @@ class User < ActiveRecord::Base
 		lvl
 	end
 
-	#  {"123" : {"id":123, "x":2, "y":5}, ... }
+	#  {"123" : {"id":123, "x":2, "y":5, "n":1}, ... }
 	def rewards
-		@rewards = JSON.parse(super || '{}') unless @rewards
+		unless @rewards
+			str = super
+			str = '{}' if !str || str.size == 0
+			@rewards = JSON.parse(str )
+		end
 		@rewards
 	end
 	def rewards=(hash)
@@ -35,7 +43,8 @@ class User < ActiveRecord::Base
 		roll = self.roll.to_i
 		roll = (self.uid.to_i + 1024).abs if roll < 1024
 		self.roll = roll = ((roll * 16147) % 2147483647).to_i
-		(roll.to_f / 2147483647)
+		result = (roll.to_f / 2147483647)
+		result
 	end
 
 
@@ -45,7 +54,10 @@ class User < ActiveRecord::Base
 	end
 
 	def add_reward_instance(reward_instance)
-		rewards[reward_instance.id.to_s] = {'id' => reward_instance.id, 'x' => reward_instance.x, 'y' => reward_instance.y}
+		rewards[reward_instance.id.to_s] = {'id' => reward_instance.id,
+											'x' => reward_instance.x,
+											'y' => reward_instance.y,
+											'n' => reward_instance.level}
 	end
 
 	def add_level_instance(level_instance)

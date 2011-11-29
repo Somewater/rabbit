@@ -132,7 +132,7 @@ package com.somewater.rabbit.application.windows {
 			}
 		}
 
-		private function getImage(image:String):*
+		public static function getImage(image:String):*
 		{
 			if(image == null) return null;
 			if(image.substr(0,7) == 'http://')
@@ -143,7 +143,7 @@ package com.somewater.rabbit.application.windows {
 			{
 				var mc:DisplayObject = Lib.createMC(image);
 				if(mc is MovieClip)
-					MovieClipHelper.stopAll(mc as MovieClip);
+					 MovieClipHelper.stopAll(mc as MovieClip);
 				var wrapper:Sprite = new Sprite()
 				wrapper.addChild(mc);
 				var bounds:Rectangle = mc.getBounds(mc);

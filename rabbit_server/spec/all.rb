@@ -157,7 +157,7 @@ class AllSpec
 			end
 			
 			it "Один и тот же CARROT_PACK не выдается дважды" do
-				RewardManager.instance.get_by_type(Reward::TYPE_CARROT_PACK).each{|r| @user.add_reward_instance(RewardInstance.new(r)) }
+				RewardManager.instance.get_by_type(Reward::TYPE_CARROT_PACK).each{|r| @user.add_reward_instance(RewardInstance.new(r, @level)) }
 				@user.score = RewardManager.instance.get_by_type(Reward::TYPE_CARROT_PACK).first.degree - 1
 				(server_logic_process().select{|r| r.type == Reward::TYPE_CARROT_PACK }).size.should == 0
 			end

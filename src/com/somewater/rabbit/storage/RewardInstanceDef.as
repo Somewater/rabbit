@@ -8,6 +8,7 @@ package com.somewater.rabbit.storage {
 
 		public var x:int;
 		public var y:int;
+		public var levelNumber:int;
 
 		protected var _rewardDef:RewardDef;
 
@@ -23,6 +24,10 @@ package com.somewater.rabbit.storage {
 			{
 				if(value.hasOwnProperty('id'))
 					_rewardDef = RewardManager.instance.getById(value['id']);
+				if(value.hasOwnProperty('n'))
+					levelNumber = value['n'];
+				delete(value['id']);
+				delete(value['n']);
 				super.data = value;
 			}
 		}

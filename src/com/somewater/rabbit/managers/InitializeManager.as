@@ -7,7 +7,7 @@ package com.somewater.rabbit.managers
 	import com.pblabs.engine.entity.IEntity;
 	import com.pblabs.engine.entity.PropertyReference;
 	import com.pblabs.rendering2D.SceneAlignment;
-	import com.somewater.rabbit.awards.RabbitHoleRenderer;
+	import com.somewater.rabbit.rewards.RabbitHoleRenderer;
 	import com.somewater.rabbit.components.AttackComponent;
 	import com.somewater.rabbit.components.ConcealComponent;
 	import com.somewater.rabbit.components.DataComponent;

@@ -15,7 +15,7 @@ class CreateUsers < ActiveRecord::Migration
 			t.text    :level_instances#, :default => '{}'
 
 			# Информация о полученных наградах
-			# массив объектов вида: {"123" : {"id":123, "x":2, "y":5}, ... }
+			# массив объектов вида: {"123" : {"id":123, "x":2, "y":5, "n":1}, ... }
 			t.text	  :rewards#, :default => '[]'
 
 			# собранное число морковок

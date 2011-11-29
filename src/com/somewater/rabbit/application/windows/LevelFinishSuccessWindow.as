@@ -161,7 +161,8 @@ package com.somewater.rabbit.application.windows {
 
 		override protected function onWindowClosed(e:Event = null):void {
 			// стартуем следующий непройденный уровень, если мы только что прошли новый (ранее непройденный) уровень
-			if(UserProfile.instance.levelNumber == level.number)
+			if(UserProfile.instance.levelNumber - 1 == level.number
+					&& Config.application.getLevelByNumber(UserProfile.instance.levelNumber) != null)  // и еще есть непройденные уровни
 				Config.application.startGame();
 			// иначе переходим в меню уровней
 			else

@@ -138,6 +138,9 @@ package com.somewater.rabbit.application {
 
 		protected function rewardInstanceToJson(rewardInstance:RewardInstanceDef, json:Object):Object
 		{
+			json['id'] = rewardInstance.id;
+			json['x'] = rewardInstance.x;
+			json['y'] = rewardInstance.y;
 			return json;
 		}
 

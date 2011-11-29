@@ -1,4 +1,4 @@
-package com.somewater.rabbit.awards {
+package com.somewater.rabbit.rewards {
 	import com.somewater.rabbit.iso.IsoRenderer;
 	import com.somewater.rabbit.storage.Config;
 

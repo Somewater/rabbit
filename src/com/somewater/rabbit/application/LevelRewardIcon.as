@@ -2,9 +2,11 @@ package com.somewater.rabbit.application {
 	import com.somewater.control.IClear;
 	import com.somewater.display.HintedSprite;
 	import com.somewater.display.Photo;
+	import com.somewater.rabbit.application.windows.LevelSwitchWindow;
 	import com.somewater.rabbit.storage.RewardDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
 	import com.somewater.rabbit.storage.RewardInstanceDef;
+	import com.somewater.storage.Lang;
 
 	public class LevelRewardIcon extends HintedSprite implements IClear{
 
@@ -25,7 +27,10 @@ package com.somewater.rabbit.application {
 			var photoWidth:int = WIDTH * 0.95;
 			var photoHeight:int = HEIGHT * 0.95;
 			photo = new Photo(null, 0, photoWidth, photoHeight, WIDTH * 0.5, HEIGHT * 0.5);
-			addChild(photo)
+			addChild(photo);
+
+			photo.source = LevelSwitchWindow.getImage(reward.rewardDef.slug);
+			hint = Lang.t('REWARD_NAME_ID_' + reward.id);
 		}
 
 		public function clear():void

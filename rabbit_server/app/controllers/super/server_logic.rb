@@ -78,7 +78,7 @@ class ServerLogic
 										't' => [lastLevelInstance.timeSpended, levelInstance.timeSpended].min}
 
 				# вырезать старый инстанс
-				user.rewards[levelInstance.levelDef.number] = nil
+				user.rewards[levelInstance.levelDef.number.to_s] = nil
 			end
 
 			# CALCULATE STARS
@@ -127,7 +127,7 @@ class ServerLogic
 =end
 		def addReward(user, reward, levelInstance)
 			# не производит вычисление координат
-			rewardInstance = RewardInstance.new(reward)
+			rewardInstance = RewardInstance.new(reward, levelInstance)
 			levelInstance.rewards << rewardInstance;
 			user.add_reward_instance(rewardInstance);
 		end

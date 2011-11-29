@@ -11,10 +11,12 @@ class LevelsController < BaseUserController
 		rewards = ServerLogic.addRewardsToLevelInstance(@user, level_instance)
 
 		# присовить выданным ревардам координаты в соотвествии со значениями, рассчитанными на клиенте
-		rewards.each do |r|
-			ur = @user.rewards[r.id]
-			ur['x'] = r.x
-			ur['y'] = r.y
+		client_rewards.each do |r|
+			# стоило бы сделать проверку, является ли ur вновь созданным ревардом, но неважно
+			# (т.е. можно лишь схакать новое положение для награды)
+			ur = @user.rewards[r['id'].to_s]
+			ur['x'] = r['x']
+			ur['y'] = r['y']
 		end
 
 		@response['levelInstance'] = level_instance.to_json

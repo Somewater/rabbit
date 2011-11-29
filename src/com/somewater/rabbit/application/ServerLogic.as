@@ -113,9 +113,9 @@ package com.somewater.rabbit.application {
 				levelInstance.carrotHarvested = Math.max(lastLevelInstance.carrotHarvested, levelInstance.carrotHarvested);
 				levelInstance.timeSpended = Math.min(lastLevelInstance.timeSpended, levelInstance.timeSpended);
 
-				// вырезать старый инстанс
-				var lastLevelInstanceIndex:int = user.levelInstances.indexOf(lastLevelInstance);
-				user.rewards.splice(lastLevelInstanceIndex,  1);
+				// вырезать старый инстанс (нет необходимости, т.к. при ассоциативном хранении ревардов, новый затрет старый)
+				//var lastLevelInstanceIndex:int = user.levelInstances.indexOf(lastLevelInstance);
+				//user.rewards.splice(lastLevelInstanceIndex,  1);
 			}
 
 			// CALCULATE STARS

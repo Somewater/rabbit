@@ -64,6 +64,10 @@ class LevelInstance
 		@version ? @version.to_i : -1
 	end
 
+	def number
+		@levelDef.number
+	end
+
 	def to_json
 		json = {'number' => @levelDef.number,
 				'carrotHarvested' => self.carrotHarvested,

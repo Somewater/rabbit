@@ -78,7 +78,7 @@ package com.somewater.rabbit.application
 						Config.application.startPage("levels");
 						break;
 				case Lang.t("MY_ACHIEVEMENTS"):
-						Config.application.startGame(new RewardLevelDef());
+						Config.application.startGame(new RewardLevelDef(UserProfile.instance));
 						break;
 				case Lang.t("ABOUT_GAME"):
 						Config.application.startPage("about");

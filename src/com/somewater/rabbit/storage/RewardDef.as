@@ -59,5 +59,9 @@ package com.somewater.rabbit.storage {
 		{
 			return XmlController.instance.calculateRewardSize(id);
 		}
+
+		public function get slug():String {
+			return template..slug;
+		}
 	}
 }
