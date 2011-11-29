@@ -1,12 +1,12 @@
 class LevelsManageController < BaseController
 	def process
-		return "E_AUTH" unless check_password
+		return AuthError, "Wrong admin password" unless check_password
 
 		case @json['operation']
 			when 'create'
 				create
 			else
-				raise MethodError, "E_METHOD"
+				raise MethodError, "Undefined submethod '#{@json['operation']}'"
 		end
 	end
 
