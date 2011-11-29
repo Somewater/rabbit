@@ -54,7 +54,10 @@ class BaseController
 			params['uid'] && params['key']
 		else
 			net = params['net'] ? params['net'].to_sym : nil
-			if self.class.api_by_name[net]
+			raise AuthError, 'Empty net identificator' unless net
+			if self.class.api_by_id[params['net'].to_i]
+				@api = self.class.api_by_id[params['net'].to_i].new(params)
+			elsif self.class.api_by_name[net]
 				@api = self.class.api_by_name[net].new(params)
 			elsif params['net'] =~ /local\:\w+/
 				@api = EmbedApi.new(params)
