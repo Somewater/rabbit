@@ -1,6 +1,6 @@
 class LevelsManageController < BaseController
 	def process
-		return AuthError, "Wrong admin password" unless check_password
+		raise AuthError, "Wrong admin password" unless check_password
 
 		case @json['operation']
 			when 'create'
