@@ -173,15 +173,15 @@ package com.somewater.rabbit.ui
 
 				if(_darkness < 0.01)
 				{
-					horizontGroundHolder.transform.colorTransform = new ColorTransform();
+					if(horizontGroundHolder) horizontGroundHolder.transform.colorTransform = new ColorTransform();
 				}
 				else
 				{
 					var v:Number = 1 - value * 0.7;
-					horizontGroundHolder.transform.colorTransform = new ColorTransform(v,v,v);
+					if(horizontGroundHolder) horizontGroundHolder.transform.colorTransform = new ColorTransform(v,v,v);
 				}
 
-				sun.y = sun_y + (value * Config.TILE_HEIGHT * 2);
+				if(sun) sun.y = sun_y + (value * Config.TILE_HEIGHT * 2);
 			}
 		}
 
