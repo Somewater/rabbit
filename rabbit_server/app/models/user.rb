@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
 	# {'0':{'c' => 3, 't' => 45, 'v' => 0, 's' => 1}, ...}
 	def level_instances
 		unless @level_instances
-			str = super
+			str = self['level_instances']
 			str = '{}' if !str || str.size == 0
 			@level_instances = JSON.parse(str )
 		end
@@ -28,7 +28,7 @@ class User < ActiveRecord::Base
 	#  {"123" : {"id":123, "x":2, "y":5, "n":1}, ... }
 	def rewards
 		unless @rewards
-			str = super
+			str = self['rewards']
 			str = '{}' if !str || str.size == 0
 			@rewards = JSON.parse(str )
 		end
@@ -53,6 +53,7 @@ class User < ActiveRecord::Base
 		self['rewards'] = JSON.fast_generate(@rewards) 			if @rewards
 	end
 
+	# обеспечивает перезаписывание старого значения новым
 	def add_reward_instance(reward_instance)
 		rewards[reward_instance.id.to_s] = {'id' => reward_instance.id,
 											'x' => reward_instance.x,
@@ -60,6 +61,7 @@ class User < ActiveRecord::Base
 											'n' => reward_instance.level}
 	end
 
+	# обеспечивает перезаписывание старого значения новым
 	def add_level_instance(level_instance)
 		if level_instance.success
 			level_instances[level_instance.levelDef.number.to_s] = {'c' => level_instance.carrotHarvested,

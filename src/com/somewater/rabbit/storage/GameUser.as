@@ -23,7 +23,11 @@ package com.somewater.rabbit.storage
 			else
 				super.data = value;
 		}
-		
+
+		/**
+		 * Должен обеспечивать перезаписывание старого значения новым
+		 * @param levelInst
+		 */
 		public function addLevelInstance(levelInst:LevelInstanceDef):void
 		{
 			if(levelInst.success)

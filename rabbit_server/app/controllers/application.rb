@@ -46,7 +46,7 @@ class Application
 				end
 			rescue =>ex
 				logger.debug "#{ex} : #{ex.backtrace.join(?\n)}"
-				[200, { "Content-Type" => "text/html" }, DEVELOPMENT ? \
+				[200, { "Content-Type" => "text/html" }, DEVELOPMENT || true ? \
 							["E_FATAL<pre>#{ex} \n#{ex.backtrace.join(?\n)}"]	: ["E_FATAL"]]
 			end
 		end

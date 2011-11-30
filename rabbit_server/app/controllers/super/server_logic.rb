@@ -76,9 +76,6 @@ class ServerLogic
 				# присвоив новому макс. значения
 				levelInstance.data = {'c' => [lastLevelInstance.carrotHarvested, levelInstance.carrotHarvested].max,
 										't' => [lastLevelInstance.timeSpended, levelInstance.timeSpended].min}
-
-				# вырезать старый инстанс
-				user.rewards[levelInstance.levelDef.number.to_s] = nil
 			end
 
 			# CALCULATE STARS
