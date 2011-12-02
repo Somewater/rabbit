@@ -15,7 +15,7 @@
 			<!--tile type="RandomTilePoint.free"></tile-->
 		</component>
 		<component type="com.somewater.rabbit.components.InputComponent" name="Input"/>
-		<component type="com.somewater.rabbit.components.HarvesterComponent" name="Harvester">
+		<component type="com.somewater.rabbit.components.HeroHarvesterComponent" name="Harvester">
 			<sense>false</sense>
 			<harvestType>
 				<_>harvest</_>
@@ -393,11 +393,43 @@
 			<spatialManager entityName="SceneDB" componentName="Spatial"/>
 		</component>
 		<component type="com.somewater.rabbit.iso.IsoRenderer" name="Render">
+			<layerIndex>10</layerIndex>
+			<scene entityName="SceneDB" componentName="Scene"/>
+			<positionProperty>@Spatial.position</positionProperty>
+		</component>
+	</template>
+
+
+	<!--
+
+		GROUND GRASS
+
+	-->
+	<template name="GroundGrass">
+		<component type="com.pblabs.rendering2D.SimpleSpatialComponent" name="Spatial">
+			<spatialManager entityName="SceneDB" componentName="Spatial"/>
+		</component>
+		<component type="com.somewater.rabbit.decor.GroundGrassRenderer" name="Render">
 			<layerIndex>1</layerIndex>
 			<scene entityName="SceneDB" componentName="Scene"/>
 			<positionProperty>@Spatial.position</positionProperty>
 		</component>
 	</template>
-	
 
+
+	<!--
+
+		POPUP EFFECT
+
+	-->
+	<template name="PopupEffect">
+		<component type="com.pblabs.rendering2D.SimpleSpatialComponent" name="Spatial">
+			<spatialManager entityName="SceneDB" componentName="Spatial"/>
+		</component>
+		<component type="com.somewater.rabbit.decor.PopupEffectRenderer" name="Render">
+			<layerIndex>10</layerIndex>
+			<scene entityName="SceneDB" componentName="Scene"/>
+			<positionProperty>@Spatial.position</positionProperty>
+		</component>
+	</template>
 </things>

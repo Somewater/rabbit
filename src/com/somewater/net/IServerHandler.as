@@ -10,7 +10,7 @@ package com.somewater.net {
 
 		function addGlobalHandler(success:Boolean, callback:Function):void
 
-		function toJson(object):String
+		function toJson(object:Object):String
 
 		function fromJson(json:String):Object
 	}

@@ -123,7 +123,7 @@ package com.somewater.rabbit.iso
 			CONFIG::debug
 			{
 				if(Config.editor)
-					gameIsTicking = true;
+					gameIsTicking = gameIsTicking || PBE.mainStage != null;
 			}
 			if(gameIsTicking && mouseStartPos)
 			{

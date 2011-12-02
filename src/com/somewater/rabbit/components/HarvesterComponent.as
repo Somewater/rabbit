@@ -25,7 +25,7 @@ package com.somewater.rabbit.components
 		
 		public var harvestType:ObjectType;// тип, который данный контроллер собирает
 		private var tempQueryRectangle:Rectangle;// объект для передачи запросу queryRectangle
-		private var scoreRef:PropertyReference;
+		protected var scoreRef:PropertyReference;
 		
 		public var sense:Boolean = true;// ведет ли себя контроллер по всем правилам SentientComponent, либо как обычный компонент (нужно для Hero)
 		
@@ -115,10 +115,14 @@ package com.somewater.rabbit.components
 			
 			senseHarvest = null;
 		}
-		
-		
-		
-		private function applyHarvest(harvest:Array):void
+
+
+		/**
+		 * Внимание! Оверрайдится в HeroHarvesterComponent.
+		 * При изменении нижеследующией функции, внести критические изменения в оверрайд
+		 * @param harvest
+		 */
+		protected function applyHarvest(harvest:Array):void
 		{
 			var scoreAdd:int = 0;
 			for(var i:int = 0;i<harvest.length;i++)

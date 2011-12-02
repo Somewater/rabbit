@@ -141,7 +141,7 @@ package com.somewater.rabbit.iso.scene
 		{
 			if(PBE.scene && IsoLayer.instance == null)
 			{
-				DisplayObjectScene(PBE.scene).layers[1] = new IsoLayer();// на нулевом слое сцены располагаются iso объекты
+				DisplayObjectScene(PBE.scene).layers[10] = new IsoLayer();// на нулевом слое сцены располагаются iso объекты
 			}
 		}
 		

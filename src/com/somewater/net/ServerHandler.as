@@ -179,7 +179,7 @@ package com.somewater.net
 				_globalHandlersError.push(callback);
 		}
 
-		public function toJson(object):String
+		public function toJson(object:Object):String
 		{
 			return JSON.encode(object);
 		}

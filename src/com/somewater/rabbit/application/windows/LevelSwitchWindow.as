@@ -134,7 +134,7 @@ package com.somewater.rabbit.application.windows {
 
 		public static function getImage(image:String):*
 		{
-			if(image == null) return null;
+			if(image == null || image.length == 0) return null;
 			if(image.substr(0,7) == 'http://')
 				return image;
 			else if(image.substr(0,2) == 'T_' && Lang.t(image).substr(0,2) != 'T_')

@@ -167,7 +167,7 @@ package com.somewater.rabbit.iso
 			if(_renderLayer == null)
 				_renderLayer = PBE.scene.getLayer(_renderer.layerIndex, true) as IsoLayer;
 				// KLUDGE: еще невозможно знать layerIndex
-			
+
 			if(_renderer.zIndexSorted)
 			{
 				if(_size && (_size.x || _size.y))

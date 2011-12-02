@@ -20,6 +20,11 @@
 			<layerIndex>0</layerIndex>
 		</component>	
 	</entity>
+
+	<entity name="Background">
+		<component name="Render" type="com.somewater.rabbit.decor.BackgroundRenderer">
+		</component>
+	</entity>
 	
 	
 	
@@ -34,10 +39,12 @@
 	
 	<group name="LevelManagers">
 		<objectReference name="Horizont"/>
+		<objectReference name="Background"/>
 	</group>
 	
 	<group name="RewardLevelManagers">
 		<objectReference name="RewardHorizont"/>
+		<objectReference name="Background"/>
 	</group>
 
 </things>
