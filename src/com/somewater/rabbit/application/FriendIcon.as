@@ -43,7 +43,7 @@ package com.somewater.rabbit.application
 			inviteText.width = 70;
 			inviteText.y = 51;
 			inviteText.text = Lang.t("INVITE_BUTTON_TEXT");
-			inviteText.filters = [new DropShadowFilter(2,45,0xA2BA2A,1,0,0)];
+			//inviteText.filters = [new DropShadowFilter(2,45,0xA2BA2A,1,0,0)];
 			core.invite.addChild(inviteText);
 			
 			starText = new EmbededTextField(null, 0xFFFFFF, 12, true,false,false,false,"center");

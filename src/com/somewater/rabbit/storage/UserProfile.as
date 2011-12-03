@@ -146,9 +146,8 @@ package com.somewater.rabbit.storage
 			{
 				var social:Array = Config.loader.getAppFriends();
 				_appFriends = [];
-				social.forEach(function(user:SocialUser, ...args):void{
-					_appFriends.push(new GameUser(user));
-				});
+				for(var id:String in social)
+					_appFriends.push(new GameUser(social[id]));
 			}
 			return _appFriends;
 		}
