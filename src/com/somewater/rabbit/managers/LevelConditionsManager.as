@@ -226,17 +226,24 @@ package com.somewater.rabbit.managers
 			event.finalFlag = flag;
 			event.success = success;
 			event.aliensPassed = (success ? XmlController.instance.calculateAliens(event.levelDef) : 0);
-			event.carrotHarvested = HeroDataComponent.instance ? HeroDataComponent.instance.carrot : 0;
-			event.timeSpended = time;
-			event.stars = (event.carrotHarvested >= conditionsRef['carrotMax'] ? 3
+			event.currentCarrotHarvested = event.carrotHarvested = HeroDataComponent.instance ? HeroDataComponent.instance.carrot : 0;
+			event.currentTimeSpended = event.timeSpended = Math.max(time, 1000);
+			event.currentStars = event.stars = (event.carrotHarvested >= conditionsRef['carrotMax'] ? 3
 								: (event.carrotHarvested >= conditionsRef['carrotMiddle'] ? 2
 								: (event.carrotHarvested >= conditionsRef['carrotMin'] ? 1 : 0) ))
 
-			PBE.processManager.schedule(flag == LevelInstanceDef.LEVEL_FATAL_TIME ? 0 : 2000, this, function():void{
+			PBE.processManager.schedule(flag == LevelInstanceDef.LEVEL_FATAL_TIME ? 0 : 1500, this, function():void{
+
+				// если кролика за delay убили, отменяем выигрыш
+				if(!(HeroDataComponent.instance && HeroDataComponent.instance.health > 0) && event.success)
+				{
+					event.success = false;
+					event.finalFlag = LevelInstanceDef.LEVEL_FATAL_LIFE;
+				}
 
 				// специально для случаев, когда во время delay игрок еще подсобрал морковок более, чем carrotMax (причем время еще не кончилось)
-				if(time <= conditionsRef["time"] && event.stars == 3)
-					event.carrotHarvested = HeroDataComponent.instance ? HeroDataComponent.instance.carrot : 0;
+				if(time <= conditionsRef["time"] && event.stars == 3 && HeroDataComponent.instance)
+					event.currentCarrotHarvested = event.carrotHarvested =  HeroDataComponent.instance.carrot;
 
 				Config.application.addFinishedLevel(event);
 				Config.application.levelFinishMessage(event);

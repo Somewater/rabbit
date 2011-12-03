@@ -2,6 +2,7 @@ package com.somewater.rabbit.creature
 {
 	import com.astar.BasicTile;
 	import com.pblabs.engine.components.TickedComponent;
+	import com.pblabs.engine.entity.IEntityComponent;
 	import com.pblabs.engine.entity.PropertyReference;
 	import com.somewater.rabbit.iso.IsoRenderer;
 	import com.somewater.rabbit.iso.IsoSpatial;
@@ -62,9 +63,9 @@ package com.somewater.rabbit.creature
 		
 		/**
 		 * Персонажи, которые находятся на бревне
-		 * (ссылки на их positionOffset)
+		 * (ссылки на их IsoRenderer)
 		 */
-		private var guestsPositionOffset:Array = [];
+		private var guestsIsoRenderers:Array = [];
 		
 		
 		
@@ -106,11 +107,14 @@ package com.somewater.rabbit.creature
 		{
 			//return (~getOccupyMask(tile.x, tile.y) & spatial.passMask) == spatial.passMask;
 			var verticalMovement:Boolean = int(startTile.y - tile.y) != 0;// кто то движется через бревно поперек, а не вдоль
-			// если бревно в равновесии, оно полностью проходимо
 			var mask:uint;
 			if(sideMode == 0)
 			{
-				mask = verticalMovement?occupyMask:partialOccupyMask
+				// mask = verticalMovement?occupyMask:partialOccupyMask// раньше авновесное бревно было полностью проходимо
+
+				// если бревно в равновесии, оно полностью проходимо для персонажей на бревне и непроходимо для любых других
+				var travellerRenderComponent:IEntityComponent = spatial.owner ? spatial.owner.lookupComponentByName('Render') : null;
+				mask = travellerRenderComponent && guestsIsoRenderers.indexOf(travellerRenderComponent) != -1 ? partialOccupyMask : occupyMask;
 			}
 			else
 			{
@@ -151,8 +155,8 @@ package com.somewater.rabbit.creature
 				IsoSpatialManager.instance.queryRectangle(box, null, guests);
 				
 				// спустить в исходное состояние песонажей, которые ранее числились на бревне
-				while(guestsPositionOffset.length)
-					(guestsPositionOffset.pop() as IsoRenderer).positionOffset = new Point();
+				while(guestsIsoRenderers.length)
+					(guestsIsoRenderers.pop() as IsoRenderer).positionOffset = new Point();
 				
 				// запрос вернет как минимум 1 объект - само бревно
 				if(guests.length > 1)
@@ -180,7 +184,7 @@ package com.somewater.rabbit.creature
 										 *    0.5 коэф.  поднятия от повотора бревна
 										 */
 						isoRender.positionOffset = positionOffset;
-						guestsPositionOffset.push(isoRender);
+						guestsIsoRenderers.push(isoRender);
 					}
 					
 					if(Math.abs(vector) < 0.2)

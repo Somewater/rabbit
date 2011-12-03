@@ -14,6 +14,11 @@ package com.somewater.rabbit.loader{
 			super();
 		}
 
+		protected function onArrowComplete(key:String)
+		{
+			arrow.init({'stage': stage, 'complete':onNetInitializeComplete, 'error':onNetInitializeError, 'key':key});
+		}
+
 		override protected function initializeServerHandler():void
 		{
 			_serverHandler = new ServerHandler();

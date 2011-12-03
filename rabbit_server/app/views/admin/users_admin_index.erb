@@ -19,21 +19,21 @@
 	</tr>
 	<% @users.each_with_index do |user, index| %>
 		<tr width='100%'>
-        	<td><%= user.id %></td>
+        	<td><a href="<%= USERS_PATH %>?show=<%= user.id %>"><%= user.id %></a></td>
         	<td><%= user.net %></td>
         	<td><%= user.uid %></td>
-        	<td><%= user.first_name %></td>
-        	<td><%= user.last_name %></td>
-        	<td><%= user.level_instances %></td>
-        	<td><%= user.rewards %></td>
+        	<td><%= user.first_name && user.first_name.size > 0 ? user.first_name : '<null>' %></td>
+        	<td><%= user.last_name && user.last_name.size > 0 ? user.last_name : '<null>' %></td>
+        	<td><%= user.level_instances.to_json[0..10] %></td>
+        	<td><%= user.rewards.to_json[0..10] %></td>
         	<td><%= user.score %></td>
         	<td><%= user.money %></td>
         	<td><%= user.level %></td>
         	<td><%= user.roll %></td>
         	<td><%= user.friends_invited %></td>
         	<td><%= user.postings %></td>
-        	<td><%= user.created_at %></td>
-        	<td><%= user.updated_at %></td>
+        	<td><%= user.created_at.to_formatted_s(:short) %></td>
+        	<td><%= user.updated_at.to_formatted_s(:short) %></td>
 		</tr>
 	<% end %>
 </table>

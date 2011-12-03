@@ -3,7 +3,9 @@ package com.somewater.rabbit.application
 	import com.somewater.control.IClear;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Lib;
-	
+	import com.somewater.storage.Lang;
+	import com.somewater.text.Hint;
+
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
@@ -34,6 +36,8 @@ package com.somewater.rabbit.application
 		{
 			if(ground && ground.parent == this)
 				ground.parent.removeChild(ground);
+			if(logo)
+				Hint.removeHint(logo)
 		}
 		
 		protected function createGround():void
@@ -48,6 +52,8 @@ package com.somewater.rabbit.application
 			logo.x = Config.WIDTH - logo.width - 15;
 			logo.y = Config.HEIGHT - logo.height - 20;
 			addChild(logo);
+
+			Hint.bind(logo, Lang.t('I_AM_RABBIT'))
 		}
 		
 		protected function getButton(label:String, parent:DisplayObjectContainer, 

@@ -368,8 +368,9 @@ package com.somewater.rabbit.iso
 			// HOOK, не допустить перепроверки тайла, который был помечан как занятый текущим объектом
 			if(patienceMode == 0 && item.marked)
 				return true;
-			
-			if((tile.mask & _spatial.passMask) == _spatial.passMask)
+
+			if(IsoSpatialManager.analyzeTile(tile.position, _spatial, _spatial.tile)) // комплексная проверка тайла, включая хуки
+			//if((tile.mask & _spatial.passMask) == _spatial.passMask)
 			{
 				// следующий тайл пути проходим, блочим его
 				tile.mask = tile.mask | _spatial.occupyMask;

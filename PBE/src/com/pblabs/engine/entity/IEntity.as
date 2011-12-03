@@ -138,5 +138,6 @@ package com.pblabs.engine.entity
 
 	  function get hash():String;
 	  function setHash(hash:String):void
+	  function get debugName():String
    }
 }

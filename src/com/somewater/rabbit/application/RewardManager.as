@@ -34,9 +34,9 @@ package com.somewater.rabbit.application {
 			{
 				var reward:RewardDef = new RewardDef(	template.@id,
 														template.@type,
-														template.hasOwnProperty('@degree') ? template.@degree : 0
+														template.hasOwnProperty('@degree') ? template.@degree : 0,
+														template
 													);
-				reward.template = template;
 				if(rewardsByType[reward.type] == null)
 					rewardsByType[reward.type] = [];
 				rewardsByType[reward.type].push(reward);

@@ -22,11 +22,11 @@ package com.somewater.rabbit.application {
 			this.reward = reward;
 
 			graphics.beginFill(0,0.1);
-			graphics.drawRect(0,0,100,100);
+			graphics.drawRect(0,0,WIDTH,HEIGHT);
 
 			var photoWidth:int = WIDTH * 0.95;
 			var photoHeight:int = HEIGHT * 0.95;
-			photo = new Photo(null, 0, photoWidth, photoHeight, WIDTH * 0.5, HEIGHT * 0.5);
+			photo = new Photo(null, Photo.ORIENTED_CENTER, photoWidth, photoHeight, WIDTH * 0.5, HEIGHT * 0.5);
 			addChild(photo);
 
 			photo.source = LevelSwitchWindow.getImage(reward.rewardDef.slug);

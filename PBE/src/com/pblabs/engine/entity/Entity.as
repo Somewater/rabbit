@@ -663,6 +663,14 @@ package com.pblabs.engine.entity
 			_hash = hash;
 		}
 
+		public function get debugName():String
+		{
+			if(_components['Render'])
+				return _components['Render'].slug;
+			else
+				return null;
+		}
+
 		private var _hash:String;
         
 		private var signalListeners:Array = [];

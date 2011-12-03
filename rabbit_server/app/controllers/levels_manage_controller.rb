@@ -44,5 +44,7 @@ private
 						  })
 		level.save
 		@response = {:number => level.number, :author => level.author, :version => version, :id => level.id}
+
+		Level.clear_cache()
 	end
 end

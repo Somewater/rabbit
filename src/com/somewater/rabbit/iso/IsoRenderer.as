@@ -40,6 +40,8 @@ package com.somewater.rabbit.iso
 		public static const TOP:int = 4;		
 		public static const RIGHT:int = 1;
 		public static const LEFT:int = 2;
+
+		public static const PRESICION:Number = 0.1;// величина (в пикселях) смещение персонажа на которую не меняет его direction
 		
 		public static const TOP_LEFT:int = TOP | LEFT;
 		public static const TOP_RIGHT:int = TOP | RIGHT;
@@ -127,6 +129,7 @@ package com.somewater.rabbit.iso
 		
 		
 		private var tempIsoScreenPoint:Point = new Point();
+		//private var currentTempIsoScreenPoint:Point = new Point();// тоже самое, что displayObject.x,displayObject.y (но без погрешности)
 
 		/**
 		 * Уже выставленные (в т.ч. в мувиклипе) свойства анимации
@@ -415,7 +418,10 @@ package com.somewater.rabbit.iso
 		
 		protected function pointToDirection(dx:Number, dy:Number):int
 		{
+			trace("dx:" + dx + "\tdy:" + dy);
 			if(_useDirection == 1) return 1;
+			if(dx < PRESICION && dx > -PRESICION) dx = 0;
+			if(dy < PRESICION && dy > -PRESICION) dy = 0;
 			if(dx == 0 && dy == 0){return __direction;}// KLUDGE если новый position совпадает с текущим
 			
 			var tanX:Number = dy?dx / dy:int.MAX_VALUE * dx;
@@ -507,11 +513,15 @@ package com.somewater.rabbit.iso
 			// учитываем влияние _positionOffset на координату и вычитаем это влияние при просчете pointToDirection
 			// (потому что _positionOffset не дорлжна влиять на direction персонажа, а просто на смещение)
 			var _positionOffsetScreen:Point = isoToScreen(_positionOffset.clone());
-			
+
+			trace('PO:' + _positionOffset.y + "\tPOS:" + positionOffsetScreen.y +
+				"\tLPOS:" + lastAppliedPositionOffsetScreen.y);
+			var lastDirection:int = __direction;
 			if(_displayObject.x != 0 && _displayObject.y != 0)// если происходит НЕ инициализация позиции персонажа
 				__direction = pointToDirection(
 					  tempIsoScreenPoint.x - positionOffsetScreen.x - _displayObject.x + lastAppliedPositionOffsetScreen.x
 					, tempIsoScreenPoint.y - positionOffsetScreen.y - _displayObject.y + lastAppliedPositionOffsetScreen.y);
+			trace(lastDirection + " => " + __direction + "\t/\t" + displayObject.y + "=>" + tempIsoScreenPoint.y);
 
 			lastAppliedPositionOffsetScreen.x = positionOffsetScreen.x;
 			lastAppliedPositionOffsetScreen.y = positionOffsetScreen.y;

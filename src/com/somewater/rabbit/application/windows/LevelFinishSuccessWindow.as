@@ -68,9 +68,9 @@ package com.somewater.rabbit.application.windows {
 			addChild(levelSuccTitle);
 
 			var levelSuccDesc:EmbededTextField = new EmbededTextField(null, 0xDB661B, 14);
-			levelSuccDesc.text = Lang.t(levelInstance.stars == 1 ? 'LEVEL_COMPLETED_MIN' :
-							(levelInstance.stars == 2 ? 'LEVEL_COMPLETED_MID' :
-							(levelInstance.stars == 3 ? 'LEVEL_COMPLETED_MAX' : 'LEVEL_COMPLETED_UNDEFENED')));
+			levelSuccDesc.text = Lang.t(levelInstance.currentStars == 1 ? 'LEVEL_COMPLETED_MIN' :
+							(levelInstance.currentStars == 2 ? 'LEVEL_COMPLETED_MID' :
+							(levelInstance.currentStars == 3 ? 'LEVEL_COMPLETED_MAX' : 'LEVEL_COMPLETED_UNDEFENED')));
 			levelSuccDesc.y = 46+ (needCreateRewards ? 0 : 20);
 			levelSuccDesc.x = (width - levelSuccDesc.width) * 0.5;
 			addChild(levelSuccDesc);
@@ -92,12 +92,12 @@ package com.somewater.rabbit.application.windows {
 			spendedTimeCounter.y = 32;
 			spendedTimeCounter.width = 161;
 			core.addChild(spendedTimeCounter);
-			spendedTimeCounter.text = GameGUI.secondsToFormattedTime(levelInstance.timeSpended * 0.001);
+			spendedTimeCounter.text = GameGUI.secondsToFormattedTime(levelInstance.currentTimeSpended * 0.001);
 
 			var addedScore:EmbededTextField = new EmbededTextField(Config.FONT_SECONDARY, 0x2F4015, 12, true, false,false, false, 'center');
-			addedScore.x = 161;
+			addedScore.x = 162;
 			addedScore.y = 0;
-			addedScore.width = 161;
+			addedScore.width = 143;
 			core.addChild(addedScore);
 			addedScore.text = Lang.t('LEVEL_OBTAINED_SCORE');
 
@@ -106,17 +106,17 @@ package com.somewater.rabbit.application.windows {
 			addedScoreCounter.y = 34;
 			addedScoreCounter.width = 58;
 			core.addChild(addedScoreCounter);
-			addedScoreCounter.text = levelInstance.carrotHarvested.toString();
+			addedScoreCounter.text = levelInstance.currentCarrotHarvested.toString();
 
 			var ratingValue:EmbededTextField = new EmbededTextField(Config.FONT_SECONDARY, 0x2F4015, 12, true, false,false, false, 'center');
 			ratingValue.x = 304;
 			ratingValue.y = 0;
-			ratingValue.width = 161;
+			ratingValue.width = 156;
 			core.addChild(ratingValue);
 			ratingValue.text = Lang.t('LEVEL_PROGRESS_RATING');
 
 			for (var i:int = 1; i < 4; i++) {
-				if(levelInstance.stars >= i)
+				if(levelInstance.currentStars >= i)
 					DisplayObject(core['carrot' + i]).alpha = 1;
 				else
 					DisplayObject(core['carrot' + i]).alpha = 0.3;

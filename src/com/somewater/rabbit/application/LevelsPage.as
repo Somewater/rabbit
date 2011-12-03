@@ -3,8 +3,10 @@ package com.somewater.rabbit.application
 	import com.somewater.controller.PopUpManager;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
+	import com.somewater.rabbit.storage.LevelInstanceDef;
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.rabbit.storage.UserProfile;
+	import com.somewater.rabbit.xml.XmlController;
 	import com.somewater.storage.Lang;
 	import com.somewater.text.EmbededTextField;
 	import com.somewater.text.Hint;
@@ -79,7 +81,15 @@ package com.somewater.rabbit.application
 			globalScoreCounterTF.x = globalScoreCarrot.x + globalScoreCarrot.width * 0.5 - 50 - 3;
 			globalScoreCounterTF.y = globalScoreCarrot.y + globalScoreCarrot.height + 5;
 			addChild(globalScoreCounterTF);
-			globalScoreCounterTF.text = "0000 / 0000";//TODO
+
+			var sumScore:int = 0;
+			var maxScores:int = 0;
+			for each(var levelInst:LevelInstanceDef in UserProfile.instance.levelInstances)
+			{
+				sumScore += levelInst.carrotHarvested;
+				maxScores += XmlController.instance.calculateCarrots(levelInst.levelDef);
+			}
+			globalScoreCounterTF.text = intToFourChar(sumScore) + " / " + intToFourChar(maxScores);
 			
 			Hint.bind(globalScoreCarrot, Lang.t("GLOBAL_SCORE_COUNTER_HINT"));
 			Hint.bind(globalScoreCounterTF, Lang.t("GLOBAL_SCORE_COUNTER_HINT"));
@@ -114,6 +124,14 @@ package com.somewater.rabbit.application
 		private function onLeftButtonClick(e:Event):void
 		{
 			Config.application.startPage("main_menu");
+		}
+
+		private function intToFourChar(value:int):String
+		{
+			var result:String = value.toString();
+			while(result.length < 4)
+				result = '0' + result;
+			return result;
 		}
 	}
 }

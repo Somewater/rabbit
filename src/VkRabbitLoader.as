@@ -1,5 +1,8 @@
 package {
+	import com.somewater.net.SWFDecoderWrapper;
 	import com.somewater.rabbit.loader.SocialRabbitLoader;
+
+	import flash.display.DisplayObject;
 
 	[SWF(width="810", height="650", backgroundColor="#FFFFFF", frameRate="30")]
 	public class VkRabbitLoader extends SocialRabbitLoader{
@@ -10,6 +13,12 @@ package {
 		{
 			// TODO: на самом еле надо пропустить ArrowVKFactory.create через SWFDecoder
 			arrow = ArrowVKFactory.create;
+			SWFDecoderWrapper.load(arrow, function(_arr:DisplayObject):void{
+				arrow = _arr;
+				onArrowComplete('hjli32ls');
+			}, function(...args):void{
+				trace('ERROR ARROW PARSING ' + args);
+			})
 		}
 
 		override protected function createSpecificPaths():void

@@ -1,6 +1,8 @@
 package com.somewater.rabbit.storage {
 	import com.somewater.rabbit.xml.XmlController;
 
+	import flash.display.MovieClip;
+
 	import flash.geom.Point;
 
 	/**
@@ -24,11 +26,12 @@ package com.somewater.rabbit.storage {
 		private var _degree:int;
 		public var template:XML;
 
-		public function RewardDef(id:int, type:String, degree:int) {
+		public function RewardDef(id:int, type:String, degree:int, template:XML) {
 
 			this._id = id;
 			this._type = type;
 			this._degree = degree;
+			this.template = template;
 		}
 
 		/**

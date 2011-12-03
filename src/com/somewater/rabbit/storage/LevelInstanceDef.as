@@ -20,7 +20,7 @@ package com.somewater.rabbit.storage
 		//		ДАННЫЕ СОХРАНЯЮЩИЕСЯ В БАЗЕ
 		//
 		//////////////////
-		public var timeSpended:int;// число миллисекунд с момента старта игры
+		public var timeSpended:uint;// число миллисекунд с момента старта игры
 		public var carrotHarvested:int;// морковок собрано на уровне
 		public var version:int;// версия уровня на момент прохождения
 
@@ -29,6 +29,12 @@ package com.somewater.rabbit.storage
 		public var aliensPassed:int;// сколько врагов было на уровне (и, соответственно, пройдено)
 		public var stars:int = 0;// Сколько звездочек получено за прохождение уровня (минимум 1, если уровень завершен успешно)
 		public var rewards:Array = [];// бонусы за прохождение уровня (array of RewardInstanceDef)
+
+		// Данные соответствующие конкретному прохождению (напр. timeSpended - лучшее время прохождения
+		// а currentTimeSpended - прохождение для конкретного раза)
+		public var currentTimeSpended:uint;
+		public var currentCarrotHarvested:uint;
+		public var currentStars:uint;
 		
 		public function LevelInstanceDef(data:Object=null)
 		{

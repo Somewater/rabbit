@@ -544,7 +544,7 @@ package com.somewater.rabbit.iso.scene
 		 * через тайл, если оно требуется)
 		 * @return тайл свободен (для данного персонажа при данных условиях)
 		 */
-		public static function analyzeTile(tile:Point, spatial:IsoSpatial, startTile:Point = null):Boolean
+		public static function analyzeTile(tile:Point, spatial:IsoSpatial, startTile:Point):Boolean
 		{
 			// проверить соответствие
 			// c IsoAnalyzer.analyzeTile

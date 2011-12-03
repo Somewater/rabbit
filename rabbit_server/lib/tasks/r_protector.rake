@@ -2,8 +2,11 @@ class RProtector
 
 	ENCODED_FILE_POSTFIX = '_encoded.swf'
 
-	def initialize
-		@seed = 7
+  HIGH = (Math.sin(0.216434) * 10**10).to_i # 2147481926, максимум 2**31-1 = 2147483647
+  LOW = 16126 # в оригинале 16147 (хз почему)
+
+	def initialize(seed = nil)
+		@seed = seed ? seed : 8
 	end
 
 	def encode_files path, mask = '*.swf'
@@ -30,7 +33,8 @@ class RProtector
 			end
 		end
 		File.open(output_as_filepath, 'w') {|as| as.write(actionscript_file(as_classname, output_bin_filepath))}
-		system("mxmlc -output #{output_filepath} #{output_as_filepath}")
+		`mxmlc -output #{output_filepath} #{output_as_filepath}`
+	ensure
 		File.delete(output_as_filepath, output_bin_filepath)
 	end
 
@@ -46,13 +50,14 @@ package
 
 	public class #{classname} extends Sprite
 	{
-		[Embed(source="#{filename}", mimeType="application/octet-stream")]
+		[Embed(source="#{bin_filepath}", mimeType="application/octet-stream")]
 		public var scalar:Class;
 
 
 		public function #{classname}()
 		{
-
+			graphics.beginFill(0x006600);
+			graphics.drawRect(5,5,5,5);
 		}
 	}
 }
@@ -61,8 +66,8 @@ package
 	end
 
 	def random
-		multiply = @seed.to_f * 16147;
-		@seed =multiply % 2147483647;
-		(@seed.to_f / 2147483647) * 256;
+		multiply = @seed.to_f * LOW;
+		@seed =multiply % HIGH;
+		(@seed.to_f / HIGH) * 256;
 	end
 end

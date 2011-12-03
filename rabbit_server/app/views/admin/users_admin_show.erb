@@ -1,0 +1,71 @@
+<h1><a href='<%= USERS_PATH %>'>USERS</a></h1>
+<p><h3><a href="<%= USERS_PATH %>?id=<%= @user.id%>&clear=rl">[Clear rewards & levels]</a>&nbsp;&nbsp;&nbsp;
+<a href="<%= USERS_PATH %>?id=<%= @user.id%>&clear=l">[Clear levels]</a>&nbsp;&nbsp;&nbsp;
+<a href="<%= USERS_PATH %>?id=<%= @user.id%>&clear=r">[Clear rewards]</a>
+<a href="<%= USERS_PATH %>?delete=<%= @user.id%>">[DELETE]</a></h3></p>
+
+<form method="post" action="<%= USERS_PATH %>?edit=<%= @user.id%>">
+	<table width='100%' border='1'>
+		<tr width='100%'>
+			<th>id</th>
+			<td><%= @user.id %></td>
+		</tr>
+		<tr width='100%'>
+			<th>net</th>
+			<td><input type="text" name="user[net]" maxlength="10" value="<%= @user.net %>" size="50"></input></td>
+		</tr>
+		<tr width='100%'>
+			<th>uid</th>
+			<td><input type="text" name="user[uid]" maxlength="30" value="<%= @user.uid %>" size="50"></input></td>
+		</tr>
+		<tr width='100%'>
+			<th>first_name</th>
+			<td><input type="text" name="user[first_name]" maxlength="40" value="<%= @user.first_name %>" size="50"></input></td>
+		</tr>
+		<tr width='100%'>
+			<th>last_name</th>
+			<td><input type="text" name="user[last_name]" maxlength="40" value="<%= @user.last_name %>" size="50"></input></td>
+		</tr>
+		<tr width='100%'>
+			<th>level_instances</th>
+			<td><textarea name="user[level_instances]" rows="3" cols="100"><%= CGI::escapeHTML(@user.level_instances ? @user.level_instances.to_json : '') %></textarea></td>
+		</tr>
+		<tr width='100%'>
+			<th>rewards</th>
+			<td><textarea name="user[rewards]" rows="3" cols="100"><%= CGI::escapeHTML(@user.rewards ? @user.rewards.to_json : '') %></textarea></td>
+		</tr>
+		<tr width='100%'>
+			<th>score</th>
+			<td><input type="text" name="user[score]" maxlength="10" value="<%= @user.score %>" size="50"></input></td>
+		</tr>
+		<tr width='100%'>
+			<th>money</th>
+			<td><input type="text" name="user[money]" maxlength="10" value="<%= @user.money %>" size="50"></input></td>
+		</tr>
+		<tr width='100%'>
+			<th>level</th>
+			<td><input type="text" name="user[level]" maxlength="3" value="<%= @user.level %>" size="50"></input></td>
+		</tr>
+		<tr width='100%'>
+			<th>roll</th>
+			<td><input type="text" name="user[roll]" maxlength="40" value="<%= @user.roll %>" size="50"></input></td>
+		</tr>
+		<tr width='100%'>
+			<th>friends_invited</th>
+			<td><input type="text" name="user[friends_invited]" maxlength="10" value="<%= @user.friends_invited %>" size="50"></input></td>
+		</tr>
+		<tr width='100%'>
+			<th>postings</th>
+			<td><input type="text" name="user[postings]" maxlength="10" value="<%= @user.postings %>" size="50"></input></td>
+		</tr>
+		<tr width='100%'>
+			<th>created_at</th>
+			<td><input type="text" name="user[created_at]" maxlength="50" value="<%= @user.created_at %>" size="50"></input></td>
+		</tr>
+		<tr width='100%'>
+			<th>updated_at</th>
+			<td><input type="text" name="user[updated_at]" maxlength="50" value="<%= @user.updated_at %>" size="50"></input></td>
+		</tr>
+	</table>
+	<input type="submit" value="Update"></input>
+</form>

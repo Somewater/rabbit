@@ -213,7 +213,7 @@ package com.somewater.rabbit.loader
 			throw new Error("Must get site, social on net info");
 		}
 		
-		protected function onNetInitializeComplete():void{
+		protected function onNetInitializeComplete(...args):void{
 			setProgress(0, 1);
 			
 			createSpecificPaths();
@@ -272,7 +272,7 @@ package com.somewater.rabbit.loader
 		}
 		
 		
-		protected function onNetInitializeError():void{
+		protected function onNetInitializeError(...args):void{
 			trace("onSocialError");
 		}
 		
