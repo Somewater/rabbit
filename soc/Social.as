@@ -4,6 +4,6 @@ package
 	
 	public class Social
 	{
-		private var arr:Array = [ArrowVK, ArrowMail]
+		private var arr:Array = [ArrowVK, ArrowVKLC, ArrowMail]
 	}
 }

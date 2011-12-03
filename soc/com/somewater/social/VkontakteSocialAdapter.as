@@ -89,7 +89,7 @@ package com.somewater.social
 						wrapper = flashVarsHolder.parent.parent.parent;
 						flashVarsHolder = wrapper.application.parameters;
 					}
-				}else if(flashVarsHolder.parent.parent){
+				}else if(flashVarsHolder.parent && flashVarsHolder.parent.parent){
 					wrapper = flashVarsHolder.parent.parent;
 					flashVarsHolder = wrapper.application.parameters;
 				}				

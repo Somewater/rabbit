@@ -16,7 +16,13 @@ package com.somewater.rabbit.loader{
 
 		protected function onArrowComplete(key:String)
 		{
-			arrow.init({'stage': stage, 'complete':onNetInitializeComplete, 'error':onNetInitializeError, 'key':key});
+			try
+			{
+				arrow.init({'stage': this, 'complete':onNetInitializeComplete, 'error':onNetInitializeError, 'key':key});
+			}catch(error:Error)
+			{
+				trace(error + "\n" + error.getStackTrace());
+			}
 		}
 
 		override protected function initializeServerHandler():void
@@ -49,6 +55,10 @@ package com.somewater.rabbit.loader{
 		override public function getUser():SocialUser
 		{
 			return arrow.getUser();
+		}
+
+		override public function setUser(user:SocialUser):void {
+			// nothing
 		}
 
 		override public function showInviteWindow():void

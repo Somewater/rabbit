@@ -122,6 +122,7 @@ package com.somewater.arrow
 		
 		public function init(params:Object):void
 		{
+			createSocial();
 			social.init(params['stage'], params['complete'], params['error'], params['key']);
 		}
 		

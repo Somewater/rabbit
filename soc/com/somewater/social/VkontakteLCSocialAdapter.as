@@ -273,7 +273,7 @@ class APIConnection extends EventDispatcher {
 			//dp = new DataProvider(api_url, params[0].api_id, params[0].sid, params[0].secret, params[0].viewer_id);
 		}
 		dp = socialAdapter;
-		if (!connectionName) return;
+		if (!connectionName) {trace('[ERROR] connection "lc_name" undefined');return;}
 		connectionName = connectionName;
 		trace("connectionName=" + connectionName);
 		pendingRequests = new Array();

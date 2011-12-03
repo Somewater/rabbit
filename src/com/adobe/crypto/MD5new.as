@@ -1,6 +1,5 @@
-﻿package com.adobe.crypto {
-		
-	 public class MD5 {
+﻿package com.adobe.crypto {	
+	 public class MD5new {
         /* Notes:
          * A conversion of the JavaScript implementation of the RSA Data Security, Inc. MD5 Message
          * Digest Algorithm, as defined in RFC 1321.
@@ -39,11 +38,6 @@
         public static function encrypt (string:String):String {
             return hex_md5 (string);
         }
-
-		 public static function hash(string:String):String
-		 {
-			return hex_md5 (string);
-		 }
         
         /*
          * 

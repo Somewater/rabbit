@@ -1,5 +1,5 @@
 production:
-  adapter: mysql
+  adapter: mysql2
   host: 127.0.0.1
   database: rabbit
   username: rabbit
@@ -8,7 +8,7 @@ production:
   reconnect: true
 
 development:
-  adapter: mysql
+  adapter: mysql2
   host: 127.0.0.1
   database: rabbit_development
   username: rabbit
@@ -17,7 +17,7 @@ development:
   reconnect: true
 
 test:
-  adapter: mysql
+  adapter: mysql2
   host: 127.0.0.1
   database: rabbit_test
   username: rabbit
@@ -26,7 +26,7 @@ test:
   reconnect: true
 
 stat:
-  adapter: mysql
+  adapter: mysql2
   host: 127.0.0.1
   database: rabbit_stat
   username: rabbit

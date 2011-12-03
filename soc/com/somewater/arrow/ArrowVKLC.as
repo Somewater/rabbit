@@ -1,12 +1,12 @@
 package com.somewater.arrow{
-import com.somewater.social.VkontakteSocialAdapter;
+import com.somewater.social.VkontakteLCSocialAdapter;
 
-public class ArrowVK extends Arrow{
-    public function ArrowVK() {
+public class ArrowVKLC extends Arrow{
+    public function ArrowVKLC() {
     }
 
     override protected function createSocial():void {
-        social = new VkontakteSocialAdapter()
+        social = new VkontakteLCSocialAdapter()
     }
 
     /*override public function init(params:Object):void

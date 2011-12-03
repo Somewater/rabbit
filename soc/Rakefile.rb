@@ -65,7 +65,7 @@ def compile_arrow(classname)
 	{:as => "#{ROOT}/#{classname_ext}.as", :swf => "#{ROOT}/#{classname_ext}.swf", :classname => classname}
 end
 
-def library(classname, output, debug = false)
+def library(classname, output, debug = true)
 	puts `compc -source-path "#{ROOT}" \
 	-include-classes "#{classname}" \
 	-optimize \
@@ -74,7 +74,7 @@ def library(classname, output, debug = false)
 	-output "#{ROOT}/#{output}.swc"`
 end
 
-def compile(file, debug = false)
+def compile(file, debug = true)
 	puts `mxmlc \
 	-target-player=10.0 \
 	-compiler.debug=#{debug} \

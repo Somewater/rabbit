@@ -11,7 +11,6 @@ package {
 
 		override protected function netInitialize():void
 		{
-			// TODO: на самом еле надо пропустить ArrowVKFactory.create через SWFDecoder
 			arrow = ArrowVKFactory.create;
 			SWFDecoderWrapper.load(arrow, function(_arr:DisplayObject):void{
 				arrow = _arr;
@@ -23,6 +22,7 @@ package {
 
 		override protected function createSpecificPaths():void
 		{
+			basePath = 'http://rabbit.asflash.ru/';
 			swfs = {
 						"Game":{priority:-1,preload:true,url:"RabbitGame.swf"}
 						,

@@ -22,3 +22,6 @@ tmp/*
 
 soc/Social.swc
 soc/SocialFree.swc
+rprotect/RProtector.swc
+rprotect/*.swf
+rprotect/com/somewater/net/*.swf
