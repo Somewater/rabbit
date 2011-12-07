@@ -70,10 +70,25 @@ class Application
 					AdminController.new.call request
 				when "crossdomain.xml"
 					File.read("#{ROOT}/bin-debug/crossdomain.xml")
+				when "openload"
+					InitializeController.new(TestRequest.new({'json' => '{"user":{"net":1,"last_name":"","first_name":"Rabbit","uid":"1"}}', \
+																									  'net' => '1', 'ping' => '1', 'uid' => '1', 'key' => 'embed' \
+																											})).call	
 				else
 					Hello.new.call request
 			end
 
 		end
+	end
+end
+
+class TestRequest < HashWithIndifferentAccess
+	def initialize(hash)
+		@params = hash
+		super(hash)
+	end
+	
+	def params
+		@params
 	end
 end

@@ -54,7 +54,7 @@ class BaseController
 			params['uid'] && params['key']
 		else
 			net = params['net'] ? params['net'].to_sym : nil
-			raise AuthError, 'Empty net identificator' unless net
+			raise AuthError, "Empty net identificator #{params}" unless net
 			if self.class.api_by_id[params['net'].to_i]
 				@api = self.class.api_by_id[params['net'].to_i].new(params)
 			elsif self.class.api_by_name[net]
