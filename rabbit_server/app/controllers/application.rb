@@ -73,7 +73,9 @@ class Application
 				when "openload"
 					InitializeController.new(TestRequest.new({'json' => '{"user":{"net":1,"last_name":"","first_name":"Rabbit","uid":"1"}}', \
 																									  'net' => '1', 'ping' => '1', 'uid' => '1', 'key' => 'embed' \
-																											})).call	
+																											})).call
+				when "images/manage"
+					ImagesManageController.new(request).call	
 				else
 					Hello.new.call request
 			end
