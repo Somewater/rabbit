@@ -143,13 +143,16 @@ package com.somewater.rabbit.storage
 		public function get appFriends():Array
 		{
 			if(_appFriends == null)
-			{
-				var social:Array = Config.loader.getAppFriends();
 				_appFriends = [];
-				for(var id:String in social)
-					_appFriends.push(new GameUser(social[id]));
-			}
 			return _appFriends;
+		}
+
+		override public function addAppFriend(gameUserFriend:GameUser):void
+		{
+			if(_appFriends == null)
+				_appFriends = [];
+			_appFriends.push(gameUserFriend);
+			dispatchChange();
 		}
 		
 		public function canPlayWithLevel(level:LevelDef):Boolean
@@ -176,6 +179,12 @@ package com.somewater.rabbit.storage
 
 		override public function setRoll(roll:uint):void {
 			this.roll = roll;
+		}
+
+
+		override public function set postings(postings:int):void {
+			super.postings = postings;
+			dispatchChange();
 		}
 	}
 }

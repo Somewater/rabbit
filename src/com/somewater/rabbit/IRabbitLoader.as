@@ -73,6 +73,8 @@ package com.somewater.rabbit
 		function get swfADs():Array
 
 		function get serverHandler():IServerHandler
+
+		function secure(roll:Number, uid:String, net:String, json:String):String
 		
 		/**
 		 * ПОлучив идентификатор файла, возвращает путь, по которому этот файл можно загрузить
@@ -108,9 +110,13 @@ package com.somewater.rabbit
 			
 		function getUsers(uids:Array, onComplete:Function, onError:Function):void
 
+		function canPost(type:String = null):Boolean
+
 		function posting(user:SocialUser = null, title:String = null, message:String = null,
 						 image:* = null,  imageUrl:String = null, data:String = null,
 						 onComplete:Function = null, onError:Function = null, additionParams:Object = null):void
+
+		function get referer():String
 
 	}
 }

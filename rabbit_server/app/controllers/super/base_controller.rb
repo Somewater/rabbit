@@ -21,8 +21,13 @@ class BaseController
 	@authorization  статус выполнения авторизации
 =end
 
-	def initialize request
+	def initialize request = nil
+		start(request) if request
+	end
+
+	def start(request)
 		@params = request.params || {}
+		@models_to_save = []
 
 		# проверить авторизацию
 		unless authorization @params
@@ -38,8 +43,6 @@ class BaseController
 
 			authorized
 
-			@models_to_save = []
-
 			# что-то делаем
 			process
 
@@ -53,7 +56,7 @@ class BaseController
 			@api = EmbedApi.new(params)
 			params['uid'] && params['key']
 		else
-			net = params['net'] ? params['net'].to_sym : nil
+			net = params['net'] ? params['net'].to_s.to_sym : nil
 			raise AuthError, "Empty net identificator #{params}" unless net
 			if self.class.api_by_id[params['net'].to_i]
 				@api = self.class.api_by_id[params['net'].to_i].new(params)

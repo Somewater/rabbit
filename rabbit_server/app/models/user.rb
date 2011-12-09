@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
 		lvl
 	end
 
-	#  {"123" : {"id":123, "x":2, "y":5, "n":1}, ... }
+	#  {"123" : {"id":123, "x":2, "y":5 [, "n":1 ],  [, "flag":1]}, ... }   , где n - номер уровня, "flag":1 -  ревард следует показать юзеру
 	def rewards
 		unless @rewards
 			str = self['rewards']
@@ -53,6 +53,16 @@ class User < ActiveRecord::Base
 		self['rewards'] = JSON.fast_generate(@rewards) 			if @rewards
 	end
 
+	def clear_structures
+		@rewards = nil
+		@level_instances = nil
+	end
+
+	def reload(options = nil)
+		super(options)
+		clear_structures()
+	end
+
 	# обеспечивает перезаписывание старого значения новым
 	def add_reward_instance(reward_instance)
 		rewards[reward_instance.id.to_s] = {'id' => reward_instance.id,
@@ -71,11 +81,32 @@ class User < ActiveRecord::Base
 		end
 	end
 
-	def to_json
+	# спецально для выдачи инфы о друге, только важнейшая информация, не включающая сериализованные поля "level_instances", "rewards"
+	def to_short_json
 		hash = {};
-		self.attributes.each{|k,v| hash[k] = v.to_s }
+		self.attributes.each{|k,v| hash[k] = v.to_s if k.to_s != 'level_instances' && k.to_s != 'rewards'}
+		hash
+	end
+
+	# полная инеформация о пользователе
+	def to_json
+		hash = self.to_short_json
 		hash['level_instances'] = self.level_instances
 		hash['rewards'] = self.rewards
 		hash
+	end
+
+	def self.find_by_uid(uid, net)
+		User.where(:uid => uid.to_s, :net => net.to_i)[0]
+	end
+
+	# всем ревардам юзера удалить флаг "flag", если таковой имеется
+	def clear_all_flags
+		if @rewards
+			@rewards.each{|k,v| v.delete('flag') if v['flag']}
+		else
+			# более быстрый способ - изменить несериализвоанную строку
+			self['rewards'] = self['rewards'].gsub(/,"flag":\d+/,'')
+		end
 	end
 end

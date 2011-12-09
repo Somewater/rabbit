@@ -62,6 +62,7 @@ package com.somewater.net
 					//engine['return'] = code;
 					engine["code"] = code;
 				}catch(errr:Error){}
+				inited = true;
 				if(path) load(path, onComplete, onError);
 			});
 			var bytes:ByteArray = new core();
@@ -87,5 +88,7 @@ package com.somewater.net
 		public static var code:int = 8;
 		public static var async:*;
 		public static var asyncBytesPerTick:uint = 1048576;// 1 Mb
+
+		public static var inited:Boolean = false;
 	}
 }

@@ -2,7 +2,7 @@
 class BaseUserController < BaseController
 
 	def authorized
-		@user = User.where(:uid => @params['uid'], :net => @params['net'])[0]
+		@user = User.find_by_uid(@params['uid'], @params['net'])
 		raise AuthError, 'User not found' unless @user
 	end
 

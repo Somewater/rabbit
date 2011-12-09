@@ -76,19 +76,11 @@ package
 		
 		override public function getFriends():Array
 		{
-			CONFIG::debug
-			{
-				throw new Error('Not implemented');
-			}
 			return [];
 		}
 		
 		override public function getAppFriends():Array
 		{
-			CONFIG::debug
-			{
-				throw new Error('Not implemented');
-			}
 			return [];
 		}
 		

@@ -5,6 +5,27 @@ require ::File.expand_path('../../config/environment',  __FILE__)
 
 class AllSpec
 	describe "Rabbit" do
+
+		def execute_request(hash, controller_class)
+			request = TRequest.new(hash)
+			controller = controller_class.new(request)
+			controller.call
+			controller.instance_variable_get('@response')
+		end
+
+		def execute_secure_request(hash, controller_class)
+			request = TRequest.new(hash)
+			controller = nil
+			lambda{
+				controller = controller_class.new()
+				controller.start(request)
+			}.should raise_error(AuthError, /Unsecured request/)
+			request.params['secure'] = controller.secure_digest()
+
+			controller = controller_class.new(request)
+			controller.call
+			controller.instance_variable_get('@response')
+		end
 		
 		before :each do
 			@user = User.new
@@ -26,7 +47,9 @@ class AllSpec
 												   Reward.new({'id' => 4, 'type' => Reward::TYPE_ALL_CARROT, 'degree' => 0})],
 
 						Reward::TYPE_CARROT_PACK => [Reward.new({'id' => 5, 'type' => Reward::TYPE_CARROT_PACK, 'degree' => 100}),
-												   Reward.new({'id' => 6, 'type' => Reward::TYPE_CARROT_PACK, 'degree' => 200})]
+												   Reward.new({'id' => 6, 'type' => Reward::TYPE_CARROT_PACK, 'degree' => 200})],
+						Reward::TYPE_FAMILIAR => [Reward.new({'id' => 7, 'type' => Reward::TYPE_FAMILIAR, 'degree' => 3}),
+												   Reward.new({'id' => 8, 'type' => Reward::TYPE_FAMILIAR, 'degree' => 5})]
 					})
 			end
 
@@ -182,6 +205,11 @@ class AllSpec
 				li = @user.get_level_instance_by_number(@level.number)
 				li.stars.should == 2
 			end
+
+			it "Умеет выдавать нелевельные реварды" do
+				reward = ServerLogic.checkAddReward(@user, nil, nil, Reward::TYPE_FAMILIAR, 3)
+				reward.should be_a_kind_of(RewardInstance)
+			end
 		end
 		
 		describe "Security" do
@@ -238,9 +266,9 @@ class AllSpec
 					sum += roll
 					graph[(roll * 10).to_i] += 1
 				}
-				# неточность не более 4%
-				sum.should be_close(iter / 2, iter / 25)
-				graph.each{|k,v| v.should be_close(iter / 10, iter / 25) }
+				# неточность не более 5%
+				sum.should be_close(iter / 2, iter / 20)
+				graph.each{|k,v| v.should be_close(iter / 10, iter / 20) }
 			end
 
 			it "get_roll() выдает одинаковые числа, при синхронизации roll" do
@@ -255,29 +283,318 @@ class AllSpec
 		end
 
 		describe InitializeController do
-			it "Пользователь извлекается из базы, если ранее существовал" do
 
+			before :all do
+				RewardManager.instance.instance_variable_set('@rewards_by_type',
+					{
+						Reward::TYPE_REFERER => [Reward.new({'id' => 111, 'type' => Reward::TYPE_REFERER, 'degree' => 1}),
+												   Reward.new({'id' => 222, 'type' => Reward::TYPE_REFERER, 'degree' => 3})],
+						Reward::TYPE_FAMILIAR => [Reward.new({'id' => 333, 'type' => Reward::TYPE_FAMILIAR, 'degree' => 3}),
+												   Reward.new({'id' => 444, 'type' => Reward::TYPE_FAMILIAR, 'degree' => 5})]
+					})
+			end
+
+			before :each do
+				@user = User.all.first
+				unless(@user)
+					@user = User.new({:uid => '1', :net => '1'})
+				end
+				@user.update_attributes({:rewards => {}, :level_instances => {}, :day_counter => 0})
+				@user.save
+				Application.instance_variable_set('@time', Time.new)
+			end
+
+			def request(hash)
+				controller = InitializeController.new(TRequest.new(hash))
+				controller.call
+				controller.instance_variable_get('@response')
+			end
+
+			def get_unexistable_uid
+				user_max_id = User.maximum(:id, :conditions => ["net = ?", @user.net])
+				if(user_max_id)
+					uid = ((User.find(user_max_id).uid).to_i + 1).to_s
+				else
+					uid = '1'
+				end
+				uid
+			end
+
+			def get_other_user
+				user = User.find_by_uid(100, 1)
+				unless(user)
+					user = User.new({:uid => '100', :net => '1'})
+					user.save
+				end
+				user
+			end
+
+			it "Пользователь извлекается из базы, если ранее существовал" do
+				response = request({'net' => @user.net,'uid' => @user.uid})
+				response['user']['new'].should be_nil
 			end
 
 			it "Пользователь создается, если ранее не существовал" do
-
+				uid = get_unexistable_uid()
+				response = request({'net' => @user.net,'uid' => uid,'json' => {'user' => {'uid' => uid, 'net' => @user.net}}})
+				response['user']['new'].should_not be_nil
 			end
 
 			it "Пользователь версии Embed (не соц. сеть) создается, если ранее не существовал" do
-
-			end
-
-			it "Корректно выдаются реварды referrer-у" do
-
+				response = request({'net' => @user.net,'uid' => nil,'json' => {'user' => {'uid' => nil, 'net' => @user.net}}})
+				response['user']['new'].should_not be_nil
 			end
 
 			it "Ответ на запрос содержит информацию по пользователю" do
+				response = request({'net' => @user.net,'uid' => @user.uid})
+				response['user']['id'].should_not be_nil
+				response['user']['uid'].should_not be_nil
+				response['user']['net'].should_not be_nil
+				response['user']['score'].should_not be_nil
+				response['user']['money'].should_not be_nil
+				response['user']['level'].should_not be_nil
+				response['user']['roll'].should_not be_nil
+				response['user']['created_at'].should_not be_nil
+				response['user']['updated_at'].should_not be_nil
+				response['user']['friends_invited'].should_not be_nil
+				response['user']['postings'].should_not be_nil
+				response['user']['day_counter'].should_not be_nil
+			end
 
+			it "Увеличивается счетчик day_counter" do
+				day_counter = request({'net' => @user.net,'uid' => @user.uid})['user']['day_counter']
+				Application.instance_variable_set('@time', Application.time + 1.day)
+				request({'net' => @user.net,'uid' => @user.uid})['user']['day_counter'].should > day_counter
+			end
+
+			it "Обнуляется счетчик day_counter, если пользователь просрочил заход" do
+				day_counter = request({'net' => @user.net,'uid' => @user.uid})['user']['day_counter']
+				Application.instance_variable_set('@time', Time.new + 2.day)
+				request({'net' => @user.net,'uid' => @user.uid})['user']['day_counter'].should == '0'
+			end
+
+			it "Выдается ревард по day_counter" do
+				@user.day_counter = 2
+				@user.rewards = {}
+				@user.save
+				Application.instance_variable_set('@time', @user.updated_at + 1.day)
+				response = request({'net' => @user.net,'uid' => @user.uid})
+				response['user']['rewards'].to_a.index{|k,v| k .to_s == '333'}.should_not be_nil
+				response['user']['day_counter'].should == '0'
+			end
+
+			it "Увеличивается счетчик friends_invited у пригласителя" do
+				@inviter = get_other_user()
+				friends_invited = @inviter.friends_invited
+
+				uid = get_unexistable_uid()
+
+				request({'net' => @user.net,'uid' => uid,'json' => {'referer' => 100, 'user' => {'uid' => uid, 'net' => @user.net}}})
+				@inviter.reload
+				@inviter.friends_invited.should == (friends_invited + 1)
+			end
+
+			it "Корректно выдаются реварды referrer-у" do
+				@inviter = get_other_user()
+				@inviter.friends_invited = 0
+				@inviter.rewards = {}
+				@inviter.save
+				friends_invited = @inviter.friends_invited
+
+				uid = get_unexistable_uid()
+
+				request({'net' => @user.net,'uid' => uid,'json' => {'referer' => 100, 'user' => {'uid' => uid, 'net' => @user.net}}})
+
+				# проверка, что в первый раз пригласителю выдается ревард-referer (чтобы показать в интерфейсе)
+				response = request({'net' => @inviter.net,'uid' => @inviter.uid,'json' => {'user' => {'uid' => @inviter.uid, 'net' => @inviter.net}}})
+				response['rewards'].should_not be_nil
+				response['rewards'].find{|r| r['id'] == 111}.should_not be_nil
+
+				# на второй и последующий заходы в приложение ревард ен всплывает
+				response = request({'net' => @inviter.net,'uid' => @inviter.uid,'json' => {'user' => {'uid' => @inviter.uid, 'net' => @inviter.net}}})
+				response['rewards'].should_not be_nil
+				response['rewards'].find{|r| r['id'] == 111}.should be_nil
+			end
+
+			it "Выдаются друзья юзера" do
+				@friend = get_other_user()
+				response = request({'net' => @user.net,'uid' => @user.uid,'json' => {'friendIds' => [@friend.uid],
+																					 'user' => {'uid' => @user.uid, 'net' => @user.net}}})
+				response['friends'].should_not be_nil
+				response['friends'].size.should == 1
+			end
+
+			it "Если запись о друге(друзьях) удалилась из базы, запрос не ломается" do
+				unexistable_uid = get_unexistable_uid()
+				@friend = get_other_user()
+
+				response = request({'net' => @user.net,'uid' => @user.uid,'json' => {'friendIds' => [@friend.uid,unexistable_uid],
+																					 'user' => {'uid' => @user.uid, 'net' => @user.net}}})
+				response['friends'].should_not be_nil
+				response['friends'].size.should == 1
+				response['friends'][0]['uid'].should == @friend.uid
 			end
 		end
 
 		describe LevelsController do
 
+			before :all do
+				RewardManager.instance.instance_variable_set('@rewards_by_type',
+					{
+						Reward::TYPE_CARROT_PACK => [Reward.new({'id' => 5, 'type' => Reward::TYPE_CARROT_PACK, 'degree' => 10}),
+												   Reward.new({'id' => 6, 'type' => Reward::TYPE_CARROT_PACK, 'degree' => 25})]
+					})
+				@level = Level.new({
+									'conditions' => '<conditions>							\
+									<time>100</time>										\
+									<fastTime>50</fastTime>									\
+									<carrotMin>10</carrotMin> 								\
+									<carrotMiddle>15</carrotMiddle> 						\
+									<carrotMax>20</carrotMax>								\
+									<carrotAll>20</carrotAll></conditions>',
+									'number' => 1
+									})
+				Level.class_variable_set('@@all_head_by_number', {@level.number => @level})
+			end
+
+			before :each do
+				@user = User.find_by_uid(1,1)
+				unless(@user)
+					@user = User.new({:uid => '1', :net => '1'})
+				end
+				@user.update_attributes({:rewards => {}, :level_instances => {}, :score => 0})
+				@user.save
+			end
+
+			def secure_request(hash)
+				execute_secure_request(hash, LevelsController)
+			end
+
+			it "Сервер применяет координаты реварда согласно запросу клиента, отвечая такими же" do
+				response = secure_request({'net' => @user.net,'uid' => @user.uid,'json' => {
+						            	'levelInstance' => {'carrotHarvested' => 20,
+															'timeSpended' => 2,
+															'version' => 1,
+															'number' => 1,
+															'success' => true,
+															'rewards' => [{'id' => 5, 'x' => 7, 'y' => 13}]}
+											}})
+
+				response['levelInstance']['rewards'].should_not be_nil
+				response['levelInstance']['rewards'].size.should == 1
+				response['levelInstance']['rewards'][0]['x'].should == 7
+				response['levelInstance']['rewards'][0]['y'].should == 13
+
+				response['user']['rewards'].should_not be_nil
+				response['user']['rewards']['5'].should_not be_nil
+				response['user']['rewards']['5']['x'].should == 7
+				response['user']['rewards']['5']['y'].should == 13
+			end
 		end
+
+		describe PostingController do
+
+			before :all do
+				RewardManager.instance.instance_variable_set('@rewards_by_type',
+					{
+						Reward::TYPE_POSTING => [Reward.new({'id' => 5, 'type' => Reward::TYPE_POSTING, 'degree' => 3}),
+												   Reward.new({'id' => 6, 'type' => Reward::TYPE_POSTING, 'degree' => 5})]
+					})
+			end
+
+			before :each do
+				@user = User.find_by_uid(1,1)
+				unless(@user)
+					@user = User.new({:uid => '1', :net => '1'})
+				end
+				@user.update_attributes({:postings => 0, :rewards => {}})
+				@user.save
+			end
+
+			def secure_request(hash, hack_roll_error = true)
+				if(hack_roll_error)
+					roll = @user.roll
+					get_roll = @user.get_roll()
+					@user.roll = roll
+					@user.save
+					hash['json'] = {} unless hash['json']
+					hash['json']['roll'] = (get_roll * 1000000).to_i
+				end
+				execute_secure_request(hash, PostingController)
+			end
+
+			it "выдает ошибку при неверном roll в запросе, не меняя roll пользователя" do
+				roll = @user.roll
+				lambda{
+					secure_request({'net' => @user.net,'uid' => @user.uid,'json' => {'roll' => 1}}, false)
+				}.should raise_error(AuthError, /Roll not correct/)
+				@user.reload
+				@user.roll.should == roll
+			end
+
+			it "выдает ревард, если пользователь заслуживает" do
+				@user.postings = 2
+				@user.save
+				response = secure_request({'net' => @user.net,'uid' => @user.uid}, true)
+				response['reward'].should_not be_nil
+				response['reward']['id'].should == 5
+			end
+
+			it "не выдает ревард, если пользователь еще не накопил по счетчику" do
+				response = secure_request({'net' => @user.net,'uid' => @user.uid}, true)
+				response['reward'].should === nil
+				@user.reload
+				@user.rewards.to_a.should be_empty
+			end
+
+			it "увеличивает счетчик постингов пользователя" do
+				secure_request({'net' => @user.net,'uid' => @user.uid}, true)
+				@user.reload
+				@user.postings.should == 1
+			end
+		end
+
+		describe RewardMoveController do
+			before :each do
+				@user = User.find_by_uid(1,1)
+				unless(@user)
+					@user = User.new({:uid => '1', :net => '1'})
+				end
+				@user.rewards = {'12345' => {'id' => 12345, 'x' => 2, 'y' => 3}}
+				@user.save
+			end
+
+			def request(hash)
+				execute_request(hash, RewardMoveController)
+			end
+
+		    it "Выдает логическую ошибку, если такого реварда у пользователя нет" do
+				lambda{
+					request({'net' => @user.net,'uid' => @user.uid, 'json' => {'reward' => {'id' => '54321', 'x' => 11, 'y' => 12}}})
+				}.should raise_error(LogicError, /Unknown reward id \d+/)
+			end
+
+			it "Переставляет ревард и выдает его новые координаты" do
+				@user.rewards['12345']['x'].should == 2
+				@user.rewards['12345']['y'].should == 3
+				response = request({'net' => @user.net,'uid' => @user.uid, 'json' => {'reward' => {'id' => '12345', 'x' => 11, 'y' => 12}}})
+				response['reward']['x'].should == 11
+				response['reward']['y'].should == 12
+				@user.reload
+				@user.rewards['12345']['x'].should == 11
+				@user.rewards['12345']['y'].should == 12
+			end
+		end
+	end
+end
+
+class TRequest
+	def initialize(params)
+		@params = params
+		@params['json'] = JSON.generate(@params['json'] || {}) if @params['json'] == nil || @params['json'].is_a?(Hash)
+	end
+
+	def params
+		@params
 	end
 end

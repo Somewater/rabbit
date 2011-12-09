@@ -4,7 +4,8 @@ package com.somewater.net
 	import com.adobe.serialization.json.JSON;
 	import com.somewater.net.IServerHandler;
 	import com.somewater.rabbit.net.*;
-	
+	import com.somewater.rabbit.storage.Config;
+
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	import flash.events.IOErrorEvent;
@@ -145,12 +146,12 @@ package com.somewater.net
 		}
 
 		private function createSecureHash(jsonString:String, roll:int):String {
-			var str:String = "";
+			/*var str:String = "";
 			for(var i:int = jsonString.length - 1; i >= 0; i--)
 			{
 				str += jsonString.charAt(i);
-			}
-			return MD5.encrypt('lorem ' + str + ' ipsum ' + uid.toString() + ' ' + net.toString() + ' ' + secureRoll.toString());
+			}*/
+			return MD5.encrypt(Config.loader.secure(secureRoll * 0.01, uid, net.toString(), jsonString));
 		}
 
 		protected function getPing():int

@@ -5,7 +5,7 @@ public class ArrowVK extends Arrow{
     public function ArrowVK() {
     }
 
-    override protected function createSocial():void {
+    override public function createSocial():void {
         social = new VkontakteSocialAdapter()
     }
 

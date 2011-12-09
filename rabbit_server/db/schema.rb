@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 5) do
+ActiveRecord::Schema.define(:version => 6) do
 
   create_table "levels", :force => true do |t|
     t.string   "description"
@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(:version => 5) do
     t.integer  "postings",                                       :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "day_counter",                                    :default => 0
   end
 
   add_index "users", ["uid", "net"], :name => "index_users_on_uid_and_net", :unique => true

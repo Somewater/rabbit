@@ -4,7 +4,7 @@ package com.somewater.arrow
 	
 	public class ArrowMail extends Arrow
 	{
-		override protected function createSocial():void
+		override public function createSocial():void
 		{
 			social = new MailSocialAdapter();
 		}

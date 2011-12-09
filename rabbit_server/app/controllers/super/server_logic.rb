@@ -92,7 +92,7 @@ class ServerLogic
 		@param rewardType "time"
 		@param degree какую величину реварда достиг юзер на данный момент
 		@param params
-		@return выдан ли ревард
+		@return выдан ли ревард (возвращает LevelInstance или nil)
 =end
 		def checkAddReward(user, levelInstance, lastLevelInstance, rewardType, degree = 0, params = nil)
 			reward = nil;
@@ -110,10 +110,10 @@ class ServerLogic
 				# сортируем по id
 				availableRewards.sort!{|x,y| x.id <=> y.id }
 				reward = availableRewards[(user.get_roll() * availableRewards.length).to_i];
-				addReward(user, reward, levelInstance)
+				return addReward(user, reward, levelInstance)
 			end
 
-			reward
+			nil
 		end
 
 =begin
@@ -121,12 +121,15 @@ class ServerLogic
 		 @param user
 		 @param reward
 		 @param levelInstance
+		 @return LevelInstance
 =end
+		private
 		def addReward(user, reward, levelInstance)
 			# не производит вычисление координат
 			rewardInstance = RewardInstance.new(reward, levelInstance)
-			levelInstance.rewards << rewardInstance;
+			levelInstance.rewards << rewardInstance if levelInstance
 			user.add_reward_instance(rewardInstance);
+			rewardInstance
 		end
 	end
 end

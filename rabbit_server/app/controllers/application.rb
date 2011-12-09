@@ -35,7 +35,13 @@ class Application
 			end
 		end
 
+		def time
+			@time = Time.new unless @time
+			@time
+		end
+
 		def call(env)
+			@time = Time.new
 			begin
 				request = Rack::Request.new(env)
 				response = _call(request)
@@ -63,6 +69,9 @@ class Application
 					LevelsController.new(request).call
 				when "levels/manage"
 					LevelsManageController.new(request).call
+				when "posting/complete"
+					PostingController.new(request).call
+
 				when "levels.xml"
 					LevelsAdminController.generate_xml_file
 				# ADMIN AREA

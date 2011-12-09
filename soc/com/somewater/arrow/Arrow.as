@@ -38,7 +38,7 @@ package com.somewater.arrow
                 })
 		}*/
 
-		protected function createSocial():void
+		public function createSocial():void
 		{
 			//social = new VkontakteSocialAdapter();
 			throw new Error("Override me");
@@ -122,7 +122,8 @@ package com.somewater.arrow
 		
 		public function init(params:Object):void
 		{
-			createSocial();
+			if(social == null)
+				createSocial();
 			social.init(params['stage'], params['complete'], params['error'], params['key']);
 		}
 		

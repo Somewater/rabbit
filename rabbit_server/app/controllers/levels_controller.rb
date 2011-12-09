@@ -17,6 +17,9 @@ class LevelsController < BaseUserController
 			ur = @user.rewards[r['id'].to_s]
 			ur['x'] = r['x']
 			ur['y'] = r['y']
+			li_r = rewards.find{|lir| lir.id.to_s == r['id'].to_s }
+			li_r.x = r['x']
+			li_r.y = r['y']
 		end
 
 		@response['levelInstance'] = level_instance.to_json

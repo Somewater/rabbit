@@ -1,7 +1,10 @@
 package com.somewater.rabbit.application
 {
 	import com.somewater.controller.PopUpManager;
+	import com.somewater.rabbit.application.windows.LevelFinishSuccessWindow;
 	import com.somewater.rabbit.storage.Config;
+	import com.somewater.rabbit.storage.LevelDef;
+	import com.somewater.rabbit.storage.LevelInstanceDef;
 	import com.somewater.rabbit.xml.XmlController;
 
 	import flash.utils.clearInterval;
@@ -19,6 +22,8 @@ package com.somewater.rabbit.application
 			getButton("В главное меню", this, 100,200, function():void{
 				Config.application.startPage("main_menu");
 			});
+
+			new LevelFinishSuccessWindow(new LevelInstanceDef(new LevelDef(new XML())));
 		}
 	}
 }

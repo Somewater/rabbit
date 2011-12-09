@@ -3,6 +3,9 @@ package {
 	import com.somewater.rabbit.loader.SocialRabbitLoader;
 
 	import flash.display.DisplayObject;
+	import flash.events.MouseEvent;
+	import flash.net.URLRequest;
+	import flash.net.navigateToURL;
 
 	[SWF(width="810", height="650", backgroundColor="#FFFFFF", frameRate="30")]
 	public class VkRabbitLoader extends SocialRabbitLoader{
@@ -14,10 +17,35 @@ package {
 			arrow = ArrowVKFactory.create;
 			SWFDecoderWrapper.load(arrow, function(_arr:DisplayObject):void{
 				arrow = _arr;
+				arrow.createSocial();
+				arrow.data.onWallPostInline = onWallPostInline;
+				arrow.data.onWallViewInline = onWallViewInline;
 				onArrowComplete('hjli32ls');
 			}, function(...args):void{
 				trace('ERROR ARROW PARSING ' + args);
 			})
+		}
+
+		private function onWall():void
+		{
+			preloader.x += 100;
+			preloader.y += 80;
+		}
+
+		private function onWallViewInline(flashVars:Object):void {
+			onWall();
+			preloader.bar.textField.text = 'Играть!';
+			preloader.bar.textField.mouseEnabled = false;
+			preloader.bar.useHandCursor = preloader.bar.buttonMode = true;
+			stage.addEventListener(MouseEvent.MOUSE_DOWN, function(e:MouseEvent):void{
+				navigateToURL(new URLRequest("http://" + flashVars['domain'] + '/app' + flashVars['api_id'] + '_' + flashVars['poster_id'] +
+				'?from_id=' + flashVars['user_id'] + '&loc=' + flashVars['post_id']), '_blank')
+			})
+		}
+
+		private function onWallPostInline(flashVars:Object):void {
+			onWall();
+			preloader.bar.textField.text = 'Ошибка!';
 		}
 
 		override protected function createSpecificPaths():void
@@ -30,7 +58,7 @@ package {
 							preload:true,url:"RabbitApplication.swf"}
 						,"Interface":{preload:true, url:"assets/interface.swf"}
 						,"Assets":{preload:true, url:"assets/rabbit_asset.swf"}
-						,"Rewards":{preload:false, url:"assets/rabbit_reward.swf"}
+						,"Rewards":{preload:true, url:"assets/rabbit_reward.swf"}
 						,"Lang":{priority:100, preload:true, url:"lang_ru.swf"}
 						,"Editor":{priority:1, preload:true, url:"RabbitEditor.swf"}
 
@@ -47,5 +75,15 @@ package {
 		}
 
 		override public function get net():int { return 2; }
+
+
+		override public function get referer():String {
+			if(flashVars['user_id'] && String(flashVars['user_id']).length && String(flashVars['user_id']) != '0')
+				return flashVars['user_id']
+			else if(flashVars['poster_id'] && String(flashVars['poster_id']).length && String(flashVars['poster_id']) != '0')
+				return flashVars['poster_id']
+			else
+				return super.referer;
+		}
 	}
 }

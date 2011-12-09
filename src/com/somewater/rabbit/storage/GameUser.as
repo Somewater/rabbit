@@ -10,6 +10,7 @@ package com.somewater.rabbit.storage
 		protected var _score:int;
 		protected var _levelInstances:Array = [];
 		protected var _rewards:Array = [];
+		protected var _postings:int;
 		
 		public function GameUser(data:Object = null)
 		{
@@ -107,6 +108,20 @@ package com.somewater.rabbit.storage
 		public function clearRewards():void
 		{
 			_rewards = [];
+		}
+
+		public function set postings(postings:int):void {
+			_postings = postings;
+		}
+
+		public function get postings():int
+		{
+			return _postings;
+		}
+
+		public function addAppFriend(gameUserFriend:GameUser):void
+		{
+			throw new Error('GameUser not implemented addAppFriend');
 		}
 	}
 }

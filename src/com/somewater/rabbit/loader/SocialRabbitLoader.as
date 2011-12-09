@@ -76,6 +76,10 @@ package com.somewater.rabbit.loader{
 			arrow.getUsers(uids, onComplete, onError);
 		}
 
+		override public function canPost(type:String = null):Boolean
+		{
+			return true;
+		}
 
 		override public function posting(user:SocialUser = null, title:String = null, message:String = null, image:* = null, imageUrl:String = null, data:String = null, onComplete:Function = null, onError:Function = null, additionParams:Object = null):void {
 			arrow.posting(user, title, message, image, imageUrl, data, onComplete, onError, additionParams);

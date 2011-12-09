@@ -52,6 +52,6 @@ RAILS_DEFAULT_LOGGER = Application.logger
 #######################################################
 RewardManager.instance
 
-Application.logger.info { "Initialization complete [#{RUBY_VERSION}/#{RUBY_PLATFORM}/#{APP_ENV}] at #{Time.new}" }
+Application.logger.info { "Initialization complete [#{RUBY_VERSION}/#{RUBY_PLATFORM}/#{APP_ENV}] at #{Application.time}" }
 
 

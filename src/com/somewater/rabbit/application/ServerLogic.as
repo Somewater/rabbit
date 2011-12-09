@@ -130,10 +130,11 @@ package com.somewater.rabbit.application {
 		 * @param params
 		 * @return выдан ли ревард
 		 */
-		private static function checkAddReward(user:GameUser, levelInstance:LevelInstanceDef, lastLevelInstance:LevelInstanceDef, rewardType:String, degree:int = 0, params:Object = null):Boolean
+		public static function checkAddReward(user:GameUser, levelInstance:LevelInstanceDef, lastLevelInstance:LevelInstanceDef, rewardType:String, degree:int = 0, params:Object = null):RewardInstanceDef
 		{
 			var reward:RewardDef;
 			var availableRewards:Array = [];
+			var result:RewardInstanceDef;
 
 			for each(reward in RewardManager.instance.getByType(rewardType))
 				if(reward.degree == degree)
@@ -148,11 +149,9 @@ package com.somewater.rabbit.application {
 				availableRewards.sortOn(['id'], Array.NUMERIC)
 
 				reward = availableRewards[int(user.getRoll() * availableRewards.length)];
-				addReward(user, reward, levelInstance);
+				return addReward(user, reward, levelInstance);
 			}else
-				reward = null;
-
-			return reward != null;
+				return null;
 		}
 
 		/**
@@ -161,7 +160,7 @@ package com.somewater.rabbit.application {
 		 * @param reward
 		 * @param levelInstance
 		 */
-		private static function addReward(user:GameUser, reward:RewardDef, levelInstance:LevelInstanceDef):void
+		private static function addReward(user:GameUser, reward:RewardDef, levelInstance:LevelInstanceDef):RewardInstanceDef
 		{
 			var rewardInstance:RewardInstanceDef = new RewardInstanceDef(reward);
 			var counter:int = 1000;
@@ -200,8 +199,11 @@ package com.somewater.rabbit.application {
 				break;
 			}
 
-			levelInstance.rewards.push(rewardInstance);
+			if(levelInstance)
+				levelInstance.rewards.push(rewardInstance);
 			user.addRewardInstance(rewardInstance);
+
+			return rewardInstance;
 		}
 	}
 }

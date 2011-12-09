@@ -2,6 +2,7 @@ package com.somewater.rabbit.loader
 {
 	
 	import com.somewater.net.IServerHandler;
+	import com.somewater.net.SWFDecoderWrapper;
 	import com.somewater.net.UrlQueueLoader;
 	import com.somewater.rabbit.IRabbitApplication;
 	import com.somewater.rabbit.IRabbitGame;
@@ -187,6 +188,7 @@ package com.somewater.rabbit.loader
 			Config.stage = stage;
 			Config.WIDTH = stage.stageWidth;
 			Config.HEIGHT = stage.stageHeight;
+			SWFDecoderWrapper.load(null, null, null);// инициируем заранее
 			
 			preloader.x = (stage.stageWidth - preloader.width) * 0.5;
 			preloader.y = (stage.stageHeight - preloader.height) * 0.5 - 20;
@@ -233,6 +235,16 @@ package com.somewater.rabbit.loader
 		public function get serverHandler():IServerHandler
 		{
 			return _serverHandler
+		}
+
+		public function secure(roll:Number, uid:String, net:String, json:String):String
+		{
+			var i:int = 1000;
+			while(i > 0)
+			{
+				return SWFDecoderWrapper.secure(roll,  uid, net, json);
+			}
+			return roll + uid + net + json + i;
 		}
 		
 		protected function createSpecificPaths():void
@@ -606,11 +618,20 @@ package com.somewater.rabbit.loader
 			throw new Error("Must be overriden");
 		}
 
+		public function canPost(type:String = null):Boolean {
+			return false;
+		}
+
 		public function posting(user:SocialUser = null, title:String = null, message:String = null,
 						 image:* = null,  imageUrl:String = null, data:String = null,
 						 onComplete:Function = null, onError:Function = null, additionParams:Object = null):void
 		{
 			onError && onError();
+		}
+
+		public function get referer():String
+		{
+			return null;
 		}
 		
 		public function set basePath(value:String):void

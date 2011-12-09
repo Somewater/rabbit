@@ -8,7 +8,7 @@ package com.somewater.rabbit.storage {
 
 		public var x:int;
 		public var y:int;
-		public var levelNumber:int;
+		public var levelNumber:int;  // необязательный параметр, прохождение какого уровня дало ревард
 
 		protected var _rewardDef:RewardDef;
 

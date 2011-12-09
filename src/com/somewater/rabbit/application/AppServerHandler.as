@@ -26,11 +26,36 @@ package com.somewater.rabbit.application {
 
 		public function initRequest(gameUser:GameUser, onComplete:Function, onError:Function):void
 		{
-			handler = Config.loader.serverHandler;
+			handler = new ServerReceiver(Config.loader.serverHandler, ['init']);
 
-			handler.call("init", {"user":gameUserToJson(gameUser, {})},
+			var appFriends:Array = [];
+			var appFriendsIds:Array = [];
+			var appFriendsById:Array = [];
+			var appfriendsSocial:Array = Config.loader.getAppFriends();
+			for(var s:String in appfriendsSocial)
+			{
+				appFriends.push(appfriendsSocial[s])
+				appFriendsIds.push(SocialUser(appfriendsSocial[s]).id);
+			}
+
+			handler.call("init", {"referer":Config.loader.referer, "user":gameUserToJson(gameUser, {}), 'friendIds': appFriendsIds},
 				function(response:Object):void{
 					response['user'] = jsonToGameUser(response['user'], gameUser);
+					var gameUsersFriends:Array = [];
+					for each(var friendJson:Object in response['friends'])
+					{
+						var gameUserFriend:GameUser = jsonToGameUser(friendJson, new GameUser());
+						gameUserFriend.data = appFriendsById[gameUserFriend.uid];
+						gameUsersFriends.push(gameUserFriend);
+						gameUser.addAppFriend(gameUserFriend);
+
+					}
+					response['friends'] = gameUsersFriends;
+
+					if(response['rewards'] && response['rewards'].length)
+					{
+						// todo: показать окна с выданными ревардами
+					}
 					onComplete && onComplete(response);
 				}, onError);
 		}
@@ -55,6 +80,25 @@ package com.somewater.rabbit.application {
 				}, onError, null, {'secure': true})
 		}
 
+		public function onPosting(gameUser:GameUser, levelInstance:LevelInstanceDef, onComplete:Function = null, onError:Function = null):void
+		{
+			handler.call('posting/complete', {'roll': int(gameUser.getRoll() * 1000000)},
+				function(response:Object):void{
+					// проверяем user и levelInstance на синхронность с текущими
+					if(response['reward'] == false )
+					{
+						// произошла рассинхронизация сервера и клиента
+						Config.application.fatalError('ERROR_SERVER_LOGIC_DESYNCRONIZE')
+						onError && onError(response);
+					}
+					else
+					{
+						response['user'] = jsonToGameUser(response['user'], gameUser);
+						onComplete && onComplete(response);
+					}
+				}, onError, null, {'secure': true})
+		}
+
 
 		//////////////////////////////////
 		//                              //
@@ -62,7 +106,7 @@ package com.somewater.rabbit.application {
 		//                              //
 		//////////////////////////////////
 
-		protected function jsonToGameUser(json:Object, gameUser:GameUser):void
+		protected function jsonToGameUser(json:Object, gameUser:GameUser):GameUser
 		{
 			var id:String;
 
@@ -100,6 +144,8 @@ package com.somewater.rabbit.application {
 				gameUser.score = json['score'];
 			if(json['roll'])
 				gameUser.setRoll(json['roll']);
+
+			return gameUser;
 		}
 
 		protected function gameUserToJson(gameUser:GameUser, json:Object):Object
@@ -170,5 +216,183 @@ package com.somewater.rabbit.application {
 					return false;
 			return true;
 		}
+	}
+}
+
+import com.somewater.net.IServerHandler;
+import com.somewater.net.ServerHandler;
+
+import flash.events.TimerEvent;
+
+import flash.utils.Timer;
+
+
+/**
+ * Проксирующий класс, совершающий запросы к сереру повторно, если сервер не отвечает
+ */
+class ServerReceiver implements IServerHandler
+{
+	public static const MAX_REQUESTS:int = 7;
+
+	private var handler:IServerHandler;
+	private var timer:Timer;
+	private var requestQueue:Array;
+	private var requestCounter:uint = 0;
+	private var sendedRequestQueue:Array;
+	private var importantMethods:Array;
+
+	public function ServerReceiver(handler:IServerHandler, importantMethods:Array)
+	{
+		this.handler = handler;
+		this.importantMethods = importantMethods;
+		requestQueue = [];
+		sendedRequestQueue = [];
+		timer = new Timer(1000);
+		timer.addEventListener(TimerEvent.TIMER, onTimer);
+	}
+
+	private function onTimer(event:TimerEvent):void {
+		var requestForSend:Array;
+		var i:int;
+		for(i = 0;i<requestQueue.length;i++)
+		{
+			var request:Request = requestQueue[i];
+			request.seconds--;
+			if(request.seconds <= 0)
+			{
+				requestQueue.splice(i, 1);
+				sendedRequestQueue.push(request);
+				if(requestForSend == null) requestForSend = [];
+				requestForSend.push(request);
+			}
+		}
+
+		if(requestForSend)
+		{
+			requestForSend.sortOn('request_counter', Array.NUMERIC);
+			for(i = 0;i<requestForSend.length;i++)
+				Request(requestForSend[i]).call(this);
+		}
+
+		if(requestQueue.length == 0)
+			timer.stop();
+	}
+
+	public function init(uid:String, key:String, net:int):void {
+		handler.init(uid, key,  net)
+	}
+
+	public function set base_path(value:String):void {
+		handler.base_path = value;
+	}
+
+	public function call(method:String, data:Object = null, onComplete:Function = null, onError:Function = null, base_path:String = null, params:Object = null):void {
+		if(params == null)
+			params = {};
+		if (params['_request_counter'] == null)
+			params['_request_counter'] = requestCounter++;
+
+		handler.call(method,data, onComplete, function(response:Object):void{
+			if(importantMethods.indexOf(method) != -1 || (response && response.hasOwnProperty('error') && response['error'] == 'E_IO'))
+			{
+				var request:Request = findRequest(params['_request_counter'])
+				if(request)
+					request.increment();
+				else
+					request = new Request(method, data, onComplete, onError, base_path, params)
+
+				if(request.counter < MAX_REQUESTS)
+				{
+					requestQueue.push(request);
+					if(!timer.running)
+						timer.start();
+				}
+				else if(onError != null)
+					onError(response);
+			}
+			else if(onError != null)
+				onError(response);
+		}, base_path, params);
+	}
+
+	public function resetUid(uid:String):void {
+		handler.resetUid(uid);
+	}
+
+	public function addGlobalHandler(success:Boolean, callback:Function):void {
+		handler.addGlobalHandler(success, callback);
+	}
+
+	public function toJson(object:Object):String {
+		return handler.toJson(object);
+	}
+
+	public function fromJson(json:String):Object {
+		return handler.fromJson(json);
+	}
+
+	private function findRequest(request_counter:uint):Request
+	{
+		for(var i:int = 0; i<sendedRequestQueue.length; i++)
+			if(Request(sendedRequestQueue[i]).request_counter == request_counter)
+				return sendedRequestQueue.splice(i, 1)[0];
+		return null;
+	}
+}
+
+class Request
+{
+	private var method:String;
+	private var data:Object;
+	private var onComplete:Function;
+	private var onError:Function;
+	private var base_path:String;
+	private var params:Object;
+
+	private var _counter:int = 0;
+	private var _seconds:int = 1;
+
+	public function Request(method:String, data:Object, onComplete:Function, onError:Function, base_path:String, params:Object)
+	{
+		this.method = method;
+		this.data = data;
+		this.onComplete = onComplete;
+		this.onError = onError;
+		this.base_path = base_path;
+		this.params = params;
+
+		if(params == null || params['_request_counter'] == null)
+			throw new Error('Undefined request counter');
+	}
+
+	public function call(handler:IServerHandler):void
+	{
+		handler.call(method, data, onComplete, onError, base_path, params);
+	}
+
+	public function get request_counter():uint
+	{
+		return params['_request_counter'];
+	}
+
+	public function increment()
+	{
+		_counter++;
+		_seconds = 1 * Math.pow(_counter, 1.5);
+	}
+
+	public function get counter():int
+	{
+		return _counter;
+	}
+
+	public function set seconds(value:int):void
+	{
+		_seconds = value;
+	}
+
+	public function get seconds():int
+	{
+		return _seconds;
 	}
 }

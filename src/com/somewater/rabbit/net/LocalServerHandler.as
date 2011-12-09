@@ -21,7 +21,7 @@ package com.somewater.rabbit.net {
 
 		private function emulateInit(data:Object = null, onComplete:Function = null, onError:Function = null):void
 		{
-			onComplete({"user":{"level":1, "score":34}});
+			onComplete({"user":{"level":1, "score":34}, 'friends':[]});
 		}
 	}
 }

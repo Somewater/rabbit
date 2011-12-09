@@ -25,7 +25,7 @@ class ImagesManageController < BaseController
 		Content-Disposition: form-data; foo="bar"; name="file_my_name"; filename="post.jpg"
 		Content-Type: image/jpeg
 =end		
-		#[200, { "Content-Type" => "image/png" }, @file.read]
+		[200, { "Content-Type" => "image/png" }, @file.read]
 	end
 	
 	def authorization params
@@ -64,6 +64,8 @@ private
 	
 	def get_property(name)
 		head = @params['file_my_name'][:head]	
-		start_idx = head.index(foo=")
+		match = Regexp.new("#{name}=\"(.+)\"").match(s)
+		return match[1] if match
+		nil
 	end
 end

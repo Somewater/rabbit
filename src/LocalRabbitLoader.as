@@ -34,7 +34,7 @@ package
 							preload:true,url:"RabbitApplication.swf"}
 						,"Interface":{preload:true, url:"assets/interface.swf"}
 						,"Assets":{preload:true, url:"assets/rabbit_asset.swf"}
-						,"Rewards":{preload:false, url:"assets/rabbit_reward.swf"}
+						,"Rewards":{preload:true, url:"assets/rabbit_reward.swf"}
 						,"Lang":{priority:100, preload:true, url:"lang_ru.swf"}
 						,"Editor":{priority:1, preload:true, url:"RabbitEditor.swf"}
 						
@@ -43,7 +43,7 @@ package
 					}
 			
 			filePaths = {
-							 "Levels":"levels.xml"
+							 "Levels":"/levels.xml"
 							,"Managers":"Managers.xml"
 							,"Description":"Description.xml"
 							,"Rewards":"Rewards.xml"
@@ -149,6 +149,7 @@ package
 				fakeFriends = [	];
 				
 				fakeFriends[0] = new SocialUser();
+				fakeFriends[0].id = '1';
 				fakeFriends[0].photos = ["http://cs11005.vkontakte.ru/u245894/a_e4b26ec1.jpg"];
 				fakeFriends[0].isAppFriend = fakeFriends[0].isFriend = true;
 				fakeFriends[0].balance = 12;
@@ -160,6 +161,7 @@ package
 				fakeFriends[0].lastName = "Glazynova";
 				
 				fakeFriends[1] = new SocialUser();
+				fakeFriends[1].id = '2';
 				fakeFriends[1].photos = ["http://cs10618.vkontakte.ru/u1516396/a_5c77938b.jpg"];
 				fakeFriends[1].isAppFriend = fakeFriends[1].isFriend = true;
 				fakeFriends[1].balance = 12;
@@ -171,6 +173,7 @@ package
 				fakeFriends[1].lastName = "Тарапунов";
 				
 				fakeFriends[2] = new SocialUser();
+				fakeFriends[2].id = '3';
 				fakeFriends[2].photos = ["http://cs9637.vkontakte.ru/u1516396/128032186/x_14767d8e.jpg"];
 				fakeFriends[2].isAppFriend = fakeFriends[2].isFriend = true;
 				fakeFriends[2].balance = 12;
@@ -182,6 +185,7 @@ package
 				fakeFriends[2].lastName = "Козельцев";
 				
 				fakeFriends[3] = new SocialUser();
+				fakeFriends[3].id = '4';
 				fakeFriends[3].photos = ["http://cs11005.vkontakte.ru/u245894/a_e4b26ec1.jpg"];
 				fakeFriends[3].isAppFriend = fakeFriends[3].isFriend = true;
 				fakeFriends[3].balance = 12;
@@ -193,6 +197,7 @@ package
 				fakeFriends[3].lastName = "Семенова";
 				
 				fakeFriends[4] = new SocialUser();
+				fakeFriends[4].id = '5';
 				fakeFriends[4].photos = ["http://cs11005.vkontakte.ru/u245894/a_e4b26ec1.jpg"];
 				fakeFriends[4].isAppFriend = fakeFriends[4].isFriend = true;
 				fakeFriends[4].balance = 12;
@@ -204,6 +209,7 @@ package
 				fakeFriends[4].lastName = "Петровна";
 				
 				fakeFriends[5] = new SocialUser();
+				fakeFriends[5].id = '6';
 				fakeFriends[5].photos = ["http://cs11005.vkontakte.ru/u245894/a_e4b26ec1.jpg"];
 				fakeFriends[5].isAppFriend = fakeFriends[5].isFriend = true;
 				fakeFriends[5].balance = 12;
@@ -215,6 +221,7 @@ package
 				fakeFriends[5].lastName = "Сорокин";
 				
 				fakeFriends[6] = new SocialUser();
+				fakeFriends[6].id = '7';
 				fakeFriends[6].photos = ["http://cs11005.vkontakte.ru/u245894/a_e4b26ec1.jpg"];
 				fakeFriends[6].isAppFriend = fakeFriends[6].isFriend = true;
 				fakeFriends[6].balance = 12;
@@ -226,6 +233,7 @@ package
 				fakeFriends[6].lastName = "Подлжаев";
 				
 				fakeFriends[7] = new SocialUser();
+				fakeFriends[7].id = '8';
 				fakeFriends[7].photos = ["http://cs11005.vkontakte.ru/u245894/a_e4b26ec1.jpg"];
 				fakeFriends[7].isAppFriend = fakeFriends[7].isFriend = true;
 				fakeFriends[7].balance = 12;
@@ -237,6 +245,7 @@ package
 				fakeFriends[7].lastName = "Карлова";
 				
 				fakeFriends[8] = new SocialUser();
+				fakeFriends[8].id = '9';
 				fakeFriends[8].photos = ["http://cs11005.vkontakte.ru/u245894/a_e4b26ec1.jpg"];
 				fakeFriends[8].isFriend = true;
 				fakeFriends[8].balance = 12;
@@ -248,6 +257,7 @@ package
 				fakeFriends[8].lastName = "Протопопова";
 				
 				fakeFriends[9] = new SocialUser();
+				fakeFriends[9].id = '10';
 				fakeFriends[9].photos = ["http://cs11005.vkontakte.ru/u245894/a_e4b26ec1.jpg"];
 				fakeFriends[9].isFriend = true;
 				fakeFriends[9].balance = 12;

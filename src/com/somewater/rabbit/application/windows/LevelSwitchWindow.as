@@ -39,6 +39,14 @@ package com.somewater.rabbit.application.windows {
 
 			createContent();
 
+			createButtons();
+
+			individual = true;
+			open();
+		}
+
+		protected function createButtons():void
+		{
 			okButton = new OrangeButton();
 			okButton.label = Lang.t("OK");
 			if(okButton.width < 125)
@@ -47,9 +55,6 @@ package com.somewater.rabbit.application.windows {
 			okButton.y = height - okButton.height - 40;
 			addChild(okButton);
 			okButton.addEventListener(MouseEvent.CLICK, onOkClicked);
-
-			individual = true;
-			open();
 		}
 
 

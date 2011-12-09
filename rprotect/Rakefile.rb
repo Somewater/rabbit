@@ -1,10 +1,12 @@
+$debug_flag = 'false'
+
 task :environment do
 	ROOT = File.expand_path('../',  __FILE__)
 end
 
 desc "Compile library"
-task :default => :environment do
-	create_rprotect_wrapper()	
+task :default => :environment do |debug|
+	create_rprotect_wrapper()
 	compile_library()
 end
 
@@ -13,9 +15,9 @@ task :compile => :environment do
 	create_rprotect_wrapper()
 
 	puts 'compiled: SWFDecoderLoader'
-	compile_file('Data',true)
+	compile_file('Data')
 	puts 'compiled: Data'
-	compile_file('Test',true)
+	compile_file('Test')
 	puts 'compiled: Test'
 end
 
@@ -42,16 +44,16 @@ def create_rprotect_wrapper
 	FileUtils.cp "#{ROOT}/SWFDecoderLoader_untyped.swf", "#{ROOT}/com/somewater/net/SWFDecoderLoader.swf"
 end
 
-def compile_file file, debug = true
+def compile_file file
 	puts "Compiling #{file} ..."
-	puts `mxmlc -default-background-color=#FFFFFF -default-frame-rate=24 -default-size 100 100 -target-player=10.0.0 -compiler.debug=#{debug} -use-network=true -benchmark=true -optimize=true -output=#{file}.swf #{file}.as`
+	puts `mxmlc -default-background-color=#FFFFFF -default-frame-rate=24 -default-size 100 100 -target-player=10.0.0 -compiler.debug=#{$debug_flag} -use-network=true -benchmark=true -optimize=true -output=#{file}.swf #{file}.as`
 end
 
-def compile_library(debug = false)
+def compile_library()
 	puts `compc -source-path "#{ROOT}" \
 -include-classes "com.somewater.net.SWFDecoderWrapper" \
 -optimize \
--compiler.debug=#{debug} \
+-compiler.debug=#{$debug_flag} \
 -target-player=10.0 \
 -output "#{ROOT}/RProtector.swc"`
 end
@@ -60,7 +62,7 @@ def encode_file file
 	$: << ROOT
 	require 'r_protector.rb'
 	protector = RProtector.new
-	compile_file('Data',true)
+	compile_file('Data')
 	protector.encode_file('Data.swf', 'Data.swf')
 end
 

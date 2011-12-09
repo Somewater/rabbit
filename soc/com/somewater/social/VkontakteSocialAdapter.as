@@ -36,14 +36,14 @@ package com.somewater.social
 		
 		/**
 		 * Дополнительные callback-функции для обработки открытия приложения со стены:
-		 * onWallView когда приложение открыто со стены. В функцию передается объект flashVars: onWallView(flashVars:Object)
+		 * onWallViewInline когда приложение открыто со стены. В функцию передается объект flashVars: onWallViewInline(flashVars:Object)
 		 * onWallPost когда приложение открыто ДЛЯ публикации на стену (в режиме "рисовалок на стену", которыми мы, как правило, не занимаемся)
 		 * 				в функцию передается объект flashVars: onWallPost(flashVars:Object)
 		 * hash постинга содержится в параметре flashVars.post_id
 		 * id отправителя содержится в парамтере flashVars.poster_id
 		 */
-		public var onWallPost:Function;
-		public var onWallView:Function;
+		public var onWallPostInline:Function;
+		public var onWallViewInline:Function;
 		
 		public function VkontakteSocialAdapter()
 		{
@@ -61,6 +61,12 @@ package com.somewater.social
 			
 			super();
 		}
+
+		override public function get PERMISSION_WALL_USER():Boolean
+		{
+			return true;// себе можно постить всегда
+		}
+
 		
 		override public function setBookmarkCounter(value:int=0, onSuccess:Function=null, onError:Function=null):void {
 			if(PERMISSION_BOOKMARK) {
@@ -105,15 +111,15 @@ package com.somewater.social
 			this.flashVars = flashVarsHolder;
 			
 			if(flashVars.referrer == "wall_view_inline"){
-				if(onWallView != null){
+				if(onWallViewInline != null){
 					initState = 4;
-					onWallView(flashVars);
+					onWallViewInline(flashVars);
 				}else
 					throw new Error("\"Wall View\" handler not specified");
 			}else if(flashVars.referrer == "wall_post_inline"){
-				if(onWallPost != null){
+				if(onWallPostInline != null){
 					initState = 4;
-					onWallPost(flashVars);
+					onWallPostInline(flashVars);
 				}else
 					throw new Error("\"Wall Post\" handler not specified");
 			}else{

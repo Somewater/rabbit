@@ -99,7 +99,7 @@ private
 	end
 
 	def generate_hash
-		Digest::MD5.hexdigest("hello#{(Time.new.yday/7).to_s}world")
+		Digest::MD5.hexdigest("hello#{(Application.time.yday/7).to_s}world")
 	end
 
 	def generate_cookie

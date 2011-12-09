@@ -1,8 +1,13 @@
 package com.somewater.rabbit.application.windows {
+	import com.gskinner.geom.ColorMatrix;
 	import com.somewater.control.IClear;
 	import com.somewater.rabbit.application.GameGUI;
 	import com.somewater.rabbit.application.LevelRewardIcon;
+	import com.somewater.rabbit.application.OrangeButton;
+	import com.somewater.rabbit.social.PostingLevelSuccessCommand;
+	import com.somewater.rabbit.social.StartNextLevelCommand;
 	import com.somewater.rabbit.storage.Config;
+	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.rabbit.storage.RewardDef;
@@ -10,12 +15,13 @@ package com.somewater.rabbit.application.windows {
 	import com.somewater.rabbit.storage.UserProfile;
 	import com.somewater.storage.Lang;
 	import com.somewater.text.EmbededTextField;
-	
+
 	import flash.display.DisplayObject;
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.filters.ColorMatrixFilter;
 	import flash.geom.ColorTransform;
 
 	/**
@@ -26,11 +32,40 @@ package com.somewater.rabbit.application.windows {
 	public class LevelFinishSuccessWindow extends LevelSwitchWindow{
 		private var core:*;
 		private var bonusIcons:Array = [];
+		private var postingButton:OrangeButton;
 
 		public function LevelFinishSuccessWindow(levelInstance:LevelInstanceDef) {
 			this.levelInstance = levelInstance;
 			this.level = levelInstance.levelDef;
 			super();
+		}
+
+		override protected function createButtons():void {
+			super.createButtons();
+
+			if(Config.loader.canPost())
+			{
+				var m:ColorMatrix = new ColorMatrix([]);
+				m.adjustSaturation(-100);
+				okButton.filters = [new ColorMatrixFilter(m.toArray())];
+
+				postingButton = new OrangeButton();
+				postingButton.label = Lang.t("POSTING_LEVEL_BUTTON");
+				postingButton.width = Math.max(postingButton.width, okButton.width);
+				postingButton.y = okButton.y;
+				addChild(postingButton);
+				postingButton.addEventListener(MouseEvent.CLICK, onPostingClicked);
+
+				var space:Number = (width -100 - okButton.width - postingButton.width) / 3;
+				okButton.x = 50 + space;
+				postingButton.x = 50 + space * 2 + okButton.width;
+			}
+		}
+
+		private function onPostingClicked(e:MouseEvent):void
+		{
+			new MessagePostClose(levelInstance);
+			close();
 		}
 
 		override protected function onCloseBtnClick(e:MouseEvent):void {
@@ -43,6 +78,8 @@ package com.somewater.rabbit.application.windows {
 			for each(var b:IClear in bonusIcons)
 				b.clear();
 			bonusIcons = null;
+			if(postingButton)
+				postingButton.removeEventListener(MouseEvent.CLICK, onPostingClicked);
 		}
 
 		override protected function createContent():void {
@@ -160,13 +197,77 @@ package com.somewater.rabbit.application.windows {
 
 
 		override protected function onWindowClosed(e:Event = null):void {
-			// стартуем следующий непройденный уровень, если мы только что прошли новый (ранее непройденный) уровень
-			if(UserProfile.instance.levelNumber - 1 == level.number
-					&& Config.application.getLevelByNumber(UserProfile.instance.levelNumber) != null)  // и еще есть непройденные уровни
-				Config.application.startGame();
-			// иначе переходим в меню уровней
-			else
-				Config.application.startPage('levels');
+			new StartNextLevelCommand(level).execute();
 		}
+	}
+}
+
+import com.somewater.display.Window;
+import com.somewater.rabbit.application.AppServerHandler;
+import com.somewater.rabbit.application.windows.LevelFinishSuccessWindow;
+import com.somewater.rabbit.social.PostingLevelSuccessCommand;
+import com.somewater.rabbit.social.StartNextLevelCommand;
+import com.somewater.rabbit.storage.Config;
+import com.somewater.rabbit.storage.LevelInstanceDef;
+import com.somewater.rabbit.storage.UserProfile;
+import com.somewater.storage.Lang;
+
+import flash.display.DisplayObject;
+
+import flash.events.MouseEvent;
+
+/**
+ * После закрытия выполняет ту же команду, которая была бы выполенна окном LevelFinishSuccessWindow
+ */
+class MessagePostClose extends Window
+{
+	private var levelInstance:LevelInstanceDef;
+
+	public function MessagePostClose(levelInstance:LevelInstanceDef):void
+	{
+		this.levelInstance = levelInstance;
+		super(Lang.t('LEVEL_POSTING_IN_PROCESS'), null, onButtonClick);
+
+		closeButton.visible = false;
+		if(buttons && buttons[0] is DisplayObject) buttons[0].visible = false;
+		var self:MessagePostClose = this;
+
+		open();
+
+		new PostingLevelSuccessCommand(levelInstance, function(...args):void{
+				// complete
+				self.closeButton.visible = true;
+				if(self.buttons && self.buttons[0] is DisplayObject) self.buttons[0].visible = true;
+				self.text = Lang.t('LEVEL_POSTING_SUCCESS');
+			}, function(...args):void{
+				// error
+				self.closeButton.visible = true;
+				if(self.buttons && self.buttons[0] is DisplayObject) self.buttons[0].visible = true;
+				self.text = Lang.t('ERROR_POSTING');
+			}).execute();
+	}
+
+
+	override public function close():void {
+		levelInstance = null;
+		super.close();
+	}
+
+	override protected function onCloseBtnClick(e:MouseEvent):void {
+		if(closeButton.visible)
+		{
+			onButtonClick();
+			super.onCloseBtnClick(e);
+		}
+	}
+
+	private function onButtonClick(label:* = null):Boolean {
+		if(closeButton.visible)
+		{
+			new StartNextLevelCommand(levelInstance.levelDef).execute();
+			return true;
+		}
+		else
+			return false;
 	}
 }
