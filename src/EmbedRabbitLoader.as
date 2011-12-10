@@ -58,7 +58,7 @@ package
 		override protected function initializeServerHandler():void
 		{
 			_serverHandler = new ServerHandler();
-			_serverHandler.base_path = /asflash.ru/.test(loaderInfo.url) ? "http://rabbit.asflash.ru/" : "http://localhost:3000/";
+			_serverHandler.base_path = /(asflash|atlantor)/.test(loaderInfo.url) ? String(loaderInfo.url).substr(0, String(loaderInfo.url).indexOf('/', 10) + 1) : "http://localhost:3000/";
 			_serverHandler.init(getUser().id, 'embed', net);
 		}
 		

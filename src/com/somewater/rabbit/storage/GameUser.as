@@ -97,7 +97,7 @@ package com.somewater.rabbit.storage
 
 		public function setRoll(roll:uint):void
 		{
-			throw new Error('GameUser not implemented setRoll');
+			//throw new Error('GameUser not implemented setRoll');
 		}
 
 		public function clearLevelInstances():void
