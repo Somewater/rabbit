@@ -50,6 +50,11 @@ package com.somewater.net
 			this._base_path = value;
 		}
 		
+		public function get base_path():String
+		{
+			return this._base_path;
+		}
+		
 		public function call(method:String, data:Object = null, onComplete:Function = null, onError:Function = null, base_path:String = null, params:Object = null):void
 		{
 			var variables:URLVariables = createUrlVariables(method, data, params);

@@ -1,5 +1,6 @@
 package com.somewater.rabbit.ui
 {
+	import com.greensock.TweenMax;
 	import com.pblabs.engine.PBE;
 	import com.pblabs.rendering2D.DisplayObjectRenderer;
 	import com.somewater.rabbit.iso.IsoCameraController;
@@ -31,6 +32,8 @@ package com.somewater.rabbit.ui
 		
 		// линия горизонта (в виде кривой)
 		private var horizontGroundHolder:Sprite;
+
+		private var wolf:DisplayObject;
 		
 		private var mainHolder:Sprite;
 		
@@ -174,11 +177,27 @@ package com.somewater.rabbit.ui
 				if(_darkness < 0.01)
 				{
 					if(horizontGroundHolder) horizontGroundHolder.transform.colorTransform = new ColorTransform();
+					if(wolf)
+					{
+						if(wolf.parent) wolf.parent.removeChild(wolf);
+						wolf = null;
+					}
 				}
 				else
 				{
 					var v:Number = 1 - value * 0.7;
 					if(horizontGroundHolder) horizontGroundHolder.transform.colorTransform = new ColorTransform(v,v,v);
+					if(wolf == null)
+					{
+						wolf = Lib.createMC('rabbit.WolfIcon');
+						var hill:DisplayObjectContainer = hills[1] ? hills[1] : hills[0];
+						if(hill)
+							hill.addChild(wolf);
+						wolf.alpha = 0;
+						wolf.x = 630;
+						wolf.y = -50;
+						TweenMax.to(wolf, 0.5, {alpha:1})
+					}
 				}
 
 				if(sun) sun.y = sun_y + (value * Config.TILE_HEIGHT * 2);

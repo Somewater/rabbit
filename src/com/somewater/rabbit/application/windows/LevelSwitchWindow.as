@@ -2,6 +2,7 @@ package com.somewater.rabbit.application.windows {
 	import com.somewater.display.Photo;
 	import com.somewater.display.Window;
 	import com.somewater.rabbit.application.OrangeButton;
+	import com.somewater.rabbit.social.PostingFactory;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
@@ -9,13 +10,12 @@ package com.somewater.rabbit.application.windows {
 	import com.somewater.storage.Lang;
 	import com.somewater.text.EmbededTextField;
 	import com.somewater.utils.MovieClipHelper;
-
+	
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.display.Shape;
 	import flash.display.Sprite;
-
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
@@ -47,7 +47,8 @@ package com.somewater.rabbit.application.windows {
 
 		protected function createButtons():void
 		{
-			okButton = new OrangeButton();
+			if(okButton == null)
+				okButton = new OrangeButton();
 			okButton.label = Lang.t("OK");
 			if(okButton.width < 125)
 				okButton.width = 125;
@@ -105,7 +106,7 @@ package com.somewater.rabbit.application.windows {
 			if(image is DisplayObject)
 				imageSource = image;
 			else
-				imageSource = getImage(image);
+				imageSource = PostingFactory.getImage(image);
 
 			addChild(titleTF);
 			titleTF.htmlText = title;
@@ -135,29 +136,6 @@ package com.somewater.rabbit.application.windows {
 				border.addChild(photo);
 				photo.source = imageSource;
 			}
-		}
-
-		public static function getImage(image:String):*
-		{
-			if(image == null || image.length == 0) return null;
-			if(image.substr(0,7) == 'http://')
-				return image;
-			else if(image.substr(0,2) == 'T_' && Lang.t(image).substr(0,2) != 'T_')
-				return getImage( Lang.t(image));
-			else if(Lib.hasMC(image))
-			{
-				var mc:DisplayObject = Lib.createMC(image);
-				if(mc is MovieClip)
-					 MovieClipHelper.stopAll(mc as MovieClip);
-				var wrapper:Sprite = new Sprite()
-				wrapper.addChild(mc);
-				var bounds:Rectangle = mc.getBounds(mc);
-				mc.x = -bounds.x;
-				mc.y = -bounds.y;
-				return wrapper;
-			}
-			else
-				return null;
 		}
 
 		protected function levelToString(level:LevelDef):String

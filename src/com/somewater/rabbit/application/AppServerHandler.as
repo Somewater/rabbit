@@ -1,5 +1,6 @@
 package com.somewater.rabbit.application {
 	import com.somewater.net.IServerHandler;
+	import com.somewater.rabbit.application.windows.PendingRewardsWindow;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.GameUser;
 	import com.somewater.rabbit.storage.GameUser;
@@ -36,6 +37,7 @@ package com.somewater.rabbit.application {
 			{
 				appFriends.push(appfriendsSocial[s])
 				appFriendsIds.push(SocialUser(appfriendsSocial[s]).id);
+				appFriendsById[SocialUser(appfriendsSocial[s]).id] = appfriendsSocial[s];
 			}
 
 			handler.call("init", {"referer":Config.loader.referer, "user":gameUserToJson(gameUser, {}), 'friendIds': appFriendsIds},
@@ -45,7 +47,7 @@ package com.somewater.rabbit.application {
 					for each(var friendJson:Object in response['friends'])
 					{
 						var gameUserFriend:GameUser = jsonToGameUser(friendJson, new GameUser());
-						gameUserFriend.data = appFriendsById[gameUserFriend.uid];
+						gameUserFriend.data = appFriendsById[friendJson['uid']];
 						gameUsersFriends.push(gameUserFriend);
 						gameUser.addAppFriend(gameUserFriend);
 
@@ -54,7 +56,10 @@ package com.somewater.rabbit.application {
 
 					if(response['rewards'] && response['rewards'].length)
 					{
-						// todo: показать окна с выданными ревардами
+						var rewards = [];
+						for each(var rewardObject:Object in response['rewards'])
+							rewards.push(RewardManager.instance.getById(rewardObject['id']));
+						new PendingRewardsWindow(rewards);
 					}
 					onComplete && onComplete(response);
 				}, onError);
@@ -80,7 +85,7 @@ package com.somewater.rabbit.application {
 				}, onError, null, {'secure': true})
 		}
 
-		public function onPosting(gameUser:GameUser, levelInstance:LevelInstanceDef, onComplete:Function = null, onError:Function = null):void
+		public function onPosting(gameUser:GameUser, onComplete:Function = null, onError:Function = null):void
 		{
 			handler.call('posting/complete', {'roll': int(gameUser.getRoll() * 1000000)},
 				function(response:Object):void{
@@ -140,10 +145,9 @@ package com.somewater.rabbit.application {
 				gameUser.addRewardInstance(jsonToRewardInstance(json['rewards'][id],
 						gameUser.getRewardInstanceById(parseInt(id)) || new RewardInstanceDef(RewardManager.instance.getById(parseInt(id)))))
 
-			if(json['score'])
-				gameUser.score = json['score'];
 			if(json['roll'])
 				gameUser.setRoll(json['roll']);
+			gameUser.data = json;
 
 			return gameUser;
 		}
@@ -223,7 +227,6 @@ import com.somewater.net.IServerHandler;
 import com.somewater.net.ServerHandler;
 
 import flash.events.TimerEvent;
-
 import flash.utils.Timer;
 
 
@@ -284,6 +287,11 @@ class ServerReceiver implements IServerHandler
 
 	public function set base_path(value:String):void {
 		handler.base_path = value;
+	}
+	
+	public function get base_path():String
+	{
+		return handler.base_path;
 	}
 
 	public function call(method:String, data:Object = null, onComplete:Function = null, onError:Function = null, base_path:String = null, params:Object = null):void {

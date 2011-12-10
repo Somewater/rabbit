@@ -11,6 +11,7 @@ package com.somewater.storage
 	public class InfoDef implements IClear
 	{
 		private var _data:Object;
+		protected var supressSerializationWarn;
 		
 		public function InfoDef(data:Object = null)
 		{
@@ -32,7 +33,8 @@ package com.somewater.storage
 					}catch(e:Error){
 						// nothing
 					}
-					trace("Unexpected field " + s + "=" + value[s] + " in " + getQualifiedClassName(this) + " " + value["id"]);
+					if(!supressSerializationWarn)
+						trace("Unexpected field " + s + "=" + value[s] + " in " + getQualifiedClassName(this) + " " + value["id"]);
 				}
 		}
 		

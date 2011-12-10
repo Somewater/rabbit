@@ -11,9 +11,11 @@ package com.somewater.rabbit.storage
 		protected var _levelInstances:Array = [];
 		protected var _rewards:Array = [];
 		protected var _postings:int;
+		private var _levelNumber:int;
 		
 		public function GameUser(data:Object = null)
 		{
+			this.supressSerializationWarn = true;
 			super(data)
 		}
 		
@@ -21,8 +23,12 @@ package com.somewater.rabbit.storage
 		{
 			if(value is SocialUser)
 				this.socialUser = value as SocialUser;
-			else
+			else if(value)
+			{
+				if(value.hasOwnProperty('level'))
+					this._levelNumber = value['level'];
 				super.data = value;
+			}
 		}
 
 		/**
@@ -57,11 +63,7 @@ package com.somewater.rabbit.storage
 		 */
 		public function get levelNumber():int
 		{
-			var max:int = 0;
-			for each(var inst:LevelInstanceDef in _levelInstances)
-				if(inst.levelDef.number > max)
-					max = inst.levelDef.number;
-			return max + 1;
+			return _levelNumber;
 		}
 
 		/**

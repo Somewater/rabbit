@@ -30,15 +30,15 @@ package com.somewater.rabbit.application
 		public function OrangeGround()
 		{
 
-			down = Lib.createMC("interface.OrangeButton_down");
+			down = createGround("down");
 			addChild(down);
 			
-			over = Lib.createMC("interface.OrangeButton_over");
+			over = createGround("over");
 			over.visible = false;
 			over.mouseEnabled = over.mouseChildren = false;
 			addChild(over);
 			
-			up = Lib.createMC("interface.OrangeButton_up");
+			up = createGround("up");
 			up.mouseEnabled = up.mouseChildren = false;
 			addChild(up);
 			
@@ -160,6 +160,11 @@ package com.somewater.rabbit.application
 			onMouse(e);
 			up.visible = false;
 			over.visible = false;
+		}
+
+		protected function createGround(type:String):Sprite
+		{
+			return Lib.createMC("interface.OrangeButton_" + type);
 		}
 	}
 }

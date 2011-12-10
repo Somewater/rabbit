@@ -2,9 +2,12 @@ package com.somewater.rabbit.application
 {
 	import com.somewater.controller.PopUpManager;
 	import com.somewater.rabbit.application.windows.LevelFinishSuccessWindow;
+	import com.somewater.rabbit.application.windows.PendingRewardsWindow;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
+	import com.somewater.rabbit.storage.RewardDef;
+	import com.somewater.rabbit.storage.RewardInstanceDef;
 	import com.somewater.rabbit.xml.XmlController;
 
 	import flash.utils.clearInterval;
@@ -23,7 +26,7 @@ package com.somewater.rabbit.application
 				Config.application.startPage("main_menu");
 			});
 
-			new LevelFinishSuccessWindow(new LevelInstanceDef(new LevelDef(new XML())));
+			new PendingRewardsWindow([    RewardManager.instance.getByType(RewardDef.TYPE_REFERER)[0]    ]);
 		}
 	}
 }

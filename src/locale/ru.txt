@@ -75,6 +75,10 @@ LEVEL_BONUSES_TITLE=ПОЛУЧЕННЫЕ НАГРАДЫ
 LEVEL_SPENDED_TIME=затраченное время
 LEVEL_OBTAINED_SCORE=полученные очки
 LEVEL_PROGRESS_RATING=рейтинг прохождения
+PENDING_REWARDS_WINDOW_TEXT_MANY=Ты получил новые награды!
+PENDING_REWARDS_WINDOW_TEXT_SINGLE=Ты получил новую награду!
+PENDING_REWARDS_WINDOW_TEXT_ONLY_REFERER=Ты пригласил в друга и получил награду. Приглашай друзей и получай новые награды!
+PENDING_REWARDS_WINDOW_TEXT_ONLY_FAMILIAR=Ты заходил в игру несколько дней подряд и получил награду!
 ###################
 #
 #	REWARDS
@@ -130,3 +134,5 @@ REWARD_NAME_ID_79=Колесо
 POSTING_LEVEL_BUTTON=РАССКАЗАТЬ ДРУЗЬЯМ
 POSTING_LEVEL_PASSES_TITLE=Я прошел новый уровень!
 POSTING_LEVEL_PASSES_TEXT=Я прошел {level_number} уровень в игре Кроль! Попробуйте и вы!
+POSTING_REWARD_PASSES_TITLE=Я получин награду!
+POSTING_REWARD_PASSES_TEXT=Я получил награду "{reward_name}" в игре Кроль! Попробуйте и вы!

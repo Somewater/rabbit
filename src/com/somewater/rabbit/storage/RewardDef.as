@@ -66,5 +66,10 @@ package com.somewater.rabbit.storage {
 		public function get slug():String {
 			return template..slug;
 		}
+
+		public function get name():String
+		{
+			return  Config.application.translate('REWARD_NAME_ID_' + this.id);
+		}
 	}
 }

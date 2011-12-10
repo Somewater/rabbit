@@ -8,6 +8,7 @@
 		import com.adobe.serialization.json.JSON;
 		import com.somewater.control.IClear;
 		import com.somewater.rabbit.IRabbitEditor;
+		import com.somewater.rabbit.editor.console.ImageGeneratorCommand;
 		import com.somewater.rabbit.xml.XmlController;
 		import com.somewater.rabbit.storage.Config;
 		import com.somewater.rabbit.storage.LevelDef;
@@ -20,6 +21,7 @@
 		private var selectedLevel:LevelDef;
 		private var needStartLevel:Boolean = false;
 
+		private const CONSOLE_COMMANDS:Object = {'images':ImageGeneratorCommand};
 
 		public var menuData:ArrayCollection;
 
@@ -235,6 +237,23 @@
 			}
 		}
 
+		private function onConsoleCommand():void {
+			var line:String = console.text;
+			var command:String = line.match(/(\w+)\s*.*/)[1];
+			var clazz:Class = CONSOLE_COMMANDS[command];
+			if(clazz)
+			{
+				var regexp:RegExp = /-(\w+)\s(\w*)/g;
+				var argLine:String = line.substr(command.length);
+				var args:Object = {};
+				var result:Object;
+				while (result = regexp.exec(argLine)) {
+					args[String(result[1])] = String(result[2]);
+				}
+				new clazz(args);
+			}
+		}
+
 		]]>
 	</mx:Script>
 	<mx:ComboBox id="menu" width="100%" close="onMainMenuChanged(event);" tabEnabled="false">
@@ -247,7 +266,7 @@
 		<mx:HBox id="statusBar" width="100%" height="35" verticalAlign="middle" paddingLeft="3" paddingRight="3">
 			<mx:TextInput id="console" width="100%">
 			</mx:TextInput>
-			<mx:Button id="submit" width="25" height="25">
+			<mx:Button id="submit" width="25" height="25" click="onConsoleCommand()">
 			</mx:Button>
 		</mx:HBox>
 		<mx:HBox width="100%">

@@ -40,6 +40,7 @@ package
 				,"Interface":{preload:true, url:"assets/interface.swf"}
 				,"Assets":{preload:true, url:"assets/rabbit_asset.swf"}
 				,"Rewards":{preload:true, url:"assets/rabbit_reward.swf"}
+				,"Images":{preload:true, url:"assets/rabbit_images.swf"}
 				,"Lang":{priority:100, preload:true, url:"lang_ru.swf"}
 				,"Editor":{priority:1, preload:true, url:"RabbitEditor.swf"}
 				

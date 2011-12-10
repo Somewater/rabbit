@@ -10,6 +10,7 @@ package com.somewater.social
 	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
+	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
@@ -342,8 +343,9 @@ package com.somewater.social
 				if(image is BitmapData)
 					imageBmpData = image;
 				else if(image is DisplayObject){
+					var scale:Number = Math.min(130/image.width, 130/image.height);
 					imageBmpData = new BitmapData(image.width, image.height, true, 0);
-					imageBmpData.draw(image);
+					imageBmpData.draw(image,  new Matrix(scale, 0, 0, scale));
 				}else
 					imageBmpData = new BitmapData(100, 100, false, 0xFFEEEE);// рисунок для осуществления тестовой публикации
 				

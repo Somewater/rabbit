@@ -2,8 +2,10 @@ package com.somewater.rabbit.application.windows {
 	import com.gskinner.geom.ColorMatrix;
 	import com.somewater.control.IClear;
 	import com.somewater.rabbit.application.GameGUI;
-	import com.somewater.rabbit.application.LevelRewardIcon;
+	import com.somewater.rabbit.application.HideOrangeButton;
 	import com.somewater.rabbit.application.OrangeButton;
+	import com.somewater.rabbit.application.RewardIcon;
+	import com.somewater.rabbit.application.RewardPanel;
 	import com.somewater.rabbit.social.PostingLevelSuccessCommand;
 	import com.somewater.rabbit.social.StartNextLevelCommand;
 	import com.somewater.rabbit.storage.Config;
@@ -15,7 +17,7 @@ package com.somewater.rabbit.application.windows {
 	import com.somewater.rabbit.storage.UserProfile;
 	import com.somewater.storage.Lang;
 	import com.somewater.text.EmbededTextField;
-
+	
 	import flash.display.DisplayObject;
 	import flash.display.Shape;
 	import flash.display.Sprite;
@@ -33,6 +35,7 @@ package com.somewater.rabbit.application.windows {
 		private var core:*;
 		private var bonusIcons:Array = [];
 		private var postingButton:OrangeButton;
+		private var rewardPanel:RewardPanel;
 
 		public function LevelFinishSuccessWindow(levelInstance:LevelInstanceDef) {
 			this.levelInstance = levelInstance;
@@ -41,14 +44,12 @@ package com.somewater.rabbit.application.windows {
 		}
 
 		override protected function createButtons():void {
+			if(Config.loader.canPost())
+				okButton = new HideOrangeButton();
 			super.createButtons();
 
 			if(Config.loader.canPost())
 			{
-				var m:ColorMatrix = new ColorMatrix([]);
-				m.adjustSaturation(-100);
-				okButton.filters = [new ColorMatrixFilter(m.toArray())];
-
 				postingButton = new OrangeButton();
 				postingButton.label = Lang.t("POSTING_LEVEL_BUTTON");
 				postingButton.width = Math.max(postingButton.width, okButton.width);
@@ -64,7 +65,9 @@ package com.somewater.rabbit.application.windows {
 
 		private function onPostingClicked(e:MouseEvent):void
 		{
-			new MessagePostClose(levelInstance);
+			new MessagePostClose(levelInstance, PostingLevelSuccessCommand, function(data:LevelInstanceDef):void{
+				new StartNextLevelCommand(data.levelDef).execute();
+			});
 			close();
 		}
 
@@ -80,6 +83,8 @@ package com.somewater.rabbit.application.windows {
 			bonusIcons = null;
 			if(postingButton)
 				postingButton.removeEventListener(MouseEvent.CLICK, onPostingClicked);
+			if(rewardPanel)
+				rewardPanel.clear();
 		}
 
 		override protected function createContent():void {
@@ -162,36 +167,10 @@ package com.somewater.rabbit.application.windows {
 			if(needCreateRewards)
 			{
 				// создание бонусов. если надо
-				var bonusGround:DisplayObject = Lib.createMC('interface.LevelSuccessBonusesGround');
-				bonusGround.y = 195;
-				bonusGround.x = (this.width - bonusGround.width) * 0.5;
-				addChild(bonusGround);
-
-				var bonusHolder:Sprite = new Sprite();
-				bonusHolder.x = bonusGround.x;
-				bonusHolder.y = bonusGround.y;
-				addChild(bonusHolder);
-
-				var bonusesTitle:EmbededTextField = new EmbededTextField(null, 0xDB661B,14);
-				bonusesTitle.text = Lang.t('LEVEL_BONUSES_TITLE');
-				bonusesTitle.x = (this.width - bonusesTitle.width) * 0.5;
-				bonusesTitle.y = bonusGround.y - 25;
-				addChild(bonusesTitle);
-
-				var bonusLength:int = levelInstance.rewards.length;
-				var BONUS_HOLDER_WIDTH:int = 450;
-				var BONUS_HOLDER_HEIGHT:int = 123;
-				var bonusPadding:int = (BONUS_HOLDER_WIDTH - bonusLength * LevelRewardIcon.WIDTH) / (bonusLength + 1);
-				var nextX:int = bonusPadding;
-				for each(var reward:RewardInstanceDef in levelInstance.rewards)
-				{
-					var bonusIcon:LevelRewardIcon = new LevelRewardIcon(levelInstance, reward);
-					bonusIcon.x = nextX;
-					bonusIcon.y = (BONUS_HOLDER_HEIGHT - LevelRewardIcon.HEIGHT) * 0.5;
-					bonusHolder.addChild(bonusIcon);
-					bonusIcons.push(bonusIcon);
-					nextX += LevelRewardIcon.WIDTH + bonusPadding;
-				}
+				rewardPanel = new RewardPanel(levelInstance.rewards);
+				rewardPanel.y = 195;
+				rewardPanel.x = (this.width - rewardPanel.width) * 0.5;
+				addChild(rewardPanel);
 			}
 		}
 
@@ -199,75 +178,5 @@ package com.somewater.rabbit.application.windows {
 		override protected function onWindowClosed(e:Event = null):void {
 			new StartNextLevelCommand(level).execute();
 		}
-	}
-}
-
-import com.somewater.display.Window;
-import com.somewater.rabbit.application.AppServerHandler;
-import com.somewater.rabbit.application.windows.LevelFinishSuccessWindow;
-import com.somewater.rabbit.social.PostingLevelSuccessCommand;
-import com.somewater.rabbit.social.StartNextLevelCommand;
-import com.somewater.rabbit.storage.Config;
-import com.somewater.rabbit.storage.LevelInstanceDef;
-import com.somewater.rabbit.storage.UserProfile;
-import com.somewater.storage.Lang;
-
-import flash.display.DisplayObject;
-
-import flash.events.MouseEvent;
-
-/**
- * После закрытия выполняет ту же команду, которая была бы выполенна окном LevelFinishSuccessWindow
- */
-class MessagePostClose extends Window
-{
-	private var levelInstance:LevelInstanceDef;
-
-	public function MessagePostClose(levelInstance:LevelInstanceDef):void
-	{
-		this.levelInstance = levelInstance;
-		super(Lang.t('LEVEL_POSTING_IN_PROCESS'), null, onButtonClick);
-
-		closeButton.visible = false;
-		if(buttons && buttons[0] is DisplayObject) buttons[0].visible = false;
-		var self:MessagePostClose = this;
-
-		open();
-
-		new PostingLevelSuccessCommand(levelInstance, function(...args):void{
-				// complete
-				self.closeButton.visible = true;
-				if(self.buttons && self.buttons[0] is DisplayObject) self.buttons[0].visible = true;
-				self.text = Lang.t('LEVEL_POSTING_SUCCESS');
-			}, function(...args):void{
-				// error
-				self.closeButton.visible = true;
-				if(self.buttons && self.buttons[0] is DisplayObject) self.buttons[0].visible = true;
-				self.text = Lang.t('ERROR_POSTING');
-			}).execute();
-	}
-
-
-	override public function close():void {
-		levelInstance = null;
-		super.close();
-	}
-
-	override protected function onCloseBtnClick(e:MouseEvent):void {
-		if(closeButton.visible)
-		{
-			onButtonClick();
-			super.onCloseBtnClick(e);
-		}
-	}
-
-	private function onButtonClick(label:* = null):Boolean {
-		if(closeButton.visible)
-		{
-			new StartNextLevelCommand(levelInstance.levelDef).execute();
-			return true;
-		}
-		else
-			return false;
 	}
 }

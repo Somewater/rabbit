@@ -186,5 +186,15 @@ package com.somewater.rabbit.storage
 			super.postings = postings;
 			dispatchChange();
 		}
+
+		override public function get levelNumber():int
+		{
+			var max:int = 0;
+			for each(var inst:LevelInstanceDef in _levelInstances)
+				if(inst.levelDef.number > max)
+					max = inst.levelDef.number;
+			max++;// т.к. уровень человека - это пройденный вроень + 1
+			return Math.max(max, super.levelNumber);
+		}
 	}
 }
