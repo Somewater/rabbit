@@ -80,7 +80,14 @@ namespace :flash do
 
 	desc "Encode all files"
 	task :encode do
-		RProtector.new.encode_files("#{ROOT}/logs")
+		RProtectorVersionizer.instance("#{ROOT}/tmp/rprotector_versions.txt")
+		bin_folder = "#{ROOT}/bin-debug"
+		RProtectorVersionizer.instance.encode("#{bin_folder}/RabbitApplication.swf")
+		RProtectorVersionizer.instance.encode("#{bin_folder}/RabbitGame.swf")
+		RProtectorVersionizer.instance.encode("#{bin_folder}/assets/interface.swf")
+		RProtectorVersionizer.instance.encode("#{bin_folder}/assets/rabbit_asset.swf")
+		RProtectorVersionizer.instance.encode("#{bin_folder}/assets/rabbit_images.swf")
+		RProtectorVersionizer.instance.encode("#{bin_folder}/assets/rabbit_reward.swf")
 	end
 
 	def compile_file(filename)

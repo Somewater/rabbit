@@ -352,7 +352,7 @@ package com.somewater.rabbit.loader
 			
 			if(event)
 			{
-				if(event is Event)
+				if(event.hasOwnProperty('currentTarget'))
 				{
 					if(swfs[name])
 					{
@@ -361,7 +361,7 @@ package com.somewater.rabbit.loader
 					LoaderInfo(_swfADs[name]).removeEventListener(IOErrorEvent.IO_ERROR, swfLoadingError);
 					LoaderInfo(_swfADs[name]).removeEventListener(ProgressEvent.PROGRESS, swfLoadingProgress);
 					LoaderInfo(_swfADs[name]).removeEventListener(Event.COMPLETE, loadNextSwf);
-					_swfADs[name] = LoaderInfo(event.currentTarget).applicationDomain;
+					_swfADs[name] = event.currentTarget.applicationDomain;
 					processLoadedSwf(event.currentTarget.content, name);
 					swfLoader = null;
 				}
@@ -410,10 +410,23 @@ package com.somewater.rabbit.loader
 			_swfADs[name] = swfLoader.contentLoaderInfo;
 			swfLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, swfLoadingError);
 			swfLoader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, swfLoadingProgress);
-			swfLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, loadNextSwf);
+			swfLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, _loadNextSwf);
 			
 			swfLoader.load(request, context);
 		}
+
+
+		/**
+		 * На самом деле разэнкодить
+		 */
+		private function _loadNextSwf(event:Event):void
+		{
+			SWFDecoderWrapper.load(event.currentTarget.content, _loadNextSwf_onComplete, _loadNextSwf_onError)
+		}
+		private function _loadNextSwf_onComplete(content:DisplayObject):void{
+			loadNextSwf({'currentTarget':{'applicationDomain':content.loaderInfo.applicationDomain, 'content':content}})
+		}
+		private function _loadNextSwf_onError():void{_loadSwfsOnError && _loadSwfsOnError();}
 		
 		
 		protected function processLoadedSwf(swf:DisplayObject, name:String):void

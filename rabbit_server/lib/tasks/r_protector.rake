@@ -1,3 +1,5 @@
+require "digest/md5"
+
 class RProtector
 
 	ENCODED_FILE_POSTFIX = '_encoded.swf'
@@ -21,6 +23,7 @@ class RProtector
 	end
 
 	def encode_file(input_filepath, output_filepath)
+		raise RProtectorError, "File #{input_filepath} not exist" unless File.exist?(input_filepath)
 		output_bin_filepath = "#{output_filepath}.bin"
 		as_classname = "EncodedData_#{rand(10000)}"
 		output_as_filepath = "#{File.dirname(output_filepath)}/#{as_classname}.as"
@@ -35,7 +38,7 @@ class RProtector
 		File.open(output_as_filepath, 'w') {|as| as.write(actionscript_file(as_classname, output_bin_filepath))}
 		`mxmlc -output #{output_filepath} #{output_as_filepath}`
 	ensure
-		File.delete(output_as_filepath, output_bin_filepath)
+		File.delete(output_as_filepath, output_bin_filepath) rescue nil
 	end
 
 	def encode_byte(input)
@@ -70,4 +73,70 @@ package
 		@seed =multiply % HIGH;
 		(@seed.to_f / HIGH) * 256;
 	end
+end
+
+=begin
+	Использование
+	RProtectorVersionizer.instance('/home/user/project/tmp/version_file.txt')
+	RProtectorVersionizer.instance.process('/home/user/some.swf') # закодировать, если еще не был закодирован
+=end
+class RProtectorVersionizer
+
+	@@instance = nil
+
+	def self.instance(arg = nil)
+		unless @@instance
+			@@instance = RProtectorVersionizer.new(arg)
+		end
+		@@instance
+	end
+
+	def initialize(path_to_version_file)
+		@path_to_version_file = path_to_version_file
+		@by_filepath = {}
+
+		if(File.exists?(path_to_version_file))
+			File.open(path_to_version_file) do |file|
+				file.each_line do |line|
+					hash, filepath = line.split
+					@by_filepath[filepath] = hash
+				end
+			end
+		end
+	end
+
+	def protected?(filepath)
+		if @by_filepath[filepath]
+			@by_filepath[filepath] == filepath_to_hash(filepath)
+		else
+			false
+		end
+	end
+
+	def encode(filepath)
+		unless protected?(filepath)
+			RProtector.new.encode_file(filepath, filepath)
+			hash = @by_filepath[filepath] = filepath_to_hash(filepath)
+			save_version_file
+			return hash
+		end
+		false
+	end
+
+	private
+	def filepath_to_hash (filepath)
+		Digest::MD5.hexdigest(File.read(filepath))
+	end
+
+	def save_version_file
+		File.open(@path_to_version_file, 'w') do |file|
+			@by_filepath.each do |filepath, hash|
+				file.puts("#{hash} #{filepath}")
+			end
+		end
+	end
+end
+
+class RProtectorError < StandardError
+
 end
