@@ -1,8 +1,7 @@
 class LevelsManageController < BaseController
 
-	def authorization params
+	def authorized
 		raise AuthError, "Wrong admin password" unless check_password
-		true
 	end
 
 	def process

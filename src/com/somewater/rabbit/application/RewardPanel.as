@@ -44,8 +44,9 @@ package com.somewater.rabbit.application {
 
 		public function clear():void
 		{
-			for(var i:int = 0;i<bonusIcons.length;i++)
-				IClear(bonusIcons[i]).clear();
+			if(bonusIcons)
+				for(var i:int = 0;i<bonusIcons.length;i++)
+					IClear(bonusIcons[i]).clear();
 			bonusIcons = null;
 		}
 	}
