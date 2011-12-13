@@ -26,7 +26,7 @@ package com.somewater.rabbit.decor {
 			var levelSquare:int = levelWidth * levelHeight;
 
 			for (var i:int = 0; i < int(levelSquare * 0.05); i++) {
-				var grass:IEntity = PBE.templateManager.instantiateEntity('GroundGrass');
+				var grass:IEntity = PBE.templateManager.instantiateEntity('GroundGrassTemplate');
 				grass.owningGroup = this.owner.owningGroup;
 				grass.setProperty(new PropertyReference('@Spatial.position'),
 						new Point(int(Math.random() * levelWidth * Config.TILE_WIDTH), Math.random() * levelHeight * Config.TILE_HEIGHT))

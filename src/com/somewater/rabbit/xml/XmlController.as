@@ -10,8 +10,6 @@ package com.somewater.rabbit.xml {
 
 	public class XmlController {
 
-	public static const EXCLUDED_TEMPLATES:Array = ["Animal","Iso","IsoMover","Kennel","Rabbit","RabbitBase","Reward","GroundGrass","PopupEffect"];
-
 	private static var _instance:XmlController;
 
 	private var description:Array;
@@ -202,7 +200,8 @@ package com.somewater.rabbit.xml {
 
 		for (name in allDescription) {
 			var template:XML = allDescription[name];
-			if(EXCLUDED_TEMPLATES.indexOf(name) != -1) continue;
+			if(name.length > 4 && name.substr(name.length - 4).toLowerCase() == 'base') continue;
+			if(name.length > 8 && name.substr(name.length - 8).toLowerCase() == 'template') continue;
 			description.push(template);
 			descriptionByName[name] = template;
 		}

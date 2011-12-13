@@ -15,7 +15,7 @@
 
 	<!-- TYPE_SPECIAL  -->
 
-	<template name="reward.RewardRabbitHole" template="Reward" id="0" type="special" degree="0">
+	<template name="reward.RewardRabbitHole" template="RewardBase" id="0" type="special" degree="0">
 		<component name="Render" type="com.somewater.rabbit.rewards.RabbitHoleRenderer">
 			<slug>reward.RabbitHole</slug>
 		</component>
@@ -29,151 +29,151 @@
 
 	<!-- TYPE_FAST_TIME  -->
 
-	<template name="reward.FlowerClock" template="Reward" id="10" type="fast_time" degree="0">
+	<template name="reward.FlowerClock" template="RewardBase" id="10" type="fast_time" degree="0">
 		<component name="Render"><slug>reward.FlowerClock</slug></component>
 	</template>
 
-	<template name="reward.SunClock" template="Reward" id="11" type="fast_time" degree="0">
+	<template name="reward.SunClock" template="RewardBase" id="11" type="fast_time" degree="0">
 		<component name="Render"><slug>reward.SunClock</slug></component>
 	</template>
 
-	<template name="reward.WaterClock" template="Reward" id="12" type="fast_time" degree="0">
+	<template name="reward.WaterClock" template="RewardBase" id="12" type="fast_time" degree="0">
 		<component name="Render"><slug>reward.WaterClock</slug></component>
 	</template>
 
-	<template name="reward.SandClock" template="Reward" id="13" type="fast_time" degree="0">
+	<template name="reward.SandClock" template="RewardBase" id="13" type="fast_time" degree="0">
 		<component name="Render"><slug>reward.SandClock</slug></component>
 	</template>
 
-	<template name="reward.FireClock" template="Reward" id="14" type="fast_time" degree="0">
+	<template name="reward.FireClock" template="RewardBase" id="14" type="fast_time" degree="0">
 		<component name="Render"><slug>reward.FireClock</slug></component>
 	</template>
 
 	<!-- TYPE_ALL_CARROT  -->
 
-	<template name="reward.Malina" template="Reward" id="20" type="all_carrots" degree="0">
+	<template name="reward.Malina" template="RewardBase" id="20" type="all_carrots" degree="0">
 		<component name="Render"><slug>reward.Malina</slug></component>
 	</template>
 
-	<template name="reward.Fialka" template="Reward" id="21" type="all_carrots" degree="0">
+	<template name="reward.Fialka" template="RewardBase" id="21" type="all_carrots" degree="0">
 		<component name="Render"><slug>reward.Fialka</slug></component>
 	</template>
 
-	<template name="reward.Zemlyanika" template="Reward" id="22" type="all_carrots" degree="0">
+	<template name="reward.Zemlyanika" template="RewardBase" id="22" type="all_carrots" degree="0">
 		<component name="Render"><slug>reward.Zemlyanika</slug></component>
 	</template>
 
-	<template name="reward.Romashki" template="Reward" id="23" type="all_carrots" degree="0">
+	<template name="reward.Romashki" template="RewardBase" id="23" type="all_carrots" degree="0">
 		<component name="Render"><slug>reward.Romashki</slug></component>
 	</template>
 
-	<template name="reward.Kolokolchihi" template="Reward" id="24" type="all_carrots" degree="0">
+	<template name="reward.Kolokolchihi" template="RewardBase" id="24" type="all_carrots" degree="0">
 		<component name="Render"><slug>reward.Kolokolchihi</slug></component>
 	</template>
 
 	<!-- TYPE_CARROT_PACK  -->
 
-	<template name="reward.Carrot50" template="Reward" id="30" type="carrot_pack" degree="50">
+	<template name="reward.Carrot50" template="RewardBase" id="30" type="carrot_pack" degree="50">
 		<component name="Render"><slug>reward.Carrot50</slug></component>
 	</template>
 
-	<template name="reward.Carrot100" template="Reward" id="31" type="carrot_pack" degree="100">
+	<template name="reward.Carrot100" template="RewardBase" id="31" type="carrot_pack" degree="100">
 		<component name="Render"><slug>reward.Carrot100</slug></component>
 	</template>
 
-	<template name="reward.Carrot200" template="Reward" id="32" type="carrot_pack" degree="200">
+	<template name="reward.Carrot200" template="RewardBase" id="32" type="carrot_pack" degree="200">
 		<component name="Render"><slug>reward.Carrot200</slug></component>
 	</template>
 
-	<template name="reward.Carrot500" template="Reward" id="33" type="carrot_pack" degree="500">
+	<template name="reward.Carrot500" template="RewardBase" id="33" type="carrot_pack" degree="500">
 		<component name="Render"><slug>reward.Carrot500</slug></component>
 	</template>
 
 	<!-- TYPE_FAMILIAR  -->
 
-	<template name="reward.Pie" template="Reward" id="40" type="familiar" degree="3">
+	<template name="reward.Pie" template="RewardBase" id="40" type="familiar" degree="3">
 		<component name="Render"><slug>reward.Pie</slug></component>
 	</template>
 
-	<template name="reward.Jem" template="Reward" id="41" type="familiar" degree="5">
+	<template name="reward.Jem" template="RewardBase" id="41" type="familiar" degree="5">
 		<component name="Render"><slug>reward.Jem</slug></component>
 	</template>
 
-	<template name="reward.Honey" template="Reward" id="42" type="familiar" degree="10">
+	<template name="reward.Honey" template="RewardBase" id="42" type="familiar" degree="10">
 		<component name="Render"><slug>reward.Honey</slug></component>
 	</template>
 
 	<!-- TYPE_POSTING  -->
 
-	<template name="reward.Banderol" template="Reward" id="50" type="posting" degree="3">
+	<template name="reward.Banderol" template="RewardBase" id="50" type="posting" degree="3">
 		<component name="Render"><slug>reward.Banderol</slug></component>
 	</template>
 
-	<template name="reward.MailBox" template="Reward" id="51" type="posting" degree="5">
+	<template name="reward.MailBox" template="RewardBase" id="51" type="posting" degree="5">
 		<component name="Render"><slug>reward.MailBox</slug></component>
 	</template>
 
-	<template name="reward.Golub" template="Reward" id="52" type="posting" degree="10">
+	<template name="reward.Golub" template="RewardBase" id="52" type="posting" degree="10">
 		<component name="Render"><slug>reward.Golub</slug></component>
 	</template>
 
 	<!-- TYPE_REFERER  -->
 
-	<template name="reward.Butterfly" template="Reward" id="60" type="referer" degree="1">
+	<template name="reward.Butterfly" template="RewardBase" id="60" type="referer" degree="1">
 		<component name="Render"><slug>reward.Butterfly</slug></component>
 	</template>
 
-	<template name="reward.Frog" template="Reward" id="61" type="referer" degree="3">
+	<template name="reward.Frog" template="RewardBase" id="61" type="referer" degree="3">
 		<component name="Render"><slug>reward.Frog</slug></component>
 	</template>
 
-	<template name="reward.Duck" template="Reward" id="62" type="referer" degree="5">
+	<template name="reward.Duck" template="RewardBase" id="62" type="referer" degree="5">
 		<component name="Render"><slug>reward.Duck</slug></component>
 	</template>
 
-	<template name="reward.Piggy" template="Reward" id="63" type="referer" degree="10">
+	<template name="reward.Piggy" template="RewardBase" id="63" type="referer" degree="10">
 		<component name="Render"><slug>reward.Piggy</slug></component>
 	</template>
 
 	<!-- TYPE_CONSOLING  -->
 
-	<template name="reward.Chuchelo" template="Reward" id="70" type="consoling" degree="0">
+	<template name="reward.Chuchelo" template="RewardBase" id="70" type="consoling" degree="0">
 		<component name="Render"><slug>reward.Chuchelo</slug></component>
 	</template>
 
-	<template name="reward.Stog" template="Reward" id="71" type="consoling" degree="0">
+	<template name="reward.Stog" template="RewardBase" id="71" type="consoling" degree="0">
 		<component name="Render"><slug>reward.Stog</slug></component>
 	</template>
 
-	<template name="reward.Kuvshin" template="Reward" id="72" type="consoling" degree="0">
+	<template name="reward.Kuvshin" template="RewardBase" id="72" type="consoling" degree="0">
 		<component name="Render"><slug>reward.Kuvshin</slug></component>
 	</template>
 
-	<template name="reward.Fonarik" template="Reward" id="73" type="consoling" degree="0">
+	<template name="reward.Fonarik" template="RewardBase" id="73" type="consoling" degree="0">
 		<component name="Render"><slug>reward.Fonarik</slug></component>
 	</template>
 
-	<template name="reward.Bochka" template="Reward" id="74" type="consoling" degree="0">
+	<template name="reward.Bochka" template="RewardBase" id="74" type="consoling" degree="0">
 		<component name="Render"><slug>reward.Bochka</slug></component>
 	</template>
 
-	<template name="reward.Penek" template="Reward" id="75" type="consoling" degree="0">
+	<template name="reward.Penek" template="RewardBase" id="75" type="consoling" degree="0">
 		<component name="Render"><slug>reward.Penek</slug></component>
 	</template>
 
-	<template name="reward.Stul" template="Reward" id="76" type="consoling" degree="0">
+	<template name="reward.Stul" template="RewardBase" id="76" type="consoling" degree="0">
 		<component name="Render"><slug>reward.Stul</slug></component>
 	</template>
 
-	<template name="reward.Leyka" template="Reward" id="77" type="consoling" degree="0">
+	<template name="reward.Leyka" template="RewardBase" id="77" type="consoling" degree="0">
 		<component name="Render"><slug>reward.Leyka</slug></component>
 	</template>
 
-	<template name="reward.Udobrenie" template="Reward" id="78" type="consoling" degree="0">
+	<template name="reward.Udobrenie" template="RewardBase" id="78" type="consoling" degree="0">
 		<component name="Render"><slug>reward.Udobrenie</slug></component>
 	</template>
 
-	<template name="reward.Koleso" template="Reward" id="79" type="consoling" degree="0">
+	<template name="reward.Koleso" template="RewardBase" id="79" type="consoling" degree="0">
 		<component name="Render"><slug>reward.Koleso</slug></component>
 	</template>
 

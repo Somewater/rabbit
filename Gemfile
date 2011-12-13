@@ -3,8 +3,8 @@ source 'http://rubygems.org'
 gem 'rack'
 gem 'rack-timeout', '0.0.3'
 gem 'mysql2', '0.2.11'
-gem 'activerecord', '>= 3.0.9'
-gem 'activesupport', '>= 3.0.9'
+gem 'activerecord', '3.0.9'
+gem 'activesupport', '3.0.9'
 gem 'harleytt-ansitags', '>= 0.1.5'
 
 # Bundle edge Rails instead:

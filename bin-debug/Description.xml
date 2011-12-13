@@ -11,9 +11,6 @@
 	-->
 	<entity name="Hero" template="RabbitBase">
 		<component name="Data" type="com.somewater.rabbit.components.HeroDataComponent" />
-		<component name="Spatial">
-			<!--tile type="RandomTilePoint.free"></tile-->
-		</component>
 		<component type="com.somewater.rabbit.components.InputComponent" name="Input"/>
 		<component type="com.somewater.rabbit.components.HeroHarvesterComponent" name="Harvester">
 			<sense>false</sense>
@@ -31,7 +28,7 @@
 		RABBIT
 
 	-->
-	<template name="Rabbit" template="RabbitBase">
+	<template name="RabbitActorBase" template="RabbitBase">
 		<component name="Spatial">
 			<tile type="RandomTilePoint.free"></tile>
 		</component>
@@ -46,7 +43,7 @@
 		RABBIT BASE
 
 	-->
-	<template name="RabbitBase" template="Animal" sets="victim">
+	<template name="RabbitBase" template="AnimalBase" sets="victim">
 		<component name="Mover">
 			<speed>4</speed>
 		</component>
@@ -63,10 +60,22 @@
 	
 	<!--
 
+		WALKING BUSH
+
+	-->
+	<template name="WalkingBush" template="Bush">
+		<component name="RandomMover" type="com.somewater.rabbit.components.RandomThinkingMovingComponent">
+			<minTimeBetweenActs>20000</minTimeBetweenActs>
+		</component>
+	</template>
+
+
+	<!--
+
 		BUSH
 
 	-->
-	<template name="Bush" template="IsoMover" sets="wall">
+	<template name="Bush" template="IsoMoverBase" sets="wall">
 		<component name="Render">
 			<slug>rabbit.BushActor</slug>
 			<frameRate>15</frameRate>
@@ -82,10 +91,6 @@
 				<x>1</x>
 				<y>1</y>
 			</size>
-			<tile type="RandomTilePoint.free"></tile>			
-		</component>
-		<component name="RandomMover" type="com.somewater.rabbit.components.RandomThinkingMovingComponent">
-			<minTimeBetweenActs>20000</minTimeBetweenActs>
 		</component>
 	</template>
 	
@@ -117,7 +122,7 @@
 		CARROT
 
 	-->
-	<template name="Carrot" template="Iso" sets="wall,harvest">
+	<template name="Carrot" template="IsoBase" sets="wall,harvest">
 		<component name="Render">
 			<slug>rabbit.CarrotActor</slug>
 			<frameRate>15</frameRate>
@@ -148,7 +153,7 @@
 		BEAM
 
 	-->
-	<template name="Beam" template="Iso" sets="wall">
+	<template name="Beam" template="IsoBase" sets="wall">
 		<component type="com.somewater.rabbit.creature.BeamRendererComponent" name="Render">
 			<scene entityName="SceneDB" componentName="Scene"/>
 			<positionProperty>@Spatial.position</positionProperty>
@@ -182,7 +187,7 @@
 			WATCHDOG
 		(and his kennel)
 	-->
-	<template name="WatchDog" template="Animal">
+	<template name="WatchDog" template="AnimalBase">
 		<component name="Mover">
 			<speed>2</speed>
 		</component>
@@ -199,7 +204,7 @@
 		<component name="Attack" type="com.somewater.rabbit.components.AttackComponent">
 			<victimName>Hero</victimName>
 			<priority>2</priority>
-			<attackRange>0.1</attackRange>
+			<attackRange>0.4</attackRange>
 			<attackInterval>1000</attackInterval>
 			<searchRadius>1</searchRadius>
 		</component>
@@ -224,7 +229,7 @@
 		KENNEL
 
 	-->
-	<template name="Kennel" template="Iso" sets="wall">
+	<template name="Kennel" template="IsoBase" sets="wall">
 		<component name="Render">
 			<slug>rabbit.KennelActor</slug>
 			<useDirection>1</useDirection>
@@ -248,7 +253,7 @@
 		REWARD
 
 	-->
-	<template name="Reward" template="Iso" sets="wall">
+	<template name="RewardBase" template="IsoBase" sets="wall">
 		<component name="Render">
 			<slug>null</slug>
 			<useDirection>1</useDirection>
@@ -272,7 +277,7 @@
 			CROW
 
 	-->
-	<template name="Crow" template="Animal">
+	<template name="Crow" template="AnimalBase">
 		<component name="Mover">
 			<speed>2</speed>
 		</component>
@@ -313,7 +318,7 @@
 		HEDGEHOG
 	
 	-->
-	<template name="Hedgehog" template="Animal">
+	<template name="Hedgehog" template="AnimalBase">
 		<component name="Mover">
 			<speed>1</speed>
 		</component>
@@ -328,12 +333,120 @@
 			<attackDuration>0</attackDuration>
 			<victimName>Hero</victimName>
 			<priority>2</priority>
-			<attackRange>0.1</attackRange>
+			<attackRange>0.2</attackRange>
 			<attackInterval>1000</attackInterval>
 			<searchRadius>1</searchRadius>
 		</component>
 		<component name="Walk" type="com.somewater.rabbit.components.WalkComponent">
 			<priority>-10</priority>
+		</component>
+	</template>
+
+
+	<!--
+
+		POOL BASE
+
+	-->
+	<template name="PoolBase" template="IsoBase">
+		<component name="Render">
+			<useDirection>1</useDirection>
+			<height>-1</height>
+		</component>
+		<component name="Spatial">
+			<passMask>1</passMask>
+			<occupyMask>3</occupyMask>
+		</component>
+	</template>
+	<!--
+		..
+		.
+	-->
+	<template name="Pool0" template="PoolBase">
+		<component name="Render">
+			<slug>rabbit.Pool0</slug>
+		</component>
+		<component name="Spatial" type="com.somewater.rabbit.creature.ShapeSpatialComponent">
+			<shape>G</shape>
+			<size>
+				<x>2</x>
+				<y>2</y>
+			</size>
+		</component>
+	</template>
+	<!--
+		..
+		 .
+	-->
+	<template name="Pool1" template="PoolBase">
+		<component name="Render">
+			<slug>rabbit.Pool1</slug>
+		</component>
+		<component name="Spatial" type="com.somewater.rabbit.creature.ShapeSpatialComponent">
+			<shape>R</shape>
+			<size>
+				<x>2</x>
+				<y>2</y>
+			</size>
+		</component>
+	</template>
+	<!--
+		.
+		.
+		.
+	-->
+	<template name="Pool2" template="PoolBase">
+		<component name="Render">
+			<slug>rabbit.Pool2</slug>
+		</component>
+		<component name="Spatial">
+			<size>
+				<x>1</x>
+				<y>3</y>
+			</size>
+		</component>
+	</template>
+	<!--
+		.
+		.
+	-->
+	<template name="Pool3" template="PoolBase">
+		<component name="Render">
+			<slug>rabbit.Pool3</slug>
+		</component>
+		<component name="Spatial">
+			<size>
+				<x>1</x>
+				<y>2</y>
+			</size>
+		</component>
+	</template>
+	<!--
+		..
+	-->
+	<template name="Pool4" template="PoolBase">
+		<component name="Render">
+			<slug>rabbit.Pool4</slug>
+		</component>
+		<component name="Spatial">
+			<size>
+				<x>2</x>
+				<y>1</y>
+			</size>
+		</component>
+	</template>
+	<!--
+		.
+	-->
+	<template name="Pool5" template="PoolBase">
+		<component name="Render">
+			<slug>rabbit.Pool5</slug>
+		</component>
+		<component name="Spatial">
+			<size>
+				<x>1</x>
+				<y>1</y>
+			</size>
 		</component>
 	</template>
 	
@@ -344,7 +457,7 @@
 		(ISO MOVER analog without special functions)
 	
 	-->
-	<template name="Animal" template="IsoMover">
+	<template name="AnimalBase" template="IsoMoverBase">
 		<component name="Mover">
 			<speed>1</speed>
 			<patience>1</patience>
@@ -372,7 +485,7 @@
 		ISO MOVER
 
 	-->
-	<template name="IsoMover" template="Iso">
+	<template name="IsoMoverBase" template="IsoBase">
 		<component name="Render">
 			<useDirection>1</useDirection>
 		</component>
@@ -388,7 +501,7 @@
 		ISO
 
 	-->
-	<template name="Iso">
+	<template name="IsoBase">
 		<component type="com.somewater.rabbit.iso.IsoSpatial" name="Spatial">
 			<spatialManager entityName="SceneDB" componentName="Spatial"/>
 		</component>
@@ -405,7 +518,7 @@
 		GROUND GRASS
 
 	-->
-	<template name="GroundGrass">
+	<template name="GroundGrassTemplate">
 		<component type="com.pblabs.rendering2D.SimpleSpatialComponent" name="Spatial">
 			<spatialManager entityName="SceneDB" componentName="Spatial"/>
 		</component>
@@ -422,7 +535,7 @@
 		POPUP EFFECT
 
 	-->
-	<template name="PopupEffect">
+	<template name="PopupEffectTemplate">
 		<component type="com.pblabs.rendering2D.SimpleSpatialComponent" name="Spatial">
 			<spatialManager entityName="SceneDB" componentName="Spatial"/>
 		</component>

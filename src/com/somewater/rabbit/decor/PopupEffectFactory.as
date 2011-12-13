@@ -12,7 +12,7 @@ package com.somewater.rabbit.decor {
 
 		public static function createEffect(animationSlug:String, tile:Point, invoker:IEntity):void
 		{
-			var effect:IEntity = PBE.templateManager.instantiateEntity('PopupEffect')
+			var effect:IEntity = PBE.templateManager.instantiateEntity('PopupEffectTemplate')
 			effect.owningGroup = invoker.owningGroup;
 			IsoRenderer(effect.lookupComponentByName('Render')).slug = animationSlug;
 			SimpleSpatialComponent(effect.lookupComponentByName('Spatial')).position = tile;

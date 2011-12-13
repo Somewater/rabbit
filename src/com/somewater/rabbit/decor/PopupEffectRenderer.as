@@ -29,9 +29,9 @@ package com.somewater.rabbit.decor {
 			{
 				_clipLastUpdate = PBE.processManager.virtualTime;
 				if(clip.currentFrame == clip.totalFrames)
-					owner.destroy();
+					owner && owner.destroy();
 				else
-					clip.nextFrame();
+					clip && clip.nextFrame();
 			}
 
 		}
