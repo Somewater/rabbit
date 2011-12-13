@@ -16,14 +16,8 @@ class InitializeController < BaseUserController
 			end
 		elsif(@api.can_allocate_uid)
 			# сначала вычислим ранее не применяемый :uid
-			max_id = User.maximum(:id, :conditions => ["net = ?", @params['net']])
-			if max_id
-				max_id = User.find(max_id)
-			   	max_id = (max_id.uid.to_i + 1).to_s
-			else
-				# первый юзер несоциальной сети
-				max_id = '1'
-			end
+			max_id = (User.maximum(:id) || 0) + 1
+			max_id = "#{@params['net']}-#{max_id}"# создаем  uid для несоциальной сети, на основе комбинации id и net
 			raise AuthError, "Already used uid = #{max_id}" if User.find_by_uid(max_id, @params['net'])
 			@json['user']['uid'] = @params['uid'] = max_id.to_s
 			create_user()

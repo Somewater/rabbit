@@ -311,13 +311,8 @@ class AllSpec
 			end
 
 			def get_unexistable_uid
-				user_max_id = User.maximum(:id, :conditions => ["net = ?", @user.net])
-				if(user_max_id)
-					uid = ((User.find(user_max_id).uid).to_i + 1).to_s
-				else
-					uid = '1'
-				end
-				uid
+				user_max_id = (User.maximum(:id) || 0) + 1
+				"1-#{user_max_id}"
 			end
 
 			def get_other_user
