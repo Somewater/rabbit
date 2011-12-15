@@ -1,4 +1,5 @@
 ROOT = File.dirname( File.expand_path( __FILE__ ) )
+WIN_OS = RUBY_PLATFORM['mswin'] || RUBY_PLATFORM['mingw'] || RUBY_PLATFORM['cygwin']
 $:.unshift("#{ROOT}/lib/tasks")
 Dir["#{ROOT}/rabbit_server/lib/tasks/*.rake"].sort.each { |x| import x }
 require 'rake'
@@ -40,7 +41,7 @@ namespace :flash do
 -source-path+=soc \
 -library-path+=src/assets/swc/library.swc \
 -library-path+=lib/binding.swc \
--library-path+=rprotect/RProtector.swc
+-library-path+=rprotect/RProtector.swc \
 -library-path+=soc/Social.swc"
 
 	COMPC_COMMON_COMMANDLINE_ARGS="compc \

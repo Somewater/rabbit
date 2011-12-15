@@ -67,7 +67,7 @@ end
 
 def library(classname, output, debug = true)
 	puts `compc -source-path "#{ROOT}" \
-	-include-classes "#{classname}" \
+	-include-classes #{classname} \
 	-optimize \
 	-target-player=10.0 \
 	-compiler.debug=#{debug} \

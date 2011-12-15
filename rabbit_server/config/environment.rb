@@ -20,6 +20,7 @@ else
 end
 DEVELOPMENT = (APP_ENV == 'development' ? true : false)
 PRODUCTION = (APP_ENV == 'production' ? true : false)
+WIN_OS = RUBY_PLATFORM['mswin'] || RUBY_PLATFORM['mingw'] || RUBY_PLATFORM['cygwin']
 
 ##################################
 #

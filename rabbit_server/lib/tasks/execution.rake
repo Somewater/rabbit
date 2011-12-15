@@ -1,6 +1,9 @@
-class Execution
+unless(WIN_OS)
 	require 'pty'
 	require 'expect'
+end
+
+class Execution
 	
 	def initialize(cmd, pattern = nil, pw = nil, timeout = 1)
 		@reader, @writer, @pid = PTY.spawn(cmd)
