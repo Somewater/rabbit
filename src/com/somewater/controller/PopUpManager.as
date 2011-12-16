@@ -1,6 +1,7 @@
 package com.somewater.controller
 {
 	import com.somewater.display.Window;
+	import com.somewater.rabbit.storage.Config;
 	import com.somewater.text.Hint;
 	
 	import flash.display.DisplayObject;
@@ -11,6 +12,7 @@ package com.somewater.controller
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 	import flash.filters.BlurFilter;
+	import flash.geom.Rectangle;
 
 	public class PopUpManager
 	{
@@ -30,7 +32,8 @@ package com.somewater.controller
 			instance.defaultContentRegion = contentLayer;
 			instance.popUpGround = popUpGround;
 			instance.splash = splash;
-			instance.splashLogoInitialPosY = splash.getChildByName("logo").y;
+			var logoBounds:Rectangle = splash.getChildByName("logo").getBounds(splash.getChildByName("logo"));
+			instance.splashLogoInitialPosY = (Config.WIDTH - logoBounds.height) * 0.5 - logoBounds.y - 100;
 			
 			hideSplash();
 			
@@ -178,12 +181,12 @@ package com.somewater.controller
 					bar.visible = true;
 					bar.textField.text = Math.round(progress * 100) + "%";
 					bar.progressBar.scaleX = 1 - progress;
-					splash.getChildByName("logo").y = instance.splashLogoInitialPosY;
+					splash.getChildByName("logo").y = instance.splashLogoInitialPosY - 40;
 				}
 				else
 				{
 					splash.getChildByName("bar").visible = false;
-					splash.getChildByName("logo").y = instance.splashLogoInitialPosY + 40;
+					splash.getChildByName("logo").y = instance.splashLogoInitialPosY;
 				}
 			}
 		}
