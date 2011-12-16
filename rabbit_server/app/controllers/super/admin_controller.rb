@@ -3,42 +3,46 @@ class AdminController
 	def call request
 		@request = request
 
-		auth = authorized(request)
+		admin_user = authorized(request)
 		return [200, {"Content-Type" => "text/html; charset=UTF-8"},
 							  "<html><body><form method='post'><table>
 							  <tr><td>Login:</td><td><input name='login'></input></td></tr>
 							  <tr><td>Password:</td><td><input name='pass' type='password'></input></td></tr>
 							  <tr><td></td><td><input type='submit' value='OK'></input></td></tr>
-							  </table></form></body></html>"] unless auth
-		if(auth == :login)
-			resp = process()
+							  </table></form></body></html>"] unless admin_user.authorized?
+		if(admin_user.authorized? == :login)
+			resp = process(admin_user)
 			[200, generate_cookie, resp]
-		elsif auth == :success
-			resp = process()
+		elsif admin_user.authorized? == :success
+			resp = process(admin_user)
 			[200, {"Content-Type" => "text/html; charset=UTF-8"}, resp]
+		else
+			raise FormatError, "Undefined authentification status #{admin_user.authorized?}"
 		end
 	end
 
-	def process
+	def process(admin_user)
 		method = @request.path
 		method = method[7, method.size - 1] if method  # cut "/admin/"
 		case method
 			when /^errors/
-				ErrorsAdminController.new(@request).call
+				ErrorsAdminController.new(@request, admin_user).call
 			when /^levels/
-				LevelsAdminController.new(@request).call
+				LevelsAdminController.new(@request, admin_user).call
 			when /^logs/
-				LogsAdminController.new(@request).call
+				LogsAdminController.new(@request, admin_user).call
 			when /^users/
-				UsersAdminController.new(@request).call
+				UsersAdminController.new(@request, admin_user).call
 			else
-				Base.new(@request).call
+				Base.new(@request, admin_user).call
 		end
 	end
 
 	class Base
-		def initialize request
+		def initialize request, admin_user
 			@request = request
+			@admin_user = admin_user
+			check_permissions()
 
 			@command = request.path
 			@command = @command[7, @command.size - 1] if @command  # cut "/admin/"
@@ -81,21 +85,17 @@ class AdminController
 				r
 			end
 		end
+		
+		protected
+		def check_permissions()
+			# must raise exceptions, if permissions error
+			true	 
+		end
 	end
 
 private
 	def authorized request
-		require 'digest/md5'
-		if request.cookies['error-login-hash'] == generate_hash
-			:success
-		elsif request['login'] && (
-				(request['login'].downcase == 'kate' && Digest::MD5.hexdigest(request['pass']) == '7a57ccbb278a3eede95d4a341cf93813') ||
-				(request['login'].downcase == 'dev' && Digest::MD5.hexdigest(request['pass']) == '8f00d0955e699c1ce25d2c1ea76f5330')
-				)
-			:login
-		else
-			nil
-		end
+		AdminUser.new(request)
 	end
 
 	def generate_hash
