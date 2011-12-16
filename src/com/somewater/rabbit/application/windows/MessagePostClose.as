@@ -73,10 +73,13 @@ public class MessagePostClose extends Window
 
 	override public function close():void {
 		data = null;
-		callback = null
-		timer.removeEventListener(TimerEvent.TIMER, onTimer);
-		timer.stop();
-		timer = null;
+		callback = null;
+		if(timer)
+		{
+			timer.removeEventListener(TimerEvent.TIMER, onTimer);
+			timer.stop();
+			timer = null;
+		}
 		super.close();
 	}
 

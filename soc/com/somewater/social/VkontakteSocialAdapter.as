@@ -344,10 +344,10 @@ package com.somewater.social
 					imageBmpData = image;
 				else if(image is DisplayObject){
 					var scale:Number = Math.min(130/image.width, 130/image.height);
-					imageBmpData = new BitmapData(image.width, image.height, true, 0);
+					imageBmpData = new BitmapData(130, 130, true, 0);
 					imageBmpData.draw(image,  new Matrix(scale, 0, 0, scale));
 				}else
-					imageBmpData = new BitmapData(100, 100, false, 0xFFEEEE);// рисунок для осуществления тестовой публикации
+					imageBmpData = new BitmapData(130, 130, false, 0xFFEEEE);// рисунок для осуществления тестовой публикации
 				
 				// функционал взят из ранее statis класса WallPostManager, все его функции приведены к instanse
 				wallPostManager_onComplete = onComplete;
