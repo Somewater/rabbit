@@ -368,6 +368,11 @@ class AllSpec
 				request({'net' => @user.net,'uid' => @user.uid})['user']['day_counter'].should == '0'
 			end
 
+			it "Не обнуляет счетчик, если пользователь зашел еще раз в течение того же дня" do
+				day_counter = request({'net' => @user.net,'uid' => @user.uid})['user']['day_counter']
+				request({'net' => @user.net,'uid' => @user.uid})['user']['day_counter'].should == day_counter
+			end
+
 			it "Выдается ревард по day_counter" do
 				@user.day_counter = 2
 				@user.rewards = {}
