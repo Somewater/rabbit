@@ -140,10 +140,10 @@ package com.somewater.text
 			var x:int = application.mouseX;
 			var y:int = application.mouseY + HORIZONTAL_PADDING;
 			
-			if(x + w + PADDING > PopUpManager.instance.WIDTH)
+			if(x + w + PADDING > PopUpManager.WIDTH)
 				x = x - w - PADDING;
 			
-			if(y + h + PADDING > PopUpManager.instance.HEIGHT)
+			if(y + h + PADDING > PopUpManager.HEIGHT)
 				y = y - ground.height - HORIZONTAL_PADDING - PADDING;
 			
 			this.x = x;

@@ -16,8 +16,8 @@ package com.somewater.controller
 
 	public class PopUpManager
 	{
-		public var WIDTH:int;
-		public var HEIGHT:int;
+		public static var WIDTH:int;
+		public static var HEIGHT:int;
 		public static var instance:PopUpManager;
 		
 		private var windowsStorage:Array;
@@ -37,8 +37,8 @@ package com.somewater.controller
 			
 			hideSplash();
 			
-			instance.WIDTH = width;
-			instance.HEIGHT = height;
+			WIDTH = width;
+			HEIGHT = height;
 		}
 		
 		public function PopUpManager(target:IEventDispatcher=null)
@@ -91,7 +91,7 @@ package com.somewater.controller
 				}else{
 					instance.popUpGround = new Shape();
 					Shape(instance.popUpGround).graphics.beginFill(0xA498C5,0.3)
-					Shape(instance.popUpGround).graphics.drawRect(0,0,instance.WIDTH,instance.HEIGHT);
+					Shape(instance.popUpGround).graphics.drawRect(0,0,WIDTH,HEIGHT);
 				}
 				instance.defaultContentRegion.filters = [new BlurFilter(5,5,1)];
 				instance.defaultParent.addChild(instance.popUpGround);
@@ -109,8 +109,8 @@ package com.somewater.controller
 		}
 		
 		public static function centre(window:DisplayObject):void{
-			window.x = 0.5*(instance.WIDTH - window.width);
-			window.y = 0.5*(instance.HEIGHT - window.height);
+			window.x = 0.5*(WIDTH - window.width);
+			window.y = 0.5*(HEIGHT - window.height);
 		}
 		
 

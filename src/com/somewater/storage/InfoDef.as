@@ -11,7 +11,7 @@ package com.somewater.storage
 	public class InfoDef implements IClear
 	{
 		private var _data:Object;
-		protected var supressSerializationWarn;
+		protected var supressSerializationWarn:Boolean;
 		
 		public function InfoDef(data:Object = null)
 		{

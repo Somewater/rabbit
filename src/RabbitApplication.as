@@ -3,7 +3,6 @@ package
 	import com.somewater.control.IClear;
 	import com.somewater.controller.PopUpManager;
 	import com.somewater.display.Window;
-	import com.somewater.display.Window;
 	import com.somewater.net.ServerHandler;
 	import com.somewater.rabbit.IRabbitApplication;
 	import com.somewater.rabbit.application.AboutPage;
@@ -23,12 +22,12 @@ package
 	import com.somewater.rabbit.application.windows.LevelStartWindow;
 	import com.somewater.rabbit.application.windows.LevelSwitchWindow;
 	import com.somewater.rabbit.application.windows.PauseMenuWindow;
+	import com.somewater.rabbit.application.windows.PendingRewardsWindow;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.rabbit.storage.RewardDef;
-	import com.somewater.rabbit.storage.UserProfile;
 	import com.somewater.rabbit.storage.UserProfile;
 	import com.somewater.rabbit.xml.XmlController;
 	import com.somewater.storage.Lang;
@@ -244,6 +243,14 @@ package
 		{
 			Config.loader.setProgress(3, 1);
 			clearLoader();
+
+			if(response['rewards'] && response['rewards'].length)
+			{
+				var rewards = [];
+				for each(var rewardObject:Object in response['rewards'])
+					rewards.push(RewardManager.instance.getById(rewardObject['id']));
+				new PendingRewardsWindow(rewards);
+			}
 
 			startPage("main_menu");
 

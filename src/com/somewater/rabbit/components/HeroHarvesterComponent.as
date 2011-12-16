@@ -3,12 +3,14 @@ package com.somewater.rabbit.components {
 	import com.pblabs.engine.entity.PropertyReference;
 	import com.somewater.rabbit.decor.PopupEffectFactory;
 
+	import flash.geom.Point;
+
 	/**
 	 * Издает звуки, эффекты и т.д. при сборе морковок
 	 */
 	public class HeroHarvesterComponent extends HarvesterComponent{
 
-		private var positionRef;
+		private var positionRef:PropertyReference;
 
 		public function HeroHarvesterComponent() {
 			positionRef = new PropertyReference('@Spatial.position');
