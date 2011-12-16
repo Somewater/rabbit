@@ -6,6 +6,10 @@ class LevelsAdminController < AdminController::Base
 	LEVELS_PATH = '/admin/levels'
 	COLORS = ['FFEEEE', 'EEFFEE', 'DDEEFF', 'FFDDEE', 'DDFFEE','DDDDFF', 'FFDDFF', 'DDFFFF', 'FFFFDD', 'CDCDFF']
 
+	def check_permissions()
+		raise AuthError, "Illegal operation" unless @admin_user.can?(AdminUser::PERMISSION_LEVEL_TRACKER)
+	end
+
 	def self_binding
 		binding
 	end

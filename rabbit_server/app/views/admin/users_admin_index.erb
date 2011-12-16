@@ -14,6 +14,7 @@
 		<th>roll</th>
 		<th>friends_invited</th>
 		<th>postings</th>
+		<th>day_counter</th>
 		<th>created_at</th>
 		<th>updated_at</th>
 	</tr>
@@ -32,6 +33,7 @@
         	<td><%= user.roll %></td>
         	<td><%= user.friends_invited %></td>
         	<td><%= user.postings %></td>
+			<td><%= user.day_counter %></td>
         	<td><%= user.created_at.to_formatted_s(:short) %></td>
         	<td><%= user.updated_at.to_formatted_s(:short) %></td>
 		</tr>

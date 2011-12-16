@@ -10,6 +10,10 @@ class ErrorsAdminController < AdminController::Base
 	#  PRIMARY KEY (`id`)
 	# ) ENGINE=MyISAM AUTO_INCREMENT=99 DEFAULT CHARSET=utf8
 
+	def check_permissions()
+		raise AuthError, "Illegal operation" unless @admin_user.can?(AdminUser::PERMISSION_ERROR_TRACKER)
+	end
+
 	def call
 		res = ""
 		error = {}

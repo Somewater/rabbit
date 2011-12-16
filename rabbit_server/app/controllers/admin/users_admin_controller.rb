@@ -1,6 +1,10 @@
 class UsersAdminController < AdminController::Base
 	USERS_PATH = '/admin/users'
 
+	def check_permissions()
+		raise AuthError, "Illegal operation" unless @admin_user.can?(AdminUser::PERMISSION_USER_TRACKER)
+	end
+
 	def self_binding
 		binding
 	end

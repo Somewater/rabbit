@@ -10,7 +10,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 6) do
+ActiveRecord::Schema.define(:version => 7) do
+
+  create_table "admins", :force => true do |t|
+    t.string   "login",                           :null => false
+    t.string   "password",                        :null => false
+    t.integer  "permissions", :default => 0
+    t.integer  "level_low",   :default => 1
+    t.integer  "level_high",  :default => 999999
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "levels", :force => true do |t|
     t.string   "description"

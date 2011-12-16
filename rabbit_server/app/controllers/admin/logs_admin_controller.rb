@@ -2,6 +2,10 @@ class LogsAdminController < AdminController::Base
 
 	LOGS_PATH = '/admin/logs'
 
+	def check_permissions()
+		raise AuthError, "Illegal operation" unless @admin_user.can?(AdminUser::PERMISSION_LOG_VIEW)
+	end
+
 	def call
 		result = ''
 		Dir["#{ROOT}/logs/*"].each do|log|

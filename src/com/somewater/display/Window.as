@@ -103,6 +103,8 @@ package com.somewater.display
 		{
 			if (textField != null){
 				textField.text = value;
+				if(textField.height < textField.textHeight + 10)
+					textField.height = textField.textHeight + 10;
 				resize(); 
 			}
 		}
@@ -147,7 +149,7 @@ package com.somewater.display
 				textField.width = _width - 20;
 				textField.x = (_width - textField.width) * 0.5;
 				if (textField.height > (_height - 100 - textField.y))
-					_height = Math.min( PopUpManager.instance.HEIGHT, textField.y + textField.height + 100);
+					_height = Math.min( PopUpManager.instance.HEIGHT, textField.y + textField.textHeight + 100);
 			}
 			
 			

@@ -7,12 +7,12 @@ class AdminController
 		return [200, {"Content-Type" => "text/html; charset=UTF-8"},
 							  "<html><body><form method='post'><table>
 							  <tr><td>Login:</td><td><input name='login'></input></td></tr>
-							  <tr><td>Password:</td><td><input name='pass' type='password'></input></td></tr>
+							  <tr><td>Password:</td><td><input name='password' type='password'></input></td></tr>
 							  <tr><td></td><td><input type='submit' value='OK'></input></td></tr>
 							  </table></form></body></html>"] unless admin_user.authorized?
 		if(admin_user.authorized? == :login)
 			resp = process(admin_user)
-			[200, generate_cookie, resp]
+			[200, admin_user.generate_cookie, resp]
 		elsif admin_user.authorized? == :success
 			resp = process(admin_user)
 			[200, {"Content-Type" => "text/html; charset=UTF-8"}, resp]
@@ -33,8 +33,10 @@ class AdminController
 				LogsAdminController.new(@request, admin_user).call
 			when /^users/
 				UsersAdminController.new(@request, admin_user).call
+			when /^admins/
+				AdminsAdminController.new(@request, admin_user).call
 			else
-				Base.new(@request, admin_user).call
+				IndexAdminController.new(@request, admin_user).call
 		end
 	end
 
@@ -76,34 +78,18 @@ class AdminController
 		end
 
 		def call
-			html do
-				r = ""
-				r += tag("p") { tag "a", :href => '/admin/errors', :value => 'errors' }
-				r += tag("p") { tag "a", :href => '/admin/levels', :value => 'levels' }
-				r += tag("p") { tag "a", :href => '/admin/logs', :value => 'logs' }
-				r += tag("p") { tag "a", :href => '/admin/users', :value => 'users' }
-				r
-			end
+			'empty'
 		end
 		
 		protected
 		def check_permissions()
-			# must raise exceptions, if permissions error
-			true	 
+			raise UnimplementedError, "Function must overriden"
 		end
 	end
 
 private
 	def authorized request
 		AdminUser.new(request)
-	end
-
-	def generate_hash
-		Digest::MD5.hexdigest("hello#{(Application.time.yday/7).to_s}world")
-	end
-
-	def generate_cookie
-		{'Content-Type' => 'text/html; charset=UTF-8', 'Set-Cookie' => "error-login-hash=#{generate_hash}; path=/admin"}
 	end
 end
 

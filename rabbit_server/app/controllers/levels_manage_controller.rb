@@ -15,15 +15,19 @@ class LevelsManageController < BaseController
 
 private
 	def check_password
-		password = @json['password']
-		if password == 'Kk0Tte888'
-			@author = 'kate'
-			true
-		elsif password == 'prevent6seven'
-			@author = 'pav'
-			true
-		elsif DEVELOPMENT
+		pair =  (@json['password'] || '').split(/\s+/)
+		admin_user = AdminUser.new({'cookies' => {},
+				'params' => {'login' => pair[0],
+							 'password' => pair[1]}})
+
+		if DEVELOPMENT
 			@author = 'nobody'
+			true
+		elsif admin_user.authorized? == :login
+			raise AuthError, "Unauthorized action" unless admin_user.can?(AdminUser::PERMISSION_LEVEL_SAVE)
+			raise AuthError, "Illegal level number #{@json['number']}. Must between #{admin_user.user.level_low}-#{admin_user.user.level_high}" \
+			 					unless @json['number'].to_i < admin_user.user.level_low || @json['number'].to_i > admin_user.user.level_high
+			@author = admin_user.user.login
 			true
 		else
 			false

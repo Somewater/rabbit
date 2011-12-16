@@ -1,6 +1,6 @@
 class CreateAdminRoles < ActiveRecord::Migration
 	def self.up
-		create_table :admin do |t|
+		create_table :admins do |t|
 			t.string  :login, :null => false
 			t.string  :password, :null => false
 			t.integer :permissions, :default => 0
@@ -13,6 +13,6 @@ class CreateAdminRoles < ActiveRecord::Migration
 	end
 
 	def self.down
-		drop_table 'admin'
+		drop_table 'admins'
 	end
 end
