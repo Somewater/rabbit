@@ -8,6 +8,7 @@ package com.somewater.rabbit.application
 	import com.somewater.rabbit.storage.LevelInstanceDef;
 	import com.somewater.rabbit.storage.RewardDef;
 	import com.somewater.rabbit.storage.RewardInstanceDef;
+	import com.somewater.rabbit.storage.UserProfile;
 	import com.somewater.rabbit.xml.XmlController;
 
 	import flash.utils.clearInterval;
@@ -26,7 +27,8 @@ package com.somewater.rabbit.application
 				Config.application.startPage("main_menu");
 			});
 
-			new PendingRewardsWindow([    RewardManager.instance.getByType(RewardDef.TYPE_REFERER)[0]    ]);
+			AppServerHandler.instance.onPosting(UserProfile.instance);
+			//new PendingRewardsWindow([    RewardManager.instance.getByType(RewardDef.TYPE_REFERER)[0]    ]);
 		}
 	}
 }

@@ -172,6 +172,7 @@ package com.somewater.rabbit.storage
 			if(roll < 1024)
 				roll = Math.abs(parseInt(this.uid)) + 1024;
 			roll = ((roll * 16147) % 2147483647)
+			Config.game.logError(this, 'getRoll', 'ROLL ' + this.roll + ' => ' + roll + ' (' + (roll / 2147483647) + ')')
 			this.roll = roll;
 			return roll / 2147483647;
 		}

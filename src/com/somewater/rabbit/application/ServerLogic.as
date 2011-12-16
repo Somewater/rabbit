@@ -182,6 +182,13 @@ package com.somewater.rabbit.application {
 					continue;
 				}
 
+				// проверяем пересечение с дефолтной стартовой позицией кролика
+				if(position.x == 3 && position.y == 2)
+				{
+					counter--;
+					continue;
+				}
+
 				var userRewards:Array = user.rewards;
 				for(var i:int = 0; i < userRewards.length; i++)
 				{
