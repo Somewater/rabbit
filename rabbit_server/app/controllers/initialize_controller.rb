@@ -69,17 +69,19 @@ class InitializeController < BaseUserController
 	end
 
 	def check_familiar_reward
-		if(@user.updated_at && @user.updated_at.yday != Application.time.yday &&
-					(Application.time.yday - @user.updated_at.yday == 1 || Application.time.yday == 1 && @user.updated_at.yday == 366))
-			@user.day_counter += 1
-			reward = ServerLogic.checkAddReward(@user, nil, nil, Reward::TYPE_FAMILIAR, @user.day_counter)
-			if reward
+		# все проверки на увеличени еи обнуление счетчика при условии, что во время прошлого захода был другой день
+		if @user.updated_at && @user.updated_at.yday != Application.time.yday
+			if(Application.time.yday - @user.updated_at.yday == 1 || Application.time.yday == 1 && @user.updated_at.yday == 366)
+				@user.day_counter += 1
+				reward = ServerLogic.checkAddReward(@user, nil, nil, Reward::TYPE_FAMILIAR, @user.day_counter)
+				if reward
+					@user.day_counter = 0
+					@response['rewards'] << reward.to_json
+				end
+			else
+				# обнуляем сечтчик. если  человек просрочил заход в игру
 				@user.day_counter = 0
-				@response['rewards'] << reward.to_json
 			end
-		else
-			# обнуляем сечтчик. если  человек просрочил заход в игру
-			@user.day_counter = 0
 		end
 	end
 
