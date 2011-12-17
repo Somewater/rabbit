@@ -7,10 +7,19 @@ class LogsAdminController < AdminController::Base
 	end
 
 	def call
-		result = ''
+		result = "<h1><a href='#{LOGS_PATH}'>LOGS</a></h1><br><p><a href='#{LOGS_PATH}?delete_all=1'>[DELETE ALL]</a></p>"
+		if(request['delete_all'])
+			Dir["#{ROOT}/logs/*"].each do|log|
+				File.delete(log)
+			end
+		end
+		if(request['delete'])
+			File.delete("#{ROOT}/logs/#{request['delete']}")
+		end
 		Dir["#{ROOT}/logs/*"].each do|log|
 			log = File.basename(log)
-			result << '<br>' << tag("a", :href => "#{LOGS_PATH}?filename=#{log}", :value => log)
+			result << '<br>' << tag("a", :href => "#{LOGS_PATH}?filename=#{log}", :value => log) <<
+					'&nbsp;' << tag("a", :href => "#{LOGS_PATH}?delete=#{log}", :value => '[delete]')
 		end
 		if(request['filename'])
 			require 'ansitags'
