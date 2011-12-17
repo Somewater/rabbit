@@ -1,10 +1,13 @@
 package
 {
+	import com.greensock.TweenMax;
 	import com.somewater.control.IClear;
 	import com.somewater.controller.PopUpManager;
 	import com.somewater.display.Window;
 	import com.somewater.net.ServerHandler;
 	import com.somewater.rabbit.IRabbitApplication;
+	import com.somewater.rabbit.SoundTrack;
+	import com.somewater.rabbit.Sounds;
 	import com.somewater.rabbit.application.AboutPage;
 	import com.somewater.rabbit.application.AppServerHandler;
 	import com.somewater.rabbit.application.GameGUI;
@@ -44,6 +47,9 @@ package
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
+	import flash.media.Sound;
+	import flash.media.SoundChannel;
+	import flash.media.SoundTransform;
 	import flash.text.Font;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
@@ -84,6 +90,13 @@ package
 		 * Колбэки на смену свойств вида propertyCallbacks["propertyName"] === Array
 		 */
 		private var propertyCallbacks:Array = [];
+
+		/**
+		 * Пул звуковых "треков" игры
+		 */
+		private var soundTracks:Array = [];
+		private var _soundSoundTransform:SoundTransform = new SoundTransform();
+		private var _musicSoundTransform:SoundTransform = new SoundTransform();
 		
 		public function RabbitApplication()
 		{
@@ -140,6 +153,10 @@ package
 			}
 
 			Config.loader.serverHandler.addGlobalHandler(false, serverErrorHandler)
+			addPropertyListener('musicEnabled', onMusicVolumeChanged);
+			addPropertyListener('music', onMusicVolumeChanged);
+			addPropertyListener('soundEnabled', onSoundVolumeChanged);
+			addPropertyListener('sound', onSoundVolumeChanged);
 		}
 
 		
@@ -329,6 +346,7 @@ package
 			clearContent();			
 			_content.addChild(currentPage);
 			Config.gameModuleActive = false;
+			play(Sounds.MUSIC_MENU, SoundTrack.MUSIC);
 		}
 		
 		/**
@@ -350,6 +368,7 @@ package
 
 			clearContent();
 			showSlash(-1);
+			play(level is RewardLevelDef ? Sounds.MUSIC_MENU : Sounds.MUSIC_GAME, SoundTrack.MUSIC);
 			
 			var game:DisplayObject = Config.game as DisplayObject;
 			_content.addChild(game);
@@ -566,5 +585,60 @@ package
 				AppServerHandler.instance.moveRewards(positionRewards);
 			}
 		}
+
+		public function play(soundName:String, track:String):void
+		{
+			if(soundTracks[track] && SoundData(soundTracks[track]).soundName == soundName)
+				return; // игнорируем попытку прогирать один и тот же звук, когда не доиграл такой же
+
+			var soundObject:Sound = Lib.createMC(soundName);
+			if(soundObject == null)
+			{
+				Config.game.logError(this, 'play', 'Sound ' + soundName + ' not found in library');
+				return;
+			}
+
+			if(soundTracks[track])
+			{
+				SoundData(soundTracks[track]).channel.stop();
+				if(track == SoundTrack.MUSIC)
+					Config.callLater(playNewSound, null, 8)
+				else
+					playNewSound();
+			}
+			else
+				playNewSound();
+
+			function playNewSound():void
+			{
+				soundTracks[track] = new SoundData(soundName, soundObject.play(0, SoundTrack.MUSIC ? 0xFFFF : 0, SoundTrack.MUSIC ? _musicSoundTransform : _soundSoundTransform));
+			}
+		}
+
+		private function onSoundVolumeChanged():void {
+			_soundSoundTransform.volume = _soundEnabled ? _sound : 0;
+			for(var name:* in soundTracks)
+				if(name != SoundTrack.MUSIC)
+					SoundData(soundTracks[name]).channel.soundTransform = _soundSoundTransform;
+		}
+
+		private function onMusicVolumeChanged():void {
+			_musicSoundTransform.volume = _musicEnabled ? _music : 0;
+			SoundData(soundTracks[SoundTrack.MUSIC]).channel.soundTransform = _musicSoundTransform;
+		}
+	}
+}
+
+import flash.media.SoundChannel;
+
+class SoundData
+{
+	public var soundName:String;
+	public var channel:SoundChannel;
+
+	public function SoundData(soundName:String, channel:SoundChannel)
+	{
+		this.soundName = soundName;
+		this.channel = channel;
 	}
 }
