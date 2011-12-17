@@ -1,6 +1,8 @@
 package com.somewater.rabbit.storage
 {
-	public class RewardLevelDef extends LevelDef
+	import com.somewater.rabbit.IUserLevel;
+
+	public class RewardLevelDef extends LevelDef implements IUserLevel
 	{
 
 		public static const WIDTH:int = 9;
@@ -8,11 +10,11 @@ package com.somewater.rabbit.storage
 
 		private var uniqId:Number = Math.random();
 
-		public var gameUser:GameUser;
+		private var _gameUser:GameUser;
 
 		public function RewardLevelDef(gameUser:GameUser)
 		{
-			this.gameUser = gameUser;
+			this._gameUser = gameUser;
 			var xml:XML = <xml id="-1" number="0">
 								<conditions>
 									<time>2000000000</time>
@@ -24,7 +26,7 @@ package com.somewater.rabbit.storage
 								<width>{WIDTH}</width>
 								<height>{HEIGHT}</height>
 							</xml>;
-			for each(var r:RewardInstanceDef in gameUser.rewards)
+			for each(var r:RewardInstanceDef in _gameUser.rewards)
 			{
 				var name:String = r.rewardDef.template.@name
 				XML(xml.group).appendChild(<objectReference x={r.x} y={r.y} name={name}/>)
@@ -45,6 +47,11 @@ package com.somewater.rabbit.storage
 
 		override public function get additionSwfs():Array {
 			return super.additionSwfs.concat({name:"Rewards"});
+		}
+
+		public function get gameUser():GameUser
+		{
+			return _gameUser;
 		}
 	}
 }

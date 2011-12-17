@@ -1,4 +1,5 @@
 package com.somewater.rabbit.rewards {
+	import com.somewater.rabbit.IUserLevel;
 	import com.somewater.rabbit.iso.IsoRenderer;
 	import com.somewater.rabbit.storage.Config;
 
@@ -31,8 +32,9 @@ package com.somewater.rabbit.rewards {
 			holeTitle.width = 70;
 			holeTitle.x = -25;
 			holeTitle.y = -63;
-			holeTitle.text = Config.loader.getUser().firstName && Config.loader.getUser().firstName.length ? Config.loader.getUser().firstName :
-									(Config.loader.getUser().lastName ? Config.loader.getUser().lastName : '');
+			holeTitle.text = Config.game.level is IUserLevel ? IUserLevel(Config.game.level).gameUser.socialUser.firstName
+					: (Config.loader.getUser().firstName && Config.loader.getUser().firstName.length ? Config.loader.getUser().firstName :
+									(Config.loader.getUser().lastName ? Config.loader.getUser().lastName : ''));
 			clip.addChild(holeTitle);
 		}
 	}
