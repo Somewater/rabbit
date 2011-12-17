@@ -1,6 +1,7 @@
 package com.somewater.rabbit.application
 {
 	import com.somewater.controller.PopUpManager;
+	import com.somewater.rabbit.application.commands.OpenRewardLevelCommand;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.Lib;
@@ -78,7 +79,7 @@ package com.somewater.rabbit.application
 						Config.application.startPage("levels");
 						break;
 				case Lang.t("MY_ACHIEVEMENTS"):
-						Config.application.startGame(new RewardLevelDef(UserProfile.instance));
+						new OpenRewardLevelCommand(UserProfile.instance).execute();
 						break;
 				case Lang.t("ABOUT_GAME"):
 						Config.application.startPage("about");

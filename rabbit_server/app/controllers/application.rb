@@ -69,6 +69,8 @@ class Application
 					LevelsController.new(request).call
 				when "levels/manage"
 					LevelsManageController.new(request).call
+				when "rewards/move"
+					RewardMoveController.new(request).call
 				when "posting/complete"
 					PostingController.new(request).call
 

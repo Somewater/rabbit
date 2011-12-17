@@ -24,10 +24,13 @@ package
 	import com.somewater.rabbit.application.windows.PauseMenuWindow;
 	import com.somewater.rabbit.application.windows.PendingRewardsWindow;
 	import com.somewater.rabbit.storage.Config;
+	import com.somewater.rabbit.storage.GameUser;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.rabbit.storage.RewardDef;
+	import com.somewater.rabbit.storage.RewardInstanceDef;
+	import com.somewater.rabbit.storage.RewardLevelDef;
 	import com.somewater.rabbit.storage.UserProfile;
 	import com.somewater.rabbit.xml.XmlController;
 	import com.somewater.storage.Lang;
@@ -533,12 +536,35 @@ package
 			return Lang.t(key, args)
 		}
 
+
+
 		/**
 		 * Обработка любых серверных ошибок
 		 */
 		private function serverErrorHandler(response:Object):void {
 			if(response.hasOwnProperty('no_callback') && response['no_callback'])
 				this.fatalError(response['error'] ? response['error'] : translate('UNDEFINED_SERVER_ERROR'))
+		}
+
+		public function positionizeRewards(user:GameUser):void {
+			if(user.itsMe())
+			{
+				var userRewardsWithoutCurrent:Array;
+				var positionRewards:Array = [];
+				for each(var r:RewardInstanceDef in user.rewards)
+					if(r.x == 0 && r.y == 0)
+					{
+						userRewardsWithoutCurrent = user.rewards.slice();
+						if(userRewardsWithoutCurrent.indexOf(r) != -1)
+							userRewardsWithoutCurrent.splice(userRewardsWithoutCurrent.indexOf(r),1)
+						for(var i:int = 0;i<positionRewards.length;i++)
+							if(userRewardsWithoutCurrent.indexOf(positionRewards[i]) == -1)
+								userRewardsWithoutCurrent.push(positionRewards[i]);
+						ServerLogic.positionReward(r, userRewardsWithoutCurrent);
+						positionRewards.push(r);
+					}
+				AppServerHandler.instance.moveRewards(positionRewards);
+			}
 		}
 	}
 }

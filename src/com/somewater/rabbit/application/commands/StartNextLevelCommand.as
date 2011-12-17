@@ -1,4 +1,4 @@
-package com.somewater.rabbit.social {
+package com.somewater.rabbit.application.commands {
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.UserProfile;

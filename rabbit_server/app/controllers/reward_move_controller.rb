@@ -1,14 +1,18 @@
 class RewardMoveController < BaseUserController
 	# прогнать левел инстанс через server_logic и выдать ответ клиенту
 	def process
-		raise FormatError unless @json['reward'] && @json['reward']['id'] && @json['reward']['x'] && @json['reward']['y']
+		raise FormatError, "Field 'rewards' not assigned" unless @json['rewards'] || @json['rewards'].size == 0
 
-		reward = @user.rewards[ @json['reward']['id'].to_s]
-		raise LogicError, "Unknown reward id #{@json['reward']['id']}" unless reward
+		moved_rewards = []
+		@json['rewards'].each do |moved_reward|
+			reward = @user.rewards[ moved_reward['id'].to_s]
+			raise LogicError, "Unknown reward id #{moved_reward['id']}" unless reward
 
-		reward['x'] = @json['reward']['x']
-		reward['y'] = @json['reward']['y']
+			reward['x'] = moved_reward['x']
+			reward['y'] = moved_reward['y']
+			moved_rewards << moved_reward
+		end
 
-		@response['reward'] = reward
+		@response['rewards'] = moved_rewards
 	end
 end

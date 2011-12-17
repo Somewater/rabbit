@@ -8,7 +8,7 @@ package com.somewater.rabbit.storage
 
 		private var uniqId:Number = Math.random();
 
-		private var gameUser:GameUser;
+		public var gameUser:GameUser;
 
 		public function RewardLevelDef(gameUser:GameUser)
 		{

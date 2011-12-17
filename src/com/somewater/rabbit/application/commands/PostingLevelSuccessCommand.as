@@ -1,4 +1,5 @@
-package com.somewater.rabbit.social {
+package com.somewater.rabbit.application.commands {
+	import com.somewater.rabbit.social.*;
 	import com.somewater.rabbit.application.AppServerHandler;
 	import com.somewater.rabbit.application.ServerLogic;
 	import com.somewater.rabbit.storage.Config;
@@ -14,15 +15,15 @@ package com.somewater.rabbit.social {
 
 	import flash.utils.Dictionary;
 
-	public class PostingRewardCommand implements ICommand{
+	public class PostingLevelSuccessCommand implements ICommand{
 
 		private var data:Dictionary;
-		private var reward:RewardDef;
+		private var levelInstance:LevelInstanceDef;
 
-		public function PostingRewardCommand(reward:RewardDef, onComplete:Function, onError:Function)
+		public function PostingLevelSuccessCommand(levelInstance:LevelInstanceDef, onComplete:Function, onError:Function)
 		{
 			this.data = new Dictionary(true);
-			this.reward = reward;
+			this.levelInstance = levelInstance;
 			data['onComplete'] = onComplete;
 			data['onError'] = onError;
 		}
@@ -31,12 +32,12 @@ package com.somewater.rabbit.social {
 		{
 			if(Config.loader.canPost())
 			{
-				var image:DisplayObject = PostingFactory.createRewardPosting(reward);
-				var imageUrl:String = Config.loader.getFilePath('reward_posting_' + reward.id);
-				var postdata:String = Config.loader.serverHandler.toJson({'type':'reward_posting','poster':UserProfile.instance.socialUser.id, 'reward':reward.id});
+				var image:DisplayObject = PostingFactory.createLevelPosting(levelInstance.levelDef);
+				var imageUrl:String = Config.loader.getFilePath('level_pass_posting_' + levelInstance.number.toString());
+				var postdata:String = Config.loader.serverHandler.toJson({'type':'level_pass_posting','poster':UserProfile.instance.socialUser.id, 'level':levelInstance.number});
 				Config.loader.posting(UserProfile.instance.socialUser,
-						Lang.t('POSTING_REWARD_PASSES_TITLE'),
-						Lang.t('POSTING_REWARD_PASSES_TEXT', {'reward_name':reward.name}), image, imageUrl, postdata,
+						Lang.t('POSTING_LEVEL_PASSES_TITLE'),
+						Lang.t('POSTING_LEVEL_PASSES_TEXT', {'level_number':levelInstance.number}), image, imageUrl, postdata,
 								function(...args):void{
 									// on complete
 									UserProfile.instance.postings += 1;

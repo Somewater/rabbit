@@ -155,14 +155,12 @@ package com.somewater.rabbit.application {
 		}
 
 		/**
-		 * Без проверок добавить ревард юзеру
-		 * @param user
+		 * Найти позицию для реварда
 		 * @param reward
-		 * @param levelInstance
+		 * @param otherRewards
 		 */
-		private static function addReward(user:GameUser, reward:RewardDef, levelInstance:LevelInstanceDef):RewardInstanceDef
+		public static function positionReward(rewardInstance:RewardInstanceDef, userRewards:Array):void
 		{
-			var rewardInstance:RewardInstanceDef = new RewardInstanceDef(reward);
 			var counter:int = 1000;
 			var size:Point = rewardInstance.size;
 			var rect:Rectangle = new Rectangle(0, 0, size.x, size.y);
@@ -174,9 +172,11 @@ package com.somewater.rabbit.application {
 				var position:Point = new Point(
 						int(Math.random() * RewardLevelDef.WIDTH  + 1 - size.x),
 						int(Math.random() * RewardLevelDef.HEIGHT + 1 - size.y));
+				rect.x = position.x;
+				rect.y = position.y;
 
-				// проверяем на пересечение с норой
-				if(position.x < 3 && position.y < 3)
+				// проверяем на пересечение с норой (и дорожкой вокруг нее)
+				if(position.x < 4 && position.y < 4)
 				{
 					counter--;
 					continue;
@@ -189,13 +189,14 @@ package com.somewater.rabbit.application {
 					continue;
 				}
 
-				var userRewards:Array = user.rewards;
+
 				for(var i:int = 0; i < userRewards.length; i++)
 				{
 					counter--;
 					var userReward:RewardInstanceDef = userRewards[i];
 					var userRewardSize:Point = userReward.size;
-					if(new Rectangle(userReward.x,  userReward.y, userRewardSize.x, userRewardSize.y).intersects(rect))
+					var intersect:Rectangle = new Rectangle(userReward.x,  userReward.y, userRewardSize.x, userRewardSize.y).intersection(rect)
+					if(intersect.width > 0 && intersect.height > 0)
 					{
 						continue cycle;
 					}
@@ -205,6 +206,19 @@ package com.somewater.rabbit.application {
 				rewardInstance.y = position.y;
 				break;
 			}
+		}
+
+		/**
+		 * Без проверок добавить ревард юзеру
+		 * @param user
+		 * @param reward
+		 * @param levelInstance
+		 */
+		private static function addReward(user:GameUser, reward:RewardDef, levelInstance:LevelInstanceDef):RewardInstanceDef
+		{
+			var rewardInstance:RewardInstanceDef = new RewardInstanceDef(reward);
+
+			positionReward(rewardInstance, user.rewards);
 
 			if(levelInstance)
 				levelInstance.rewards.push(rewardInstance);
@@ -212,5 +226,7 @@ package com.somewater.rabbit.application {
 
 			return rewardInstance;
 		}
+
+
 	}
 }

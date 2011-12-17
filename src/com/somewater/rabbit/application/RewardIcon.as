@@ -4,7 +4,7 @@ package com.somewater.rabbit.application {
 	import com.somewater.display.Photo;
 	import com.somewater.rabbit.application.windows.LevelSwitchWindow;
 	import com.somewater.rabbit.social.PostingFactory;
-	import com.somewater.rabbit.social.PostingLevelSuccessCommand;
+	import com.somewater.rabbit.application.commands.PostingLevelSuccessCommand;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
 	import com.somewater.rabbit.storage.RewardDef;
 	import com.somewater.rabbit.storage.RewardInstanceDef;

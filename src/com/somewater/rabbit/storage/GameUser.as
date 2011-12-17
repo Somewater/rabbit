@@ -18,6 +18,11 @@ package com.somewater.rabbit.storage
 			this.supressSerializationWarn = true;
 			super(data)
 		}
+
+		public function itsMe():Boolean
+		{
+			return false;
+		}
 		
 		override public function set data(value:Object):void
 		{

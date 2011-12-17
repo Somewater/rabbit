@@ -6,8 +6,8 @@ package com.somewater.rabbit.application.windows {
 	import com.somewater.rabbit.application.OrangeButton;
 	import com.somewater.rabbit.application.RewardIcon;
 	import com.somewater.rabbit.application.RewardPanel;
-	import com.somewater.rabbit.social.PostingLevelSuccessCommand;
-	import com.somewater.rabbit.social.StartNextLevelCommand;
+	import com.somewater.rabbit.application.commands.PostingLevelSuccessCommand;
+	import com.somewater.rabbit.application.commands.StartNextLevelCommand;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;

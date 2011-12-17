@@ -96,6 +96,17 @@ package com.somewater.rabbit.application {
 				}, onError, null, {'secure': true})
 		}
 
+		public function moveRewards(rewards:Array, onComplete:Function = null, onError:Function = null):void
+		{
+			var rewardsToJson:Array = [];
+			for each(var r:RewardInstanceDef in rewards)
+				rewardsToJson.push(rewardInstanceToJson(r,  {}));
+			handler.call('rewards/move', {'rewards': rewardsToJson},
+				function(response:Object):void{
+					onComplete && onComplete(response);
+				}, onError, null)
+		}
+
 
 		//////////////////////////////////
 		//                              //

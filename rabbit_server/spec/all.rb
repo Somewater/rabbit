@@ -466,7 +466,7 @@ class AllSpec
 				@user.save
 			end
 
-			def secure_request(hash)
+			def secure_request(hash, roll_invokes = 0)
 				execute_secure_request(hash, LevelsController)
 			end
 
@@ -511,10 +511,13 @@ class AllSpec
 				@user.save
 			end
 
-			def secure_request(hash, hack_roll_error = true)
+			def secure_request(hash, hack_roll_error = 1)
 				if(hack_roll_error)
 					roll = @user.roll
-					get_roll = @user.get_roll()
+					get_roll = nil
+					hack_roll_error.times{
+						get_roll = @user.get_roll()
+					}
 					@user.roll = roll
 					@user.save
 					hash['json'] = {} unless hash['json']
@@ -535,20 +538,20 @@ class AllSpec
 			it "выдает ревард, если пользователь заслуживает" do
 				@user.postings = 2
 				@user.save
-				response = secure_request({'net' => @user.net,'uid' => @user.uid}, true)
+				response = secure_request({'net' => @user.net,'uid' => @user.uid}, 2)
 				response['reward'].should_not be_nil
 				response['reward']['id'].should == 5
 			end
 
 			it "не выдает ревард, если пользователь еще не накопил по счетчику" do
-				response = secure_request({'net' => @user.net,'uid' => @user.uid}, true)
+				response = secure_request({'net' => @user.net,'uid' => @user.uid}, 1)
 				response['reward'].should === nil
 				@user.reload
 				@user.rewards.to_a.should be_empty
 			end
 
 			it "увеличивает счетчик постингов пользователя" do
-				secure_request({'net' => @user.net,'uid' => @user.uid}, true)
+				secure_request({'net' => @user.net,'uid' => @user.uid}, 1)
 				@user.reload
 				@user.postings.should == 1
 			end
@@ -570,16 +573,17 @@ class AllSpec
 
 		    it "Выдает логическую ошибку, если такого реварда у пользователя нет" do
 				lambda{
-					request({'net' => @user.net,'uid' => @user.uid, 'json' => {'reward' => {'id' => '54321', 'x' => 11, 'y' => 12}}})
+					request({'net' => @user.net,'uid' => @user.uid, 'json' => {'rewards' => [{'id' => '54321', 'x' => 11, 'y' => 12}]}})
 				}.should raise_error(LogicError, /Unknown reward id \d+/)
 			end
 
 			it "Переставляет ревард и выдает его новые координаты" do
 				@user.rewards['12345']['x'].should == 2
 				@user.rewards['12345']['y'].should == 3
-				response = request({'net' => @user.net,'uid' => @user.uid, 'json' => {'reward' => {'id' => '12345', 'x' => 11, 'y' => 12}}})
-				response['reward']['x'].should == 11
-				response['reward']['y'].should == 12
+				response = request({'net' => @user.net,'uid' => @user.uid, 'json' => {'rewards' => [{'id' => '12345', 'x' => 11, 'y' => 12}]}})
+				response['rewards'].size.should == 1
+				response['rewards'][0]['x'].should == 11
+				response['rewards'][0]['y'].should == 12
 				@user.reload
 				@user.rewards['12345']['x'].should == 11
 				@user.rewards['12345']['y'].should == 12

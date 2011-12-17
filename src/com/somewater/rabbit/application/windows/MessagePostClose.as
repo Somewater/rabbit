@@ -1,7 +1,7 @@
 package com.somewater.rabbit.application.windows {
 import com.somewater.display.Window;
 	import com.somewater.rabbit.application.RewardPanel;
-	import com.somewater.rabbit.social.StartNextLevelCommand;
+	import com.somewater.rabbit.application.commands.StartNextLevelCommand;
 	import com.somewater.rabbit.storage.RewardInstanceDef;
 	import com.somewater.storage.Lang;
 

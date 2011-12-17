@@ -1,4 +1,4 @@
-package com.somewater.rabbit.social {
+package com.somewater.rabbit.application.commands {
 	public interface ICommand {
 		function execute():void
 	}

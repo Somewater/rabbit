@@ -4,7 +4,7 @@ package com.somewater.rabbit.application.windows {
 	import com.somewater.rabbit.application.HideOrangeButton;
 	import com.somewater.rabbit.application.OrangeButton;
 	import com.somewater.rabbit.application.RewardPanel;
-	import com.somewater.rabbit.social.PostingRewardCommand;
+	import com.somewater.rabbit.application.commands.PostingRewardCommand;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;

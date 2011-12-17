@@ -1,5 +1,6 @@
 package com.somewater.rabbit
 {
+	import com.somewater.rabbit.storage.GameUser;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
 
@@ -59,5 +60,8 @@ package com.somewater.rabbit
 		function createTextField(font:String = null,color:* = null,size:int = 12,bold:Boolean = false,multiline:Boolean = false, selectable:Boolean = false,input:Boolean = false,align:String = "left",bitmapText:Boolean = false):TextField
 
 		function translate(key:String, args:Object = null):String
+
+		// utils
+		function positionizeRewards(user:GameUser):void
 	}
 }
