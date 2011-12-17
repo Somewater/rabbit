@@ -1,7 +1,9 @@
 package com.somewater.rabbit.application.windows {
 import com.somewater.display.Window;
-import com.somewater.rabbit.social.StartNextLevelCommand;
-import com.somewater.storage.Lang;
+	import com.somewater.rabbit.application.RewardPanel;
+	import com.somewater.rabbit.social.StartNextLevelCommand;
+	import com.somewater.rabbit.storage.RewardInstanceDef;
+	import com.somewater.storage.Lang;
 
 import flash.display.DisplayObject;
 
@@ -18,6 +20,7 @@ public class MessagePostClose extends Window
 	private var callback:Function;
 	private var timer:Timer;
 	private var callbackFromCOmmand:Boolean = false;
+	private var rewardPanel:RewardPanel;
 
 	/**
 	 *
@@ -53,6 +56,31 @@ public class MessagePostClose extends Window
 		if(buttons && buttons[0] is DisplayObject) buttons[0].visible = true;
 		text = Lang.t('LEVEL_POSTING_SUCCESS');
 		callbackFromCOmmand = true
+
+		// если произошла выдача реварда при постинге, показать  выданный ревард
+		if(args)
+		{
+			var rewards:Array = []
+			for(var i:int = 0;i<args.length;i++)
+				if(args[i] is RewardInstanceDef)
+				{
+					rewards.push(args[i]);
+				}
+			if(rewards.length > 0)
+				showReward(rewards);
+		}
+	}
+
+	private function showReward(rewards:Array):void
+	{
+		rewardPanel = new RewardPanel(rewards);
+		addChild(rewardPanel);
+		rewardPanel.x = 20;
+		rewardPanel.y = textField.y + textField.textHeight + 40;
+		var maxY:int = rewardPanel.y + RewardPanel.HEIGHT + 20;
+		if(buttons && buttons[0] is DisplayObject)
+			maxY += 80
+		setSize(RewardPanel.WIDTH + 40, maxY);
 	}
 
 	private function onErrorCommand(...args):void
@@ -71,7 +99,7 @@ public class MessagePostClose extends Window
 	}
 
 
-	override public function close():void {
+	override public function clear():void {
 		data = null;
 		callback = null;
 		if(timer)
@@ -80,7 +108,12 @@ public class MessagePostClose extends Window
 			timer.stop();
 			timer = null;
 		}
-		super.close();
+		if(rewardPanel)
+		{
+			rewardPanel.clear();
+			rewardPanel = null;
+		}
+		super.clear();
 	}
 
 	override protected function onCloseBtnClick(e:MouseEvent):void {

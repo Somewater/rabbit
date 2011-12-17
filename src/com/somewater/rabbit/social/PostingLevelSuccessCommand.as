@@ -5,6 +5,7 @@ package com.somewater.rabbit.social {
 	import com.somewater.rabbit.storage.LevelInstanceDef;
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.rabbit.storage.RewardDef;
+	import com.somewater.rabbit.storage.RewardInstanceDef;
 	import com.somewater.rabbit.storage.UserProfile;
 	import com.somewater.storage.Lang;
 
@@ -39,10 +40,10 @@ package com.somewater.rabbit.social {
 								function(...args):void{
 									// on complete
 									UserProfile.instance.postings += 1;
-									ServerLogic.checkAddReward(UserProfile.instance, null, null, RewardDef.TYPE_POSTING, UserProfile.instance.postings)
+									var reward:RewardInstanceDef = ServerLogic.checkAddReward(UserProfile.instance, null, null, RewardDef.TYPE_POSTING, UserProfile.instance.postings)
 									AppServerHandler.instance.onPosting(UserProfile.instance);
 									if(data['onComplete'])
-										data['onComplete']();
+										data['onComplete'](reward);
 								}, function(...args):void{
 									// on error
 									if(data['onError'])

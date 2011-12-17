@@ -10,6 +10,9 @@ package com.somewater.rabbit.application {
 
 	public class RewardPanel extends Sprite implements IClear{
 
+		public static const WIDTH:int = 450;
+		public static const HEIGHT:int = 123;
+
 		private var bonusIcons:Array = [];
 
 		public function RewardPanel(rewards:Array) {
@@ -27,15 +30,13 @@ package com.somewater.rabbit.application {
 			addChild(bonusesTitle);
 			
 			var bonusLength:int = rewards.length;
-			var BONUS_HOLDER_WIDTH:int = 450;
-			var BONUS_HOLDER_HEIGHT:int = 123;
-			var bonusPadding:int = (BONUS_HOLDER_WIDTH - bonusLength * RewardIcon.WIDTH) / (bonusLength + 1);
+			var bonusPadding:int = (WIDTH - bonusLength * RewardIcon.WIDTH) / (bonusLength + 1);
 			var nextX:int = bonusPadding;
 			for each(var reward:* in rewards)
 			{
 				var bonusIcon:RewardIcon = new RewardIcon(reward);
 				bonusIcon.x = nextX;
-				bonusIcon.y = (BONUS_HOLDER_HEIGHT - RewardIcon.HEIGHT) * 0.5;
+				bonusIcon.y = (HEIGHT - RewardIcon.HEIGHT) * 0.5;
 				bonusHolder.addChild(bonusIcon);
 				bonusIcons.push(bonusIcon);
 				nextX += RewardIcon.WIDTH + bonusPadding;
