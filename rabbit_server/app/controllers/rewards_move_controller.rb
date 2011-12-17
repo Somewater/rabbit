@@ -1,4 +1,4 @@
-class RewardMoveController < BaseUserController
+class RewardsMoveController < BaseUserController
 	# прогнать левел инстанс через server_logic и выдать ответ клиенту
 	def process
 		raise FormatError, "Field 'rewards' not assigned" unless @json['rewards'] || @json['rewards'].size == 0

@@ -98,7 +98,7 @@ class User < ActiveRecord::Base
 	end
 
 	def self.find_by_uid(uid, net)
-		User.where(:uid => uid.to_s, :net => net.to_i)[0]
+		User.where(:uid => uid.to_s, :net => net.to_i).first
 	end
 
 	# всем ревардам юзера удалить флаг "flag", если таковой имеется

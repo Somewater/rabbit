@@ -557,7 +557,7 @@ class AllSpec
 			end
 		end
 
-		describe RewardMoveController do
+		describe RewardsMoveController do
 			before :each do
 				@user = User.find_by_uid(1,1)
 				unless(@user)
@@ -568,7 +568,7 @@ class AllSpec
 			end
 
 			def request(hash)
-				execute_request(hash, RewardMoveController)
+				execute_request(hash, RewardsMoveController)
 			end
 
 		    it "Выдает логическую ошибку, если такого реварда у пользователя нет" do
@@ -587,6 +587,20 @@ class AllSpec
 				@user.reload
 				@user.rewards['12345']['x'].should == 11
 				@user.rewards['12345']['y'].should == 12
+			end
+		end
+
+		describe UserInfoController do
+			it "Выдает ошибку, если формат запроса не верен" do
+
+			end
+
+			it "Выдает ошибку, если запрошенного пользователя не существует" do
+
+			end
+
+			it "Выдает инфу о пользователе корректно" do
+
 			end
 		end
 	end

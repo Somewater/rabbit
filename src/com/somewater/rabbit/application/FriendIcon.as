@@ -4,6 +4,7 @@ package com.somewater.rabbit.application
 	import com.somewater.control.IClear;
 	import com.somewater.controller.PopUpManager;
 	import com.somewater.display.Photo;
+	import com.somewater.rabbit.application.commands.OpenRewardLevelCommand;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.GameUser;
 	import com.somewater.rabbit.storage.Lib;
@@ -94,7 +95,7 @@ package com.somewater.rabbit.application
 			}
 			else if(mode == 1 || mode == 2)
 			{
-				PopUpManager.message("TODO: clicked user " + user.socialUser.name);
+				new OpenRewardLevelCommand(user).execute()
 			}
 		}
 		

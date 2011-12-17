@@ -107,6 +107,15 @@ package com.somewater.rabbit.application {
 				}, onError, null)
 		}
 
+		public function refreshUserInfo(gameUser:GameUser, onComplete:Function = null, onError:Function = null):void
+		{
+			handler.call('users/show', {'user': gameUserToJson(gameUser, {})},
+					function(response:Object):void{
+						response['info'] = jsonToGameUser(response['info'], gameUser);
+						onComplete && onComplete(response);
+					}, onError, null)
+		}
+
 
 		//////////////////////////////////
 		//                              //
@@ -119,7 +128,7 @@ package com.somewater.rabbit.application {
 			var id:String;
 
 		 	// записать uid, session (и т.д.)
-			if(json['new'] == true)
+			if(json['new'] == true && gameUser.itsMe())
 			{
 				handler.resetUid(json['uid']);
 				var su:SocialUser = Config.loader.getUser();

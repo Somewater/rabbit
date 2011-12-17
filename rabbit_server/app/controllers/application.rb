@@ -70,7 +70,9 @@ class Application
 				when "levels/manage"
 					LevelsManageController.new(request).call
 				when "rewards/move"
-					RewardMoveController.new(request).call
+					RewardsMoveController.new(request).call
+				when "users/show"
+					UserInfoController.new(request).call
 				when "posting/complete"
 					PostingController.new(request).call
 
