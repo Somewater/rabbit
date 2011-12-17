@@ -44,7 +44,7 @@ class User < ActiveRecord::Base
 		roll = (self.uid.to_i + 1024).abs if roll < 1024
 		self.roll = roll = ((roll * 16147) % 2147483647).to_i
 		result = (roll.to_f / 2147483647)
-		Application.logger.debug "ROLL #{debug} => #{roll} (#{result})"
+		# Application.logger.debug "ROLL #{debug} => #{roll} (#{result})"
 		result
 	end
 
