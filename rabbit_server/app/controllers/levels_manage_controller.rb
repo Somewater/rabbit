@@ -25,8 +25,7 @@ private
 			true
 		elsif admin_user.authorized? == :login
 			raise AuthError, "Unauthorized action" unless admin_user.can?(AdminUser::PERMISSION_LEVEL_SAVE)
-			raise AuthError, "Illegal level number #{@json['number']}. Must between #{admin_user.user.level_low}-#{admin_user.user.level_high}" \
-			 					unless @json['number'].to_i < admin_user.user.level_low || @json['number'].to_i > admin_user.user.level_high
+			admin_user.level?(@json['number'])
 			@author = admin_user.user.login
 			true
 		else

@@ -23,11 +23,13 @@ class LevelsAdminController < AdminController::Base
 				@showed = Level.find(@request['id'])
 			when 'enable'
 				lvl = Level.find(@request['id'])
+				@admin_user.level?(lvl)
 				lvl.enabled = true
 				lvl.save
 				on_level_changed
 			when 'update'
 				lvl = Level.find(@request['id'])
+				@admin_user.level?(lvl)
 				lvl.description = @request['description']
 				lvl.width = @request['width']
 				lvl.height = @request['height']
@@ -38,6 +40,7 @@ class LevelsAdminController < AdminController::Base
 				on_level_changed
 			when 'disable'
 				lvl = Level.find(@request['id'])
+				@admin_user.level?(lvl)
 				lvl.enabled = false
 				lvl.save
 				on_level_changed
@@ -48,6 +51,7 @@ class LevelsAdminController < AdminController::Base
 				return html{template File.read("#{TEMPLATE_ROOT}/admin/levels_admin_dialog.erb")}
 			when 'delete'
 				lvl = Level.find(@request['id'], :conditions => 'visible = TRUE')
+				@admin_user.level?(lvl)
 				lvl.visible = false
 				lvl.save
 				on_level_changed
@@ -87,6 +91,7 @@ class LevelsAdminController < AdminController::Base
 	private
 		def head_level(level_id)
 			lvl = Level.find(level_id)
+			@admin_user.level?(lvl)
 			lvl.enabled = true
 			lvl.visible = true
 			lvl.save
@@ -97,6 +102,7 @@ class LevelsAdminController < AdminController::Base
 
 		def delete_current_and_anchestors(level_id)
 		  	lvl = Level.find(level_id)
+			@admin_user.level?(lvl)
 			lvl.visible = false
 			lvl.save
 

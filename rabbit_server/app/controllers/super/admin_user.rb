@@ -34,6 +34,13 @@ class AdminUser
 	def can?(perm_bit)
 		perm_bit.to_i & self.permissions > 0
 	end
+
+	def level?(level)
+		level = level.number if level.is_a?(Level)
+		level = level.to_i
+		raise AuthError, "Illegal level number #{level}. Must between #{@user.level_low}-#{@user.level_high}" \
+			 					if @user.level_low > level || @user.level_high < level
+	end
 	
 	# есть ли такой юзер в базе (nil, :login, :success); где :login авторизация по логин-пароль, :success - авторизация по coocke
 	def authorized?
