@@ -47,7 +47,7 @@
 		<component name="Mover">
 			<speed>4</speed>
 		</component>
-		<component name="Spatial">	
+		<component name="Spatial">
 			<objectMask childType="String">victim</objectMask>
 		</component>
 		<component name="Render">
@@ -127,7 +127,7 @@
 			<slug>rabbit.CarrotActor</slug>
 			<frameRate>15</frameRate>
 			<useDirection>4</useDirection>
-			<height>-1</height>
+			<correctX>-0.499</correctX><correctY>-0.499</correctY>
 		</component>
 		<component name="Spatial">
 			<objectMask childType="String">
@@ -160,7 +160,7 @@
 			<slug>rabbit.Beam</slug>
 			<frameRate>15</frameRate>
 			<useDirection>1</useDirection>
-			<height>-1</height>
+			<correctX>-2.99</correctX><correctY>-0.99</correctY>
 		</component>
 		<component name="Spatial" type="com.somewater.rabbit.creature.BeamSpatialComponent">
 			<spatialManager entityName="SceneDB" componentName="Spatial"/>
@@ -233,7 +233,7 @@
 		<component name="Render">
 			<slug>rabbit.KennelActor</slug>
 			<useDirection>1</useDirection>
-			<height>-1</height>
+			<correctX>-0.49</correctX><correctY>-0.49</correctY>
 		</component>
 		<component name="Spatial">
 			<passMask>1</passMask>
@@ -257,7 +257,7 @@
 		<component name="Render">
 			<slug>null</slug>
 			<useDirection>1</useDirection>
-			<height>-1</height>
+			<correctX>-0.49</correctX><correctY>-0.49</correctY>
 		</component>
 		<component name="Spatial">
 			<passMask>1</passMask>
@@ -285,11 +285,11 @@
 			<slug>rabbit.CrowActor</slug>	
 			<frameRate>15</frameRate>
 			<useDirection>-4</useDirection>		
-			<height>1</height>
+			<correctX>0.49</correctX><correctY>0.49</correctY>
 		</component>
 		<component name="Logic" type="com.somewater.rabbit.logic.LogicComponent">
 		</component>
-		<component name="Hunter" type="com.somewater.rabbit.components.HunterComponent">
+		<component name="Hunter" type="com.somewater.rabbit.components.ObviousHunterComponent">
 			<priority>1</priority>
 			<victimSet>harvest</victimSet>
 			<searchRadius>10</searchRadius>
@@ -351,7 +351,7 @@
 	<template name="PoolBase" template="IsoBase">
 		<component name="Render">
 			<useDirection>1</useDirection>
-			<height>-1</height>
+			<correctX>-0.99</correctX><correctY>-0.99</correctY>
 		</component>
 		<component name="Spatial">
 			<passMask>1</passMask>
@@ -365,6 +365,7 @@
 	<template name="Pool0" template="PoolBase">
 		<component name="Render">
 			<slug>rabbit.Pool0</slug>
+			<correctX>-1.99</correctX><correctY>-1.99</correctY>
 		</component>
 		<component name="Spatial" type="com.somewater.rabbit.creature.ShapeSpatialComponent">
 			<shape>G</shape>
@@ -381,6 +382,7 @@
 	<template name="Pool1" template="PoolBase">
 		<component name="Render">
 			<slug>rabbit.Pool1</slug>
+			<correctX>-1.99</correctX><correctY>-1.99</correctY>
 		</component>
 		<component name="Spatial" type="com.somewater.rabbit.creature.ShapeSpatialComponent">
 			<shape>R</shape>
@@ -398,6 +400,7 @@
 	<template name="Pool2" template="PoolBase">
 		<component name="Render">
 			<slug>rabbit.Pool2</slug>
+			<correctX>-0.99</correctX><correctY>-2.99</correctY>
 		</component>
 		<component name="Spatial">
 			<size>
@@ -413,6 +416,7 @@
 	<template name="Pool3" template="PoolBase">
 		<component name="Render">
 			<slug>rabbit.Pool3</slug>
+			<correctX>-0.99</correctX><correctY>-1.99</correctY>
 		</component>
 		<component name="Spatial">
 			<size>
@@ -427,6 +431,7 @@
 	<template name="Pool4" template="PoolBase">
 		<component name="Render">
 			<slug>rabbit.Pool4</slug>
+			<correctX>-1.99</correctX><correctY>-0.99</correctY>
 		</component>
 		<component name="Spatial">
 			<size>

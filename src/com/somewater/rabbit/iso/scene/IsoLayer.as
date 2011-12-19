@@ -88,8 +88,8 @@ package com.somewater.rabbit.iso.scene
 				//   rename interface class = IsoDisplayObject, concrete class = IsoDisplayObject_impl with public fields?
 				
 				// TODO - getting bounds objects REALLY slows us down, too.  It creates a new one every time you ask for it!
-				var xA:Number = posA.x// + sizeA.x;
-				var yA:Number = posA.y// + sizeA.y;
+				var xA:Number = posA.x + sizeA.x + objA.correctX;
+				var yA:Number = posA.y + sizeA.y + objA.correctY;
 				
 				for (var j:uint = 0; j < max; ++j)
 				{
@@ -99,11 +99,10 @@ package com.somewater.rabbit.iso.scene
 					// See if B should go behind A
 					// simplest possible check, interpenetrations also count as "behind", which does do a bit more work later, but the inner loop tradeoff for a faster check makes up for it
 					var posB:Point = objB._position;
-					//var sizeB:Point = objB._size;
-					//var rightB:Number = posB.x + sizeB.x;
-					//var frontB:Number = posB.y + sizeB.y;
-					if ((posB.y < yA) ||
-						(posB.y == yA && posB.x < xA)
+					var sizeB:Point = objB._size;
+					var frontB:Number = posB.y + sizeB.y + objB.correctY;
+					if ((frontB < yA) ||
+						(frontB == yA && (posB.x + sizeB.x + objB.correctX) < xA)
 					)
 					{
 						behind.push(objB);
@@ -172,12 +171,15 @@ package com.somewater.rabbit.iso.scene
 			var max:int = unsortedSimpleQueue.length;
 			var i:int;
 			var j:int;
+			var posA:Point = new Point();
+			var posB:Point = new Point();
 			
 			for(i = 0;i<max;i++){
 				var objA:IsoRenderer = unsortedSimpleQueue[i];
 				var sortedIndex:int = rendererList.indexOf(objA);
 				var added:Boolean = false;
-				var posA:Point = objA._position;
+				posA.x = objA._position.x + objA.correctX;
+				posA.y = objA._position.y + objA.correctY;
 				//var sizeA:Point = objA.size;
 				
 				if(sortedIndex != -1)
@@ -186,15 +188,16 @@ package com.somewater.rabbit.iso.scene
 				var sortedMax:int = rendererList.length;
 				for(j = 0;j<sortedMax;j++){
 					var objB:IsoRenderer = rendererList[j];
-					var posB:Point = objB._position;
+					posB.x = objB._position.x;
+					posB.y = objB._position.y;
 					var sizeB:Point = objB._size;
-					var dx:Number = posA.x /*+ sizeA.x * 0.5*/ - posB.x - sizeB.x;
-					var dy:Number = posA.y /*+ sizeA.y * 0.5*/ - posB.y - sizeB.y;
+					var dx:Number = posA.x /*+ sizeA.x * 0.5*/ - posB.x - sizeB.x - objB.correctX;
+					var dy:Number = posA.y /*+ sizeA.y * 0.5*/ - posB.y - sizeB.y - objB.correctY;
 					if(dy < 0 || (dy == 0 && dx < 0)){// || (dx * dy == 0 && dx + dy < 0)){
 						
 						// если у объектов разные "высоты", проверяем, не пересекаются ли они в пространстве
-						if(objA.height > objB.height && posB.y < posA.y)
-							continue;// objA все равно дожен быть выше
+						//if(objA.height > objB.height && posB.y < posA.y)
+						//	continue;// objA все равно дожен быть выше
 							
 						added = true;
 						rendererList.splice(j, 0, objA);

@@ -94,7 +94,8 @@ package com.somewater.rabbit.iso
 		 * Например, скамейка должна правильно сортироваться с окружающим ее объектами,
 		 * но если кто-либо находится "внутри" скамейки, то он должен быть выше нее
 		 */
-		public var height:Number = 0;
+		public var correctX:Number = 0;
+		public var correctY:Number = 0;
 		
 		public function set direction(value:int):void
 		{
