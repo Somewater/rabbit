@@ -178,7 +178,17 @@
 		</component>		
 	</template>
 	
-	
+	<template name="BeamRight" template="Beam">
+		<component name="Spatial">
+			<initialSide>1</initialSide>
+		</component>
+	</template>
+
+	<template name="BeamLeft" template="Beam">
+		<component name="Spatial">
+			<initialSide>-1</initialSide>
+		</component>
+	</template>
 	
 	
 	
@@ -298,7 +308,7 @@
 			<priority>10</priority>
 			<concealOnStart>true</concealOnStart>
 		</component>
-		<component name="Harvester" type="com.somewater.rabbit.components.HarvesterComponent">
+		<component name="Harvester" type="com.somewater.rabbit.components.ObviousHarvesterComponent">
 			<priority>5</priority>
 			<harvestType>
 				<_>harvest</_>

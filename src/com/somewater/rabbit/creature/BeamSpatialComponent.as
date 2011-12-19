@@ -66,9 +66,11 @@ package com.somewater.rabbit.creature
 		 * (ссылки на их IsoRenderer)
 		 */
 		private var guestsIsoRenderers:Array = [];
-		
-		
-		
+
+		/**
+		 * Стартовый наклон бревна. Если 0, то рандомный
+		 */
+		public var initialSide:int;
 		
 		public function BeamSpatialComponent()
 		{
@@ -136,7 +138,7 @@ package com.somewater.rabbit.creature
 		override protected function onAdd():void
 		{
 			if(sideMode == 0)
-				changeSide(RandomizeUtil.rnd > 0.5?1:-1);
+				changeSide(initialSide ? initialSide : RandomizeUtil.rnd > 0.5?1:-1);
 			super.onAdd();
 		}
 		

@@ -21,10 +21,10 @@ package com.somewater.rabbit.components
 	 */
 	public class HarvesterComponent extends SentientComponent
 	{
-		private static const HARVEST_DETECTED:String = "harvestDetected";
+		protected static const HARVEST_DETECTED:String = "harvestDetected";
 		
 		public var harvestType:ObjectType;// тип, который данный контроллер собирает
-		private var tempQueryRectangle:Rectangle;// объект для передачи запросу queryRectangle
+		protected var tempQueryRectangle:Rectangle;// объект для передачи запросу queryRectangle
 		protected var scoreRef:PropertyReference;
 		
 		public var sense:Boolean = true;// ведет ли себя контроллер по всем правилам SentientComponent, либо как обычный компонент (нужно для Hero)

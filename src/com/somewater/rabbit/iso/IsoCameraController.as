@@ -315,8 +315,10 @@ package com.somewater.rabbit.iso
 
 		public function isoSpatialInViewArea(isoSpatial:IsoSpatial):Boolean
 		{
-			//throw new Error('implemen me');
-			return true;
+			var pos:Point = isoSpatial._position;
+			var x:int = this.x;
+			var y:int = this.y;
+			return pos.x >= x && pos.x <= x + Config.T_WIDTH && pos.y >= y && pos.y <= y + Config.T_HEIGHT;
 		}
 	}
 }
