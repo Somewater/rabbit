@@ -312,5 +312,11 @@ package com.somewater.rabbit.iso
 			for(var i:int = 0;i<cameraMoveListeners.length;i++)
 				cameraMoveListeners[i](shift);	
 		}
+
+		public function isoSpatialInViewArea(isoSpatial:IsoSpatial):Boolean
+		{
+			//throw new Error('implemen me');
+			return true;
+		}
 	}
 }

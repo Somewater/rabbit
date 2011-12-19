@@ -8,6 +8,7 @@ package com.somewater.rabbit.managers
 	import com.pblabs.engine.entity.PropertyReference;
 	import com.pblabs.rendering2D.SceneAlignment;
 	import com.somewater.rabbit.components.HeroHarvesterComponent;
+	import com.somewater.rabbit.components.ObviousHunterComponent;
 	import com.somewater.rabbit.creature.ShapeSpatialComponent;
 	import com.somewater.rabbit.decor.BackgroundRenderer;
 	import com.somewater.rabbit.decor.GroundGrassRenderer;
@@ -160,7 +161,8 @@ package com.somewater.rabbit.managers
 			PBE.registerType(BackgroundRenderer);
 			PBE.registerType(PopupEffectRenderer);
 			PBE.registerType(HeroHarvesterComponent);
-			PBE.registerType(ShapeSpatialComponent)
+			PBE.registerType(ShapeSpatialComponent);
+			PBE.registerType(ObviousHunterComponent)
 			
 			RandomizeUtil.initialize();				
 		}
