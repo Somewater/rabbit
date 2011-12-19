@@ -52,7 +52,7 @@
 		</component>
 		<component name="Render">
 			<slug>rabbit.RabbitActor</slug>	
-			<frameRate>15</frameRate>
+			<frameRate>20</frameRate>
 			<useDirection>8</useDirection>		
 		</component>
 	</template>
@@ -189,7 +189,7 @@
 	-->
 	<template name="WatchDog" template="AnimalBase">
 		<component name="Mover">
-			<speed>2</speed>
+			<speed>2.7</speed>
 		</component>
 		<component name="Render">
 			<slug>rabbit.WatchDogActor</slug>	
@@ -320,7 +320,7 @@
 	-->
 	<template name="Hedgehog" template="AnimalBase">
 		<component name="Mover">
-			<speed>1</speed>
+			<speed>1.7</speed>
 		</component>
 		<component name="Render">
 			<slug>rabbit.HedgehogActor</slug>	
