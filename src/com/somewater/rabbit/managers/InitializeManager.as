@@ -7,6 +7,7 @@ package com.somewater.rabbit.managers
 	import com.pblabs.engine.entity.IEntity;
 	import com.pblabs.engine.entity.PropertyReference;
 	import com.pblabs.rendering2D.SceneAlignment;
+	import com.somewater.rabbit.components.CowardComponent;
 	import com.somewater.rabbit.components.HeelProtectorComponent;
 	import com.somewater.rabbit.components.HeroHarvesterComponent;
 	import com.somewater.rabbit.components.ObviousHarvesterComponent;
@@ -167,6 +168,7 @@ package com.somewater.rabbit.managers
 			PBE.registerType(ObviousHunterComponent);
 			PBE.registerType(ObviousHarvesterComponent);
 			PBE.registerType(HeelProtectorComponent);
+			PBE.registerType(CowardComponent);
 			
 			RandomizeUtil.initialize();				
 		}

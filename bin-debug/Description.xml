@@ -327,6 +327,11 @@
 			<passMask>4</passMask>
 			<occupyMask>4</occupyMask>
 		</component>
+		<component name="Coward" type="com.somewater.rabbit.components.CowardComponent">
+			<priority>6</priority>
+			<victimName>Hero</victimName>
+			<searchRadius>2</searchRadius>
+		</component>
 	</template>
 	
 	
