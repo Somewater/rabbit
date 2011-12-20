@@ -20,5 +20,10 @@ package com.somewater.rabbit
 		 * Персонаж, собираемый главным героем
 		 */
 		public static const HARVEST:String = "harvest";
+
+		/**
+		 * Враги и злодеи, которые целенаправленно гоняются за кроликом
+		 */
+		public static const EVIL:String = 'evil';
 	}
 }

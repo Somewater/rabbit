@@ -85,7 +85,11 @@ package com.somewater.rabbit.iso
 		 * (любые другие попытки его установки игнорируются)
 		 */
 		private var destinationExchange:Boolean = false;
-		
+
+		/**
+		 * Флаг прерывает выполнение функции onTick
+		 */
+		public var paused:Boolean = false;
 		
 		public function IsoMover()
 		{
@@ -247,6 +251,9 @@ package com.somewater.rabbit.iso
 		
 		override public function onTick(deltaTime:Number):void
 		{
+			if(paused)
+				return;
+
 			if(patienceMode)
 			{
 				currentPatience -= deltaTime;
