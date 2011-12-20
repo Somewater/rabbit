@@ -28,10 +28,7 @@
 		RABBIT
 
 	-->
-	<template name="RabbitActorBase" template="RabbitBase">
-		<component name="Spatial">
-			<tile type="RandomTilePoint.free"></tile>
-		</component>
+	<template name="RabbitClone" template="RabbitBase">
 		<component name="RandomMover" type="com.somewater.rabbit.components.RandomMovingComponent"/>
 	</template>
 	

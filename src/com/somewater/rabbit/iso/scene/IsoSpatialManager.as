@@ -296,7 +296,7 @@ package com.somewater.rabbit.iso.scene
 				if(added[spatial])
 					continue;// уже добавлен в массив result
 
-				if(mask && ((spatial._objectMask._bits & mask._bits) == 0))
+				if(mask && (spatial._objectMask == null || (spatial._objectMask._bits & mask._bits) == 0))
 					continue;// не соответствует маске
 				
 				results.push(spatial);
