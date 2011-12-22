@@ -1,13 +1,13 @@
 package
 {
 	import com.somewater.net.ServerHandler;
-	import com.somewater.rabbit.loader.ILocalDb;
-	import com.somewater.rabbit.loader.LocalDb;
 	import com.somewater.rabbit.loader.RabbitLoaderBase;
 	import com.somewater.rabbit.net.LocalServerHandler;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.social.SocialUser;
-	
+	import com.somewater.storage.ILocalDb;
+	import com.somewater.storage.LocalDb;
+
 	import flash.events.Event;
 
 	/**
@@ -16,11 +16,8 @@ package
 	[SWF(width="810", height="650", backgroundColor="#FFFFFF", frameRate="30")]
 	public class EmbedRabbitLoader extends RabbitLoaderBase
 	{
-		private var localDb:ILocalDb;
-
 		public function EmbedRabbitLoader()
 		{
-			localDb = LocalDb.instance;
 			super();
 		}
 		
@@ -129,7 +126,7 @@ package
 		
 		private function loadUserData():void
 		{
-			var userParams:Object = localDb.get('user');
+			var userParams:Object = this.get('user');
 			if(userParams == null)
 				userParams = {};
 			user = new SocialUser();
@@ -143,7 +140,7 @@ package
 
 		private function saveUserData(user:SocialUser):void {
 			var userParams:Object = {"id": user.id};
-			localDb.set('user', userParams);
+			this.set('user', userParams);
 		}
 	}
 }

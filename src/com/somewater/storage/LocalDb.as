@@ -1,4 +1,4 @@
-package com.somewater.rabbit.loader {
+package com.somewater.storage {
 	import flash.net.SharedObject;
 
 	public class LocalDb implements ILocalDb{

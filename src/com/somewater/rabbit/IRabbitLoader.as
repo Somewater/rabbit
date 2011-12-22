@@ -3,7 +3,8 @@ package com.somewater.rabbit
 	import com.somewater.control.IClear;
 	import com.somewater.net.IServerHandler;
 	import com.somewater.social.SocialUser;
-	
+	import com.somewater.storage.ILocalDb;
+
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 
@@ -11,7 +12,7 @@ package com.somewater.rabbit
 	 * Главный лоадер
 	 * Отвечает за загрузку всех флешек и ассетов (в т.ч. перед стартом игры)
 	 */
-	public interface IRabbitLoader extends IRabbitModule, IClear
+	public interface IRabbitLoader extends IRabbitModule, IClear, ILocalDb
 	{
 		/**
 		 * Загрузить queue, заданный в формате {"name":String, "url":String}

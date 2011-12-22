@@ -1,4 +1,4 @@
-package com.somewater.rabbit.loader {
+package com.somewater.storage {
 	public interface ILocalDb {
 		function get(key:String):Object
 

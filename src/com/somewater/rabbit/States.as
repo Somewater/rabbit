@@ -26,6 +26,8 @@ package com.somewater.rabbit
 		 * однако анимация отличается и дает возможным переходы в другие состояния
 		 */
 		public static const THINK:String = "think";
+
+		public static const PRETHINK:String = "prethink";
 		
 		/**
 		 * Объект находится в состоянии перехода меж сетйтами.

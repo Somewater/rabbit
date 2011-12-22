@@ -9,7 +9,8 @@ package com.somewater.rabbit.loader
 	import com.somewater.rabbit.IRabbitLoader;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.social.SocialUser;
-	
+	import com.somewater.storage.LocalDb;
+
 	import flash.display.DisplayObject;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
@@ -377,7 +378,20 @@ package com.somewater.rabbit.loader
 			if(swfToLoading == null)
 			{
 				// очередь пуста
-				_loadSwfsOnComplete && _loadSwfsOnComplete();
+				try
+				{
+					_loadSwfsOnComplete && _loadSwfsOnComplete();
+				}
+				catch(err:Error)
+				{
+					// сами хотя бы печатаем трейс ошибки, потому что враппер не позволит этого сделать
+					trace('[SWF ON COMPLETE] Error: ' + err.message);
+					CONFIG::debug
+					{
+						trace(err.getStackTrace());
+					}
+					throw err;
+				}
 				return
 			}
 			
@@ -683,6 +697,14 @@ package com.somewater.rabbit.loader
 			}
 			else
 				return bp + path;
+		}
+
+		public function get (key:String):Object {
+			return LocalDb.instance.get(key);
+		}
+
+		public function set (key:String, data:Object):void {
+			LocalDb.instance.set(key, data);
 		}
 	}
 }

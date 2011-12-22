@@ -32,6 +32,11 @@ package com.somewater.rabbit.creature
 		 * Как долго персонаж может быть злым, максимум (ms)
 		 */
 		public var maxAngryTime:int = 5000;
+
+		/**
+		 * Кол-во миллисекунд перед тем как стать злой
+		 */
+		public var transformationDuration:int = 2000;
 		
 		private var switchAttackComponentRef:PropertyReference; 
 		private var drivingAttackComponentRef:PropertyReference; 
@@ -50,7 +55,17 @@ package com.somewater.rabbit.creature
 		override protected function randomAct():void
 		{
 			if(!_owner || angryState) return;
-			
+
+			owner.setProperty(renderstateRef,States.PRETHINK);
+			think(prethinkComplete, transformationDuration)
+		}
+
+		/**
+		 * Уже отбыл достаточное время в состоянии превращения в злую, можно стать по настоящему злой
+		 */
+		private function prethinkComplete():void {
+			if(!_owner || angryState) return;
+
 			// переход в состояния злости
 			setAngryState(true);
 			planeAngryStateExit();

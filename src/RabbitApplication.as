@@ -157,6 +157,8 @@ package
 			addPropertyListener('music', onMusicVolumeChanged);
 			addPropertyListener('soundEnabled', onSoundVolumeChanged);
 			addPropertyListener('sound', onSoundVolumeChanged);
+
+			loadAudioSettings();
 		}
 
 		
@@ -618,13 +620,40 @@ package
 		private function onSoundVolumeChanged():void {
 			_soundSoundTransform.volume = _soundEnabled ? _sound : 0;
 			for(var name:* in soundTracks)
-				if(name != SoundTrack.MUSIC)
+				if(name != SoundTrack.MUSIC && soundTracks[name])
 					SoundData(soundTracks[name]).channel.soundTransform = _soundSoundTransform;
+			saveAudioSettings();
 		}
 
 		private function onMusicVolumeChanged():void {
 			_musicSoundTransform.volume = _musicEnabled ? _music : 0;
-			SoundData(soundTracks[SoundTrack.MUSIC]).channel.soundTransform = _musicSoundTransform;
+			if(soundTracks[SoundTrack.MUSIC])
+				SoundData(soundTracks[SoundTrack.MUSIC]).channel.soundTransform = _musicSoundTransform;
+			saveAudioSettings();
+		}
+
+		private var settingsLoadingFlag:Boolean = false;
+		private function saveAudioSettings():void
+		{
+			if(!settingsLoadingFlag)
+			{
+				Config.loader.set('audioSettings', {'music': this.music, 'musicEnabled': this.musicEnabled,
+													'sound': this.sound, 'soundEnabled': this.soundEnabled});
+			}
+		}
+
+		private function loadAudioSettings():void
+		{
+			settingsLoadingFlag = true;
+			var settings:Object = Config.loader.get('audioSettings');
+			if(settings)
+			{
+				this.music = settings['music'];
+				this.musicEnabled = settings['musicEnabled'];
+				this.sound = settings['sound'];
+				this.soundEnabled = settings['soundEnabled'];
+			}
+			settingsLoadingFlag = false;
 		}
 	}
 }
