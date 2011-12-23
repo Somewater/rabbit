@@ -603,6 +603,44 @@ class AllSpec
 
 			end
 		end
+		
+		describe Stat do
+			before :each do
+				Stat.delete_all
+				@existed_key = 'existed_key'
+				@undefined_key = 'undefined_key'
+				
+				@stat_time = Application.time.to_i
+				@stat_time = @stat_time - (@stat_time % 1800)
+				
+				Stat.create({:name => @existed_key, :value => 1, :time => @stat_time})
+			end
+			
+			it "Значение возвращается (def get)" do
+				Stat[@existed_key].should == 1
+				Stat[@undefined_key].should == 0
+			end
+		
+			it "Инкремент инициализирует несуществовавший ранее ключ" do
+				Stat.inc(@existed_key)
+				Stat[@existed_key].should == 2
+				
+				Stat.inc(@existed_key, 5)
+				Stat[@existed_key].should == 7
+			end
+
+			it "Инкремент инкрементит существующий ключ правильно" do
+
+			end
+
+			it "Значение записывается (def set)" do
+
+			end
+			
+			it "Если время изменилось, начинается работа с новой записью БД" do
+
+			end
+		end
 	end
 end
 
