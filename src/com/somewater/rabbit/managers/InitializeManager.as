@@ -12,6 +12,7 @@ package com.somewater.rabbit.managers
 	import com.somewater.rabbit.components.HeroHarvesterComponent;
 	import com.somewater.rabbit.components.ObviousHarvesterComponent;
 	import com.somewater.rabbit.components.ObviousHunterComponent;
+	import com.somewater.rabbit.creature.CrowHarvesterComponent;
 	import com.somewater.rabbit.creature.ShapeSpatialComponent;
 	import com.somewater.rabbit.decor.BackgroundRenderer;
 	import com.somewater.rabbit.decor.GroundGrassRenderer;
@@ -169,7 +170,8 @@ package com.somewater.rabbit.managers
 			PBE.registerType(ObviousHarvesterComponent);
 			PBE.registerType(HeelProtectorComponent);
 			PBE.registerType(CowardComponent);
-			
+			PBE.registerType(CrowHarvesterComponent);
+
 			RandomizeUtil.initialize();				
 		}
 		

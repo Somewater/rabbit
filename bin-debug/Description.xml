@@ -296,7 +296,21 @@
 			CROW
 
 	-->
-	<template name="Crow" template="AnimalBase">
+	<template name="CrowConcealed" template="CrowBase">
+		<component name="Conceal" type="com.somewater.rabbit.components.ConcealComponent">
+			<priority>10</priority>
+			<concealOnStart>true</concealOnStart>
+		</component>
+	</template>
+
+	<template name="Crow" template="CrowBase">
+		<component name="Walk" type="com.somewater.rabbit.components.WalkComponent">
+			<priority>-10</priority>
+		</component>
+	</template>
+
+
+	<template name="CrowBase" template="AnimalBase">
 		<component name="Mover">
 			<speed>2</speed>
 		</component>
@@ -313,11 +327,8 @@
 			<victimSet>harvest</victimSet>
 			<searchRadius>10</searchRadius>
 		</component>
-		<component name="Conceal" type="com.somewater.rabbit.components.ConcealComponent">
-			<priority>10</priority>
-			<concealOnStart>true</concealOnStart>
-		</component>
-		<component name="Harvester" type="com.somewater.rabbit.components.ObviousHarvesterComponent">
+		<component name="Harvester" type="com.somewater.rabbit.creature.CrowHarvesterComponent">
+			<harvestTime>3000</harvestTime>
 			<priority>5</priority>
 			<harvestType>
 				<_>harvest</_>
@@ -330,7 +341,7 @@
 		<component name="Coward" type="com.somewater.rabbit.components.CowardComponent">
 			<priority>6</priority>
 			<victimName>Hero</victimName>
-			<searchRadius>2</searchRadius>
+			<searchRadius>2.5</searchRadius>
 		</component>
 	</template>
 	

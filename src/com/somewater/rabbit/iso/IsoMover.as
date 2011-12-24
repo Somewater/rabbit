@@ -108,7 +108,7 @@ package com.somewater.rabbit.iso
 		public function setDestination(value:Point, onSuccess:Function, onError:Function = null):void
 		{
 			if(onDestinatedError != null && onError != onDestinatedError)// если новые колбэк onerror не совпадает со старым, вызываем старый
-				onDestinatedError();
+				dispatchDestination(false);
 			
 			onDestinatedSuccess = onSuccess;
 			onDestinatedError = onError;
@@ -134,10 +134,6 @@ package com.somewater.rabbit.iso
 			if(destinationExchange || (_destination && value && _destination.equals(value))) return;
 			destinationExchange = true;
 			
-			// если было _destination и оно заменяется, диспатчить неуспешное достижение
-			if(_destination)
-				dispatchDestination(false);
-			
 			_destination = value;
 			
 			_destinationPath = null;
@@ -152,12 +148,9 @@ package com.somewater.rabbit.iso
 			
 			currentPatience = 0;
 			currentAstarRequestNum = 0;
-			if(clearCallbacksFlag)
+			if(_destination && clearCallbacksFlag)
 			{
-				onDestinatedError && onDestinatedError();// уведомить, что ранее определенная destination не будет достигнута
-				
-				onDestinatedSuccess = null;
-				onDestinatedError = null;
+				dispatchDestination(false);// уведомить, что ранее определенная destination не будет достигнута
 			}
 			
 			destinationExchange = false;

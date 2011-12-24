@@ -61,6 +61,13 @@ package com.somewater.rabbit.components
 		 * Компонент не совершил "умертвление"
 		 */
 		private var isAlive:Boolean = true;
+
+		/**
+		 * Флаг указывает, что позиция на краю карты, сгенерированная в прошлый раз алгоритмом
+		 * относительно координат персонажа, недостижима. Т.е. надо попытаться сгенеировать
+		 * крайнюю позицию не отталкиваясь от положения персонажа
+		 */
+		private var unreachableBoundPosition:Boolean = false;
 		
 		
 		/**
@@ -201,6 +208,7 @@ package com.somewater.rabbit.components
 		private function onBoundDestinatedError():void
 		{
 			Logger.warn(this, "onBoundDestinatedError", "Pathfinding error in bounds movement");
+			unreachableBoundPosition = true;
 			_port(null);// по какой-то невероятной причине до края невозможно дойти
 		}
 		
@@ -241,11 +249,12 @@ package com.somewater.rabbit.components
 		 */
 		private function getBoundPosition(sharpen:Boolean = false):Point
 		{
-			var pos:Point = spatialRef._position;
+			var pos:Point = unreachableBoundPosition ? null : spatialRef._position;
+			unreachableBoundPosition = false;
 			var sceneWidth:int = IsoSpatialManager.instance.width;
 			var sceneHeight:int = IsoSpatialManager.instance.height;
 			
-			if(pos.x == int.MIN_VALUE || pos.y == int.MIN_VALUE)
+			if(pos == null || pos.x == int.MIN_VALUE || pos.y == int.MIN_VALUE)
 			{
 				// если позиция объекта еще не была определена, генерируем рандом
 				pos = RandomizeUtil.RandomTilePoint();
