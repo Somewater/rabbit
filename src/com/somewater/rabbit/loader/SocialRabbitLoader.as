@@ -28,7 +28,7 @@ package com.somewater.rabbit.loader{
 		override protected function initializeServerHandler():void
 		{
 			_serverHandler = new ServerHandler();
-			_serverHandler.init(getUser().id, 'embed', net);
+			_serverHandler.init(getUser().id, arrow.key, net);
 		}
 
 		override public function get flashVars():Object {

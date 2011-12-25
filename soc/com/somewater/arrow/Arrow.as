@@ -119,6 +119,11 @@ package com.somewater.arrow
 		{
 			return social.flashVars;
 		}
+
+		public function get key():String
+		{
+			return social.authentication_key;
+		}
 		
 		public function init(params:Object):void
 		{
