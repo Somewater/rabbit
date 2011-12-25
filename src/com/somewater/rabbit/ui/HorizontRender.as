@@ -42,9 +42,9 @@ package com.somewater.rabbit.ui
 		
 		private var minBarrierPos:int = int.MAX_VALUE;// комбинация, которая при инициализации в любом случае приведет к созданию забора
 		private var maxBarrierPos:int = int.MIN_VALUE;
-		
+
 		private var hills:Array = [];
-		
+
 		private var minHillPos:int = int.MAX_VALUE;// комбинация, которая при инициализации в любом случае приведет к созданию забора
 		private var maxHillPos:int = int.MIN_VALUE;
 		

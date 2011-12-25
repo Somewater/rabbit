@@ -14,7 +14,7 @@ package {
 
 		override protected function netInitialize():void
 		{
-			arrow = ArrowVKFactory.create;
+			arrow = ArrowVKLCFactory.create;
 			SWFDecoderWrapper.load(arrow, function(_arr:DisplayObject):void{
 				arrow = _arr;
 				arrow.createSocial();
@@ -62,7 +62,7 @@ package {
 						,"Images":{preload:true, url:"assets/rabbit_images.swf"}
 						,"Sound":{preload:true, url:"assets/rabbit_sound.swf"}
 						,"Lang":{priority:100, preload:true, url:"lang_ru.swf"}
-						,"Editor":{priority:1, preload:true, url:"RabbitEditor.swf"}
+						//,"Editor":{priority:1, preload:true, url:"RabbitEditor.swf"}
 
 						,"Font":{priority:100, preload:true, url:"assets/fonts_ru.swf"}
 						//,"Font":{priority:1000, preload:true, url:"assets/fonts_ru.swf"}

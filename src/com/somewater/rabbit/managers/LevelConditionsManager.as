@@ -69,6 +69,9 @@ package com.somewater.rabbit.managers
 		
 		private function onLevelRestart():void
 		{
+			gameGuiRef = null;
+			horizontRef = null;
+
 			startLevelTime = PBE.processManager.virtualTime;
 			conditionsRef = [];
 			var levelRef:LevelDef = Config.game.level;
@@ -97,8 +100,6 @@ package com.somewater.rabbit.managers
 			completeConditions = [];
 			completeConditions["time"] = true; // в том смысле, что НЕ(время закончилось)
 			completeConditions["carrotMax"] = true;
-
-			gameGuiRef = null;
 		}
 			
 		
