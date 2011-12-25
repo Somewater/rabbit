@@ -212,7 +212,9 @@ package
 			_levelsByNumber = [];
 			for each (var level:XML in levels.*)
 			{
-				addLevel(new LevelDef(level));
+				var l:LevelDef = new LevelDef(level);
+				if(l.number < 100)
+					addLevel(l);
 			}
 
 			if(_levels.length == 0)// вносим один пустой уровень
