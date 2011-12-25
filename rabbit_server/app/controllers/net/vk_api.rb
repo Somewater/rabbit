@@ -1,5 +1,10 @@
 class VkApi < NetApiBase
 
+	def initialize(params)
+		raise AuthError, "Wrong auth_key" if Digest::MD5.hexdigest('2732721_' + params['uid'] + '_' + 'kJ0AVDo3he9GhGlhkmha') != params['key']
+		super(params)
+	end
+
 	def self.id
 		2
 	end
