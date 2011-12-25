@@ -143,7 +143,7 @@ package com.somewater.rabbit.managers
 					{
 						// игрок уже не в состоянии собрать сколько нужно
 						var harvestSet:PBSet = PBE.nameManager.lookup("harvest");
-						if(harvestSet && conditionsRef["carrotMax"] - heroDataRef.carrot > harvestSet.length)
+						if(harvestSet && conditionsRef["carrotMin"] - heroDataRef.carrot > harvestSet.length)
 						{
 							finishLevel(false, LevelInstanceDef.LEVEL_FATAL_CARROT);
 						}
