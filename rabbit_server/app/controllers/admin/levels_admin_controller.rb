@@ -25,6 +25,7 @@ class LevelsAdminController < AdminController::Base
 				lvl = Level.find(@request['id'])
 				@admin_user.level?(lvl)
 				lvl.enabled = true
+				lvl.visible = true
 				lvl.save
 				on_level_changed
 			when 'update'

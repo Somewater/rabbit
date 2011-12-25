@@ -71,6 +71,46 @@
 		<component name="Render"><slug>reward.Kolokolchihi</slug></component>
 	</template>
 
+	<template name="reward.Chuchelo" template="RewardBase" id="70" type="all_carrots" degree="0">
+		<component name="Render"><slug>reward.Chuchelo</slug></component>
+	</template>
+
+	<template name="reward.Stog" template="RewardBase" id="71" type="all_carrots" degree="0">
+		<component name="Render"><slug>reward.Stog</slug></component>
+	</template>
+
+	<template name="reward.Kuvshin" template="RewardBase" id="72" type="all_carrots" degree="0">
+		<component name="Render"><slug>reward.Kuvshin</slug></component>
+	</template>
+
+	<template name="reward.Fonarik" template="RewardBase" id="73" type="all_carrots" degree="0">
+		<component name="Render"><slug>reward.Fonarik</slug></component>
+	</template>
+
+	<template name="reward.Bochka" template="RewardBase" id="74" type="all_carrots" degree="0">
+		<component name="Render"><slug>reward.Bochka</slug></component>
+	</template>
+
+	<template name="reward.Penek" template="RewardBase" id="75" type="all_carrots" degree="0">
+		<component name="Render"><slug>reward.Penek</slug></component>
+	</template>
+
+	<template name="reward.Stul" template="RewardBase" id="76" type="all_carrots" degree="0">
+		<component name="Render"><slug>reward.Stul</slug></component>
+	</template>
+
+	<template name="reward.Leyka" template="RewardBase" id="77" type="all_carrots" degree="0">
+		<component name="Render"><slug>reward.Leyka</slug></component>
+	</template>
+
+	<template name="reward.Udobrenie" template="RewardBase" id="78" type="all_carrots" degree="0">
+		<component name="Render"><slug>reward.Udobrenie</slug></component>
+	</template>
+
+	<template name="reward.Koleso" template="RewardBase" id="79" type="all_carrots" degree="0">
+		<component name="Render"><slug>reward.Koleso</slug></component>
+	</template>
+
 	<!-- TYPE_CARROT_PACK  -->
 
 	<template name="reward.Carrot50" template="RewardBase" id="30" type="carrot_pack" degree="50">
@@ -137,45 +177,7 @@
 
 	<!-- TYPE_CONSOLING  -->
 
-	<template name="reward.Chuchelo" template="RewardBase" id="70" type="consoling" degree="0">
-		<component name="Render"><slug>reward.Chuchelo</slug></component>
-	</template>
 
-	<template name="reward.Stog" template="RewardBase" id="71" type="consoling" degree="0">
-		<component name="Render"><slug>reward.Stog</slug></component>
-	</template>
-
-	<template name="reward.Kuvshin" template="RewardBase" id="72" type="consoling" degree="0">
-		<component name="Render"><slug>reward.Kuvshin</slug></component>
-	</template>
-
-	<template name="reward.Fonarik" template="RewardBase" id="73" type="consoling" degree="0">
-		<component name="Render"><slug>reward.Fonarik</slug></component>
-	</template>
-
-	<template name="reward.Bochka" template="RewardBase" id="74" type="consoling" degree="0">
-		<component name="Render"><slug>reward.Bochka</slug></component>
-	</template>
-
-	<template name="reward.Penek" template="RewardBase" id="75" type="consoling" degree="0">
-		<component name="Render"><slug>reward.Penek</slug></component>
-	</template>
-
-	<template name="reward.Stul" template="RewardBase" id="76" type="consoling" degree="0">
-		<component name="Render"><slug>reward.Stul</slug></component>
-	</template>
-
-	<template name="reward.Leyka" template="RewardBase" id="77" type="consoling" degree="0">
-		<component name="Render"><slug>reward.Leyka</slug></component>
-	</template>
-
-	<template name="reward.Udobrenie" template="RewardBase" id="78" type="consoling" degree="0">
-		<component name="Render"><slug>reward.Udobrenie</slug></component>
-	</template>
-
-	<template name="reward.Koleso" template="RewardBase" id="79" type="consoling" degree="0">
-		<component name="Render"><slug>reward.Koleso</slug></component>
-	</template>
 
 
 </reward>

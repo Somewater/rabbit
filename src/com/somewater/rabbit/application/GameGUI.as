@@ -21,6 +21,7 @@ package com.somewater.rabbit.application
 		private var timeTF:EmbededTextField;
 		private var carrotTF:EmbededTextField;
 		private var minutesArrowShelf:Shape;
+		private var carrotMask:Shape;
 		
 		public function GameGUI()
 		{
@@ -57,6 +58,18 @@ package com.somewater.rabbit.application
 			carrotTF.x = 222;
 			carrotTF.y = 15;
 			statPanel.addChild(carrotTF);
+
+			carrotMask = new Shape();
+			carrotMask.x = statPanel.getChildByName('carrotGround').x - 10;
+			carrotMask.y = statPanel.getChildByName('carrotGround').y + statPanel.getChildByName('carrotGround').height;
+			statPanel.getChildByName('carrotGround').mask = carrotMask;
+			statPanel.addChild(carrotMask);
+			carrotMask.graphics.beginFill(0);
+			carrotMask.graphics.drawRect(0,
+					-statPanel.getChildByName('carrotGround').height,
+					statPanel.getChildByName('carrotGround').width + 20,
+					statPanel.getChildByName('carrotGround').height);
+			carrotMask.scaleY = 0;
 			
 			Config.memory["GameGUI"] = this;
 			life = 0;
@@ -91,7 +104,18 @@ package com.somewater.rabbit.application
 			time = _time;	
 		}
 		public var _timeEnd:int = 60;
-		
+
+		/**
+		 * Сколько максимально длится раунд, секунды
+		 */
+		public function set carrotMax(value:int):void
+		{
+			_carrotMax = value;
+			_carrot = -1;
+			carrot = _carrot
+		}
+		public var _carrotMax:int = 1;
+
 		/**
 		 * Сколько длится текущий раунд
 		 */
@@ -148,8 +172,13 @@ package com.somewater.rabbit.application
 		
 		public function set carrot(value:int):void
 		{
-			carrotTF.text = value.toString();
+			if(value != _carrot)
+			{
+				carrotTF.text = value.toString();
+				carrotMask.scaleY = Math.min(1, value / _carrotMax);
+			}
 		}
+		private var _carrot:int;
 
 		public static function secondsToFormattedTime(seconds:int):String
 		{

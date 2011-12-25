@@ -47,6 +47,8 @@ package com.somewater.rabbit.managers
 		private var rabbitInited:Boolean;// кролик этого уровня хоть раз существовал
 		
 		private var horizontRef:HorizontRender;
+
+		private var gameGuiRef:Object;
 		
 		
 		public function LevelConditionsManager()
@@ -95,6 +97,8 @@ package com.somewater.rabbit.managers
 			completeConditions = [];
 			completeConditions["time"] = true; // в том смысле, что НЕ(время закончилось)
 			completeConditions["carrotMax"] = true;
+
+			gameGuiRef = null;
 		}
 			
 		
@@ -186,13 +190,17 @@ package com.somewater.rabbit.managers
 			//		U P D A T E    G U I			//
 			//										//
 			//////////////////////////////////////////
-			var gameGUI:Object = Config.memory["GameGUI"];// ссылка на gui из application
-			if(gameGUI)
+			if(gameGuiRef == null)
 			{
-				gameGUI._timeEnd = conditionsRef["time"] * 0.001;
-				gameGUI.life = heroDataRef?heroDataRef.health:0;
-				gameGUI.time = time * 0.001;
-				gameGUI.carrot = heroDataRef?heroDataRef.carrot:0;
+				gameGuiRef = Config.memory["GameGUI"];// ссылка на gui из application
+				gameGuiRef.timeEnd = conditionsRef["time"] * 0.001;
+				gameGuiRef.carrotMax = conditionsRef["carrotMax"];
+			}
+			else
+			{
+				gameGuiRef.life = heroDataRef?heroDataRef.health:0;
+				gameGuiRef.time = time * 0.001;
+				gameGuiRef.carrot = heroDataRef?heroDataRef.carrot:0;
 			}
 
 			if(timeLeft <= 10000)
