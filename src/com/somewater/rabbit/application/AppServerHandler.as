@@ -185,8 +185,8 @@ package com.somewater.rabbit.application {
 
 		protected function levelInstanceToJson(levelInstance:LevelInstanceDef, json:Object):Object
 		{
-			json['carrotHarvested'] = levelInstance.carrotHarvested;
-			json['timeSpended'] = int(levelInstance.timeSpended * 0.001);
+			json['carrotHarvested'] = levelInstance.currentCarrotHarvested;
+			json['timeSpended'] = int(levelInstance.currentTimeSpended * 0.001);
 			json['version'] = levelInstance.version;
 			json['number'] = levelInstance.number;
 			json['success'] = levelInstance.success;

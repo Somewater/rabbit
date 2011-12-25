@@ -36,10 +36,9 @@ package com.somewater.rabbit.application {
 			for (var key:String in levelInstance.levelDef.conditions)
 				levelConditions[key] = levelInstance.levelDef.conditions[key];
 			
-			// проверяем, что уровень действительно пройден (судя по времени прох-я и морковкам)
+			// проверяем, что уровень действительно пройден (судя по морковкам)
 			var levelCarrotMin:int = XmlController.instance.calculateMinCarrots(levelInstance.levelDef);
-			if(levelConditions['time'] < levelInstance.timeSpended * 0.001 
-				|| levelCarrotMin > levelInstance.carrotHarvested)
+			if(levelCarrotMin > levelInstance.carrotHarvested)
 			{
 				levelInstance.success = false;
 				return [];// Если уровень пройден с проигрышем, ничего не делаем

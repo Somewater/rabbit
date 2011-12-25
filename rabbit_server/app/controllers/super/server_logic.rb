@@ -15,10 +15,9 @@ class ServerLogic
 
 			levelConditions = levelInstance.levelDef.conditions_to_hash
 			
-			# проверяем, что уровень действительно пройден (судя по времени прох-я и морковкам)
+			# проверяем, что уровень действительно пройден (судя по морковкам)
 			levelCarrotMin = XmlController.instance.carrot_min(levelInstance.levelDef)
-			if(levelConditions['time'] < levelInstance.timeSpended ||
-					levelCarrotMin > levelInstance.carrotHarvested)
+			if(levelCarrotMin > levelInstance.carrotHarvested)
 				levelInstance.success = false
 				return [] # Если уровень пройден с проигрышем, ничего не делаем
 			end

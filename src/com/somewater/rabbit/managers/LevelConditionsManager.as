@@ -141,11 +141,19 @@ package com.somewater.rabbit.managers
 					}
 					else
 					{
-						// игрок уже не в состоянии собрать сколько нужно
 						var harvestSet:PBSet = PBE.nameManager.lookup("harvest");
-						if(harvestSet && conditionsRef["carrotMin"] - heroDataRef.carrot > harvestSet.length)
+						if(harvestSet)
 						{
-							finishLevel(false, LevelInstanceDef.LEVEL_FATAL_CARROT);
+							// на уровне болше нет морковок
+							if(harvestSet.length == 0)
+							{
+								finishForTimeOrCarrot();
+							}
+							// игрок уже не в состоянии собрать сколько нужно
+							else if(conditionsRef["carrotMin"] - heroDataRef.carrot > harvestSet.length)
+							{
+								finishLevel(false, LevelInstanceDef.LEVEL_FATAL_CARROT);
+							}
 						}
 					}
 				}
@@ -156,8 +164,7 @@ package com.somewater.rabbit.managers
 			//////////////////////////
 			if(time > conditionsRef["time"])
 			{
-				// еслибыло собрано минимальное кол-во морковок, уровень заканчивается удачно
-				finishLevel(heroDataRef && heroDataRef.carrot >= conditionsRef['carrotMin'], LevelInstanceDef.LEVEL_FATAL_TIME);
+				finishForTimeOrCarrot();
 			}
 			else
 				completed["time"] = true;// по времени уровень заврешен (от противного - НЕ(уравень проигран из-за окончания времени) )
@@ -213,6 +220,18 @@ package com.somewater.rabbit.managers
 				if(horizontRef)
 					horizontRef.darkness = (10000 - timeLeft) / 10000;
 			}
+		}
+
+		/**
+		 * Закончить уровень по вышедшему времени или морковкам (причем игрок может как выиграть так и проиграть
+		 * в зависимости от того сколько он собрал морковок)
+		 */
+		private function finishForTimeOrCarrot():void
+		{
+			if(HeroDataComponent.instance && HeroDataComponent.instance.carrot >= conditionsRef['carrotMin'])
+				finishLevel(true, LevelInstanceDef.LEVEL_SUCCESS_FINISH);
+			else
+				finishLevel(false, LevelInstanceDef.LEVEL_FATAL_TIME);
 		}
 		
 		

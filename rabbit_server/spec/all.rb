@@ -82,12 +82,12 @@ class AllSpec
 				@user.level.should == 1
 			end
 			
-			it "Обнаруживается уровень, непройденный по времени" do
-				@user.level.should == 1
-				@levelInstance.data = {'timeSpended' => @conditions['time'].to_i + 1}
-				server_logic_process().size.should == 0
-				@user.level.should == 1
-			end
+			#it "Обнаруживается уровень, непройденный по времени" do
+			#	@user.level.should == 1
+			#	@levelInstance.data = {'timeSpended' => @conditions['time'].to_i + 1}
+			#	server_logic_process().size.should == 0
+			#	@user.level.should == 1
+			#end
 			
 			it "Обнаруживается уровень, непройденный по морковкам" do
 				@levelInstance.data = {'carrotHarvested' => @conditions['carrotMin'].to_i - 1}
