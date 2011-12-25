@@ -28,7 +28,7 @@ package com.somewater.rabbit.components
 			if(value != _health)
 			{
 				_health = value;
-				if(_health <= 0)
+				if(_health <= 0 && _owner)
 				{
 					owner.destroy();
 				}

@@ -4,6 +4,7 @@ package com.somewater.rabbit.application {
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.GameUser;
 	import com.somewater.rabbit.storage.GameUser;
+	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
 	import com.somewater.rabbit.storage.RewardInstanceDef;
 	import com.somewater.rabbit.storage.UserProfile;
@@ -144,7 +145,10 @@ package com.somewater.rabbit.application {
 				var li:LevelInstanceDef = gameUser.getLevelInsanceByNumber(parseInt(id));
 				if(li == null)
 				{
-					li = new LevelInstanceDef(Config.application.getLevelByNumber(parseInt(id)));
+					var level:LevelDef = Config.application.getLevelByNumber(parseInt(id));
+					if(level == null)
+						continue;// пройденный игроком левел был исключен из уровней, сичтаем что игрок его и не проходил
+					li = new LevelInstanceDef(level);
 					li.success = true;
 				}
 				gameUser.addLevelInstance(jsonToLevelInstance(json['level_instances'][id], li));

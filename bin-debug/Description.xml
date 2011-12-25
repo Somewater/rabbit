@@ -370,7 +370,7 @@
 			<priority>2</priority>
 			<attackRange>0.2</attackRange>
 			<attackInterval>1000</attackInterval>
-			<searchRadius>1</searchRadius>
+			<searchRadius>0.9</searchRadius>
 		</component>
 		<component name="Walk" type="com.somewater.rabbit.components.WalkComponent">
 			<priority>-10</priority>

@@ -28,7 +28,7 @@ package com.somewater.text
 		
 		public function set linked(flag:Boolean):void{
 			if (flag == _linked) return;
-			_linked = flag;
+			underline = _linked = flag;
 			if (flag){				
 				addEventListener(MouseEvent.MOUSE_OVER,headerLabelMouseOverEvent,false,0,true);
 				addEventListener(MouseEvent.MOUSE_OUT,headerLabelMouseOutEvent,false,0,true);
@@ -59,11 +59,11 @@ package com.somewater.text
 		}
 		
 		private function headerLabelMouseOverEvent(e:MouseEvent):void{
-			underline = true;
+			underline = false;
 		}
 		
 		private function headerLabelMouseOutEvent(e:MouseEvent):void{
-			underline = false;
+			underline = true;
 		}
 		
 		private function headerLabelMouseClick(e:MouseEvent):void{

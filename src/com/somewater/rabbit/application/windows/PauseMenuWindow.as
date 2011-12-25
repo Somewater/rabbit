@@ -1,6 +1,7 @@
 package com.somewater.rabbit.application.windows
 {
 	import com.somewater.display.Window;
+	import com.somewater.rabbit.application.AudioControls;
 	import com.somewater.rabbit.application.OrangeButton;
 	import com.somewater.rabbit.application.buttons.SlideBar;
 	import com.somewater.rabbit.application.buttons.SoundSwitchButton;
@@ -17,11 +18,7 @@ package com.somewater.rabbit.application.windows
 		private var gotoMainMenuButton:OrangeButton;
 		private var restartLevelButton:OrangeButton;
 		
-		private var soundButton:SoundSwitchButton;
-		private var musicButton:SoundSwitchButton;
-		
-		private var soundSlider:SlideBar;
-		private var musicSlider:SlideBar;
+		private var audioControls:AudioControls;
 		
 		public function PauseMenuWindow()
 		{
@@ -44,33 +41,10 @@ package com.somewater.rabbit.application.windows
 			addChild(restartLevelButton);
 			restartLevelButton.addEventListener(MouseEvent.CLICK, onRestartLevelClick);
 			
-			soundButton = new SoundSwitchButton("sound");
-			soundButton.x = restartLevelButton.x;
-			soundButton.y = restartLevelButton.y + restartLevelButton.height + 25;
-			addChild(soundButton);
-			soundButton.addEventListener(MouseEvent.CLICK, onSoundButtonClick);
-			
-			musicButton = new SoundSwitchButton("music");
-			musicButton.x = soundButton.x;
-			musicButton.y = soundButton.y + soundButton.height + 15;
-			addChild(musicButton);
-			musicButton.addEventListener(MouseEvent.CLICK, onMusicButtonClick);
-			
-			soundSlider = new SlideBar();
-			soundSlider.value = Config.application.sound;
-			soundSlider.x = restartLevelButton.x + restartLevelButton.width - soundSlider.width;
-			soundSlider.y = soundButton.y + soundButton.height * 0.5;
-			soundSlider.addEventListener(Event.CHANGE, onSoundChange);
-			addChild(soundSlider);
-			soundSlider.enabled = soundButton.enabled = Config.application.soundEnabled;
-			
-			musicSlider = new SlideBar();
-			musicSlider.value = Config.application.music;
-			musicSlider.x = soundSlider.x;
-			musicSlider.y = musicButton.y + musicButton.height * 0.5;
-			musicSlider.addEventListener(Event.CHANGE, onMusicChange);
-			addChild(musicSlider);
-			musicSlider.enabled = musicButton.enabled = Config.application.musicEnabled;
+			audioControls = new AudioControls();
+			audioControls.x = restartLevelButton.x;
+			audioControls.y = restartLevelButton.y + restartLevelButton.height + 25;
+			addChild(audioControls);
 			
 			open();
 			
@@ -104,10 +78,7 @@ package com.somewater.rabbit.application.windows
 			
 			gotoMainMenuButton.removeEventListener(MouseEvent.CLICK, onGotoMainMenuClick);
 			restartLevelButton.removeEventListener(MouseEvent.CLICK, onRestartLevelClick);
-			soundButton.removeEventListener(MouseEvent.CLICK, onSoundButtonClick);
-			musicButton.removeEventListener(MouseEvent.CLICK, onMusicButtonClick);
-			soundSlider.removeEventListener(Event.CHANGE, onSoundChange);
-			musicSlider.removeEventListener(Event.CHANGE, onMusicChange);
+			audioControls.clear();
 		}
 		
 		private function onGotoMainMenuClick(e:Event):void
@@ -126,29 +97,6 @@ package com.somewater.rabbit.application.windows
 			var level:LevelDef = Config.game.level;
 			Config.game.finishLevel(LevelInstanceDef.DUMMY_FATAL_LEVEL, true);
 			Config.application.startGame(level);
-		}
-		
-		
-		private function onSoundButtonClick(e:Event):void
-		{
-			Config.application.soundEnabled = !Config.application.soundEnabled;
-			soundSlider.enabled = soundButton.enabled = Config.application.soundEnabled;
-		}
-		
-		private function onMusicButtonClick(e:Event):void
-		{
-			Config.application.musicEnabled = !Config.application.musicEnabled;
-			musicSlider.enabled = musicButton.enabled = Config.application.musicEnabled;
-		}
-		
-		private function onSoundChange(e:Event):void
-		{
-			Config.application.sound = soundSlider.value;
-		}
-		
-		private function onMusicChange(e:Event):void
-		{
-			Config.application.music = musicSlider.value;
 		}
 	}
 }

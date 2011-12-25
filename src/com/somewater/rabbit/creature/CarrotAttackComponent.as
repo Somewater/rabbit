@@ -47,7 +47,7 @@ package com.somewater.rabbit.creature
 			if(data)
 			{
 				PBE.processManager.schedule(1000, this, function(data:DataComponent, attack:Number):void{
-					data.health -= attack;					
+					data.health -= attack;
 				}, data, attack);
 			}
 			

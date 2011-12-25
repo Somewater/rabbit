@@ -556,6 +556,7 @@ package com.somewater.rabbit.loader
 			if(preloader)
 			{	
 				value = ([0, 0.1, 0.6, 0.9] as Array)[type] + ([0.1, 0.5, 0.3, 0.1] as Array)[type] * value;
+				trace('[VALUE] ' + int(value * 100))
 				preloader.bar.textField.text = Math.round(value * 100) + "%";
 				preloader.bar.progressBar.scaleX = 1 - value;
 				for(var nextCarrotIndex:int = Math.min(9,Math.round(value * 10));preloaderCarrotIndex < nextCarrotIndex;preloaderCarrotIndex++)

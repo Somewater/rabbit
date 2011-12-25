@@ -18,6 +18,7 @@ package com.somewater.rabbit.application
 	public class MainMenuPage extends PageBase
 	{
 		private var buttons:Array;
+		private var audioControls:AudioControls
 		private var friendBar:FriendBar;
 		
 		public function MainMenuPage()
@@ -28,18 +29,23 @@ package com.somewater.rabbit.application
 						"MY_ACHIEVEMENTS",
 						"ABOUT_GAME"
 					  ];
-			
+
+			var b:OrangeButton;
 			for(var i:int = 0;i<buttons.length;i++)
 			{
-				var b:OrangeButton = new OrangeButton();
+				b = new OrangeButton();
 				b.label = Lang.t(buttons[i]);
 				buttons[i] = b;
 				b.addEventListener(MouseEvent.CLICK, onSomeButtonClick);
 				b.setSize(180, 32);
 				b.x = (Config.WIDTH - b.width) * 0.5;
-				b.y = 130 + 55 * i;
+				b.y = 115 + 55 * i;
 				addChild(b);
 			}
+			audioControls = new AudioControls();
+			audioControls.x = b.x;
+			audioControls.y = b.y + 55;
+			addChild(audioControls);
 			
 			if(Config.loader.hasFriendsApi)
 			{
@@ -56,6 +62,7 @@ package com.somewater.rabbit.application
 				buttons[i].removeEventListener(MouseEvent.CLICK, onSomeButtonClick);
 			if(friendBar)
 				friendBar.clear();
+			audioControls.clear();
 		}
 		
 		override protected function createGround():void
