@@ -30,3 +30,14 @@ class Stat < ActiveRecord::Base
 		ts - (ts % 1800)
 	end
 end
+
+module ActiveRecord
+  module ConnectionAdapters
+    class Mysql2Adapter
+      def select(sql, name = nil)
+        n = execute(sql, name)
+        n.each(:as => :hash) if n
+      end
+    end
+  end
+end
