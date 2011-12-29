@@ -87,8 +87,6 @@ namespace :flash do
 		RProtectorVersionizer.instance.encode("#{bin_folder}/RabbitGame.swf")
 		RProtectorVersionizer.instance.encode("#{bin_folder}/assets/interface.swf")
 		RProtectorVersionizer.instance.encode("#{bin_folder}/assets/rabbit_asset.swf")
-		RProtectorVersionizer.instance.encode("#{bin_folder}/assets/rabbit_images.swf")
-		RProtectorVersionizer.instance.encode("#{bin_folder}/assets/rabbit_reward.swf")
 	end
 
 	def compile_file(filename)

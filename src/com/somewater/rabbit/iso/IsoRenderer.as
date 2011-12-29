@@ -76,16 +76,7 @@ package com.somewater.rabbit.iso
 		 * TODO: сделать сеттером, который не позволяет установить стейт,
 		 * не существующий в анимационной линейке
 		 */
-		CONFIG::debug
-		{
-		public var __state__:String = States.STAND;
-		public function set state(v:String):void{__state__ = v;}
-		public function get state():String{return __state__;}
-		}
-		CONFIG::release
-		{
 		public var state:String = States.STAND;
-		}	
 		
 		private var __direction:uint = 1;// начальное значение - по умолчанию у вновь появившегося объекта
 		

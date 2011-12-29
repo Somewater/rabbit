@@ -17,17 +17,20 @@ package com.somewater.rabbit.iso.scene
 			graphics.beginFill(0, 0);
 			graphics.drawRect(0, 0, w, h);
 			
-			graphics.lineStyle(1, 0x00FF00, 0.2);
-			var i:Number;
-			for(i = 0;i<=w;i += Config.TILE_WIDTH)
+			CONFIG::debug
 			{
-				graphics.moveTo(i, 0);
-				graphics.lineTo(i, h);
-			}
-			for(i = 0;i<=h;i += Config.TILE_HEIGHT)
-			{
-				graphics.moveTo(0, i);
-				graphics.lineTo(w, i);
+				graphics.lineStyle(1, 0x00FF00, 0.2);
+				var i:Number;
+				for(i = 0;i<=w;i += Config.TILE_WIDTH)
+				{
+					graphics.moveTo(i, 0);
+					graphics.lineTo(i, h);
+				}
+				for(i = 0;i<=h;i += Config.TILE_HEIGHT)
+				{
+					graphics.moveTo(0, i);
+					graphics.lineTo(w, i);
+				}
 			}
 		}
 		

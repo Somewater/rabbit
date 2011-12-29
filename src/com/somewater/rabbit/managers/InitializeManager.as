@@ -98,7 +98,7 @@ package com.somewater.rabbit.managers
 			
 			PBE.startup(app);
 			
-			PBE.IS_SHIPPING_BUILD = CONFIG::debug;
+			PBE.IS_SHIPPING_BUILD = !(CONFIG::debug);
 			
 			RabbitGame.worldScene = new SceneView();
 			RabbitGame.worldScene.width = Config.WIDTH;
@@ -209,7 +209,7 @@ package com.somewater.rabbit.managers
 				initLevel();
 			
 			switchPBE(true);
-
+			RandomizeUtil.initializeSeed();
 			
 			instantiateLevel(app.level);
 			
@@ -301,11 +301,6 @@ package com.somewater.rabbit.managers
 				
 				if(PBE.templateManager.getXML(lastLevelGroup) == null)
 					PBE.templateManager.addXML(group, lastLevelGroup, 0);
-				
-				CONFIG::debug
-				{
-					PBE.templateManager.addXML(group, lastLevelGroup, 0);
-				}
 				
 				PBE.templateManager.instantiateGroup(lastLevelGroup);
 			}

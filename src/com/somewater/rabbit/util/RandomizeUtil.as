@@ -12,19 +12,18 @@ package com.somewater.rabbit.util
 
 	public class RandomizeUtil
 	{
-		private static var _randomizator:Number = 1;
+		private static var _randomizator:Number = 0.6;
 		private static var spatialSize:PropertyReference = new PropertyReference("@Spatial.size");
 		
 		public static function initialize():void
 		{
 			TypeUtility.registerInstantiator("RandomTilePoint", RandomTilePoint);
 			TypeUtility.registerInstantiator("RandomTilePoint.free", RandomTilePoint_free);
-			_randomizator = Math.random();
-			
-			CONFIG::debug
-			{
-				_randomizator = 0.6;
-			}
+		}
+		
+		public static function initializeSeed():void
+		{
+			_randomizator = 0.6;	
 		}
 		
 		/**
@@ -35,13 +34,8 @@ package com.somewater.rabbit.util
 		 */
 		public static function RandomTilePoint(paddindX:int = 0, paddingY:int = 0):Point
 		{
-			CONFIG::debug
-			{
-				return new Point(int(rnd * (IsoSpatialManager.instance.width - paddindX)), 
+			return new Point(int(rnd * (IsoSpatialManager.instance.width - paddindX)), 
 								 int(rnd * (IsoSpatialManager.instance.height - paddingY)))
-			}
-			return new Point(int(Math.random() * IsoSpatialManager.instance.width - paddindX)
-				, int(Math.random() * IsoSpatialManager.instance.height - paddingY));	
 		}
 		
 		/**

@@ -4,7 +4,7 @@ package com.somewater.rabbit
 	import com.somewater.net.IServerHandler;
 	import com.somewater.social.SocialUser;
 	import com.somewater.storage.ILocalDb;
-
+	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 
@@ -21,6 +21,7 @@ package com.somewater.rabbit
 		 * onProgress(value:Number = 0..1)
 		 */
 		function loadSwfs(queue:Array, onComplete:Function, onError:Function = null, onProgress:Function = null):void
+		function loadSwf(swfName:String, onComplete:Function, onError:Function = null):void	
 			
 		/**
 		 * Загрузать xml-файлы, поместив результаты загрузки в массив xmls в соответствующие поля

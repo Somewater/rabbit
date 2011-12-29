@@ -60,7 +60,8 @@ package {
 						,"Assets":{preload:true, url:"assets/rabbit_asset.swf"}
 						,"Rewards":{preload:true, url:"assets/rabbit_reward.swf"}
 						,"Images":{preload:true, url:"assets/rabbit_images.swf"}
-						,"Sound":{preload:true, url:"assets/rabbit_sound.swf"}
+						,"MusicMenu":{url:"assets/music_menu.swf"}
+						,"MusicGame":{url:"assets/music_game.swf"}
 						,"Lang":{priority:100, preload:true, url:"lang_ru.swf"}
 						//,"Editor":{priority:1, preload:true, url:"RabbitEditor.swf"}
 

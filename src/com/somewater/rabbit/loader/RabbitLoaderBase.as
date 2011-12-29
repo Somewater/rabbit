@@ -10,7 +10,7 @@ package com.somewater.rabbit.loader
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.social.SocialUser;
 	import com.somewater.storage.LocalDb;
-
+	
 	import flash.display.DisplayObject;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
@@ -112,12 +112,6 @@ package com.somewater.rabbit.loader
 		
 		[Embed(source="./../../../../assets/swc/preloader.swf", symbol="preloader.Preloader")]
 		private var PRELOADER_CLASS:Class;
-		
-		CONFIG::debug
-		{
-			//[Embed(source="./../bin-debug/Rabbit.swf", mimeType='application/octet-stream')]
-			private var GAME_CLASS:Class;
-		}
 		
 		public function RabbitLoaderBase()
 		{		
@@ -416,6 +410,13 @@ package com.somewater.rabbit.loader
 					loadNextSwf(true);
 					return;
 				}
+				
+			// проверить, не находится ли файл в процессе загрузки
+			if(_swfADs[name] is LoaderInfo)
+			{
+				loadNextSwf(true);
+				return;	
+			}
 
 			var request:URLRequest = new URLRequest(url);
 			var context:LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain, (DESKTOP_MODE?null:SecurityDomain.currentDomain)); 
@@ -427,6 +428,56 @@ package com.somewater.rabbit.loader
 			swfLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, _loadNextSwf);
 			
 			swfLoader.load(request, context);
+		}
+		
+		public function loadSwf(swfName:String, onComplete:Function, onError:Function = null):void	
+		{
+			var swf:Object = swfs[swfName];
+			var selflyLoading:Boolean = false;
+			if(swf.loaded)
+				onComplete();
+			else if(_swfADs[swfName] is LoaderInfo){
+				LoaderInfo(_swfADs[swfName]).addEventListener(Event.COMPLETE, onLoaderComplete);
+				LoaderInfo(_swfADs[swfName]).addEventListener(IOErrorEvent.IO_ERROR, onLoaderError);
+			}
+			else
+			{
+				var url:String = rightFilePath(swf.url);	
+				selflyLoading = true;
+				
+				var request:URLRequest = new URLRequest(url);
+				var context:LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain, (DESKTOP_MODE?null:SecurityDomain.currentDomain)); 
+				
+				var swfLoader:Loader = new Loader();
+				_swfADs[swfName] = swfLoader.contentLoaderInfo;
+				swfLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onLoaderError);
+				swfLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoaderComplete);
+				
+				swfLoader.load(request, context);
+			}
+			
+			function clearLoader():void
+			{
+				LoaderInfo(_swfADs[swfName]).removeEventListener(Event.COMPLETE, onLoaderComplete);
+				LoaderInfo(_swfADs[swfName]).removeEventListener(IOErrorEvent.IO_ERROR, onLoaderError);
+			}
+			
+			function onLoaderComplete(event:Event):void
+			{
+				clearLoader();	
+				if(selflyLoading)
+				{
+					swfs[swfName].loaded = true;
+					_swfADs[swfName] = event.currentTarget.applicationDomain;
+				}
+				onComplete();
+			}
+			
+			function onLoaderError(ev:Event):void
+			{
+				clearLoader();
+				onError && onError();
+			}
 		}
 
 

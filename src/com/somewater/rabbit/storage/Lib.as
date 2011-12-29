@@ -67,7 +67,7 @@ package com.somewater.rabbit.storage
 				{
 					Config.game.logError(Lib, "createMC", "Mc \"" + className + "\" not loaded");
 					trace("[ERROR] MC " + className + " not created");
-					return new MovieClip();
+					return null;
 				}
 
 				classCache[className] = cl;

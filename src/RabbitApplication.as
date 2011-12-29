@@ -598,7 +598,13 @@ package
 			var soundObject:Sound = Lib.createMC(soundName);
 			if(soundObject == null)
 			{
-				Config.game.logError(this, 'play', 'Sound ' + soundName + ' not found in library');
+				// if music, load and start playing async
+				if(track == SoundTrack.MUSIC)
+				{
+					Config.loader.loadSwf(soundName == Sounds.MUSIC_MENU ? 'MusicMenu' : 'MusicGame', onMusicLibraryLoaded);
+				}
+				else
+					Config.game.logError(this, 'play', 'Sound ' + soundName + ' not found in library');
 				return;
 			}
 
@@ -656,6 +662,17 @@ package
 				this.soundEnabled = settings['soundEnabled'];
 			}
 			settingsLoadingFlag = false;
+		}
+		
+		/**
+		 * Loaded lib file with some music theme
+		 */
+		private function onMusicLibraryLoaded():void
+		{
+			if(Config.gameModuleActive)
+				play(Sounds.MUSIC_GAME, SoundTrack.MUSIC);
+			else
+				play(Sounds.MUSIC_MENU, SoundTrack.MUSIC);
 		}
 	}
 }
