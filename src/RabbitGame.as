@@ -3,7 +3,6 @@ package
 	import com.pblabs.engine.PBE;
 	import com.pblabs.engine.core.PBGroup;
 	import com.pblabs.engine.core.TemplateManager;
-	import com.pblabs.engine.debug.Console;
 	import com.pblabs.engine.debug.Logger;
 	import com.pblabs.engine.entity.IEntity;
 	import com.pblabs.engine.entity.PropertyReference;
@@ -77,6 +76,7 @@ package
 		public function run(callback:Function = null):void
 		{
 			onInitCallback = callback;
+			PBE.IS_SHIPPING_BUILD = !(CONFIG::debug);
 			
 			if(stage)
 				onAddedToStage(null);

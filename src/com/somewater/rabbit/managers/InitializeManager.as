@@ -2,7 +2,6 @@ package com.somewater.rabbit.managers
 {
 	import com.pblabs.engine.PBE;
 	import com.pblabs.engine.core.PBGroup;
-	import com.pblabs.engine.debug.Console;
 	import com.pblabs.engine.debug.Logger;
 	import com.pblabs.engine.entity.IEntity;
 	import com.pblabs.engine.entity.PropertyReference;
@@ -98,8 +97,6 @@ package com.somewater.rabbit.managers
 			
 			PBE.startup(app);
 			
-			PBE.IS_SHIPPING_BUILD = !(CONFIG::debug);
-			
 			RabbitGame.worldScene = new SceneView();
 			RabbitGame.worldScene.width = Config.WIDTH;
 			RabbitGame.worldScene.height = Config.HEIGHT;
@@ -184,10 +181,6 @@ package com.somewater.rabbit.managers
 			IsoCameraController.getInstance();
 
 			new LevelConditionsManager();
-			CONFIG::debug
-			{
-				//Console.processLine("minimap 0.1");
-			}
 		}
 		
 		/**
