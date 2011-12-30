@@ -36,7 +36,7 @@ package com.somewater.storage {
 		private function recreateSharedObject():void
 		{
 			if(so == null)
-				so = SharedObject.getLocal('db');
+				so = SharedObject.getLocal('db', '/');
 		}
 	}
 }
