@@ -96,5 +96,23 @@ package com.somewater.rabbit.storage
 		{
 			return [{name:"Assets"}, {name:"Interface"}];
 		}
+		
+		public function get name():String
+		{
+			var data:Array = this.description.split('--');
+			if(data.length == 2)
+				return data[0]
+			else
+				return this.description;
+		}
+		
+		public function get shortDescription():String
+		{
+			var data:Array = this.description.split('--');
+			if(data.length == 2)
+				return data[1]
+			else
+				return this.description;	
+		}
 	}
 }

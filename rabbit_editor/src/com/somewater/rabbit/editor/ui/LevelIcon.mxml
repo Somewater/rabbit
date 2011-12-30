@@ -17,7 +17,7 @@
 				level.conditions["carrot"] = 1;// для предотвращения мгновенного завершения
 			}
 			text.text = "level #" + level.number + " (id=" + level.id + ")\n" +
-					(level.description == null || level.description.length < 30 ? level.description : level.description.substr(0, 30) + "...");
+					(level.name);
 		}
 		]]>
 	</mx:Script>

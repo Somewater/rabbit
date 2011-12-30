@@ -182,6 +182,7 @@ package
 				,"Rewards":Config.loader.getFilePath("Rewards")
 			}, function(data:Object):void{
 				// статика загружена
+				Config.loader.setProgress(2, 0.5);
 				Config.loader.setProgress(2, 1);
 				Config.loader.setProgress(3, 0);
 				

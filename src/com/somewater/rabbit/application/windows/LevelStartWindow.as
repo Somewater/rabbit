@@ -83,7 +83,7 @@ package com.somewater.rabbit.application.windows {
 			iconLevelNumber.width = 155;
 			iconLevelNumber.text = level.number.toString();
 			starIcon.addChild(iconLevelNumber);
-			createTextAndImage(levelToString(level), level.description, level.image);
+			createTextAndImage(levelToString(level), level.name + ".\n" + level.shortDescription, level.image);
 
 			core = Lib.createMC('interface.LevelStartCounters');
 			core.x = 79;

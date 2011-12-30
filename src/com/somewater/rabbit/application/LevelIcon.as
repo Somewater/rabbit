@@ -77,14 +77,14 @@ package com.somewater.rabbit.application
 			{
 				levelTF.text = _data.number.toString();
 				scoreTF.text = levelInstance.carrotHarvested.toString();
-				hint = _data.description;
+				hint = _data.name;
 				stars = levelInstance.stars;
 			}
 			else if(!locked)
 			{
 				levelTF.text = _data.number.toString();
 				scoreTF.text = "";//TODO запросить, сколько очков у юзера по тому или иному уровню
-				hint = _data.description;
+				hint = _data.name;
 				stars = 0;
 			}
 			else

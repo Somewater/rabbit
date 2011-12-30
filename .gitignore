@@ -1,4 +1,5 @@
 bin-debug/*.swf
+bin-debug/Levels.xml
 
 .actionScriptProperties
 .project

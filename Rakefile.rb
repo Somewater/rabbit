@@ -59,6 +59,7 @@ namespace :flash do
 		compile_file "RabbitGame"
 		compile_file "RabbitApplication"
 		compile_file "LocalRabbitLoader"
+		compile_file "xml_pack"
 	  end
 	  puts "=== Compilation success! ==="
 	end
@@ -70,12 +71,7 @@ namespace :flash do
 	end
 
 	desc "Compile all stuff"
-	task :compile_all do
-	  compile_file "lang_ru"
-	  compile_file "RabbitGame"
-	  compile_file "RabbitApplication"
-	  compile_file "LocalRabbitLoader"
-	  compile_editor_file "RabbitEditor"
+	task :compile_all => [:compile, :compile_editor] do
 	  puts "=== Compilation success! ==="
 	end
 
