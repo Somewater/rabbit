@@ -63,7 +63,7 @@ package {
 						,"MusicMenu":{url:"http://cs301105.vkontakte.ru/u245894/8249c8fc1ffbf9.zip"}
 						,"MusicGame":{url:"http://cs301105.vkontakte.ru/u245894/721ed8935f06d4.zip"}
 						,"Lang":{priority:100, preload:true, url:"http://cs301105.vkontakte.ru/u245894/4fb4da77724f6a.zip"}
-						,"XmlPack":{preload:true, url:"http://cs301105.vkontakte.ru/u245894/73d878b44305ae.zip"}
+						,"XmlPack":{preload:true, url:"http://cs303308.vkontakte.ru/u245894/8400f1f792fde5.zip"}
 
 						,"Font":{priority:100, preload:true, url:"http://cs301105.vkontakte.ru/u245894/e07afb77864e16.zip"}
 					}
