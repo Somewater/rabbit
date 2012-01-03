@@ -41,8 +41,7 @@ package
 				,"MusicMenu":{url:"assets/music_menu.swf"}
 				,"MusicGame":{url:"assets/music_game.swf"}
 				,"Lang":{priority:100, preload:true, url:"lang_ru.swf"}
-				,"XmlPack":{preload:true, url:"xml_pack.swf"}
-				
+
 				,"Font":{priority:100, preload:true, url:"assets/fonts_ru.swf"}
 				//,"Font":{priority:1000, preload:true, url:"assets/fonts_ru.swf"}
 			}
@@ -51,6 +50,9 @@ package
 			{
 				swfs["Editor"] = {priority:1, preload:true, url:"RabbitEditor.swf"};
 			}
+
+			if(!CONFIG::debug)
+				swfs["XmlPack"] = {preload:true, url:"xml_pack.swf"};
 			
 			filePaths = {
 				"Levels":"/levels.xml"

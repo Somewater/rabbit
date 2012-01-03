@@ -5,6 +5,8 @@ Dir["#{ROOT}/rabbit_server/lib/tasks/*.rake"].sort.each { |x| import x }
 require 'rake'
 require 'spec/rake/spectask'
 
+$debug = ENV['DEBUG'] ? ENV['DEBUG'].to_s == 'true' || ENV['DEBUG'].to_s == '1': false
+
 task :default => ["flash:compile"]
 
 task :environment do
@@ -29,10 +31,9 @@ namespace :flash do
 -default-frame-rate=30 \
 -default-size 810 550 \
 -target-player=10.0.0 \
--compiler.debug=true \
+-compiler.debug=#{$debug ? 'true' : 'false'} \
 -use-network=true \
--define+=CONFIG::release,false \
--define+=CONFIG::debug,true \
+-define+=CONFIG::debug,#{$debug ? 'true' : 'false'} \
 --keep-as3-metadata+=TypeHint,EditorData,Embed \
 -benchmark=true \
 -optimize=true \
@@ -58,7 +59,7 @@ namespace :flash do
 		compile_file "lang_ru"
 		compile_file "RabbitGame"
 		compile_file "RabbitApplication"
-		compile_file "LocalRabbitLoader"
+		compile_file "EmbedRabbitLoader"
 		compile_file "xml_pack"
 	  end
 	  puts "=== Compilation success! ==="
@@ -124,8 +125,14 @@ namespace :srv do
 
 	desc "Upload swfs"
 	task :upload do
-		scp = Execution.new("scp -v #{ROOT}/bin-debug/*.swf root@asflash.ru:/srv/www/rabbit.asflash.ru/bin-debug/", /debug1\: Exit status 0/);
-		scp = Execution.new("scp -v #{ROOT}/bin-debug/assets/*.swf root@asflash.ru:/srv/www/rabbit.asflash.ru/bin-debug/assets/", /debug1\: Exit status 0/);
+		if WIN_OS
+			WIN_OS_ROOT = '/c/Work/Gamedev/RabbitGame'
+			%x[scp #{WIN_OS_ROOT}/bin-debug/*.swf root@asflash.ru:/srv/www/rabbit.asflash.ru/bin-debug/]
+			%x[scp #{WIN_OS_ROOT}/bin-debug/assets/*.swf root@asflash.ru:/srv/www/rabbit.asflash.ru/bin-debug/assets/]
+		else
+			scp = Execution.new("scp -v #{ROOT}/bin-debug/*.swf root@asflash.ru:/srv/www/rabbit.asflash.ru/bin-debug/", /debug1\: Exit status 0/);
+			scp = Execution.new("scp -v #{ROOT}/bin-debug/assets/*.swf root@asflash.ru:/srv/www/rabbit.asflash.ru/bin-debug/assets/", /debug1\: Exit status 0/);
+		end
 	end
 end
 
