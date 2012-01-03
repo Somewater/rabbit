@@ -214,7 +214,7 @@ package
 			for each (var level:XML in levels.*)
 			{
 				var l:LevelDef = new LevelDef(level);
-				if(l.number < 100)
+				if(l.number < 100 || CONFIG::debug)
 					addLevel(l);
 			}
 
