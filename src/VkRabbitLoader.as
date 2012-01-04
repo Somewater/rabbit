@@ -1,11 +1,14 @@
 package {
 	import com.somewater.net.SWFDecoderWrapper;
 	import com.somewater.rabbit.loader.SocialRabbitLoader;
-
+	import com.somewater.rabbit.storage.Config;
+	
 	import flash.display.DisplayObject;
 	import flash.events.MouseEvent;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
+	
+	import ru.apprise.engine.BannerTape;
 
 	[SWF(width="810", height="650", backgroundColor="#FFFFFF", frameRate="30")]
 	public class VkRabbitLoader extends SocialRabbitLoader{
@@ -24,6 +27,14 @@ package {
 			}, function(...args):void{
 				trace('ERROR ARROW PARSING ' + args);
 			})
+		}
+		
+		override protected function onNetInitializeComplete(...args):void
+		{
+			super.onNetInitializeComplete(args);
+			
+			//var bannerTape: BannerTape = new BannerTape("3298", "791", Config.WIDTH, 1);
+			//stage.addChild(bannerTape);
 		}
 
 		private function onWall():void
