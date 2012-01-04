@@ -138,6 +138,7 @@ package
 			if(userParams == null)
 				userParams = {};
 			user = new SocialUser();
+			user.male = true;
 			user.id = userParams['id'] ? userParams['id'] : null;
 			user.itsMe = true;
 			user.balance = 0;

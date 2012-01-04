@@ -151,6 +151,8 @@ package
 				loaderHint.y = Config.stage.stageHeight - loaderHint.height;
 				Config.stage.addChild(loaderHint);
 			}
+			
+			Lang.options['male'] = Config.loader.getUser().male;
 
 			Config.loader.serverHandler.addGlobalHandler(false, serverErrorHandler)
 			addPropertyListener('musicEnabled', onMusicVolumeChanged);

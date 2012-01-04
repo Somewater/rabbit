@@ -3,7 +3,7 @@ package com.somewater.rabbit.decor {
 	import com.pblabs.engine.entity.IEntity;
 	import com.pblabs.rendering2D.SimpleSpatialComponent;
 	import com.somewater.rabbit.iso.IsoRenderer;
-
+	
 	import flash.geom.Point;
 
 	public class PopupEffectFactory {
@@ -14,7 +14,10 @@ package com.somewater.rabbit.decor {
 		{
 			var effect:IEntity = PBE.templateManager.instantiateEntity('PopupEffectTemplate')
 			effect.owningGroup = invoker.owningGroup;
-			IsoRenderer(effect.lookupComponentByName('Render')).slug = animationSlug;
+			PopupEffectRenderer(effect.lookupComponentByName('Render')).slug = animationSlug;
+			tile = tile.clone();
+			tile.x += 0.5;// чтобы попап плыл из середины тайла, а не из края 0,0
+			tile.y += 0.5;
 			SimpleSpatialComponent(effect.lookupComponentByName('Spatial')).position = tile;
 		}
 	}

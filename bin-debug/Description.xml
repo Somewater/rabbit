@@ -580,7 +580,7 @@
 			<spatialManager entityName="SceneDB" componentName="Spatial"/>
 		</component>
 		<component type="com.somewater.rabbit.decor.PopupEffectRenderer" name="Render">
-			<layerIndex>10</layerIndex>
+			<layerIndex>20</layerIndex>
 			<scene entityName="SceneDB" componentName="Scene"/>
 			<positionProperty>@Spatial.position</positionProperty>
 		</component>

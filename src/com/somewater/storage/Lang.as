@@ -16,6 +16,13 @@ package com.somewater.storage
 		// basic[0] содержит список всех доступных языков вида [{},{}...{label:название, data:путь загрузки файла или null}..]
 		public static const basic:Array = [];
 		
+		/**
+		 * Настройки конкретики пользователя (напр, пол и т.д...)
+		 */
+		public static var options:Object = {
+												'male':true
+											};
+		
 		public function Lang()
 		{
 			 
@@ -37,7 +44,7 @@ package com.somewater.storage
 			{
 				if(args == null)
 				{
-					return dict[key];
+					return sexTranslation(dict[key]);
 				}
 				else
 				{
@@ -45,11 +52,38 @@ package com.somewater.storage
 					for (var name:String in args) {
 						result = result.replace(new RegExp("\{" + name + "\}", "g"), args[name])
 					}
-					return result;
+					return sexTranslation(result);
 				}
 			}
 			else
 				return key.length?key:"T_NULL";
+		}
+		
+		/**
+		 * Находит и обрабатывает строки типа 
+		 * "Ты получил{male:|а} новый уровень"
+		 */
+		private static function sexTranslation(text:String):String
+		{
+			var i:int = 0;
+			const PHASE:String = '{male:';
+			while(i >= 0)
+			{
+				i = text.indexOf(PHASE,i);
+				if(i >= 0)
+				{
+					var separatorIndex:int = text.indexOf('|',i);
+					var endBracketIndex:int = text.indexOf('}',separatorIndex);
+					if(separatorIndex == -1 || endBracketIndex == -1)
+						throw new Error('Wrong sex translation syntax');
+					var male:Boolean = options['male'];
+					var phase:String = text.substring(male ? i + PHASE.length: separatorIndex + 1, male ? separatorIndex : endBracketIndex);
+					text = (i > 0 ? text.substr(0, i) : '') 
+							+ phase 
+							+ (endBracketIndex < text.length - 1 ? text.substr(endBracketIndex + 1) : '');
+				}
+			}
+			return text;
 		}
 		
 		public static function arr(key:String, separator:String = ","):Array{
