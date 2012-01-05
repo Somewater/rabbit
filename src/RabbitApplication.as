@@ -317,9 +317,9 @@ package
 		}
 		
 		
-		public function message(msg:String):Sprite
+		public function message(msg:String, closeFunc:Function = null, buttons:Array = null):Sprite
 		{
-			return PopUpManager.message(translate(msg));
+			return PopUpManager.message(translate(msg), null, closeFunc, buttons);
 		}
 		
 		public function showSlash(process:Number):void

@@ -100,9 +100,9 @@ package com.somewater.controller
 			return instance.defaultParent.addChild(window);
 		}
 		
-		public static function message(text:String, title:String = null):Window{
-			var window:Window = new Window(text.length > 300 ? text.substr(0,300) + "..." : text, title);
-			window.width = (text.length < 300?400:500);
+		public static function message(text:String, title:String = null, closeFunc:Function = null, buttons:Array = null):Window{
+			var window:Window = new Window(text.length > 500 ? text.substr(0,500) + "..." : text, title, closeFunc, buttons);
+			window.width = (text.length < 500?400:600);
 			addPopUp(window,true);
 			centre(window);
 			return window;

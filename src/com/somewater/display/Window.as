@@ -48,6 +48,7 @@ package com.somewater.display
 			this.closeFunc = closeFunc;
 			
 			ground = new GROUND_CLASS();
+			ground.name = 'ground';
 			ground.width = WIDTH; ground.height = HEIGHT;
 			//ground.addEventListener(MouseEvent.MOUSE_DOWN,onMouseDownOnGround_handler,false,0,true);
 			//ground.addEventListener(MouseEvent.MOUSE_UP,onMouseUpOnGround_handler,false,0,true);
@@ -66,6 +67,7 @@ package com.somewater.display
 			buttons = _buttons;
 			
 			closeButton = new CLOSE_BTN_CLASS();
+			closeButton.name = 'closeButton';
 			closeButton.addEventListener(MouseEvent.CLICK, onCloseBtnClick);
 			addChild(closeButton);
 					

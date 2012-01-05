@@ -12,6 +12,7 @@ package com.pblabs.engine.core
     import com.pblabs.engine.PBUtil;
     import com.pblabs.engine.debug.*;
     import com.pblabs.engine.serialization.TypeUtility;
+    import com.somewater.rabbit.events.ExceptionEvent;
     
     import flash.events.Event;
     import flash.utils.getTimer;
@@ -422,7 +423,13 @@ package com.pblabs.engine.core
             
             // Calculate time since last frame and advance that much.
             var deltaTime:Number = Number(currentTime - lastTime) * _timeScale;
-            advance(deltaTime);
+			try
+			{
+				advance(deltaTime);
+			}catch(err:Error){
+				PBE.levelManager.dispatchEvent(new ExceptionEvent(ExceptionEvent.TICK_EXCEPTION, err));
+				throw err;	
+			}
             
             // Note new last time.
             lastTime = currentTime;

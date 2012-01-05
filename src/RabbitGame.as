@@ -9,11 +9,13 @@ package
 	import com.pblabs.rendering2D.SceneAlignment;
 	import com.pblabs.rendering2D.SimpleSpatialComponent;
 	import com.somewater.rabbit.IRabbitGame;
+	import com.somewater.rabbit.application.commands.RestartLevelCommand;
 	import com.somewater.rabbit.components.GenocideComponent;
 	import com.somewater.rabbit.components.RandomActComponent;
 	import com.somewater.rabbit.debug.ConsoleUtils;
 	import com.somewater.rabbit.debug.CreateTool;
 	import com.somewater.rabbit.debug.EditorModule;
+	import com.somewater.rabbit.events.ExceptionEvent;
 	import com.somewater.rabbit.iso.IsoCameraController;
 	import com.somewater.rabbit.iso.scene.IsoSpatialManager;
 	import com.somewater.rabbit.iso.scene.SceneView;
@@ -245,6 +247,26 @@ package
 				return EditorModule.instance.setTemplateTool(toolname, template, objectReference);
 			}
 			return null;
+		}
+		
+		/**
+		 * Обработка ошибки, произошедшей во время тиканья процесс-менеджера
+		 */
+		public function onSomeException(event:ExceptionEvent):void
+		{
+			var w:Sprite = Config.application.message(Config.application.translate('ERROR_CLIENT_EXCEPTION',
+				{
+					'error': (event.error.getStackTrace().length ? event.error.getStackTrace() : event.error.message)
+				}), function(...args):Boolean{
+					// рестарт уровня
+					new RestartLevelCommand().execute();
+					return true;
+				}, [Config.application.translate('BUTTON_RESTART_LEVEL')]);
+			if(w && w.getChildByName('closeButton'))
+				w.getChildByName('closeButton').visible = false;
+			if(w && w.getChildByName('ground'))
+				w.getChildByName('ground').alpha = 0.5;
+			pause();
 		}
 		
 		override public function get width():Number{return Config.WIDTH;}

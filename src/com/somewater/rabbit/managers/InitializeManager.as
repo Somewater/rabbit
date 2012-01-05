@@ -3,6 +3,7 @@ package com.somewater.rabbit.managers
 	import com.pblabs.engine.PBE;
 	import com.pblabs.engine.core.PBGroup;
 	import com.pblabs.engine.debug.Logger;
+	import com.pblabs.engine.debug.Profiler;
 	import com.pblabs.engine.entity.IEntity;
 	import com.pblabs.engine.entity.PropertyReference;
 	import com.pblabs.rendering2D.SceneAlignment;
@@ -203,6 +204,8 @@ package com.somewater.rabbit.managers
 			
 			switchPBE(true);
 			RandomizeUtil.initializeSeed();
+			
+			Profiler.clear();
 			
 			instantiateLevel(app.level);
 			

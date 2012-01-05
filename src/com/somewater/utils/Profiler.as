@@ -199,6 +199,16 @@ package com.somewater.utils
          if(_stackDepth)
             throw new Error("Not at root!");
       }
+	  
+	  /**
+	   * FIX 05/01/2012 - очистить очередь профайлинга, 
+	   * тем самым разрешив игре работать после эксепшна
+	   */
+	  public static function clear():void
+	  {
+		  _stackDepth = 0;
+		  _currentNode = null;
+	  }
       
       private static function doReport():void
       {

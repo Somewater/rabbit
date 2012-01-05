@@ -5,6 +5,7 @@ package com.somewater.rabbit.application.windows
 	import com.somewater.rabbit.application.OrangeButton;
 	import com.somewater.rabbit.application.buttons.SlideBar;
 	import com.somewater.rabbit.application.buttons.SoundSwitchButton;
+	import com.somewater.rabbit.application.commands.RestartLevelCommand;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
@@ -94,9 +95,7 @@ package com.somewater.rabbit.application.windows
 		{
 			close();
 			
-			var level:LevelDef = Config.game.level;
-			Config.game.finishLevel(LevelInstanceDef.DUMMY_FATAL_LEVEL, true);
-			Config.application.startGame(level);
+			new RestartLevelCommand().execute();
 		}
 	}
 }

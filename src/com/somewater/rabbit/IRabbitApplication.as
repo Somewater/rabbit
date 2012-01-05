@@ -3,7 +3,7 @@ package com.somewater.rabbit
 	import com.somewater.rabbit.storage.GameUser;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
-
+	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.text.TextField;
@@ -17,7 +17,7 @@ package com.somewater.rabbit
 	{
 		function run():void
 			
-		function message(msg:String):Sprite
+		function message(msg:String, closeFunc:Function = null, buttons:Array = null):Sprite
 
 		function levelStartMessage(level:LevelDef):void
 
