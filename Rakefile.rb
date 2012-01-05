@@ -18,6 +18,17 @@ Spec::Rake::SpecTask.new(:spec) do |t|
   t.spec_files = FileList["#{ROOT}/rabbit_server/spec/**/*.rb"]
 end
 
+task :vk_environment => :environment do
+	require "vkontakte"
+	Vkontakte.setup do |config|
+	  config.app_id = "2732721 "
+	  config.app_secret = "kJ0AVDo3he9GhGlhkmha"
+	  config.format = :json
+	  config.debug = false
+	  config.logger = File.open("#{ROOT}/logs/vkontakte.log", "a")
+	end
+end
+
 ##########################
 #
 #    	  FLASH
@@ -132,6 +143,18 @@ namespace :srv do
 		else
 			scp = Execution.new("scp -v #{ROOT}/bin-debug/*.swf root@asflash.ru:/srv/www/rabbit.asflash.ru/bin-debug/", /debug1\: Exit status 0/);
 			scp = Execution.new("scp -v #{ROOT}/bin-debug/assets/*.swf root@asflash.ru:/srv/www/rabbit.asflash.ru/bin-debug/assets/", /debug1\: Exit status 0/);
+		end
+	end
+	
+	desc "Start send notify queue from BD"
+	task :notify => :vk_environment do
+		app = Vkontakte::App::Secure.new
+		begin
+			p app.secure.sendNotification({:uids => "245894", :message => "rabbit"})
+		rescue Vkontakte::App::VkException => ex
+			p User.all.first
+		rescue
+			p "Some error"
 		end
 	end
 end
