@@ -160,7 +160,7 @@ package com.somewater.rabbit.application {
 		 */
 		public static function positionReward(rewardInstance:RewardInstanceDef, userRewards:Array):void
 		{
-			var counter:int = 1000;
+			var counter:int = 100000;
 			var size:Point = rewardInstance.size;
 			var rect:Rectangle = new Rectangle(0, 0, size.x, size.y);
 
@@ -194,7 +194,18 @@ package com.somewater.rabbit.application {
 					counter--;
 					var userReward:RewardInstanceDef = userRewards[i];
 					var userRewardSize:Point = userReward.size;
-					var intersect:Rectangle = new Rectangle(userReward.x,  userReward.y, userRewardSize.x, userRewardSize.y).intersection(rect)
+					var intersect:Rectangle;
+					if(userRewards.length < 60 && counter > 0)// square 9x9=81, minus 9 on hole, minus ~10 on big rewards
+					{
+						// на относительно пустой поляне пытаемся проставить награды "шашками", 
+						// т.е. чтобы меж ними были робелы для хождения кроля
+						intersect = new Rectangle(userReward.x - 1,  userReward.y - 1, userRewardSize.x + 1, userRewardSize.y + 1).intersection(rect)
+					}
+					else
+					{
+						// просто пытаемся найти незанятую позицию
+						intersect = new Rectangle(userReward.x,  userReward.y, userRewardSize.x, userRewardSize.y).intersection(rect)
+					}
 					if(intersect.width > 0 && intersect.height > 0)
 					{
 						continue cycle;
