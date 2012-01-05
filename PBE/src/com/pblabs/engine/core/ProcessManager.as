@@ -423,8 +423,9 @@ package com.pblabs.engine.core
             
             // Calculate time since last frame and advance that much.
             var deltaTime:Number = Number(currentTime - lastTime) * _timeScale;
-			try
-			{
+			
+			// advance(deltaTime);
+			try{
 				advance(deltaTime);
 			}catch(err:Error){
 				PBE.levelManager.dispatchEvent(new ExceptionEvent(ExceptionEvent.TICK_EXCEPTION, err));
