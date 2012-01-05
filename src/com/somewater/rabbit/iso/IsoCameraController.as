@@ -219,7 +219,7 @@ package com.somewater.rabbit.iso
 			var dist:Number = Math.sqrt(Math.pow(scenePos.x - newPosition.x, 2) + Math.pow(scenePos.y - newPosition.y, 2)); 
 			
 			if(tween) tween.kill();
-			tween = TweenLite.to(this, 0.3 + Math.max(0.5,Math.min(0,Math.log(dist)/10)), 
+			tween = TweenLite.to(this, 0.1 + Math.max(0.2,Math.min(0,Math.log(dist)/10)), 
 				{"x":newPosition.x, "y":newPosition.y, "onComplete": tweenOff, "ease": com.greensock.easing.Linear.easeIn});
 		}
 		
