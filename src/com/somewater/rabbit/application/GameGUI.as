@@ -174,7 +174,7 @@ package com.somewater.rabbit.application
 		{
 			if(value != _carrot)
 			{
-				carrotTF.text = value.toString();
+				carrotTF.text = (_carrotMax - value).toString();
 				carrotMask.scaleY = Math.min(1, value / _carrotMax);
 			}
 		}
