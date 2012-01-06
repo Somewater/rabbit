@@ -47,9 +47,20 @@ package com.somewater.rabbit.application.windows {
 			if(Config.loader.canPost())
 				okButton = new HideOrangeButton();
 			super.createButtons();
-
+			
 			if(Config.loader.canPost())
 			{
+				if(rewardPanel)
+					okButton.y = Math.max(okButton.y, rewardPanel.y + RewardPanel.HEIGHT + 40);
+				
+				this.height += 30;
+				
+				var postingExplanation:EmbededTextField = new EmbededTextField(null,0xDB661B,12);
+				postingExplanation.text = Lang.t('LEVEL_POSTING_EXPLANATION');
+				postingExplanation.x = (this.width - postingExplanation.width) * 0.5;
+				postingExplanation.y = okButton.y - 30;
+				addChild(postingExplanation);
+				
 				postingButton = new OrangeButton();
 				postingButton.label = Lang.t("POSTING_LEVEL_BUTTON");
 				postingButton.width = Math.max(postingButton.width, okButton.width);

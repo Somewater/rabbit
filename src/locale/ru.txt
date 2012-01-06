@@ -29,6 +29,7 @@ LEVEL_FATAL_CARROT=Ты проворонил{male:|а} морковку!
 LEVEL_SUCCESS_FINISH=Уровень пройден!
 LEVEL_POSTING_SUCCESS=Сообщение о прохождении уровня опубликовано!
 LEVEL_POSTING_IN_PROCESS=Публикация сообщения...
+LEVEL_POSTING_EXPLANATION=Опубликуй новость о прохождении уровня и получи награду!
 ###################
 #
 #	PAUSE MENU WINDOW

@@ -151,15 +151,15 @@
 
 	<!-- TYPE_POSTING  -->
 
-	<template name="reward.Banderol" template="RewardBase" id="50" type="posting" degree="3">
+	<template name="reward.Banderol" template="RewardBase" id="50" type="posting" degree="1">
 		<component name="Render"><slug>reward.Banderol</slug></component>
 	</template>
 
-	<template name="reward.MailBox" template="RewardBase" id="51" type="posting" degree="5">
+	<template name="reward.MailBox" template="RewardBase" id="51" type="posting" degree="3">
 		<component name="Render"><slug>reward.MailBox</slug></component>
 	</template>
 
-	<template name="reward.Golub" template="RewardBase" id="52" type="posting" degree="10">
+	<template name="reward.Golub" template="RewardBase" id="52" type="posting" degree="5">
 		<component name="Render"><slug>reward.Golub</slug></component>
 	</template>
 
