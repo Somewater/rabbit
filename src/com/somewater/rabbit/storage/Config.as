@@ -41,7 +41,7 @@ package com.somewater.rabbit.storage
 		
 		public static var WIDTH:int = 810;
 		
-		public static var HEIGHT:int = 550;
+		public static var HEIGHT:int = 650;
 		
 		public static const TILE_WIDTH:int = 90;
 		

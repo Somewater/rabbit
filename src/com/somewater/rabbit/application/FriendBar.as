@@ -15,7 +15,7 @@ package com.somewater.rabbit.application
 	{
 		public static const WIDTH:int = 510;
 		public static const HEIGHT:int = 120;
-		public static const ITEMS:int = 5;
+		public static const ITEMS:int = 4;
 		
 		private var ground:DisplayObject;
 		private var leftArrow:SimpleButton;
@@ -63,7 +63,7 @@ package com.somewater.rabbit.application
 			friends = UserProfile.instance.appFriends;
 			friends.sortOn("levelNumber", Array.NUMERIC | Array.DESCENDING);
 			
-			for(var i:int = 0;i<ITEMS;i++)
+			for(var i:int = 0;i<=ITEMS;i++)
 			{
 				var friendIcon:FriendIcon = new FriendIcon();
 				friendIcon.x = 55 + i * 80;     
@@ -101,8 +101,8 @@ package com.somewater.rabbit.application
 				var friendsMore:Boolean = friends.length > ITEMS;
 				setButtonEnable(leftArrow, friendsMore  && _position > 0);
 				setButtonEnable(leftStuporArrow, friendsMore && _position > 0);
-				setButtonEnable(rightArrow, _position < friendsMore && friends.length - ITEMS);
-				setButtonEnable(rightStuporArrow, _position < friendsMore && friends.length - ITEMS);
+				setButtonEnable(rightArrow, friendsMore && _position < friends.length - ITEMS);
+				setButtonEnable(rightStuporArrow, friendsMore && _position < friends.length - ITEMS);
 			}
 		}
 		public function get position():int {return _position;} 
@@ -119,13 +119,13 @@ package com.somewater.rabbit.application
 			var arrow:SimpleButton = e.currentTarget as SimpleButton;
 			if(!arrow.enabled) return;
 			if(arrow == leftArrow)
-				value = -1;
-			else if(arrow == leftStuporArrow)
 				value = -ITEMS;
+			else if(arrow == leftStuporArrow)
+				value = -100000;
 			if(arrow == rightArrow)
-				value = 1;
-			else if(arrow == rightStuporArrow)
 				value = ITEMS;
+			else if(arrow == rightStuporArrow)
+				value = 100000;
 			
 			position += value;
 		}

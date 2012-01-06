@@ -2,13 +2,13 @@ package {
 	import com.somewater.net.SWFDecoderWrapper;
 	import com.somewater.rabbit.loader.SocialRabbitLoader;
 	import com.somewater.rabbit.storage.Config;
+	import com.somewater.rabbit.storage.Lib;
 	
 	import flash.display.DisplayObject;
 	import flash.events.MouseEvent;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
 	
-	import ru.apprise.engine.BannerTape;
 
 	[SWF(width="810", height="650", backgroundColor="#FFFFFF", frameRate="30")]
 	public class VkRabbitLoader extends SocialRabbitLoader{
@@ -33,12 +33,14 @@ package {
 		{
 			super.onNetInitializeComplete(args);
 			
+			trace('[FIX] ' + Lib.ASSETS); // быстрофикс от 6 янв.
 			//var bannerTape: BannerTape = new BannerTape("3298", "791", Config.WIDTH, 1);
 			//stage.addChild(bannerTape);
 		}
 
 		private function onWall():void
 		{
+			preloader.scaleX = preloader.scaleY = 0.8;
 			preloader.x += 100;
 			preloader.y += 80;
 		}
@@ -63,18 +65,18 @@ package {
 		{
 			basePath = 'http://rabbit.asflash.ru/';
 			swfs = {
-						"Game":{priority:-1,preload:true,url:"http://cs301105.vkontakte.ru/u245894/62276fad40b78d.zip"}
+						"Game":{priority:-1,preload:true,url:"http://cs305914.vkontakte.ru/u245894/2ddcb520203a64.zip"}
 						,
 						"Application":{priority:int.MIN_VALUE,
-							preload:true,url:"http://cs301105.vkontakte.ru/u245894/c13b237283840e.zip"}
+							preload:true,url:"http://cs305914.vkontakte.ru/u245894/70874ad1ebc8ff.zip"}
 						,"Interface":{preload:true, url:"http://cs301105.vkontakte.ru/u245894/4cef321a434828.zip"}
 						,"Assets":{preload:true, url:"http://cs301105.vkontakte.ru/u245894/20130588dba46b.zip"}
-						,"Rewards":{preload:true, url:"http://cs301105.vkontakte.ru/u245894/4194d38dca2dae.zip"}
+						,"Rewards":{preload:true, url:"http://cs305914.vkontakte.ru/u245894/484acef2b22ff3.zip"}
 						,"Images":{preload:true, url:"http://cs301105.vkontakte.ru/u245894/bed3fdd7fef6d3.zip"}
 						,"MusicMenu":{url:"http://cs301105.vkontakte.ru/u245894/8249c8fc1ffbf9.zip"}
 						,"MusicGame":{url:"http://cs301105.vkontakte.ru/u245894/721ed8935f06d4.zip"}
-						,"Lang":{priority:100, preload:true, url:"http://cs301105.vkontakte.ru/u245894/4fb4da77724f6a.zip"}
-						,"XmlPack":{preload:true, url:"http://cs303308.vkontakte.ru/u245894/8400f1f792fde5.zip"}
+						,"Lang":{priority:100, preload:true, url:"http://cs305914.vkontakte.ru/u245894/2fc9157175a711.zip"}
+						,"XmlPack":{preload:true, url:"http://cs305914.vkontakte.ru/u245894/5284896a69e9fb.zip"}
 
 						,"Font":{priority:100, preload:true, url:"http://cs301105.vkontakte.ru/u245894/e07afb77864e16.zip"}
 					}

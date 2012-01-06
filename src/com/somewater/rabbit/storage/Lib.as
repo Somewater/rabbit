@@ -53,14 +53,18 @@ package com.somewater.rabbit.storage
 			var cl:Class = classCache[className]
 			if(cl == null)
 			{
-				for each(var ad:ApplicationDomain in swfADs)
+				for each(var _ad:* in swfADs)
 				{
-					try
+					var ad:ApplicationDomain = _ad as ApplicationDomain;
+					if(ad)
 					{
-						cl = ad.getDefinition(className) as Class;
-						if(cl != null)
-							break;
-					}catch(e:Error){}
+						try
+						{
+							cl = ad.getDefinition(className) as Class;
+							if(cl != null)
+								break;
+						}catch(e:Error){}
+					}
 				}
 
 				if(cl == null)
