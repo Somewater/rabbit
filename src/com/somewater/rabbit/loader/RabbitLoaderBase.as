@@ -615,9 +615,7 @@ package com.somewater.rabbit.loader
 				{
 					var carrot:MovieClip = preloader.bar["carrot" + (preloaderCarrotIndex + 1)];
 					carrot.play();
-					carrot.addFrameScript(carrot.totalFrames-1, function(...args):void{
-						carrot.stop();
-					});
+					carrot.addFrameScript(carrot.totalFrames-1, carrot.stop);
 				}
 			}
 		}
