@@ -23,8 +23,8 @@ package
 		private function onAddedToStage(e:Event):void
 		{
 			var w:DisplayObject = new windowCl();
-			w.x = (stage.stageWidth - w.width) * 0.5;
-			w.y = (stage.stageHeight - w.height) * 0.5;
+			w.x = ((stage.stageWidth > 1? stage.stageWidth : 810) - w.width) * 0.5;
+			w.y = ((stage.stageHeight > 1 ? stage.stageHeight : 650) - w.height) * 0.5;
 			stage.addChild(w);
 		}
 	}

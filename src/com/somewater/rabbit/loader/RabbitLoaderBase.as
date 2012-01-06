@@ -165,9 +165,6 @@ package com.somewater.rabbit.loader
 			if(!_basePath)
 				_basePath = loaderInfo.url.substr(0, loaderInfo.url.lastIndexOf("/") + 1);
 			
-			graphics.beginFill(0xE7E7E7);
-			graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
-			
 			removeEventListener(e.type, onAddedToStage);
 			
 			stage.align = StageAlign.TOP_LEFT;
@@ -181,12 +178,16 @@ package com.somewater.rabbit.loader
 			
 			Config.loader = this;
 			Config.stage = stage;
-			Config.WIDTH = stage.stageWidth;
-			Config.HEIGHT = stage.stageHeight;
+			Config.WIDTH = stage.stageWidth > 1 ? stage.stageWidth : Config.WIDTH;
+			Config.HEIGHT = stage.stageHeight > 1 ? stage.stageHeight : Config.HEIGHT;
 			SWFDecoderWrapper.load(null, null, null);// инициируем заранее
-			
-			preloader.x = (stage.stageWidth - preloader.width) * 0.5;
-			preloader.y = (stage.stageHeight - preloader.height) * 0.5 - 20;
+
+			graphics.beginFill(0xE7E7E7);
+			graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
+
+			preloader.x = (Config.WIDTH - preloader.width) * 0.5;
+			preloader.y = (Config.HEIGHT - preloader.height) * 0.5 - 20;
+
 			if(stage.stageHeight < 500)
 			{
 				preloader.logo.y += 15;
