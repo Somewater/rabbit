@@ -10,7 +10,7 @@ class Application
 			unless @logger
 				@logger = Logger.new( DEVELOPMENT ? $stdout : File.join(ROOT, %W{ logs #{APP_ENV}.log}))
 				if PRODUCTION
-				  @logger.level = Logger::DEBUG
+				  @logger.level = Logger::WARN
 				else
 				  @logger.level = Logger::DEBUG
 				end
@@ -51,7 +51,7 @@ class Application
 					[200, { "Content-Type" => "text/html" }, [response]]
 				end
 			rescue =>ex
-				logger.debug "#{ex} : #{ex.backtrace.join(?\n)}\n\tFROM REQUEST: #{request.params}"
+				logger.error "#{ex} : #{ex.backtrace.join(?\n)}\n\tFROM REQUEST: #{request.params}"
 				[200, { "Content-Type" => "text/html" }, DEVELOPMENT || true ? \
 							["E_FATAL<pre>#{ex} \n#{ex.backtrace.join(?\n)}"]	: ["E_FATAL"]]
 			end

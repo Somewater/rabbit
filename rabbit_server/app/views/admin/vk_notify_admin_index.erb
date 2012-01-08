@@ -1,0 +1,59 @@
+<h1><a href='<%= VK_NOTIFY_PATH %>'>VK NOTIFY</a></h1>
+<form method="post" action="<%= VK_NOTIFY_PATH %>?action=<%= @notify ? 'update' : 'create' %>">
+	<table width='100%' border='1'>
+		<input type="hidden" name="notify[id]" value="<%= @notify ? @notify.id : '' %>"></input>
+		<tr width='100%'>
+			<th>message</th>
+			<td><textarea name="notify[message]" rows="5" cols="100"><%= @notify ? CGI::escapeHTML(@notify.message || '') : '' %></textarea></td>
+		</tr>
+		<tr width='100%'>
+			<th>mode</th>
+			<td><input type="text" name="notify[mode]" maxlength="10" value="<%= @notify ? @notify.mode : '' %>" size="50"></input></td>
+		</tr>
+		<tr width='100%'>
+			<th>priority</th>
+			<td><input type="text" name="notify[priority]" maxlength="5" value="<%= @notify ? @notify.priority : '0' %>" size="50"></input></td>
+		</tr>
+		<tr width='100%'>
+			<th>position</th>
+			<td><input type="text" name="notify[position]" maxlength="30" value="<%= @notify ? @notify.position : '0' %>" size="50"></input></td>
+		</tr>
+		<tr width='100%'>
+			<th>net</th>
+			<td><input type="text" name="notify[net]" maxlength="2" value="<%= @notify ? @notify.net : '2' %>" size="50"></input></td>
+		</tr>
+		<tr width='100%'>
+			<th>Enabled</th>
+			<td><input type='checkbox' <%= (@notify ? @notify.enabled : true) ? 'checked' : nil %> name='notify[enabled]' value='1'>Enabled</input></td>
+		</tr>
+	</table>
+	<input type="submit" value="<%= @notify ? 'Update' : 'Create' %>"></input>
+</form>
+<table width='100%' border='1'>
+	<tr width='100%'>
+		<th>id</th>
+		<th>message</th>
+		<th>mode</th>
+		<th>priority</th>
+		<th>position</th>
+		<th>net</th>
+		<th>enabled</th>
+		<th>created_at</th>
+		<th>updated_at</th>
+		<th>[del]</th>
+	</tr>
+	<% @notifyes.each_with_index do |notify, index| %>
+		<tr width='100%'>
+        	<td><a href="<%= VK_NOTIFY_PATH %>?action=show&id=<%= notify.id %>"><%= notify.id %></a></td>
+        	<td><%= notify.message %></td>
+        	<td><%= notify.mode ? notify.mode : '-' %></td>
+        	<td><%= notify.priority %></td>
+			<td><%= notify.position %></td>
+			<td><%= notify.net %></td>
+			<td><%= notify.enabled ? 'TRUE' : 'false'%></td>
+        	<td><%= notify.created_at ? notify.created_at.to_formatted_s(:short) : 'null' %></td>
+        	<td><%= notify.updated_at ? notify.updated_at.to_formatted_s(:short) : 'null' %></td>
+			<td><a href="<%= VK_NOTIFY_PATH %>?action=delete&id=<%= notify.id %>">[x]</a></td>
+		</tr>
+	<% end %>
+</table>

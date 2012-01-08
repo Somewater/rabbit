@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 8) do
+ActiveRecord::Schema.define(:version => 9) do
 
   create_table "admins", :force => true do |t|
     t.string   "login",                           :null => false
@@ -37,13 +37,16 @@ ActiveRecord::Schema.define(:version => 8) do
     t.string   "image"
   end
 
-  create_table "stats", :force => true do |t|
-    t.string  "name",                 :null => false
-    t.integer "time",                 :null => false
-    t.integer "value", :default => 0
+  create_table "notifyes", :force => true do |t|
+    t.string   "message",                      :null => false
+    t.string   "mode"
+    t.integer  "priority",   :default => 0
+    t.integer  "position",   :default => 0
+    t.integer  "net",        :default => 1
+    t.boolean  "enabled",    :default => true
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
-
-  add_index "stats", ["name", "time"], :name => "index_stats_on_name_and_time", :unique => true
 
   create_table "users", :force => true do |t|
     t.integer  "net",                                                           :null => false

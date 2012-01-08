@@ -25,7 +25,7 @@ task :vk_environment => :environment do
 	  config.app_secret = "kJ0AVDo3he9GhGlhkmha"
 	  config.format = :json
 	  config.debug = false
-	  config.logger = File.open("#{ROOT}/logs/vkontakte.log", "a")
+	  config.logger = File.open("#{ROOT}/logs/vkontakte.log", "a") if DEVELOPMENT
 	end
 end
 
@@ -148,14 +148,35 @@ namespace :srv do
 	
 	desc "Start send notify queue from BD"
 	task :notify => :vk_environment do
+		# select next notify
+		notify = Notify.find(:all, :conditions => "enabled=TRUE").first
+		break unless notify
+
+		# select users
+		user_uids = User.find(:all, :select => 'uid', :limit => 100, :offset => notify.position, \
+		 			:conditions => 'net=2', :order => 'uid').map(&:uid)
+
 		app = Vkontakte::App::Secure.new
+
+		logger = Logger.new(File.join(ROOT, %W{ logs vkontakte.log}))
+		logger.level = Logger::DEBUG
+		logger.formatter = Logger::Formatter.new
+
 		begin
-			p app.secure.sendNotification({:uids => "245894", :message => "rabbit"})
-		rescue Vkontakte::App::VkException => ex
-			p User.all.first
+			response = nil
+			user_uids = ['91121456']
+			response = app.secure.sendNotification({:uids => user_uids.join(','), :message => notify.message})
+			notify.position += 100
+			logger.warn("Success notify\n#{user_uids} => #{response ? response.response : nil}");
+		rescue Vkontakte::App::VkException
+			logger.error("Error when notify\n#{user_uids} => #{$!}")
 		rescue
-			p "Some error"
+			logger.fatal("Fatal when notify\n#{user_uids} => #{$!}")
 		end
+
+		# save notified users index in DB
+		notify.enabled = user_uids && user_uids.size > 0
+		notify.save
 	end
 end
 
