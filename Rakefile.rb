@@ -164,10 +164,9 @@ namespace :srv do
 
 		begin
 			response = nil
-			user_uids = ['91121456']
 			response = app.secure.sendNotification({:uids => user_uids.join(','), :message => notify.message})
 			notify.position += 100
-			logger.warn("Success notify\n#{user_uids} => #{response ? response.response : nil}");
+			logger.warn("Success notify\n#{user_uids} => #{response ? response.body : nil}");
 		rescue Vkontakte::App::VkException
 			logger.error("Error when notify\n#{user_uids} => #{$!}")
 		rescue
