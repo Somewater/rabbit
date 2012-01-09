@@ -90,6 +90,9 @@ PENDING_REWARDS_WINDOW_TEXT_MANY=Ты получил{male:|а} новые наг
 PENDING_REWARDS_WINDOW_TEXT_SINGLE=Ты получил{male:|а} новую награду!
 PENDING_REWARDS_WINDOW_TEXT_ONLY_REFERER=Ты пригласил{male:|а} друга и получил{male:|а} награду. Приглашай друзей и получай новые награды!
 PENDING_REWARDS_WINDOW_TEXT_ONLY_FAMILIAR=Ты заходил{male:|а} в игру несколько дней подряд и получил{male:|а} награду!
+INVITE_WINDOW_TEXT=Приглашай в игру друзей и получай награды!\nПриглашено друзей: {friends_invited}\nДля получения награды осталось пригласить {friends_need_invite} друзей.
+INVITE_WINDOW_BUTTON_INVITE=Пригласить друзей
+INVITE_WINDOW_BUTTON_POSTING=Рассказать об игре
 ###################
 #
 #	REWARDS

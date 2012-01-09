@@ -41,6 +41,11 @@ package com.somewater.rabbit.social {
 			return new HolderWithConstSize(image,100,100);
 		}
 
+		public static function createFriendsInvitePosting():DisplayObject
+		{
+			throw new Error('Not implemented yet');
+		}
+
 		public static function getImage(image:String):*
 		{
 			if(image == null || image.length == 0) return null;

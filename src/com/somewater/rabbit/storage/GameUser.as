@@ -11,6 +11,7 @@ package com.somewater.rabbit.storage
 		protected var _levelInstances:Array = [];
 		protected var _rewards:Array = [];
 		protected var _postings:int;
+		protected var _friendsInvited:int;
 		private var _levelNumber:int;
 		
 		public function GameUser(data:Object = null)
@@ -32,6 +33,8 @@ package com.somewater.rabbit.storage
 			{
 				if(value.hasOwnProperty('level'))
 					this._levelNumber = value['level'];
+				else if (value.hasOwnProperty('friends_invited'))
+					this._friendsInvited = value['friends_invited'];
 				super.data = value;
 			}
 		}
@@ -124,6 +127,11 @@ package com.somewater.rabbit.storage
 		public function get postings():int
 		{
 			return _postings;
+		}
+
+		public function get friendsInvited():int
+		{
+			return _friendsInvited;
 		}
 
 		public function addAppFriend(gameUserFriend:GameUser):void
