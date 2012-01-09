@@ -133,6 +133,12 @@
 
 	<template name="reward.Carrot500" template="RewardBase" id="33" type="carrot_pack" degree="500">
 		<component name="Render"><slug>reward.Carrot500</slug></component>
+		<component name="Spatial">
+			<size>
+				<x>2</x>
+				<y>1</y>
+			</size>
+		</component>
 	</template>
 
 	<!-- TYPE_FAMILIAR  -->
