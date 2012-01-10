@@ -197,3 +197,11 @@ namespace :protect do
 	end
 
 end
+
+desc "Gamedesign"
+namespace :gamedesign do
+	desc "Level statisic"
+	task :level_stat => :environment do
+		Gamedesign::level_stat();	
+	end
+end
