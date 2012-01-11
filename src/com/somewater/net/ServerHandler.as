@@ -64,7 +64,7 @@ package com.somewater.net
 			loader.addEventListener(IOErrorEvent.IO_ERROR, onErrorHandler);
 			loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, onErrorHandler);
 
-			var request = new URLRequest();
+			var request:URLRequest = new URLRequest();
 			request.method = URLRequestMethod.POST;
 			request.data = variables;
 			request.url = (base_path ? base_path : _base_path) + method;

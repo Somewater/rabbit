@@ -12,7 +12,7 @@ package com.somewater.rabbit.application {
 
 	public class RewardIcon extends HintedSprite implements IClear{
 
-		public static const WIDTH = 100;
+		public static const WIDTH:int = 100;
 		public static const HEIGHT:int = 100;
 
 		private var reward:RewardDef;

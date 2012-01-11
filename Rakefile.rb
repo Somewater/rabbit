@@ -35,7 +35,7 @@ end
 #
 ##########################
 namespace :flash do
-	MXMLC_COMMON_COMMANDLINE_ARGS="mxmlc \
+	MXMLC_COMMON_COMMANDLINE_ARGS="#{`which fcshctl-mxmlc`.size == 0 ? 'mxmlc' : 'fcshctl-mxmlc'} \
 -warnings=false \
 -static-link-runtime-shared-libraries \
 -default-background-color=#FFFFFF \

@@ -99,7 +99,7 @@ package com.somewater.rabbit.application.windows {
 		}
 
 		override protected function createContent():void {
-			var needCreateRewards:Boolean = levelInstance.rewards.length;
+			var needCreateRewards:Boolean = levelInstance.rewards.length > 0;
 
 			var succGround:DisplayObject = Lib.createMC('interface.LevelSuccessWindow_starGround');
 			succGround.x = -3;

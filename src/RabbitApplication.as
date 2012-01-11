@@ -273,7 +273,7 @@ package
 
 			if(response['rewards'] && response['rewards'].length)
 			{
-				var rewards = [];
+				var rewards:Array = [];
 				for each(var rewardObject:Object in response['rewards'])
 					rewards.push(RewardManager.instance.getById(rewardObject['id']));
 				new PendingRewardsWindow(rewards);

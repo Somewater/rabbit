@@ -136,7 +136,7 @@ public class MessagePostClose extends Window
 
 	private function onCallback():void
 	{
-		if(callback)
+		if(callback != null)
 			callback(data);
 	}
 }

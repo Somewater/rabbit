@@ -197,11 +197,12 @@ package com.gskinner.geom
 
 			for (var i:Number=0; i<5; i++)
 			{
-				for (var j:Number=0; j<5; j++)
+				var j:Number=0;
+				for (j=0; j<5; j++)
 				{
 					col[j] = self[j + i * 5];
 				}
-				for (var j:Number=0; j<5; j++)
+				for (j=0; j<5; j++)
 				{
 					var val:Number = 0;
 					for (var k:Number=0; k<5; k++)

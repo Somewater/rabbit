@@ -14,7 +14,7 @@ package com.somewater.rabbit.loader{
 			super();
 		}
 
-		protected function onArrowComplete(key:String)
+		protected function onArrowComplete(key:String):void
 		{
 			try
 			{

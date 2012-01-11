@@ -399,7 +399,7 @@ class Request
 		return params['_request_counter'];
 	}
 
-	public function increment()
+	public function increment():void
 	{
 		_counter++;
 		_seconds = 1 * Math.pow(_counter, 1.5);

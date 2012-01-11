@@ -62,7 +62,7 @@ package com.somewater.rabbit.components {
 		// мы достигли или не достигли точки, куда убегаем, но процесс перемещения завершен по каккой-то причине
 		private function onFlightCompleted():void
 		{
-			if(_port)
+			if(_port != null)
 				_port(null);
 		}
 	}
