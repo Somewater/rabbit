@@ -6,6 +6,7 @@ package com.somewater.rabbit.storage
 	{
      	public var id:int;
 		public var number:uint = 0;// нумерация с "1"
+		public var version:int;
 		public var description:String;
 		public var image:String;// идентификатор картинки уровня
 		
@@ -28,6 +29,7 @@ package com.somewater.rabbit.storage
 		{
 			id = xml.attribute("id");
 			number = xml.attribute("number");
+			version = xml.attribute("version");
 			if(id == 0)
 				id = -Math.random() * 1000;
 			

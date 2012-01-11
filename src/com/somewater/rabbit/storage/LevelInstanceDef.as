@@ -22,7 +22,7 @@ package com.somewater.rabbit.storage
 		//////////////////
 		public var timeSpended:uint;// число миллисекунд с момента старта игры
 		public var carrotHarvested:int;// морковок собрано на уровне
-		public var version:int;// версия уровня на момент прохождения
+		protected var _version:int = -1;// версия уровня на момент прохождения
 
 		private var _success:Boolean;
 		public var finalFlag:String;// КОнстанта из класса LevelConditionsManager
@@ -59,7 +59,7 @@ package com.somewater.rabbit.storage
 				if(value.hasOwnProperty('t'))
 					this.timeSpended = value['t'];
 				if(value.hasOwnProperty('v'))
-					this.version = value['v'];
+					this._version = value['v'];
 				if(value.hasOwnProperty('s'))
 					this.stars = value['s'];
 				super.data = value;
@@ -85,6 +85,14 @@ package com.somewater.rabbit.storage
 		public function get number():int
 		{
 			return levelDef.number;
+		}
+
+		public function get version():int
+		{
+			if(_version == -1)// версия не установлена, значит это новый (не из базы) LevelInstanceDef, версию берем из LevelDef
+				return levelDef.version
+			else
+				return _version;
 		}
 	}
 }
