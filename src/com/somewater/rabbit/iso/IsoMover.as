@@ -183,7 +183,6 @@ package com.somewater.rabbit.iso
 				
 				// "отсерединить" фактические точки пути
 				var length:int = _destinationPath.length;
-				var p1:Point;var p2:Point;var p:Point = _spatial.position;
 				var s:Point = _spatial.size;
 				for(var i:int = 0;i<length;i++)
 				{
@@ -201,19 +200,32 @@ package com.somewater.rabbit.iso
 						IsoSpatialManager.centrePosition(position, s)
 					
 					_destinationPath[i] = new PathItem(tile, position);
-					if(i == 0) p1 = position;
-					if(i == 1) p2 = position;
 				}
-				// если текущая позиция мувера лежит на линии между первой и второй точкой пути, вырезать первую точку пути и идти сразу ко второй
-				if(p1 && p2 && ((p.x == p1.x && p1.x == p2.x) || (p.y == p1.y && p1.y == p2.y) || 
-					((p1.x - p.x)/(p1.y - p.y) == (p2.x - p.x)/(p2.y - p.y))
-						))
-					_destinationPath.shift();
+				checkFirstPathPoint();
 			}else{
 				_destination = null;
 				setRenderState(false);
 				
 				dispatchDestination(false);
+			}
+		}
+
+		/**
+		 * Проверить, не лежит ли текущая позиция мувера на линии между первой и второй точкой пути
+		 * Если да, то первую точку пути можно вырезать за ненадобностью
+		 */
+		protected function checkFirstPathPoint():void
+		{
+			if(_destinationPath.length > 1)
+			{
+				var p1:Point = PathItem(_destinationPath[0]).position;
+				var p2:Point = PathItem(_destinationPath[1]).position;
+				var p:Point = _spatial.position;
+				// если текущая позиция мувера лежит на линии между первой и второй точкой пути, вырезать первую точку пути и идти сразу ко второй
+				if(p1 && p2 && ((p.x == p1.x && p1.x == p2.x) || (p.y == p1.y && p1.y == p2.y) ||
+					((p1.x - p.x)/(p1.y - p.y) == (p2.x - p.x)/(p2.y - p.y))
+						))
+					_destinationPath.shift();
 			}
 		}
 		
@@ -463,34 +475,4 @@ package com.somewater.rabbit.iso
 		}
 		
 	}
-}
-import com.astar.BasicTile;
-
-import flash.geom.Point;
-
-class PathItem
-{
-	public function PathItem(_tile:BasicTile, _position:Point)
-	{
-		tile = _tile;
-		position = _position
-	}
-	
-	public function clear():void
-	{
-		tile = null;
-		position = null;
-	}
-	
-	public function toString():String
-	{
-		var tileS:String = tile?tile.toString():null;
-		return tileS?
-			(tileS.substr(0, tileS.length - 1) + (position?(", np:" + position.x.toFixed(2) + "," + position.y.toFixed(2)):"") + "]")
-			:"[PathItem (empty)]";
-	}
-	
-	public var marked:Boolean = false;// тайл уже был помечен объектом как занимаемый. Т.е. нельзя тестировать тайл на проходимость, потому что он занят - но занят текущим объектом 
-	public var tile:BasicTile;
-	public var position:Point;// точка, в общем случае равная tile.position, но учитывающая размер объекта (центрование тонких муверов)
 }

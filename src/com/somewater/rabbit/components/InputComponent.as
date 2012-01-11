@@ -27,10 +27,14 @@ package com.somewater.rabbit.components
 	 */
 	public class InputComponent extends EntityComponent implements ITickedObject
 	{		
-		private static const LEFT:int 	= 0x11;//  10010b
-		private static const RIGHT:int 	= 0x12;//  10001b
-		private static const UP:int 	= 0x24;// 100100b
-		private static const DOWN:int 	= 0x28;// 101000b
+//		private static const LEFT:int 	= 0x11;//  10010b
+//		private static const RIGHT:int 	= 0x12;//  10001b
+//		private static const UP:int 	= 0x24;// 100100b
+//		private static const DOWN:int 	= 0x28;// 101000b
+		private static const LEFT:int 	= 0x2;// 0010b
+		private static const RIGHT:int 	= 0x1;// 0001b
+		private static const UP:int 	= 0x4;// 0100b
+		private static const DOWN:int 	= 0x8;// 1000b
 		
 
 		
@@ -47,6 +51,11 @@ package com.somewater.rabbit.components
 		 * Нажатые кнопки в пределах времени реакции (не более 2-х)
 		 */
 		private var keyResult:uint;
+
+		/**
+		 * Последний примененный keyResult
+		 */
+		private var lastKeyResult:uint;
 		
 		
 		/**
@@ -200,74 +209,88 @@ package com.somewater.rabbit.components
 			
 			// можно запускать новые schedule
 			scheduleStarted = false;
+			var keyResult:uint = this.keyResult & 0xF;// 1111b
 			
-			// очистить расчет старого @Render.direction
-			lastInputDirection = 0;
+			var standState:Boolean = _owner && _owner.getProperty(destinationRef) == null;// персонаж неподвижен
+			// персонаж перемещается и "донажата" клавиша, которая заставит его двигаться по диагонали вместо прямой
+			// т.е. если ранее была нажата только одна кнопка, а теперь "донажата" кнопка перпендикульярного направления
+			var diagonalHook:Boolean = !standState &&
+					(  		   (lastKeyResult == LEFT && (keyResult == (LEFT | UP) || keyResult == (LEFT | DOWN)))
+							|| (lastKeyResult == RIGHT && (keyResult == (RIGHT | UP) || keyResult == (RIGHT | DOWN)))
+							|| (lastKeyResult == UP && (keyResult == (UP | LEFT) || keyResult == (UP | RIGHT)))
+							|| (lastKeyResult == DOWN && (keyResult == (DOWN | LEFT) || keyResult == (DOWN | RIGHT)))
+					);
 			
-			if((keyResult || clickResult) && _owner && _owner.getProperty(destinationRef) == null)
+			if(keyResult && (standState || diagonalHook))
 			{	
-				
+				// очистить расчет старого @Render.direction
+				lastInputDirection = 0;
+
 				var tile:Point;
 				
-				if(keyResult)
+				if(standState)
 				{
 					tile = owner.getProperty(tileRef).clone();
-					keyResult = keyResult & 0xF;// 1111b					
-					
-					if(true)
+
+					if(keyResult & UP)
 					{
-						if(keyResult & UP)
-						{
-							tile.y -= 1;
-							lastInputDirection |= IsoRenderer.TOP;
-						}
-						else if(keyResult & DOWN)
-						{
-							tile.y += 1;
-							lastInputDirection |= IsoRenderer.BOTTOM;
-						}
-						
-						if(keyResult & LEFT)
-						{
-							tile.x -= 1;
-							lastInputDirection |= IsoRenderer.LEFT;
-						}
-						else if(keyResult & RIGHT)
-						{
-							tile.x += 1;
-							lastInputDirection |= IsoRenderer.RIGHT;
-						}
-					}else{					
-						if(PBE.isKeyDown(InputKey.UP))
-						{
-							tile.y -= 1;
-							lastInputDirection |= IsoRenderer.TOP;
-						}
-						else if(PBE.isKeyDown(InputKey.DOWN))
-						{	
-							tile.y += 1;
-							lastInputDirection |= IsoRenderer.BOTTOM;
-						}
-						
-						if(PBE.isKeyDown(InputKey.LEFT))
-						{
-							tile.x -= 1;
-							lastInputDirection |= IsoRenderer.LEFT;
-						}
-						else if(PBE.isKeyDown(InputKey.RIGHT))
-						{
-							tile.x += 1;
-							lastInputDirection |= IsoRenderer.RIGHT;
-						}
+						tile.y -= 1;
+						lastInputDirection |= IsoRenderer.TOP;
 					}
-					
-					if(!IsoSpatialManager.contain(tile))
+					else if(keyResult & DOWN)
 					{
-						// получившаяся координата лежит за пределами поля
-						tile = null;
+						tile.y += 1;
+						lastInputDirection |= IsoRenderer.BOTTOM;
+					}
+
+					if(keyResult & LEFT)
+					{
+						tile.x -= 1;
+						lastInputDirection |= IsoRenderer.LEFT;
+					}
+					else if(keyResult & RIGHT)
+					{
+						tile.x += 1;
+						lastInputDirection |= IsoRenderer.RIGHT;
+					}
+				}else if(diagonalHook)
+				{
+					tile = owner.getProperty(tileRef).clone();
+
+					if(keyResult == (LEFT | UP))
+					{
+						tile.x -= 1;
+						tile.y -= 1;
+						lastInputDirection |= IsoRenderer.LEFT | IsoRenderer.TOP;
+					}
+					else if(keyResult == (RIGHT | UP))
+					{
+						tile.x += 1;
+						tile.y -= 1;
+						lastInputDirection |= IsoRenderer.RIGHT | IsoRenderer.TOP;
+					}
+
+					if(keyResult == (LEFT | DOWN))
+					{
+
+						tile.x -= 1;
+						tile.y += 1;
+						lastInputDirection |= IsoRenderer.LEFT | IsoRenderer.BOTTOM;
+					}
+					else if(keyResult == (RIGHT | DOWN))
+					{
+						tile.x += 1;
+						tile.y += 1;
+						lastInputDirection |= IsoRenderer.RIGHT | IsoRenderer.BOTTOM;
 					}
 				}
-				
+
+				if(!IsoSpatialManager.contain(tile))
+				{
+					// получившаяся координата лежит за пределами поля
+					tile = null;
+				}
+
 				if(tile == null && clickResult)
 				{
 					tile = clickResult;
@@ -275,6 +298,7 @@ package com.somewater.rabbit.components
 				
 				if(tile)
 				{
+					lastKeyResult = keyResult;
 					//trace("input tile=" + tile + "	(dest=" + owner.getProperty(destinationRef) + ")");
 					listenSuspended = true;
 					owner.setProperty(destinationRef, tile);

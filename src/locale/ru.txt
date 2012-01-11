@@ -49,6 +49,8 @@ MY_ACHIEVEMENTS=МОИ НАГРАДЫ
 ABOUT_GAME=ОБ ИГРЕ
 INVITE_BUTTON_TEXT=ХОЧУ ИГРАТЬ
 I_AM_RABBIT=Я{male:| милый} кролик!
+FRIEND_BUTTON_HINT=Посети полянку друга
+INVITE_BUTTON_HINT=Пригласи друзей
 ###################
 #
 #	ABOUT PAGE

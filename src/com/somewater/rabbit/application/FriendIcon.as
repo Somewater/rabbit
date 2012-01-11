@@ -3,6 +3,7 @@ package com.somewater.rabbit.application
 	import com.greensock.TweenMax;
 	import com.somewater.control.IClear;
 	import com.somewater.controller.PopUpManager;
+	import com.somewater.display.HintedSprite;
 	import com.somewater.display.Photo;
 	import com.somewater.rabbit.application.commands.OpenRewardLevelCommand;
 	import com.somewater.rabbit.storage.Config;
@@ -17,7 +18,7 @@ package com.somewater.rabbit.application
 	import flash.filters.DropShadowFilter;
 	import flash.text.TextFieldAutoSize;
 	
-	public class FriendIcon extends Sprite implements IClear
+	public class FriendIcon extends HintedSprite implements IClear
 	{
 		private var core:*;
 		private var starText:EmbededTextField;
@@ -85,6 +86,7 @@ package com.somewater.rabbit.application
 			removeEventListener(MouseEvent.ROLL_OVER, onRollOver);
 			removeEventListener(MouseEvent.ROLL_OUT, onRollOut);
 			user = null;
+			hint = null;
 		}
 		
 		private function onClick(e:MouseEvent):void
@@ -158,10 +160,12 @@ package com.somewater.rabbit.application
 				starText.text = user.levelNumber.toString();
 				scoreText.text = user.score.toString();
 				setMode(1);
+				hint = Lang.t('FRIEND_BUTTON_HINT');
 			}
 			else
 			{
-				setMode(0);	
+				setMode(0);
+				hint = Lang.t('INVITE_BUTTON_HINT');
 			}
 		}
 	}

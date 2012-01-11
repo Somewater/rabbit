@@ -12,6 +12,7 @@
 	<entity name="Hero" template="RabbitBase">
 		<component name="Data" type="com.somewater.rabbit.components.HeroDataComponent" />
 		<component type="com.somewater.rabbit.components.InputComponent" name="Input"/>
+		<component type="com.somewater.rabbit.creature.HeroIsoMover" name="Mover"/>
 		<component type="com.somewater.rabbit.components.HeroHarvesterComponent" name="Harvester">
 			<sense>false</sense>
 			<harvestType>
