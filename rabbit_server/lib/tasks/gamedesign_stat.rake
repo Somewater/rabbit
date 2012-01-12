@@ -1,7 +1,7 @@
 module Gamedesign
 
 	# Статистика по средним парамтерам прохождения уровней
-	def self.level_stat(conditions = nil, all_levels = false, all_versions = true)
+	def self.level_stat(all_levels = false, all_versions = true, conditions = nil)
 		conditions = 'net=2' unless conditions
 		level_stat = {}
 		user_stat = {}
@@ -47,13 +47,15 @@ module Gamedesign
 		(1..max_head_level).each do |number|
 			stat = level_stat[number.to_i]
 			next unless stat
+			next unless head_levels_by_id[number]
 			stat[:time] /= stat[:counter]
 			stat[:carrot] /= stat[:counter]
 			stat[:star] = ((stat[:star] / stat[:counter].to_f) * 100).to_i / 100.0
 			pass_users = 0
 			user_stat.each{|k,v| pass_users += v.to_i if k.to_i >= number }
-			
-			puts "LEVEL #{number} - #{head_levels_by_id[number].description}\n\rusers: #{user_stat[number.to_i]}\tpass: #{pass_users}\tavg time: #{stat[:time]}\tmin time: #{stat[:time_min]}\tavg carrot: #{stat[:carrot]}\tmax carrot: #{stat[:carrot_max]}\tavg stars: #{stat[:star]}"
+
+			puts "LEVEL #{number} - #{head_levels_by_id[number].description.gsub("\n\r",'')}"
+			puts "users: #{user_stat[number.to_i]}\tpass: #{pass_users}\tavg time: #{stat[:time]}\tmin time: #{stat[:time_min]}\tavg carrot: #{stat[:carrot]}\tmax carrot: #{stat[:carrot_max]}\tavg stars: #{stat[:star]}"
 			head_levels_by_id[number.to_i].conditions_to_hash.each do |key,value|
 				puts "#{key}=#{value}  "
 			end
