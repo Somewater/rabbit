@@ -92,9 +92,10 @@ PENDING_REWARDS_WINDOW_TEXT_MANY=Ты получил{male:|а} новые наг
 PENDING_REWARDS_WINDOW_TEXT_SINGLE=Ты получил{male:|а} новую награду!
 PENDING_REWARDS_WINDOW_TEXT_ONLY_REFERER=Ты пригласил{male:|а} друга и получил{male:|а} награду. Приглашай друзей и получай новые награды!
 PENDING_REWARDS_WINDOW_TEXT_ONLY_FAMILIAR=Ты заходил{male:|а} в игру несколько дней подряд и получил{male:|а} награду!
-INVITE_WINDOW_TEXT=Приглашай в игру друзей и получай награды!\nПриглашено друзей: {friends_invited}\nДля получения награды осталось пригласить {friends_need_invite} друзей.
-INVITE_WINDOW_BUTTON_INVITE=Пригласить друзей
-INVITE_WINDOW_BUTTON_POSTING=Рассказать об игре
+INVITE_WINDOW_TITLE=Приглашай друзей! Получай награды!
+INVITE_WINDOW_TEXT=Приглашено:\n             {friends_invited} друзей\n\nДля получения награды осталось пригласить:\n             {friends_need_invite} друзей
+INVITE_WINDOW_BUTTON_INVITE=ПРИГЛАСИТЬ ДРУЗЕЙ
+INVITE_WINDOW_BUTTON_POSTING=РАССКАЗАТЬ ОБ ИГРЕ
 ###################
 #
 #	REWARDS
@@ -152,3 +153,5 @@ POSTING_LEVEL_PASSES_TITLE=Я {male:прошел|прошла} новый уро
 POSTING_LEVEL_PASSES_TEXT=Я {male:прошел|прошла} {level_number} уровень в игре Кроль! Попробуйте и вы!
 POSTING_REWARD_PASSES_TITLE=Я получил{male:|а} награду!
 POSTING_REWARD_PASSES_TEXT=Я получил{male:|а} награду "{reward_name}" в игре Кроль! Попробуйте и вы!
+POSTING_INVITE_FRIENDS_TITLE=Игра "Кроль"!
+POSTING_INVITE_FRIENDS_TEXT=Я играю в интересную игру "Кроль"! Попробуйте и вы!

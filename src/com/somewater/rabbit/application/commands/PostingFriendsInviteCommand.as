@@ -19,7 +19,7 @@ package com.somewater.rabbit.application.commands {
 
 		private var data:Dictionary;
 
-		public function PostingFriendsInviteCommand(onComplete:Function, onError:Function)
+		public function PostingFriendsInviteCommand(fixionData:*, onComplete:Function, onError:Function)
 		{
 			this.data = new Dictionary(true);
 			data['onComplete'] = onComplete;
@@ -31,11 +31,11 @@ package com.somewater.rabbit.application.commands {
 			if(Config.loader.canPost())
 			{
 				var image:DisplayObject = PostingFactory.createFriendsInvitePosting();
-				var imageUrl:String = Config.loader.getFilePath('friends_invite_posting' + levelInstance.number.toString());
-				var postdata:String = Config.loader.serverHandler.toJson({'type':'level_pass_posting','poster':UserProfile.instance.socialUser.id, 'level':levelInstance.number});
+				var imageUrl:String = Config.loader.getFilePath('friends_invite_posting');
+				var postdata:String = Config.loader.serverHandler.toJson({'type':'friends_invite_posting','poster':UserProfile.instance.socialUser.id});
 				Config.loader.posting(UserProfile.instance.socialUser,
-						Lang.t('POSTING_LEVEL_PASSES_TITLE'),
-						Lang.t('POSTING_LEVEL_PASSES_TEXT', {'level_number':levelInstance.number}), image, imageUrl, postdata,
+						Lang.t('POSTING_INVITE_FRIENDS_TITLE'),
+						Lang.t('POSTING_INVITE_FRIENDS_TEXT'), image, imageUrl, postdata,
 								function(...args):void{
 									// on complete
 									UserProfile.instance.postings += 1;

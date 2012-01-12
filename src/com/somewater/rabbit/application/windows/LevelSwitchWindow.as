@@ -21,10 +21,7 @@ package com.somewater.rabbit.application.windows {
 	import flash.geom.Rectangle;
 	import flash.text.TextField;
 
-	public class LevelSwitchWindow extends Window{
-
-		protected const WIDTH:int = 600;
-		protected const HEIGHT:int = 400;
+	public class LevelSwitchWindow extends WindowWithImage{
 
 		protected var level:LevelDef;
 		protected var levelInstance:LevelInstanceDef;
@@ -94,48 +91,6 @@ package com.somewater.rabbit.application.windows {
 			starIcon.x = -55;
 			starIcon.y = -28;
 			starIcon.mask = starIconMask;
-		}
-
-		protected function createTextAndImage(title:String, text:String = null, image:* = null):void
-		{
-			var titleTF:EmbededTextField = new EmbededTextField(null, 0xDB661B, 21);
-			var tf:EmbededTextField = new EmbededTextField(Config.FONT_SECONDARY, 0x42591E, 14, true, true);
-			tf.size = 14 + int(text && text.length ? (1 - Math.min(1,text.length / 200)) * 6 : 0)
-			var imageSource:*;
-
-			if(image is DisplayObject)
-				imageSource = image;
-			else
-				imageSource = PostingFactory.getImage(image);
-
-			addChild(titleTF);
-			titleTF.htmlText = title;
-			titleTF.x = (WIDTH - titleTF.width) * 0.5;
-			titleTF.y = 45;
-
-
-			addChild(tf);
-			tf.x = 75;
-			tf.y = 110;
-			tf.width = (imageSource ? 245 : 445);
-			tf.htmlText = text;
-
-			if(tf.textHeight < 40 || tf.textWidth < tf.width * 0.8)
-			{
-				tf.x = tf.x + (tf.width - tf.textWidth) * 0.5
-			}
-
-			if(imageSource)
-			{
-				var border:DisplayObjectContainer = Lib.createMC("interface.LevelSwitchImage");
-				border.x = 347;
-				border.y = 115;
-				addChild(border);
-
-				var photo:Photo = new Photo(null, Photo.ORIENTED_CENTER, 175, 115, 185/2, 125/2);
-				border.addChild(photo);
-				photo.source = imageSource;
-			}
 		}
 
 		protected function levelToString(level:LevelDef):String

@@ -10,6 +10,7 @@ package com.somewater.rabbit.social {
 
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
+	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
 
@@ -43,7 +44,13 @@ package com.somewater.rabbit.social {
 
 		public static function createFriendsInvitePosting():DisplayObject
 		{
-			throw new Error('Not implemented yet');
+			var image:MovieClip = Lib.createMC('images.LevelPosting');
+			image.star.visible = false;
+			var p:Photo = new Photo(null, Photo.ORIENTED_CENTER | Photo.SIZE_MIN, 90, 90, 50, 50);
+			p.animatedShowing = false;
+			p.source = getImage("rabbit.RabbitActor");
+			image.addChild(p);
+			return new HolderWithConstSize(image,100,100);
 		}
 
 		public static function getImage(image:String):*

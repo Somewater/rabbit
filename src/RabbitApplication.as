@@ -20,6 +20,7 @@ package
 	import com.somewater.rabbit.application.RewardManager;
 	import com.somewater.rabbit.application.ServerLogic;
 	import com.somewater.rabbit.application.WindowBackground;
+	import com.somewater.rabbit.application.windows.InviteFriendsWindow;
 	import com.somewater.rabbit.application.windows.LevelFinishFailWindow;
 	import com.somewater.rabbit.application.windows.LevelFinishSuccessWindow;
 	import com.somewater.rabbit.application.windows.LevelStartWindow;
@@ -39,7 +40,7 @@ package
 	import com.somewater.storage.Lang;
 	import com.somewater.text.EmbededTextField;
 	import com.somewater.text.Hint;
-	
+
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -47,6 +48,7 @@ package
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
+	import flash.events.TimerEvent;
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
 	import flash.media.SoundTransform;
@@ -54,6 +56,7 @@ package
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.ui.Keyboard;
+	import flash.utils.Timer;
 	import flash.utils.setTimeout;
 
 
@@ -97,6 +100,8 @@ package
 		private var soundTracks:Array = [];
 		private var _soundSoundTransform:SoundTransform = new SoundTransform();
 		private var _musicSoundTransform:SoundTransform = new SoundTransform();
+
+		private var friendInviteTimer:Timer;
 		
 		public function RabbitApplication()
 		{
@@ -161,6 +166,13 @@ package
 			addPropertyListener('sound', onSoundVolumeChanged);
 
 			loadAudioSettings();
+
+			if(Config.loader.hasFriendsApi)
+			{
+				friendInviteTimer = new Timer(2*60*1000);
+				friendInviteTimer.addEventListener(TimerEvent.TIMER, onFriendInviteTimer);
+				friendInviteTimer.start();
+			}
 		}
 
 		
@@ -676,6 +688,17 @@ package
 				play(Sounds.MUSIC_GAME, SoundTrack.MUSIC);
 			else
 				play(Sounds.MUSIC_MENU, SoundTrack.MUSIC);
+		}
+
+		/**
+		 * Пришло время проверить возможность показать окно-приглашалку друзей и показать её
+		 */
+		private function onFriendInviteTimer(event:TimerEvent):void {
+			if(Config.gameModuleActive == false && PopUpManager.numWindows == 0)
+			{
+				// если включен какой-то интерфейс приложения, а не сама игра (уровень, полянка и т.д.) и нет окон
+				new InviteFriendsWindow();
+			}
 		}
 	}
 }
