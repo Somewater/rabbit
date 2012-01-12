@@ -74,6 +74,7 @@ package com.somewater.rabbit.application
 			
 			setMode(0);
 			buttonMode = useHandCursor = true;
+			hint = Lang.t('INVITE_BUTTON_HINT');
 			
 			addEventListener(MouseEvent.CLICK, onClick);
 			addEventListener(MouseEvent.ROLL_OVER, onRollOver);

@@ -33,7 +33,7 @@ package com.somewater.rabbit.storage
 			{
 				if(value.hasOwnProperty('level'))
 					this._levelNumber = value['level'];
-				else if (value.hasOwnProperty('friends_invited'))
+				if (value.hasOwnProperty('friends_invited'))
 					this._friendsInvited = value['friends_invited'];
 				super.data = value;
 			}
