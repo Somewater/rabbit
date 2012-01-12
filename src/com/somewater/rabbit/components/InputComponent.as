@@ -135,15 +135,27 @@ package com.somewater.rabbit.components
 			if(!PBE.processManager.isTicking) return;// не обрабатываем действия, если игра на паузе
 			
 			var buf:uint = keyResult;
+
+			var keyCode:int = e.keyCode;
 			
-			if(e.keyCode == Keyboard.UP && !(keyResult & DOWN))
+			if((keyCode == Keyboard.UP || keyCode == Keyboard.NUMPAD_8) && !(keyResult & DOWN))
 				keyResult |= UP;
-			else if(e.keyCode == Keyboard.DOWN && !(keyResult & UP))
+			else if((keyCode == Keyboard.DOWN || keyCode == Keyboard.NUMPAD_2) && !(keyResult & UP))
 				keyResult |= DOWN;
-			else if(e.keyCode == Keyboard.LEFT && !(keyResult & RIGHT))
+			else if((keyCode == Keyboard.LEFT || keyCode == Keyboard.NUMPAD_4) && !(keyResult & RIGHT))
 				keyResult |= LEFT;
-			else if(e.keyCode == Keyboard.RIGHT && !(keyResult & LEFT))
+			else if((keyCode == Keyboard.RIGHT || keyCode == Keyboard.NUMPAD_6) && !(keyResult & LEFT))
 				keyResult |= RIGHT;
+
+			// диагональные клавиши
+			if(keyCode == Keyboard.HOME || keyCode == Keyboard.NUMPAD_7)
+				keyResult = UP | LEFT;
+			else if(keyCode == Keyboard.PAGE_UP || keyCode == Keyboard.NUMPAD_9)
+				keyResult = UP | RIGHT;
+			else if(keyCode == Keyboard.END || keyCode == Keyboard.NUMPAD_1)
+				keyResult = DOWN | LEFT;
+			else if(keyCode == Keyboard.PAGE_DOWN || keyCode == Keyboard.NUMPAD_3)
+				keyResult = DOWN | RIGHT;
 			
 			
 			if(keyResult != buf)
@@ -170,16 +182,27 @@ package com.somewater.rabbit.components
 			if(!PBE.processManager.isTicking) return;// не обрабатываем действия, если игра на паузе
 			
 			var buf:uint = keyResult;
-			
-			if(e.keyCode == Keyboard.UP)
+
+			var keyCode:int = e.keyCode;
+
+			if(keyCode == Keyboard.UP || keyCode == Keyboard.NUMPAD_8)
 				keyResult = keyResult & (~UP);
-			else if(e.keyCode == Keyboard.DOWN)
+			else if(keyCode == Keyboard.DOWN || keyCode == Keyboard.NUMPAD_2)
 				keyResult = keyResult & (~DOWN);
-			else if(e.keyCode == Keyboard.LEFT)
+			else if(keyCode == Keyboard.LEFT || keyCode == Keyboard.NUMPAD_4)
 				keyResult = keyResult & (~LEFT);
-			else if(e.keyCode == Keyboard.RIGHT)
+			else if(keyCode == Keyboard.RIGHT || keyCode == Keyboard.NUMPAD_6)
 				keyResult = keyResult & (~RIGHT);
-			
+
+			// диагональные клавиши
+			if(keyCode == Keyboard.HOME || keyCode == Keyboard.NUMPAD_7)
+				keyResult = keyResult & (~(UP | LEFT));
+			else if(keyCode == Keyboard.PAGE_UP || keyCode == Keyboard.NUMPAD_9)
+				keyResult = keyResult & (~(UP | RIGHT));
+			else if(keyCode == Keyboard.END || keyCode == Keyboard.NUMPAD_1)
+				keyResult = keyResult & (~(DOWN | LEFT));
+			else if(keyCode == Keyboard.PAGE_DOWN || keyCode == Keyboard.NUMPAD_3)
+				keyResult = keyResult & (~(DOWN | RIGHT));
 			
 			if(keyResult != buf)
 				onTick(0);
