@@ -200,8 +200,10 @@ end
 
 desc "Gamedesign"
 namespace :gamedesign do
-	desc "Level statisic"
-	task :level_stat => :environment do
-		Gamedesign::level_stat();	
+	desc "Level statisic [all_levels, [all_versions]]"
+	task :level_stat, [:all_levels, :all_versions] => :environment do |task, args|
+		all_levels = (args[:all_levels] || '0').to_i > 0
+		all_versions = (args[:all_versions] || '1').to_i > 0
+		Gamedesign::level_stat(nil, all_levels, all_versions);	
 	end
 end

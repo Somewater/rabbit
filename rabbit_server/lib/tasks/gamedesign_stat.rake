@@ -1,7 +1,7 @@
 module Gamedesign
 
 	# Статистика по средним парамтерам прохождения уровней
-	def self.level_stat(conditions = nil)
+	def self.level_stat(conditions = nil, all_levels = false, all_versions = true)
 		conditions = 'net=2' unless conditions
 		level_stat = {}
 		user_stat = {}
@@ -11,7 +11,7 @@ module Gamedesign
 		max_head_level = 0
 		head_levels_by_id = {}
 		head_levels.each do |l| 
-		  next if l.number > 99
+		  next if !all_levels && l.number > 99
 			head_levels_by_id[l.number.to_i] = l
 			max_head_level = l.number.to_i if l.number.to_i > max_head_level
 		end
@@ -21,7 +21,8 @@ module Gamedesign
 		User.find(:all, :conditions => conditions).each do |user|
 			levels = user.level_instances
 			levels.each do |number, level|
-				next if number.to_i > 99
+				next if !all_levels && number.to_i > 99
+				next if !all_versions && head_levels_by_id[number.to_i].version > level['v'].to_i
 				level_stat[number.to_i] = {:carrot => 0, :time => 0, :counter => 0, :time_min => 9999999, :carrot_max => 0, :star => 0} unless level_stat[number.to_i]
 				stat = level_stat[number.to_i]
 				stat[:carrot] += level['c']
@@ -45,6 +46,7 @@ module Gamedesign
 		puts "\n***\tLEVELS\t***"
 		(1..max_head_level).each do |number|
 			stat = level_stat[number.to_i]
+			next unless stat
 			stat[:time] /= stat[:counter]
 			stat[:carrot] /= stat[:counter]
 			stat[:star] = ((stat[:star] / stat[:counter].to_f) * 100).to_i / 100.0
