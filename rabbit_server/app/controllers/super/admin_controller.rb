@@ -37,6 +37,8 @@ class AdminController
 				AdminsAdminController.new(@request, admin_user).call
 			when /^vk\/notify/
 				VkNotifyAdminController.new(@request, admin_user).call
+			when /stat/
+				StatAdminController.new(@request, admin_user).call
 			else
 				IndexAdminController.new(@request, admin_user).call
 		end

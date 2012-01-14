@@ -1,0 +1,28 @@
+<h1><a href='<%= STAT_PATH %>'>STAT</a></h1>
+<p>
+	<% @names.each_with_index do |name, index| %>
+		<% if index > 0 && index % 10 == 0 %><br><% end %>
+		<a href="<%= STAT_PATH %>?name=<%= name %>"><%= name.upcase %></a>&nbsp;&nbsp;
+	<% end %>
+</p>
+<% if @stats %>
+	<table border='1'>
+		<tr>
+			<th>
+				<%= @name.upcase %>
+			</th>
+		</tr>
+		<tr>
+			<th>time</th>
+			<th>value</th>
+		</tr>
+		<% @stats.each_with_index do |stat, index| %>
+			<tr>
+				<td width="200"><%= Time.at(stat.time).to_formatted_s(:short) %></td>
+				<td width="100"><%= stat.value %></td>
+			</tr>
+		<% end %>
+	</table>
+<% else %>
+	[select stat name]
+<% end %>

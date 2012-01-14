@@ -12,6 +12,7 @@ class IndexAdminController < AdminController::Base
 				r += tag("p") { tag "a", :href => '/admin/users', :value => 'users' } if @admin_user.can?(AdminUser::PERMISSION_USER_TRACKER)
 				r += tag("p") { tag "a", :href => '/admin/admins', :value => 'admins' } if @admin_user.user.login == 'dev'
 				r += tag("p") { tag "a", :href => '/admin/vk/notify', :value => 'notifyes' } if @admin_user.user.login == 'dev'
+				r += tag("p") { tag "a", :href => '/admin/stat', :value => 'stat' } if @admin_user.can?(AdminUser::PERMISSION_STAT_VIEW)
 				r
 			end
 	end

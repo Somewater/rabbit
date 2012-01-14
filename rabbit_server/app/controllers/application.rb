@@ -63,6 +63,8 @@ class Application
 			method = method[1, method.size - 1] if method
 
 			case method
+				when "stat"
+					Stat.inc(request['name']); '{"result":"ok"}'
 				when "init"
 					InitializeController.new(request).call
 				when "levels/complete"

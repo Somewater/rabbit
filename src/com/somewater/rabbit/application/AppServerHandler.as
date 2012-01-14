@@ -355,6 +355,11 @@ class ServerReceiver implements IServerHandler
 		return handler.fromJson(json);
 	}
 
+	public function stat(name:String):void
+	{
+		handler.stat(name);
+	}
+
 	private function findRequest(request_counter:uint):Request
 	{
 		for(var i:int = 0; i<sendedRequestQueue.length; i++)

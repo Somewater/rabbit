@@ -195,6 +195,11 @@ package com.somewater.net
 			return JSON.decode(json);
 		}
 
+		public function stat(name:String):void
+		{
+			var loader:URLLoader = new URLLoader(new URLRequest(_base_path + 'stat?name=' + name));
+		}
+
 		private function fireCallbacks(success:Boolean, callback:Function, response:Object):void
 		{
 			if(callback != null)

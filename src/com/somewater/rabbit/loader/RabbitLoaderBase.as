@@ -7,6 +7,7 @@ package com.somewater.rabbit.loader
 	import com.somewater.rabbit.IRabbitApplication;
 	import com.somewater.rabbit.IRabbitGame;
 	import com.somewater.rabbit.IRabbitLoader;
+	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.social.SocialUser;
 	import com.somewater.storage.LocalDb;
@@ -216,6 +217,8 @@ package com.somewater.rabbit.loader
 			
 			createSpecificPaths();
 			initializeServerHandler();
+
+			Config.loader.serverHandler.stat(Stat.LOADER_INITED);
 			
 			if(swfs == null || filePaths == null)
 				throw new Error("Lazy localization!");
