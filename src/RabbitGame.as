@@ -36,7 +36,8 @@ package
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
 	import flash.system.Security;
-	
+	import flash.text.TextField;
+
 	import nl.demonsters.debugger.MonsterDebugger;
 	
 	[SWF(width="810", height="550", backgroundColor="#FFFFFF", frameRate="30")]
@@ -254,10 +255,11 @@ package
 		 */
 		public function onSomeException(event:ExceptionEvent):void
 		{
-			var w:Sprite = Config.application.message(Config.application.translate('ERROR_CLIENT_EXCEPTION',
+			var text:String = Config.application.translate('ERROR_CLIENT_EXCEPTION',
 				{
 					'error': (event.error.getStackTrace().length ? event.error.getStackTrace() : event.error.message)
-				}), function(...args):Boolean{
+				});
+			var w:Sprite = Config.application.message(text, function(...args):Boolean{
 					// рестарт уровня
 					new RestartLevelCommand().execute();
 					return true;
@@ -266,6 +268,17 @@ package
 				w.getChildByName('closeButton').visible = false;
 			if(w && w.getChildByName('ground'))
 				w.getChildByName('ground').alpha = 0.5;
+			if(w && w.getChildByName('textField')
+					&& w.getChildByName('textField') is TextField
+					&& w.getChildByName('textField').hasOwnProperty('size'))
+			{
+				text = text + text + text + text;
+				TextField(w.getChildByName('textField')).text = text;
+				TextField(w.getChildByName('textField')).selectable = true;
+				TextField(w.getChildByName('textField')).mouseEnabled = true;
+				w.getChildByName('textField').height = 500;
+				Object(w.getChildByName('textField')).size = 14;
+			}
 			pause();
 		}
 		

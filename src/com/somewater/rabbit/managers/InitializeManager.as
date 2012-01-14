@@ -18,6 +18,7 @@ package com.somewater.rabbit.managers
 	import com.somewater.rabbit.decor.BackgroundRenderer;
 	import com.somewater.rabbit.decor.GroundGrassRenderer;
 	import com.somewater.rabbit.decor.PopupEffectRenderer;
+	import com.somewater.rabbit.events.ExceptionEvent;
 	import com.somewater.rabbit.rewards.RabbitHoleRenderer;
 	import com.somewater.rabbit.components.AttackComponent;
 	import com.somewater.rabbit.components.ConcealComponent;
@@ -119,6 +120,8 @@ package com.somewater.rabbit.managers
 			
 			// отключаем видимость сцены до лучших времен
 			switchPBE(false);
+
+			PBE.levelManager.addEventListener(ExceptionEvent.TICK_EXCEPTION, app.onSomeException);
 			
 			app.dispatchEvent(new Event("applicationComplete"));
 			

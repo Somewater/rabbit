@@ -75,7 +75,7 @@ package com.somewater.display
 			
 			if (text != null){				
 				textField = new EmbededTextField(null,"b",24,false,true,false,false,"center");
-				//textField.scaleX = 1.2;
+				textField.name = 'textField';
 				textField.y = 55;
 				textField.mouseEnabled = false;
 				addChild(textField);
