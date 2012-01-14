@@ -601,7 +601,8 @@ package
 						ServerLogic.positionReward(r, userRewardsWithoutCurrent);
 						positionRewards.push(r);
 					}
-				AppServerHandler.instance.moveRewards(positionRewards);
+				if(positionRewards.length)
+					AppServerHandler.instance.moveRewards(positionRewards);
 			}
 		}
 
