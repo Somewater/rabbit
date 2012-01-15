@@ -1,5 +1,7 @@
 package com.somewater.rabbit.loader{
 	import com.somewater.net.ServerHandler;
+	import com.somewater.rabbit.Stat;
+	import com.somewater.rabbit.storage.Config;
 	import com.somewater.social.SocialUser;
 
 	/**
@@ -64,6 +66,7 @@ package com.somewater.rabbit.loader{
 		override public function showInviteWindow():void
 		{
 			arrow.showInviteWindow();
+			Config.stat(Stat.FRIENDS_INVITED);
 		}
 
 		override public function pay(quantity:Object, onSuccess:Function, onFailure:Function, params:Object = null):void

@@ -1,6 +1,7 @@
 package com.somewater.rabbit.application
 {
 	import com.somewater.controller.PopUpManager;
+	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
@@ -94,7 +95,7 @@ package com.somewater.rabbit.application
 			Hint.bind(globalScoreCarrot, Lang.t("GLOBAL_SCORE_COUNTER_HINT"));
 			Hint.bind(globalScoreCounterTF, Lang.t("GLOBAL_SCORE_COUNTER_HINT"));
 			
-			
+			Config.stat(Stat.LEVELS_PAGE_OPENED);
 		}
 		
 		override public function clear():void

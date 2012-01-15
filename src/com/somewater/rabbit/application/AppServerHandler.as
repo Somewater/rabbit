@@ -1,5 +1,6 @@
 package com.somewater.rabbit.application {
 	import com.somewater.net.IServerHandler;
+	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.application.windows.PendingRewardsWindow;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.GameUser;
@@ -73,6 +74,7 @@ package com.somewater.rabbit.application {
 					else
 					{
 						jsonToGameUser(response['user'], user);
+						Config.stat(Stat.LEVEL_PASSED);
 						onComplete && onComplete(response);
 					}
 				}, onError, null, {'secure': true})
@@ -92,6 +94,7 @@ package com.somewater.rabbit.application {
 					else
 					{
 						response['user'] = jsonToGameUser(response['user'], gameUser);
+						Config.stat(Stat.POSTING);
 						onComplete && onComplete(response);
 					}
 				}, onError, null, {'secure': true})

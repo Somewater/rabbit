@@ -4,6 +4,8 @@ package com.somewater.rabbit.storage
 
 	public class LevelDef extends InfoDef
 	{
+		public static const TYPE:String = 'Level';
+
      	public var id:int;
 		public var number:uint = 0;// нумерация с "1"
 		public var version:int;
@@ -88,7 +90,7 @@ package com.somewater.rabbit.storage
 		 */
 		public function get type():String
 		{
-			return 'Level';
+			return TYPE;
 		}
 
 		/**

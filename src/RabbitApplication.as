@@ -8,6 +8,7 @@ package
 	import com.somewater.rabbit.IRabbitApplication;
 	import com.somewater.rabbit.SoundTrack;
 	import com.somewater.rabbit.Sounds;
+	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.application.AboutPage;
 	import com.somewater.rabbit.application.AppServerHandler;
 	import com.somewater.rabbit.application.GameGUI;
@@ -293,6 +294,8 @@ package
 
 			startPage("main_menu");
 
+			Config.stat(Stat.APP_STARTED);
+
 			dispatchEvent(new Event("applicationInited"))
 		}
 		
@@ -387,7 +390,7 @@ package
 
 			clearContent();
 			showSlash(-1);
-			play(level is RewardLevelDef ? Sounds.MUSIC_MENU : Sounds.MUSIC_GAME, SoundTrack.MUSIC);
+			play(level.type == RewardLevelDef.TYPE ? Sounds.MUSIC_MENU : Sounds.MUSIC_GAME, SoundTrack.MUSIC);
 			
 			var game:DisplayObject = Config.game as DisplayObject;
 			_content.addChild(game);
@@ -414,8 +417,18 @@ package
 				if(guiClass)
 					_content.addChild(new guiClass());
 
-				if(level.type == 'Level')
+				if(level.type == LevelDef.TYPE)
+				{
 					levelStartMessage(level);
+					Config.stat(Stat.LEVEL_STARTED);
+				}
+				else if(level.type == RewardLevelDef.TYPE)
+				{
+					if(RewardLevelDef(level).gameUser.itsMe())
+						Config.stat(Stat.MY_REWARDS_OPENED)
+					else
+						Config.stat(Stat.FRIEND_REWARDS_OPENED);
+				}
 			}
 		}
 		private var __gameAlreadyRun:Boolean = false;

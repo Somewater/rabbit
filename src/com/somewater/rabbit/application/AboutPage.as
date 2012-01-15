@@ -1,6 +1,7 @@
 package com.somewater.rabbit.application
 {
 	import com.somewater.control.IClear;
+	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.storage.Lang;
@@ -45,6 +46,8 @@ package com.somewater.rabbit.application
 			leftButton.addEventListener(MouseEvent.CLICK, onLeftButtonClick);
 			Hint.bind(leftButton, Lang.t("BACK_TO_MAIN_MENU"));
 			addChild(leftButton);
+
+			Config.stat(Stat.ABOUT_PAGE_OPENED);
 		}
 
 		private function onLeftButtonClick(event:MouseEvent):void {

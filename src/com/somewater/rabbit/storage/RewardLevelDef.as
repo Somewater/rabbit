@@ -5,6 +5,8 @@ package com.somewater.rabbit.storage
 	public class RewardLevelDef extends LevelDef implements IUserLevel
 	{
 
+		public static const TYPE:String = 'RewardLevel'
+
 		public static const WIDTH:int = 9;
 		public static const HEIGHT:int = 10;
 
@@ -41,7 +43,7 @@ package com.somewater.rabbit.storage
 
 		override public function get type():String
 		{
-			return 'RewardLevel';
+			return TYPE;
 		}
 
 

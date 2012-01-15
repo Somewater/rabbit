@@ -1,6 +1,7 @@
 package
 {
 	import com.somewater.net.ServerHandler;
+	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.loader.RabbitLoaderBase;
 	import com.somewater.rabbit.net.LocalServerHandler;
 	import com.somewater.rabbit.storage.Config;
@@ -94,6 +95,7 @@ package
 		{
 			recreateFakeUsers();
 			trace("[SOCIAL] Invite window opened");
+			Config.stat(Stat.FRIENDS_INVITED);
 		}
 		
 		override public function pay(quantity:Object, onSuccess:Function, onFailure:Function, params:Object = null):void

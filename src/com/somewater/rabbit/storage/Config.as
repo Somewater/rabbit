@@ -84,5 +84,11 @@ package com.somewater.rabbit.storage
 					pendingFrames--;
 			})
 		}
+
+		public static function stat(name:String):void
+		{
+			if(loader && loader.serverHandler)
+				loader.serverHandler.stat(name);
+		}
 	}
 }

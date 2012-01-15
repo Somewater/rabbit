@@ -218,7 +218,7 @@ package com.somewater.rabbit.loader
 			createSpecificPaths();
 			initializeServerHandler();
 
-			Config.loader.serverHandler.stat(Stat.LOADER_INITED);
+			Config.stat(Stat.LOADER_INITED);
 			
 			if(swfs == null || filePaths == null)
 				throw new Error("Lazy localization!");

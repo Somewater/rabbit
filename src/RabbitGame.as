@@ -9,6 +9,7 @@ package
 	import com.pblabs.rendering2D.SceneAlignment;
 	import com.pblabs.rendering2D.SimpleSpatialComponent;
 	import com.somewater.rabbit.IRabbitGame;
+	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.application.commands.RestartLevelCommand;
 	import com.somewater.rabbit.components.GenocideComponent;
 	import com.somewater.rabbit.components.RandomActComponent;
@@ -280,6 +281,8 @@ package
 				Object(w.getChildByName('textField')).size = 14;
 			}
 			pause();
+
+			Config.stat(Stat.EXCEPTION_CATCHED);
 		}
 		
 		override public function get width():Number{return Config.WIDTH;}
