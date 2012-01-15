@@ -65,18 +65,18 @@ package {
 		{
 			basePath = 'http://rabbit.asflash.ru/';
 			swfs = {
-						"Game":{priority:-1,preload:true,url:"http://cs302411.vkontakte.ru/u245894/6c984971632029.zip"}
+						"Game":{priority:-1,preload:true,url:"http://cs11081.vkontakte.ru/u245894/ed81ed8c9331f0.zip"}
 						,
 						"Application":{priority:int.MIN_VALUE,
-							preload:true,url:"http://cs302411.vkontakte.ru/u245894/3acb7c58971c1d.zip"}
+							preload:true,url:"http://cs11081.vkontakte.ru/u245894/65ec47084ab029.zip"}
 						,"Interface":{preload:true, url:"http://cs301105.vkontakte.ru/u245894/4cef321a434828.zip"}
 						,"Assets":{preload:true, url:"http://cs301105.vkontakte.ru/u245894/20130588dba46b.zip"}
 						,"Rewards":{preload:true, url:"http://cs305914.vkontakte.ru/u245894/484acef2b22ff3.zip"}
 						,"Images":{preload:true, url:"http://cs301105.vkontakte.ru/u245894/bed3fdd7fef6d3.zip"}
 						,"MusicMenu":{url:"http://cs301105.vkontakte.ru/u245894/8249c8fc1ffbf9.zip"}
 						,"MusicGame":{url:"http://cs301105.vkontakte.ru/u245894/721ed8935f06d4.zip"}
-						,"Lang":{priority:100, preload:true, url:"http://cs302411.vkontakte.ru/u245894/7c7d7d76b4eb02.zip"}
-						,"XmlPack":{preload:true, url:"http://cs302411.vkontakte.ru/u245894/87a48a9e90dbc5.zip"}
+						,"Lang":{priority:100, preload:true, url:"http://cs11081.vkontakte.ru/u245894/7f07018b2d3aca.zip"}
+						,"XmlPack":{preload:true, url:"http://cs11081.vkontakte.ru/u245894/4e8fd0a591d890.zip"}
 
 						,"Font":{priority:100, preload:true, url:"http://cs301105.vkontakte.ru/u245894/e07afb77864e16.zip"}
 					}
