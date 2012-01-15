@@ -27,7 +27,7 @@ class Stat < ActiveRecord::Base
 	private
 	def self.time
 		ts = Application.time.to_i
-		ts - (ts % 1800)
+		ts - (ts % 7200) # stat all 2 hours
 	end
 end
 
