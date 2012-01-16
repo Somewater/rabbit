@@ -325,7 +325,7 @@ package
 			splashIcon.x += splashBar_x_diff;
 			splashIcon.y = (Config.HEIGHT - splashIcon.height) * 0.5 - 50;
 			splashBar.y = splashIcon.y + splashIcon.height + 40;
-			Config.loader.addChild(splashHolder);
+			Config.loader.popups.addChild(splashHolder);
 			splashHolder.visible = false;			
 			PopUpManager.Initialize(Config.loader.popups, _content, Config.WIDTH, Config.HEIGHT, blurScreen, splashHolder);
 			Config.loader.clear();

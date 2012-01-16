@@ -1,3 +1,5 @@
+$debug = ENV['DEBUG'] ? ENV['DEBUG'].to_s == 'true' || ENV['DEBUG'].to_s == '1': false
+
 task :environment do
   ROOT = File.expand_path('../',  __FILE__)
   $:.push("#{ROOT}/../rprotect")
@@ -65,19 +67,19 @@ def compile_arrow(classname)
 	{:as => "#{ROOT}/#{classname_ext}.as", :swf => "#{ROOT}/#{classname_ext}.swf", :classname => classname}
 end
 
-def library(classname, output, debug = true)
+def library(classname, output)
 	puts `compc -source-path "#{ROOT}" \
 	-include-classes #{classname} \
 	-optimize \
 	-target-player=10.0 \
-	-compiler.debug=#{debug} \
+	-compiler.debug=#{$debug} \
 	-output "#{ROOT}/#{output}.swc"`
 end
 
-def compile(file, debug = true)
+def compile(file)
 	puts `mxmlc \
 	-target-player=10.0 \
-	-compiler.debug=#{debug} \
+	-compiler.debug=#{$debug} \
 	-library-path+=SocialFree.swc \
 	-use-network=true \
 	-optimize=true \

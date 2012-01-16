@@ -26,7 +26,9 @@ package com.somewater.social
 		public var balance : Number = 0;
 		
 		public var city : String;
+		public var cityCode:int;
 		public var country : String;
+		public var countryCode:int;
 		
 		public var locale:String = "en";
 		

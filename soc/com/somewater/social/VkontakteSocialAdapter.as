@@ -193,6 +193,8 @@ package com.somewater.social
 			socialUser.male = info["sex"]!=1;
 			socialUser.city = info['city']?info['city']:'';		
 			socialUser.country = info['country']?info['country']:'';
+			if(info['cityCode']) socialUser.cityCode = info['cityCode'];
+			if(info['countryCode']) socialUser.countryCode = info['countryCode'];
 			if( info["photo"] && info["photo"].toString().lastIndexOf("http://vkontakte.ru/images/") != -1 ) info["photo"]=null;
 			if( info["photo_medium"] && info["photo_medium"].toString().lastIndexOf("http://vkontakte.ru/images/") != -1 ) info["photo_medium"]=null;
 			if( info["photo_big"] && info["photo_big"].toString().lastIndexOf("http://vkontakte.ru/images/") != -1 ) info["photo_big"]=null;
@@ -499,6 +501,16 @@ package com.somewater.social
 				forExecution.push('"user":API.getProfiles({"uids":' + flashVars["viewer_id"] + ',"fields":"uid,first_name,last_name,nickname,sex,bdate,photo,photo_medium,photo_big,has_mobile,rate"})');
 			}else{
 				_initData.user = _initData.user[0];
+				if(_initData.city && _initData.city[0])
+				{
+					_initData.user.city = _initData.city[0].name;
+					_initData.user.cityCode = _initData.city[0].cid;
+				}
+				if(_initData.country && _initData.country[0])
+				{
+					_initData.user.country = _initData.country[0].name;
+					_initData.user.countryCode = _initData.country[0].cid;
+				}
 			}
 			
 			if(_initData.friends==null)

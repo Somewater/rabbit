@@ -122,10 +122,18 @@ package com.somewater.controller
 			if (window.parent != null)
 				if (window.parent.contains(window)){
 					window.parent.removeChild(window);
-					var index:int;
+					var index:int = -1;
+					for(var i:int = 0;i<instance.windowsStorage.length;i++)
+						if(Popup(instance.windowsStorage[i]).displayObject == window){
+							index = i;
+							break;
+						}
+					if (index != -1){
+						instance.windowsStorage.splice(index,1);
+					}
 					if (instance.popUpGround != null){
 						index = instance.defaultParent.getChildIndex(instance.popUpGround);
-						if (instance.defaultParent.numChildren == 1){// при закрытии любого окра, убирать сплаш
+						if (numWindows == 0){// при закрытии любого окра, убирать сплаш
 							if (instance.defaultParent.contains(instance.popUpGround))
 								instance.defaultParent.removeChild(instance.popUpGround);
 							instance.defaultContentRegion.filters = [];
@@ -135,15 +143,6 @@ package com.somewater.controller
 							if (instance.defaultParent.contains(instance.popUpGround))
 								instance.defaultParent.setChildIndex(instance.popUpGround,Math.max(0,index - 1));
 					}
-					index = -1;
-					for(var i:int = 0;i<instance.windowsStorage.length;i++)
-						if(Popup(instance.windowsStorage[i]).displayObject == window){
-							index = i;
-							break;
-						}
-					if (index != -1){
-						instance.windowsStorage.splice(index,1);
-					}					
 					return true;
 				}
 			return false;

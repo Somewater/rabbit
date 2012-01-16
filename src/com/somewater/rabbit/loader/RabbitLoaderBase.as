@@ -116,13 +116,13 @@ package com.somewater.rabbit.loader
 		
 		public function RabbitLoaderBase()
 		{		
-			createLayers();
-			
 			preloader = new PRELOADER_CLASS();
 			for(var i:int = 0; i < 10; i++)
 				preloader.bar["carrot" + i].stop();
+
+			createLayers();
 			
-			addChild(preloader);
+			popups.addChild(preloader);
 			setProgress(0, 0);
 			
 			tabChildren = false;
@@ -179,8 +179,6 @@ package com.somewater.rabbit.loader
 			
 			Config.loader = this;
 			Config.stage = stage;
-			Config.WIDTH = stage.stageWidth > 1 ? stage.stageWidth : Config.WIDTH;
-			Config.HEIGHT = stage.stageHeight > 1 ? stage.stageHeight : Config.HEIGHT;
 			SWFDecoderWrapper.load(null, null, null);// инициируем заранее
 
 			graphics.beginFill(0xE7E7E7);
