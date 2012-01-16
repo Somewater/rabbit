@@ -170,7 +170,7 @@ package
 
 			if(Config.loader.hasFriendsApi)
 			{
-				friendInviteTimer = new Timer(2*60*1000);
+				friendInviteTimer = new Timer(3*60*1000);
 				friendInviteTimer.addEventListener(TimerEvent.TIMER, onFriendInviteTimer);
 				friendInviteTimer.start();
 			}
