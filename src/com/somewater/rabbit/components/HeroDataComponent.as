@@ -1,5 +1,9 @@
 package com.somewater.rabbit.components
 {
+	import com.somewater.rabbit.SoundTrack;
+	import com.somewater.rabbit.Sounds;
+	import com.somewater.rabbit.storage.Config;
+
 	/**
 	 * Хранение различных констант, присущих игроку
 	 * #Hero.Data
@@ -29,12 +33,28 @@ package com.somewater.rabbit.components
 		{
 			if(value != _carrot)
 			{
+				if(value > _carrot)
+					Config.application.play(Sounds.HARVEST, SoundTrack.GAME_HARVEST, true);
 				_carrot = value;
 			}
 		}
 		public function get carrot():int{ return _carrot; }
 		
 		public function set score(value:int):void{carrot = value;}
-		public function get score():int {return carrot;} 
+		public function get score():int {return carrot;}
+
+		override public function set health(value:Number):void
+		{
+			if(value != _health)
+			{
+				if(_health > value)
+					Config.application.play(Sounds.DAMAGE, SoundTrack.GAME_DAMAGE);
+				_health = value;
+				if(_health <= 0 && _owner)
+				{
+					owner.destroy();
+				}
+			}
+		}
 	}
 }

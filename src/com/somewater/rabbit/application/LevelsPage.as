@@ -1,6 +1,8 @@
 package com.somewater.rabbit.application
 {
 	import com.somewater.controller.PopUpManager;
+	import com.somewater.rabbit.SoundTrack;
+	import com.somewater.rabbit.Sounds;
 	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
@@ -124,6 +126,7 @@ package com.somewater.rabbit.application
 		
 		private function onLeftButtonClick(e:Event):void
 		{
+			Config.application.play(Sounds.ALPHA_BUTTON_CLICK, SoundTrack.INTERFACE, true);
 			Config.application.startPage("main_menu");
 		}
 

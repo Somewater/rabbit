@@ -12,7 +12,7 @@ package com.somewater.rabbit.components
 		/**
 		 * Т.е. здоровье измеряется не в процентах (от 100), а в долях
 		 */
-		private var _health:Number = 1;
+		protected var _health:Number = 1;
 		
 		public function DataComponent()
 		{

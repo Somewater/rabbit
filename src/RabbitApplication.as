@@ -7,6 +7,7 @@ package
 	import com.somewater.net.ServerHandler;
 	import com.somewater.rabbit.IRabbitApplication;
 	import com.somewater.rabbit.SoundTrack;
+	import com.somewater.rabbit.SoundTrack;
 	import com.somewater.rabbit.Sounds;
 	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.application.AboutPage;
@@ -101,6 +102,8 @@ package
 		private var soundTracks:Array = [];
 		private var _soundSoundTransform:SoundTransform = new SoundTransform();
 		private var _musicSoundTransform:SoundTransform = new SoundTransform();
+		private var soundLibraryLoadingStarted:Boolean = false;
+		private var soundLibraryLoaded:Boolean = false;
 
 		private var friendInviteTimer:Timer;
 		
@@ -619,9 +622,9 @@ package
 			}
 		}
 
-		public function play(soundName:String, track:String):void
+		public function play(soundName:String, track:String, force:Boolean = false):void
 		{
-			if(soundTracks[track] && SoundData(soundTracks[track]).soundName == soundName)
+			if(force == false && soundTracks[track] && SoundData(soundTracks[track]).soundName == soundName)
 				return; // игнорируем попытку прогирать один и тот же звук, когда не доиграл такой же
 
 			var soundObject:Sound = Lib.createMC(soundName);
@@ -633,13 +636,21 @@ package
 					Config.loader.loadSwf(soundName == Sounds.MUSIC_MENU ? 'MusicMenu' : 'MusicGame', onMusicLibraryLoaded);
 				}
 				else
-					Config.game.logError(this, 'play', 'Sound ' + soundName + ' not found in library');
+				{
+					if(!soundLibraryLoadingStarted)
+					{
+						Config.loader.loadSwf('Sound', onSoundLibraryLoaded);
+						soundLibraryLoadingStarted = true;
+					}else if(soundLibraryLoaded)
+						Config.game.logError(this, 'play', 'Sound ' + soundName + ' not found in library');
+				}
 				return;
 			}
 
 			if(soundTracks[track])
 			{
 				SoundData(soundTracks[track]).channel.stop();
+				SoundData(soundTracks[track]).channel.removeEventListener(Event.SOUND_COMPLETE, onSoundComplete)
 				if(track == SoundTrack.MUSIC)
 					Config.callLater(playNewSound, null, 8)
 				else
@@ -650,7 +661,8 @@ package
 
 			function playNewSound():void
 			{
-				soundTracks[track] = new SoundData(soundName, soundObject.play(0, SoundTrack.MUSIC ? 0xFFFF : 0, SoundTrack.MUSIC ? _musicSoundTransform : _soundSoundTransform));
+				soundTracks[track] = new SoundData(soundName, soundObject.play(0, track == SoundTrack.MUSIC ? 0xFFFF : 0, track == SoundTrack.MUSIC ? _musicSoundTransform : _soundSoundTransform));
+				SoundData(soundTracks[track]).channel.addEventListener(Event.SOUND_COMPLETE, onSoundComplete)
 			}
 		}
 
@@ -667,6 +679,20 @@ package
 			if(soundTracks[SoundTrack.MUSIC])
 				SoundData(soundTracks[SoundTrack.MUSIC]).channel.soundTransform = _musicSoundTransform;
 			saveAudioSettings();
+		}
+
+		private function onSoundComplete(event:Event):void
+		{
+			for(var track:String in soundTracks)
+			{
+				var sd:SoundData = soundTracks[track];
+				if(sd.channel == event.currentTarget as SoundChannel)
+				{
+					sd.channel.removeEventListener(Event.SOUND_COMPLETE, onSoundComplete);
+					delete(soundTracks[track]);
+					break;
+				}
+			}
 		}
 
 		private var settingsLoadingFlag:Boolean = false;
@@ -702,6 +728,11 @@ package
 				play(Sounds.MUSIC_GAME, SoundTrack.MUSIC);
 			else
 				play(Sounds.MUSIC_MENU, SoundTrack.MUSIC);
+		}
+
+		private function onSoundLibraryLoaded():void
+		{
+			soundLibraryLoaded = true;
 		}
 
 		/**

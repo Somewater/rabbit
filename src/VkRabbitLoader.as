@@ -181,6 +181,7 @@ package {
 						,"Images":{preload:true, url:"http://cs301105.vkontakte.ru/u245894/bed3fdd7fef6d3.zip"}
 						,"MusicMenu":{url:"http://cs301105.vkontakte.ru/u245894/8249c8fc1ffbf9.zip"}
 						,"MusicGame":{url:"http://cs301105.vkontakte.ru/u245894/721ed8935f06d4.zip"}
+						,"Sound":{url:"http://cs5392.vkontakte.ru/u245894/849e0bcdf7ff31.zip"}
 						,"Lang":{priority:100, preload:true, url:"http://cs11081.vkontakte.ru/u245894/7f07018b2d3aca.zip"}
 						,"XmlPack":{preload:true, url:"http://cs11081.vkontakte.ru/u245894/4e8fd0a591d890.zip"}
 

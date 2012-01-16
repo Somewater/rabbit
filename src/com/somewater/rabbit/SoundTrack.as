@@ -13,5 +13,10 @@ package com.somewater.rabbit {
 		 * Дорожка для фоновой музыки
 		 */
 		public static var MUSIC:String = 'music';
+
+		public static var INTERFACE:String = 'interface';
+
+		public static var GAME_HARVEST:String = 'game_harvest';
+		public static var GAME_DAMAGE:String = 'game_damage';
 	}
 }

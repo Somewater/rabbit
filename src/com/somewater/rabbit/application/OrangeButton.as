@@ -1,6 +1,9 @@
 package com.somewater.rabbit.application
 {
 	import com.somewater.control.IClear;
+	import com.somewater.rabbit.SoundTrack;
+	import com.somewater.rabbit.Sounds;
+	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.text.EmbededTextField;
 	
@@ -52,6 +55,7 @@ package com.somewater.rabbit.application
 		
 		override protected function onDown(e:MouseEvent):void
 		{
+			Config.application.play(Sounds.ORANGE_BUTTON_CLICK, SoundTrack.INTERFACE, true);
 			super.onDown(e);
 			textField.color = 0xFF8A1B;
 		}

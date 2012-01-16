@@ -1,6 +1,8 @@
 package com.somewater.rabbit.application
 {
 	import com.somewater.control.IClear;
+	import com.somewater.rabbit.SoundTrack;
+	import com.somewater.rabbit.Sounds;
 	import com.somewater.rabbit.application.windows.PauseMenuWindow;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Lib;
@@ -85,6 +87,7 @@ package com.somewater.rabbit.application
 		
 		private function onPlayPauseClick(e:Event):void
 		{
+			Config.application.play(Sounds.ALPHA_BUTTON_CLICK, SoundTrack.INTERFACE, true);
 			new PauseMenuWindow();
 		}
 		

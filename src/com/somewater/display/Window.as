@@ -3,6 +3,9 @@ package com.somewater.display
 	import com.greensock.TweenMax;
 	import com.somewater.control.IClear;
 	import com.somewater.controller.PopUpManager;
+	import com.somewater.rabbit.SoundTrack;
+	import com.somewater.rabbit.Sounds;
+	import com.somewater.rabbit.storage.Config;
 	import com.somewater.storage.Lang;
 	import com.somewater.text.EmbededTextField;
 	import com.somewater.text.TruncatedTextField;
@@ -272,12 +275,14 @@ package com.somewater.display
 		}
 		
 		public function open():void{
+			Config.application.play(Sounds.WINDOW_OPEN, SoundTrack.INTERFACE, true);
 			startBlur();
 			PopUpManager.addPopUp(this, modal, individual);
 			PopUpManager.centre(this);
 		}
 		
 		protected function onCloseBtnClick(e:MouseEvent):void{
+			Config.application.play(Sounds.ALPHA_BUTTON_CLICK, SoundTrack.INTERFACE, true);
 			if(closeButton.visible)
 				close();
 		}

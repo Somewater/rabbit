@@ -1,5 +1,7 @@
 package com.somewater.rabbit.application {
 	import com.somewater.control.IClear;
+	import com.somewater.rabbit.SoundTrack;
+	import com.somewater.rabbit.Sounds;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.storage.Lang;
@@ -30,6 +32,7 @@ package com.somewater.rabbit.application {
 		}
 
 		private function onLeftButtonClick(event:MouseEvent):void {
+			Config.application.play(Sounds.ALPHA_BUTTON_CLICK, SoundTrack.INTERFACE, true);
 			Config.application.startPage('main_menu');
 		}
 	}

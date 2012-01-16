@@ -1,6 +1,9 @@
 package com.somewater.rabbit.application.buttons
 {
+	import com.somewater.rabbit.SoundTrack;
+	import com.somewater.rabbit.Sounds;
 	import com.somewater.rabbit.application.OrangeGround;
+	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Lib;
 	
 	import flash.display.DisplayObject;
@@ -97,6 +100,11 @@ package com.somewater.rabbit.application.buttons
 			{
 				icon.transform.colorTransform = new ColorTransform();
 			}
+		}
+
+		override protected function onDown(e:MouseEvent):void {
+			Config.application.play(Sounds.ORANGE_BUTTON_CLICK, SoundTrack.INTERFACE, true);
+			super.onDown(e);
 		}
 	}
 }
