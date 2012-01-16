@@ -18,7 +18,7 @@
 		</tr>
 		<% @stats.each_with_index do |stat, index| %>
 			<tr>
-				<td width="200"><%= Time.at(stat.time).to_formatted_s(:short) %></td>
+				<td width="200"><%= Time.at(stat.time + 4 * 60 * 60).to_formatted_s(:short) %></td>
 				<td width="100"><%= stat.value %></td>
 			</tr>
 		<% end %>

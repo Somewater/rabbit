@@ -14,7 +14,7 @@ class StatAdminController < AdminController::Base
 
 		if(@request['name'])
 			@name = @request['name']
-			@stats = Stat.all(:conditions => ['name = ?', @name])
+			@stats = Stat.all(:conditions => ['name = ?', @name], :order => 'time DESC')
 		end
 
 		template(File.read("#{TEMPLATE_ROOT}/admin/stat_admin_show.erb"))
