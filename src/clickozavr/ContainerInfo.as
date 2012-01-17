@@ -18,6 +18,7 @@ package clickozavr
 		public static const VERTICAL_EX:String = "vertical_ex";	// Контейнер 150x500w
 		public static const USUAL_EX:String = "usual_ex";		// Контейнер 420x180w
 		public static const BOTTOM_BAR:String = "wide_ex_b";	// Контейнер 560x90wb
+		public static const WIDE600x150_BAR:String = "wide600x150_bar";	// Контейнер 600x150
 		
 		////////////////////////////////////////////////////
 		// 
@@ -31,6 +32,7 @@ package clickozavr
 		private static const _560x90wUrl:String = "http://s1.stat.clickozavr.com/c/560x90w.swf";
 		private static const _150x500wUrl:String = "http://s1.stat.clickozavr.com/c/150x500w.swf";
 		private static const _150x500Url:String = "http://s1.stat.clickozavr.com/c/150x500.swf";
+		private static const _600x150Url:String = "http://s1.stat.clickozavr.com/c/600x150.swf";
 		
 		////////////////////////////////////////////////////
 		// 
@@ -56,6 +58,7 @@ package clickozavr
 				case VERTICAL_EX: _url = _150x500wUrl; break;		// Контейнер 150x500w
 				case USUAL_EX: _url = _420x180wUrl; break;			// Контейнер 420x180w
 				case BOTTOM_BAR: _url = _560x90wbUrl; break;		// Контейнер 560x90wb
+				case WIDE600x150_BAR: _url = _600x150Url; break;		// Контейнер 560x90wb
 				default: throw Error("Wrong Clickozavr container type");
 			}
 			

@@ -78,9 +78,9 @@ package clickozavr
 			
 			// Список контейнеров, размещенных в приложении
 			_containers = [];
-			for each (var ci:ContainerInfo in containerList)
+			for each (var ci:ContainerInfo in containerList) {
 				_containers.push({ url: ci.url, x: ci.x, y: ci.y, type: ci.type });
-			
+			}
 			for each (var data:Object in _containers)
 			{
 				var loader:Loader = new Loader();
@@ -90,7 +90,6 @@ package clickozavr
 				loader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, container_errorHandler);
 				
 				loader.load(new URLRequest(data.url), new LoaderContext(false, ApplicationDomain.currentDomain));
-				
 				data.loader = loader;
 				_loadCtr++;
 			}
@@ -101,10 +100,9 @@ package clickozavr
 		 * @param event событие
 		 */
 		private function container_initHandler(event:Event):void
-		{
+		{			
 			var loaderInfo:LoaderInfo = LoaderInfo(event.target);
 			var data:Object = clearLoaderInfo(loaderInfo);
-			
 			var implemented:XMLList = describeType(event.target.content).implementsInterface;
 			for each (var impl:XML in implemented)
 			{
@@ -138,6 +136,7 @@ package clickozavr
 						case ContainerInfo.VERTICAL_EX:			// Контейнер 150x500w
 						case ContainerInfo.USUAL_EX:			// Контейнер 420x180w
 						case ContainerInfo.BOTTOM_BAR:			// Контейнер 560x90wb
+						case ContainerInfo.WIDE600x150_BAR:			// Контейнер 600x150
 						{
 							// Этим контейнерам достаточно задать местоположение в приложении
 							DisplayObject(item).x = data.x;

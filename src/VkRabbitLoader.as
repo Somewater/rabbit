@@ -27,7 +27,7 @@ package {
 	import flash.system.SecurityDomain;
 
 
-	[SWF(width="810", height="840", backgroundColor="#FFFFFF", frameRate="30")]
+	[SWF(width="810", height="900", backgroundColor="#FFFFFF", frameRate="30")]
 	public class VkRabbitLoader extends SocialRabbitLoader{
 
 		private var _clickozavr:Clickozavr;
@@ -39,7 +39,7 @@ package {
 		override protected function createLayers():void {
 			super.createLayers();
 
-			_content.y= _popups.y = _tooltips.y = _cursors.y = 90;
+			_content.y= _popups.y = _tooltips.y = _cursors.y = 150;
 		}
 
 		override protected function netInitialize():void
@@ -63,14 +63,14 @@ package {
 
 			adLayer = new Sprite();
 			adLayer.graphics.beginFill(0xFFFFFF);
-			adLayer.graphics.drawRect(0,0,Config.WIDTH, 90);
-			adLayer.graphics.drawRect(0, 90 + Config.HEIGHT, Config.WIDTH, 100)
+			adLayer.graphics.drawRect(0,0,Config.WIDTH, 150);
+			adLayer.graphics.drawRect(0, 150 + Config.HEIGHT, Config.WIDTH, 100)
 			addChild(adLayer);
 
 			_clickozavr = new Clickozavr('637', Config.WIDTH , Config.HEIGHT, adLayer);
 			_clickozavr.addEventListener(ClickozavrEvent.GET_USER_DATA, onClickozavrCanGetUserData);
 			_clickozavr.init([
-			new ContainerInfo(ContainerInfo.WIDE, (Config.WIDTH - 560) * 0.5, 0)], true);
+			new ContainerInfo(ContainerInfo.WIDE600x150_BAR, (Config.WIDTH - 600) * 0.5, 0)], true);
 
 //			var ads:AdAppUtil = new AdAppUtil('370', arrow.flashVars['api_id'], arrow.key,
 //									 arrow.flashVars['api_url'], arrow.flashVars['viewer_id'], arrow.flashVars['secret']);
@@ -116,7 +116,7 @@ package {
 		private function onAdAppComplete(event:Event):void {
 			var banner:DisplayObject = LoaderInfo(event.currentTarget).content;
 			banner.x = (Config.WIDTH - banner.width) * 0.5;
-			banner.y = 90 + Config.HEIGHT;
+			banner.y = 150 + Config.HEIGHT;
 			adLayer.addChild(banner);
 		}
 
