@@ -28,8 +28,6 @@ LEVEL_FATAL_TIME=Твое время вышло!
 LEVEL_FATAL_LIFE=Кролик устал... смертельно!
 LEVEL_FATAL_CARROT=Ты проворонил{male:|а} морковку!
 LEVEL_SUCCESS_FINISH=Уровень пройден!
-LEVEL_POSTING_SUCCESS=Сообщение о прохождении уровня опубликовано!
-LEVEL_POSTING_IN_PROCESS=Публикация сообщения...
 LEVEL_POSTING_EXPLANATION=Опубликуй новость о прохождении уровня и получи награду!
 ###################
 #
@@ -157,3 +155,5 @@ POSTING_REWARD_PASSES_TITLE=Я получил{male:|а} награду!
 POSTING_REWARD_PASSES_TEXT=Я получил{male:|а} награду "{reward_name}" в игре Кроль! Попробуйте и вы!
 POSTING_INVITE_FRIENDS_TITLE=Игра "Кроль"!
 POSTING_INVITE_FRIENDS_TEXT=Я играю в интересную игру "Кроль"! Попробуйте и вы!
+POSTING_SUCCESS=Сообщение опубликовано!
+POSTING_IN_PROCESS=Публикация сообщения...

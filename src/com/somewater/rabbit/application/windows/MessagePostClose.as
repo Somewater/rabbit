@@ -33,7 +33,7 @@ public class MessagePostClose extends Window
 	{
 		this.data = data;
 		this.callback = callback;
-		super(Lang.t('LEVEL_POSTING_IN_PROCESS'), null, onButtonClick);
+		super(Lang.t('POSTING_IN_PROCESS'), null, onButtonClick);
 
 		closeButton.visible = false;
 		if(buttons && buttons[0] is DisplayObject) buttons[0].visible = false;
@@ -54,7 +54,7 @@ public class MessagePostClose extends Window
 		// complete
 		closeButton.visible = true;
 		if(buttons && buttons[0] is DisplayObject) buttons[0].visible = true;
-		text = Lang.t('LEVEL_POSTING_SUCCESS');
+		text = Lang.t('POSTING_SUCCESS');
 		callbackFromCOmmand = true
 
 		// если произошла выдача реварда при постинге, показать  выданный ревард
