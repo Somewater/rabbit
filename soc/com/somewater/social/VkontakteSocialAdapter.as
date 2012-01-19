@@ -335,6 +335,7 @@ package com.somewater.social
 		override public function wallPost(recipient:SocialUser=null, title:String=null, message:String=null, 
 										  image:*=null, imageUrl:String=null, postData:String=null, 
 										  onComplete:Function=null, onError:Function=null, additionParams:Object=null):Boolean{
+			const MAX_SIZE:int = 270;
 			if(recipient == null)
 				recipient = user;
 			if(additionParams && additionParams.imagePostfix) {
@@ -345,11 +346,11 @@ package com.somewater.social
 				if(image is BitmapData)
 					imageBmpData = image;
 				else if(image is DisplayObject){
-					var scale:Number = Math.min(130/image.width, 130/image.height);
-					imageBmpData = new BitmapData(130, 130, true, 0);
+					var scale:Number = Math.min(MAX_SIZE/image.width, MAX_SIZE/image.height);
+					imageBmpData = new BitmapData(MAX_SIZE, MAX_SIZE, true, 0);
 					imageBmpData.draw(image,  new Matrix(scale, 0, 0, scale));
 				}else
-					imageBmpData = new BitmapData(130, 130, false, 0xFFEEEE);// рисунок для осуществления тестовой публикации
+					imageBmpData = new BitmapData(MAX_SIZE, MAX_SIZE, false, 0xFFEEEE);// рисунок для осуществления тестовой публикации
 				
 				// функционал взят из ранее statis класса WallPostManager, все его функции приведены к instanse
 				wallPostManager_onComplete = onComplete;

@@ -3,6 +3,7 @@ ALERT=ВНИМАНИЕ
 OK=OK
 PAUSE=ПАУЗА
 RABBIT=Кролик
+NUM_FRIENDS={number} друзей
 ###################
 #
 #	ERROR MASSAGES
@@ -92,8 +93,9 @@ PENDING_REWARDS_WINDOW_TEXT_MANY=Ты получил{male:|а} новые наг
 PENDING_REWARDS_WINDOW_TEXT_SINGLE=Ты получил{male:|а} новую награду!
 PENDING_REWARDS_WINDOW_TEXT_ONLY_REFERER=Ты пригласил{male:|а} друга и получил{male:|а} награду. Приглашай друзей и получай новые награды!
 PENDING_REWARDS_WINDOW_TEXT_ONLY_FAMILIAR=Ты заходил{male:|а} в игру несколько дней подряд и получил{male:|а} награду!
-INVITE_WINDOW_TITLE=Приглашай друзей! Получай награды!
-INVITE_WINDOW_TEXT=Приглашено:\n             {friends_invited} друзей\n\nДля получения награды осталось пригласить:\n             {friends_need_invite} друзей
+INVITE_WINDOW_TITLE=Приглашай друзей - получай награды!
+INVITE_WINDOW_INVITED=Приглашено:
+INVITE_WINDOW_FOR_REVARD_INVITE=для получения награды\nосталось пригласить:
 INVITE_WINDOW_BUTTON_INVITE=ПРИГЛАСИТЬ ДРУЗЕЙ
 INVITE_WINDOW_BUTTON_POSTING=РАССКАЗАТЬ ОБ ИГРЕ
 ###################

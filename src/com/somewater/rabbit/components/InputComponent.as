@@ -227,6 +227,9 @@ package com.somewater.rabbit.components
 		
 		public function onTick(deltaTime:Number):void
 		{
+			if(_owner == null)
+				return;// пока кролик двигался, его убили
+
 			if(scheduleStarted == false && deltaTime == 1)
 				return;// пришло время schedule, но разрешение на него уже отменено
 			

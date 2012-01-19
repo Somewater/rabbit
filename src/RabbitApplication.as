@@ -489,7 +489,7 @@ package
 			}
 		}
 		
-		private var _sound:Number = 1;
+		private var _sound:Number = 0.7;
 		public function set sound(value:Number):void
 		{
 			if(_sound != value)
@@ -503,7 +503,7 @@ package
 			return _sound;
 		}
 		
-		private var _music:Number = 1;
+		private var _music:Number = 0.7;
 		public function set music(value:Number):void
 		{
 			if(_music != value)
@@ -624,6 +624,8 @@ package
 
 		public function play(soundName:String, track:String, force:Boolean = false):void
 		{
+			if(track != SoundTrack.MUSIC) return;// Пока музыка (звуки вернее) идиотская, не проигрываем ее вовсе
+
 			if(force == false && soundTracks[track] && SoundData(soundTracks[track]).soundName == soundName)
 				return; // игнорируем попытку прогирать один и тот же звук, когда не доиграл такой же
 

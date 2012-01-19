@@ -29,14 +29,16 @@ import com.somewater.storage.Lang;
 		if(friends_need_invite == 1000)
 			friends_need_invite = 1;// если человек пригласил более 10 друзей, просим пригоасить еще одного
 
-		var image:DisplayObject = PostingFactory.getImage("rabbit.RabbitActor");
-		image.scaleX = -1;
-		image.x = image.width
+		var image:DisplayObject = PostingFactory.getImage("images.InviteFriends");
 		var imageHolder:Sprite = new Sprite();
 		imageHolder.addChild(image)
 
-		createTextAndImage(Lang.t('INVITE_WINDOW_TITLE'),
-				Lang.t('INVITE_WINDOW_TEXT', {'friends_invited': friends_invited, 'friends_need_invite': friends_need_invite}), imageHolder);
+		var inviteHTMLText:String = '<font color="#42591E" size="14">' + Lang.t('INVITE_WINDOW_INVITED') +
+				'</font><br><font color="#000000" size="16">' + Lang.t('NUM_FRIENDS',{number: friends_invited}) + '</font>' +
+				'<br><br><font color="#42591E" size="14">' + Lang.t('INVITE_WINDOW_FOR_REVARD_INVITE') +
+				'</font><br><font color="#000000" size="16">' + Lang.t('NUM_FRIENDS',{number: friends_need_invite}) + '</font>';
+
+		createTextAndImage(Lang.t('INVITE_WINDOW_TITLE'), inviteHTMLText, imageHolder);
 
 		open();
 	}

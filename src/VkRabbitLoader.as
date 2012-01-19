@@ -156,10 +156,22 @@ package {
 			preloader.bar.textField.text = 'Играть!';
 			preloader.bar.textField.mouseEnabled = false;
 			preloader.bar.useHandCursor = preloader.bar.buttonMode = true;
-			stage.addEventListener(MouseEvent.MOUSE_DOWN, function(e:MouseEvent):void{
-				navigateToURL(new URLRequest("http://" + flashVars['domain'] + '/app' + flashVars['api_id'] + '_' + flashVars['poster_id'] +
-				'?from_id=' + flashVars['user_id'] + '&loc=' + flashVars['post_id']), '_blank')
+			stage.addEventListener(MouseEvent.MOUSE_DOWN, navigateToGame);
+			createSpecificPaths();
+			Lib.Initialize(swfADs);
+			loadSwf('PostingPopup', function():void{
+				var popup:Sprite = Lib.createMC('images.PostingPopup')
+				popup.addEventListener(MouseEvent.MOUSE_DOWN, navigateToGame)
+				popup.buttonMode = popup.useHandCursor = true;
+				Config.stage.frameRate = 15;
+				Config.loader.addChild(popup)
 			})
+		}
+
+		private function navigateToGame(...args):void
+		{
+			navigateToURL(new URLRequest("http://" + flashVars['domain'] + '/app' + flashVars['api_id'] + '_' + flashVars['poster_id'] +
+					'?from_id=' + flashVars['user_id'] + '&loc=' + flashVars['post_id']), '_blank')
 		}
 
 		private function onWallPostInline(flashVars:Object):void {
@@ -171,19 +183,19 @@ package {
 		{
 			basePath = 'http://rabbit.asflash.ru/';
 			swfs = {
-						"Game":{priority:-1,preload:true,url:"http://cs11081.vkontakte.ru/u245894/ed81ed8c9331f0.zip"}
+						"Game":{priority:-1,preload:true,url:"http://cs5259.vkontakte.ru/u245894/f3d12ee459a35a.zip"}
 						,
 						"Application":{priority:int.MIN_VALUE,
-							preload:true,url:"http://cs11081.vkontakte.ru/u245894/0cb3359a428ec6.zip"}
+							preload:true,url:"http://cs5259.vkontakte.ru/u245894/fbdec2c9b5932d.zip"}
 						,"Interface":{preload:true, url:"http://cs301105.vkontakte.ru/u245894/4cef321a434828.zip"}
 						,"Assets":{preload:true, url:"http://cs301105.vkontakte.ru/u245894/20130588dba46b.zip"}
 						,"Rewards":{preload:true, url:"http://cs305914.vkontakte.ru/u245894/484acef2b22ff3.zip"}
-						,"Images":{preload:true, url:"http://cs301105.vkontakte.ru/u245894/bed3fdd7fef6d3.zip"}
+						,"Images":{preload:true, url:"http://cs5259.vkontakte.ru/u245894/6c458738aed3bd.zip"}
 						,"MusicMenu":{url:"http://cs301105.vkontakte.ru/u245894/8249c8fc1ffbf9.zip"}
 						,"MusicGame":{url:"http://cs301105.vkontakte.ru/u245894/721ed8935f06d4.zip"}
 						,"Sound":{url:"http://cs5392.vkontakte.ru/u245894/849e0bcdf7ff31.zip"}
-						,"Lang":{priority:100, preload:true, url:"http://cs11081.vkontakte.ru/u245894/7f07018b2d3aca.zip"}
-						,"XmlPack":{preload:true, url:"http://cs11081.vkontakte.ru/u245894/4e8fd0a591d890.zip"}
+						,"Lang":{priority:100, preload:true, url:"http://cs5259.vkontakte.ru/u245894/aa92c6187fc611.zip"}
+						,"XmlPack":{preload:true, url:"http://cs5259.vkontakte.ru/u245894/2a5aa47f45658a.zip"}
 
 						,"Font":{priority:100, preload:true, url:"http://cs301105.vkontakte.ru/u245894/e07afb77864e16.zip"}
 					}
@@ -194,6 +206,9 @@ package {
 							,"Description":"Description.xml"
 							,"Rewards":"Rewards.xml"
 						}
+
+			// only for vk
+			swfs['PostingPopup'] = {'url':'http://cs5259.vkontakte.ru/u245894/86bf2f517838bc.zip'}
 		}
 
 		override public function get net():int { return 2; }

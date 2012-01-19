@@ -265,6 +265,7 @@ package
 					new RestartLevelCommand().execute();
 					return true;
 				}, [Config.application.translate('BUTTON_RESTART_LEVEL')]);
+			w.width = Config.WIDTH * 0.95;
 			if(w && w.getChildByName('closeButton'))
 				w.getChildByName('closeButton').visible = false;
 			if(w && w.getChildByName('ground'))
@@ -274,11 +275,12 @@ package
 					&& w.getChildByName('textField').hasOwnProperty('size'))
 			{
 				text = text + text + text + text;
+				TextField(w.getChildByName('textField')).y = 10;
 				TextField(w.getChildByName('textField')).text = text;
 				TextField(w.getChildByName('textField')).selectable = true;
 				TextField(w.getChildByName('textField')).mouseEnabled = true;
-				w.getChildByName('textField').height = 500;
-				Object(w.getChildByName('textField')).size = 14;
+				w.getChildByName('textField').height = Math.min(w.height * 0.75, Config.HEIGHT * 0.95);
+				Object(w.getChildByName('textField')).size = 12;
 			}
 			pause();
 

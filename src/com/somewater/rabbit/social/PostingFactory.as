@@ -44,12 +44,7 @@ package com.somewater.rabbit.social {
 
 		public static function createFriendsInvitePosting():DisplayObject
 		{
-			var image:MovieClip = Lib.createMC('images.LevelPosting');
-			image.star.visible = false;
-			var p:Photo = new Photo(null, Photo.ORIENTED_CENTER | Photo.SIZE_MIN, 90, 90, 50, 50);
-			p.animatedShowing = false;
-			p.source = getImage("rabbit.RabbitActor");
-			image.addChild(p);
+			var image:DisplayObject = Lib.createMC('images.InvitePosting');
 			return new HolderWithConstSize(image,100,100);
 		}
 
