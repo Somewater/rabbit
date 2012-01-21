@@ -32,6 +32,7 @@ package com.somewater.rabbit.application {
 
 			for each(var template:XML in rewards_xml.*)
 			{
+				if(String(template).length < 30) continue;
 				var reward:RewardDef = new RewardDef(	template.@id,
 														template.@type,
 														template.hasOwnProperty('@degree') ? template.@degree : 0,

@@ -103,6 +103,7 @@ package com.somewater.rabbit.storage
 		
 		public function get name():String
 		{
+			if(description == null) return '';
 			var data:Array = this.description.split('--');
 			if(data.length == 2)
 				return data[0]
@@ -112,6 +113,7 @@ package com.somewater.rabbit.storage
 		
 		public function get shortDescription():String
 		{
+			if(description == null) return '';
 			var data:Array = this.description.split('--');
 			if(data.length == 2)
 				return data[1]

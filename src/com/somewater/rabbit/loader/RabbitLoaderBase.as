@@ -603,12 +603,15 @@ package com.somewater.rabbit.loader
 			onApplicationLoaded(application, game);
 		}
 		
-		
+
+		private var lastMaxValue:Number = Number.MIN_VALUE;
 		public function setProgress(type:int, value:Number):void
 		{
 			if(preloader)
 			{	
 				value = ([0, 0.1, 0.6, 0.9] as Array)[type] + ([0.1, 0.5, 0.3, 0.1] as Array)[type] * value;
+				if(lastMaxValue > value) return;
+				lastMaxValue = value;
 				trace('[VALUE] ' + int(value * 100))
 				preloader.bar.textField.text = Math.round(value * 100) + "%";
 				preloader.bar.progressBar.scaleX = 1 - value;
