@@ -290,7 +290,7 @@ package com.somewater.social
 				}
 			}
 			else
-				trace("No image in images dictionary for " + imageUrl);
+				trace("No image adress: " + imageUrl);
 						
 			if(recipient == null)
 				recipient = user;
@@ -318,7 +318,7 @@ package com.somewater.social
 				if(!additionParams["linkText"] && additionParams["name"])
 					additionParams["linkText"] = additionParams["name"];
 				if(!additionParams["linkText"])
-					additionParams["linkText"] = "Play the game";
+					additionParams["linkText"] = "Play";
 				
 				
 				

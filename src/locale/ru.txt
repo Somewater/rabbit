@@ -157,3 +157,4 @@ POSTING_INVITE_FRIENDS_TITLE=Игра "Кроль"!
 POSTING_INVITE_FRIENDS_TEXT=Я играю в интересную игру "Кроль"! Попробуйте и вы!
 POSTING_SUCCESS=Сообщение опубликовано!
 POSTING_IN_PROCESS=Публикация сообщения...
+POSTING_PLAY_BUTTON=Играть

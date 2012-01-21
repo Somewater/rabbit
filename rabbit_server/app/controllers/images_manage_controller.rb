@@ -43,7 +43,7 @@ private
 	def create(file)
 		@file = file
 		name =  "#{get_property('type')}_#{get_property('id')}.jpg"
-    	directory = "#{PUBLIC_DIR}/#{get_property('folder') || 'images'}"
+    	directory = "#{ROOT}/tmp/#{get_property('folder') || 'images'}"
     	# create the file path
     	path = File.join(directory, name)
 		Dir.mkdir(directory) unless Dir.exist?(directory)
