@@ -44,6 +44,9 @@ package com.somewater.rabbit.application {
 
 			handler.call("init", {"referer":Config.loader.referer, "user":gameUserToJson(gameUser, {}), 'friendIds': appFriendsIds},
 				function(response:Object):void{
+					if(response && response['user'] && response['user']['new'])
+						Config.stat(Stat.NEW_USER_REGISTERED);
+
 					response['user'] = jsonToGameUser(response['user'], gameUser);
 					var gameUsersFriends:Array = [];
 					for each(var friendJson:Object in response['friends'])

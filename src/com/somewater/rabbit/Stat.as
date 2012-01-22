@@ -26,5 +26,7 @@ package com.somewater.rabbit {
 		public static const ABOUT_PAGE_OPENED:String = 'about_page_opened';// страница "об игре" была открыта
 
 		public static const EXCEPTION_CATCHED:String = 'exception_catched';// отловлена ошибка в процессе игры (ведущая к перезагрузке уровня)
+
+		public static const NEW_USER_REGISTERED:String = 'new_user_registered';// юзер впервые внесн в БД (новый игрок)
 	}
 }
