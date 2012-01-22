@@ -37,6 +37,7 @@ package
 	import com.somewater.rabbit.storage.RewardDef;
 	import com.somewater.rabbit.storage.RewardInstanceDef;
 	import com.somewater.rabbit.storage.RewardLevelDef;
+	import com.somewater.rabbit.storage.StoryDef;
 	import com.somewater.rabbit.storage.UserProfile;
 	import com.somewater.rabbit.xml.XmlController;
 	import com.somewater.storage.Lang;
@@ -205,7 +206,7 @@ package
 				Config.loader.setProgress(3, 0);
 				
 				// обработать xml
-				processLevelsXML();
+				processConfigXML();
 				
 				// инициализировать ServerHandler и выполнить запрос к серверу
 				AppServerHandler.instance.initRequest(new UserProfile(Config.loader.getUser()),
@@ -224,9 +225,10 @@ package
 			});
 		}
 		
-		private function processLevelsXML():void
+		private function processConfigXML():void
 		{
-			var levels:XML = Config.loader.getXML("Levels");
+			var data:XML = Config.loader.getXML("Levels");
+			var levels:XMLList = data.levels;
 			_levels = [];
 			_levelsByNumber = [];
 			for each (var level:XML in levels.*)
@@ -238,6 +240,10 @@ package
 
 			if(_levels.length == 0)// вносим один пустой уровень
 				addLevel(XmlController.instance.getNewLevel());
+
+			var stories:XMLList = data.stories;
+			for each (var story:XML in stories.*)
+				new StoryDef(story);
 
 			RewardManager.instance.initialize(Config.loader.getXML('Rewards'))
 		}

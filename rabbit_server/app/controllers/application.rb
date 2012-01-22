@@ -79,7 +79,7 @@ class Application
 					PostingController.new(request).call
 
 				when "levels.xml"
-					LevelsAdminController.generate_xml_file
+					LevelsAdminController.generate_xml_file(request['release'])
 				# ADMIN AREA
 				when /^admin/
 					AdminController.new.call request

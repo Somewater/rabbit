@@ -79,13 +79,24 @@ class LevelsAdminController < AdminController::Base
 	end
 
 	# генерировать содержание файла левелов (наиболее новой версии, в соответствии с БД)
-	def self.generate_xml_file
+	def self.generate_xml_file(release)
 		head_levels = Level.all_head
-		content = head_levels.map{|lvl| lvl.to_xml }
+		if(release)
+			head_levels.delete_if{|l| l.number > 99}
+		end
+		levels_xml = head_levels.map{|lvl| lvl.to_xml }
+		stories_xml = Story.all_head.map{|story| story.to_xml}
 		[
 		 200,
 		 {"Content-Type" => "text/xml; charset=UTF-8"},
-		 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<levels version=\"0\">\n#{content.join("\n")}\n</levels>"
+		 "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data>
+<stories>
+#{stories_xml.join("\n")}
+</stories>
+<levels version=\"0\">
+#{levels_xml.join("\n")}
+</levels>
+</data>"
 		]
 	end
 

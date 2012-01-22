@@ -10,12 +10,13 @@ package com.somewater.storage
 	 */
 	public class InfoDef implements IClear
 	{
-		private var _data:Object;
+		protected var _data:Object;
 		protected var supressSerializationWarn:Boolean;
 		
 		public function InfoDef(data:Object = null)
 		{
-			this.data = data;
+			if(data)
+				this.data = data;
 		}
 		
 		

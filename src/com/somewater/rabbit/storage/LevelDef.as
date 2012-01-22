@@ -1,8 +1,6 @@
 package com.somewater.rabbit.storage
 {
-	import com.somewater.storage.InfoDef;
-
-	public class LevelDef extends InfoDef
+	public class LevelDef extends RXmlInfoDef
 	{
 		public static const TYPE:String = 'Level';
 
@@ -34,19 +32,9 @@ package com.somewater.rabbit.storage
 			version = xml.attribute("version");
 			if(id == 0)
 				id = -Math.random() * 1000;
-			
-			for each(var xmlField:XML in xml.*)
-			{
-				if(xmlField.hasSimpleContent())
-				{
-					try{
-						this[xmlField.localName()] = xmlField.toString();
-						if(xmlField.toString().substr(0,2) == 'T_')
-							this[xmlField.localName()] = Config.application.translate(xmlField.toString());
-					}catch(err:Error){}
-				}
-			}
-			
+
+			super(xml);
+
 			conditions = [];
 			for each(var condition:XML in xml.conditions.*)
 			{
@@ -119,6 +107,11 @@ package com.somewater.rabbit.storage
 				return data[1]
 			else
 				return this.description;	
+		}
+
+		public function get story():StoryDef
+		{
+			return StoryDef.byLevelNumber(this.number);
 		}
 	}
 }
