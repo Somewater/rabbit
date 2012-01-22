@@ -33,6 +33,10 @@ class Level < ActiveRecord::Base
 		@conditions_to_hash
 	end
 
+	def story
+		Story.by_level_number(self.number)
+	end
+
 	# возвратить все "ведущие" уровни
 	def self.all_head
 		generate_all_head unless @@all_head

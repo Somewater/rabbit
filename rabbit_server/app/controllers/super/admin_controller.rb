@@ -29,6 +29,8 @@ class AdminController
 				ErrorsAdminController.new(@request, admin_user).call
 			when /^levels/
 				LevelsAdminController.new(@request, admin_user).call
+			when /^stories/
+				StoriesAdminController.new(@request, admin_user).call
 			when /^logs/
 				LogsAdminController.new(@request, admin_user).call
 			when /^users/

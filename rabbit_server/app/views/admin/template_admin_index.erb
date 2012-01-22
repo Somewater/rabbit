@@ -1,0 +1,59 @@
+<h1><a href='<%= TEMPLATE_PATH %>'>TEMPLATE</a></h1>
+<form method="post" action="<%= TEMPLATE_PATH %>?action=<%= @template ? 'update' : 'create' %>">
+	<table width='100%' border='1'>
+		<input type="hidden" name="template[id]" value="<%= @template ? @template.id : '' %>"></input>
+		<tr width='100%'>
+			<th>message</th>
+			<td><textarea name="template[message]" rows="5" cols="100"><%= @template ? CGI::escapeHTML(@template.message || '') : '' %></textarea></td>
+		</tr>
+		<tr width='100%'>
+			<th>mode</th>
+			<td><input type="text" name="template[mode]" maxlength="10" value="<%= @template ? @template.mode : '' %>" size="50"></input></td>
+		</tr>
+		<tr width='100%'>
+			<th>priority</th>
+			<td><input type="text" name="template[priority]" maxlength="5" value="<%= @template ? @template.priority : '0' %>" size="50"></input></td>
+		</tr>
+		<tr width='100%'>
+			<th>position</th>
+			<td><input type="text" name="template[position]" maxlength="30" value="<%= @template ? @template.position : '0' %>" size="50"></input></td>
+		</tr>
+		<tr width='100%'>
+			<th>net</th>
+			<td><input type="text" name="template[net]" maxlength="2" value="<%= @template ? @template.net : '2' %>" size="50"></input></td>
+		</tr>
+		<tr width='100%'>
+			<th>Enabled</th>
+			<td><input type='checkbox' <%= (@template ? @template.enabled : true) ? 'checked' : nil %> name='template[enabled]' value='1'>Enabled</input></td>
+		</tr>
+	</table>
+	<input type="submit" value="<%= @template ? 'Update' : 'Create' %>"></input>
+</form>
+<table width='100%' border='1'>
+	<tr width='100%'>
+		<th>id</th>
+		<th>message</th>
+		<th>mode</th>
+		<th>priority</th>
+		<th>position</th>
+		<th>net</th>
+		<th>enabled</th>
+		<th>created_at</th>
+		<th>updated_at</th>
+		<th>[del]</th>
+	</tr>
+	<% @templates.each_with_index do |tmplate, index| %>
+		<tr width='100%'>
+        	<td><a href="<%= TEMPLATE_PATH %>?action=show&id=<%= tmplate.id %>"><%= tmplate.id %></a></td>
+        	<td><%= tmplate.message %></td>
+        	<td><%= tmplate.mode ? tmplate.mode : '-' %></td>
+        	<td><%= tmplate.priority %></td>
+			<td><%= tmplate.position %></td>
+			<td><%= tmplate.net %></td>
+			<td><%= tmplate.enabled ? 'TRUE' : 'false'%></td>
+        	<td><%= tmplate.created_at ? tmplate.created_at.to_formatted_s(:short) : 'null' %></td>
+        	<td><%= tmplate.updated_at ? tmplate.updated_at.to_formatted_s(:short) : 'null' %></td>
+			<td><a href="<%= TEMPLATE_PATH %>?action=delete&id=<%= tmplate.id %>">[x]</a></td>
+		</tr>
+	<% end %>
+</table>

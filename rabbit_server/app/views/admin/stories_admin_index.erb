@@ -1,0 +1,61 @@
+<h1><a href='<%= STORIES_PATH %>'>STORIES</a></h1>
+<form method="post" action="<%= STORIES_PATH %>?action=<%= @story ? 'update' : 'create' %>">
+	<table width='100%' border='1'>
+		<input type="hidden" name="story[id]" value="<%= @story ? @story.id : '' %>"></input>
+		<tr width='100%'>
+			<th>number</th>
+			<td><input type="text" name="story[number]" maxlength="2" value="<%= @story ? @story.number : '0' %>" size="50"></input></td>
+		</tr>
+		<tr width='100%'>
+			<th>name</th>
+			<td><input type="text" name="story[name]" maxlength="40" value="<%= @story ? @story.name : '' %>" size="50"></input></td>
+		</tr>
+		<tr width='100%'>
+			<th>description</th>
+			<td><textarea name="story[description]" rows="5" cols="100"><%= @story ? CGI::escapeHTML(@story.description || '') : '' %></textarea></td>
+		</tr>
+		<tr width='100%'>
+			<th>image</th>
+			<td><input type="text" name="story[image]" maxlength="40" value="<%= @story ? @story.image : '' %>" size="50"></input></td>
+		</tr>
+		<tr width='100%'>
+			<th>start_level</th>
+			<td><input type="text" name="story[start_level]" maxlength="3" value="<%= @story ? @story.start_level : '0' %>" size="50"></input></td>
+		</tr>
+		<tr width='100%'>
+			<th>end_level</th>
+			<td><input type="text" name="story[end_level]" maxlength="3" value="<%= @story ? @story.end_level : '0' %>" size="50"></input></td>
+		</tr>
+		<tr width='100%'>
+			<th>Enabled</th>
+			<td><input type='checkbox' <%= (@story ? @story.enabled : false) ? 'checked' : nil %> name='story[enabled]' value='1'>Enabled</input></td>
+		</tr>
+	</table>
+	<input type="submit" value="<%= @story ? 'Update' : 'Create' %>"></input>
+</form>
+<table width='100%' border='1'>
+	<tr width='100%'>
+		<th>id</th>
+		<th>number</th>
+		<th>name</th>
+		<th>description</th>
+		<th>image</th>
+		<th>start_level</th>
+		<th>end_level</th>
+		<th>enabled</th>
+		<th>[del]</th>
+	</tr>
+	<% @stories.each_with_index do |story, index| %>
+		<tr width='100%'>
+        	<td><a href="<%= STORIES_PATH %>?action=show&id=<%= story.id %>"><%= story.id %></a></td>
+        	<td><%= story.number %></td>
+        	<td><%= story.name && story.name.size > 20 ? story.name[0..20] + '...' : story.name %></td>
+        	<td><%= story.description && story.description.size > 20 ? story.description[0..20] + '...' : story.description %></td>
+			<td><%= story.image %></td>
+			<td><%= story.start_level %></td>
+			<td><%= story.end_level %></td>
+			<td><%= story.enabled ? 'TRUE' : 'false'%></td>
+        	<td><a href="<%= STORIES_PATH %>?action=delete&id=<%= story.id %>">[x]</a></td>
+		</tr>
+	<% end %>
+</table>
