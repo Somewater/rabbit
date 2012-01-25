@@ -245,6 +245,7 @@ package
 				addLevel(XmlController.instance.getNewLevel());
 
 			// TODO: START
+			Config.memory['testers'] = ((Config.memory['testers'] || []) as Array).concat(ConfManager.instance.getArray('testers'));
 			if((Config.memory['testers'] && (Config.memory['testers'] as Array).indexOf(Config.loader.getUser().id) != -1))
 			{
 			var stories:XMLList = data.stories;
