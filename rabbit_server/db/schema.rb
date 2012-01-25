@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 10) do
+ActiveRecord::Schema.define(:version => 11) do
 
   create_table "admins", :force => true do |t|
     t.string   "login",                           :null => false
@@ -21,6 +21,14 @@ ActiveRecord::Schema.define(:version => 10) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "confs", :force => true do |t|
+    t.string  "name",                      :null => false
+    t.text    "value"
+    t.boolean "visible", :default => true
+  end
+
+  add_index "confs", ["name"], :name => "index_confs_on_name", :unique => true
 
   create_table "levels", :force => true do |t|
     t.string   "description"

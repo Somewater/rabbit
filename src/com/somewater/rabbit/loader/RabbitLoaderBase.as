@@ -88,7 +88,13 @@ package com.somewater.rabbit.loader
 		 * Хранить соответствия имени(идентификатора) файла и пути, по которому его можно загрузить
 		 * _filePaths["Description.xml"] == "http://somesite.ru/release/Description.v23.xml"
 		 */
-		protected var filePaths:Object = {};
+		protected var filePaths:Object = {
+											"Levels":"/levels.xml"
+											,"Config":"/config.json"
+											,"Managers":"Managers.xml"
+											,"Description":"Description.xml"
+											,"Rewards":"Rewards.xml"
+										};
 		
 		
 		// аргументы вызова функции loadSwfs

@@ -1,0 +1,37 @@
+<h1><a href='<%= CONF_PATH %>'>CONFIG</a></h1>
+<form method="post" action="<%= CONF_PATH %>?action=<%= @conf ? 'update' : 'create' %>">
+	<table width='100%' border='1'>
+		<input type="hidden" name="conf[id]" value="<%= @conf ? @conf.id : '' %>"></input>
+		<tr width='100%'>
+			<th>name</th>
+			<td><input type="text" name="conf[name]" maxlength="10" value="<%= @conf ? @conf.name : '' %>" size="50"></input></td>
+		</tr>
+		<tr width='100%'>
+			<th>value</th>
+			<td><textarea name="conf[value]" rows="5" cols="100"><%= @conf ? CGI::escapeHTML(@conf.value || '') : '' %></textarea></td>
+		</tr>
+		<tr width='100%'>
+			<th>Visible</th>
+			<td><input type='checkbox' <%= (@conf ? @conf.visible : true) ? 'checked' : nil %> name='conf[visible]' value='1'>Visible</input></td>
+		</tr>
+	</table>
+	<input type="submit" value="<%= @conf ? 'Update' : 'Create' %>"></input>
+</form>
+<table width='100%' border='1'>
+	<tr width='100%'>
+		<th>id</th>
+		<th>name</th>
+		<th>value</th>
+		<th>visible</th>
+		<th>[del]</th>
+	</tr>
+	<% @confs.each_with_index do |conf, index| %>
+		<tr width='100%'>
+        	<td><a href="<%= CONF_PATH %>?action=show&id=<%= conf.id %>"><%= conf.id %></a></td>
+        	<td><%= conf.name %></td>
+        	<td><%= conf.value && conf.value.size > 50 ? conf.value[0..50] + '...' : conf.value %></td>
+			<td><%= conf.visible ? 'TRUE' : 'false'%></td>
+			<td><a href="<%= CONF_PATH %>?action=delete&id=<%= conf.id %>">[x]</a></td>
+		</tr>
+	<% end %>
+</table>

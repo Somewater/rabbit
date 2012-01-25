@@ -54,13 +54,6 @@ package
 
 			if(!CONFIG::debug)
 				swfs["XmlPack"] = {preload:true, url:"xml_pack.swf"};
-			
-			filePaths = {
-				"Levels":"/levels.xml"
-				,"Managers":"Managers.xml"
-				,"Description":"Description.xml"
-				,"Rewards":"Rewards.xml"
-			}
 		}
 		
 		override protected function initializeServerHandler():void

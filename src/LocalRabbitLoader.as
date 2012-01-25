@@ -45,13 +45,6 @@ package
 						,"Font":{priority:100, preload:true, url:"assets/fonts_ru.swf"}
 						//,"Font":{priority:1000, preload:true, url:"assets/fonts_ru.swf"}
 					}
-			
-			filePaths = {
-							 "Levels":"/levels.xml"
-							,"Managers":"Managers.xml"
-							,"Description":"Description.xml"
-							,"Rewards":"Rewards.xml"
-						}
 		}
 
 		override protected function initializeServerHandler():void

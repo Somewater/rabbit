@@ -14,6 +14,7 @@ class IndexAdminController < AdminController::Base
 				r += tag("p") { tag "a", :href => '/admin/admins', :value => 'admins' } if @admin_user.user.login == 'dev'
 				r += tag("p") { tag "a", :href => '/admin/vk/notify', :value => 'notifyes' } if @admin_user.user.login == 'dev'
 				r += tag("p") { tag "a", :href => '/admin/stat', :value => 'stat' } if @admin_user.can?(AdminUser::PERMISSION_STAT_VIEW)
+				r += tag("p") { tag "a", :href => '/admin/config', :value => 'config' } if @admin_user.user.login == 'dev'
 				r
 			end
 	end

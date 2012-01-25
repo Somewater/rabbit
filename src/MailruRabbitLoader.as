@@ -65,7 +65,6 @@ package {
 					}
 
 			// only for mail.ru
-			filePaths = {};
 			var i:int = 0;
 			for (i = 0; i <= 31;i++)
 				filePaths['level_pass_posting_' + i] = 'http://cdn0.appsmail.ru/hosting/649836/level_' + i + '.jpg';

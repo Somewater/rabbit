@@ -30,6 +30,7 @@ package
 	import com.somewater.rabbit.application.windows.PauseMenuWindow;
 	import com.somewater.rabbit.application.windows.PendingRewardsWindow;
 	import com.somewater.rabbit.application.windows.TesterInvitationWindow;
+	import com.somewater.rabbit.storage.ConfManager;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.GameUser;
 	import com.somewater.rabbit.storage.LevelDef;
@@ -185,12 +186,12 @@ package
 		
 		public function runInitalizeResponses():void
 		{
-			//TODO: запустить инициализационную загрузку с сервера
 			// 1. статику:
 			//		- Levels
 			//		- Managers
 			//		- Description
 			//		- Rewards
+			//		- Config
 			// 2. профайл пользователя с сервера
 			//
 			
@@ -200,6 +201,7 @@ package
 				,"Managers":Config.loader.getFilePath("Managers")
 				,"Description":Config.loader.getFilePath("Description")
 				,"Rewards":Config.loader.getFilePath("Rewards")
+				,"Config":Config.loader.getFilePath("Config")
 			}, function(data:Object):void{
 				// статика загружена
 				Config.loader.setProgress(2, 0.5);

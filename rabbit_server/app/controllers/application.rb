@@ -80,6 +80,8 @@ class Application
 
 				when "levels.xml"
 					LevelsAdminController.generate_xml_file(request['release'])
+				when "config.json"
+					[200,{"Content-Type" => "text/plain; charset=UTF-8"},Conf.to_json]
 				# ADMIN AREA
 				when /^admin/
 					AdminController.new.call request

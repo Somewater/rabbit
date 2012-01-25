@@ -200,13 +200,6 @@ package {
 						,"Font":{priority:100, preload:true, url:"http://cs301105.vkontakte.ru/u245894/e07afb77864e16.zip"}
 					}
 
-			filePaths = {
-							 "Levels":"levels.xml"
-							,"Managers":"Managers.xml"
-							,"Description":"Description.xml"
-							,"Rewards":"Rewards.xml"
-						}
-
 			// only for vk
 			swfs['PostingPopup'] = {'url':'http://cs5259.vkontakte.ru/u245894/86bf2f517838bc.zip'}
 		}
