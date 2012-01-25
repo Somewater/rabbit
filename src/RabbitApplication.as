@@ -29,6 +29,7 @@ package
 	import com.somewater.rabbit.application.windows.LevelSwitchWindow;
 	import com.somewater.rabbit.application.windows.PauseMenuWindow;
 	import com.somewater.rabbit.application.windows.PendingRewardsWindow;
+	import com.somewater.rabbit.application.windows.TesterInvitationWindow;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.GameUser;
 	import com.somewater.rabbit.storage.LevelDef;
@@ -241,9 +242,26 @@ package
 			if(_levels.length == 0)// вносим один пустой уровень
 				addLevel(XmlController.instance.getNewLevel());
 
+			// TODO: START
+			if((Config.memory['testers'] && (Config.memory['testers'] as Array).indexOf(Config.loader.getUser().id) != -1))
+			{
 			var stories:XMLList = data.stories;
 			for each (var story:XML in stories.*)
 				new StoryDef(story);
+			}
+			else
+			{
+				new StoryDef(<story id="0">
+								<number>0</number>
+								<name>Тестовая история!</name>
+								<description>Это тестовая история</description>
+								<image/>
+								<start_level>1</start_level>
+								<end_level>99</end_level>
+								<enabled>true</enabled>
+							</story>);
+			}
+			// TODO: END
 
 			RewardManager.instance.initialize(Config.loader.getXML('Rewards'))
 		}
@@ -749,6 +767,13 @@ package
 		private function onFriendInviteTimer(event:TimerEvent):void {
 			if(Config.gameModuleActive == false && PopUpManager.numWindows == 0)
 			{
+				// TODO: START
+				if(UserProfile.instance.levelNumber > 11)
+				{
+					new TesterInvitationWindow();
+				}
+				else
+				// TODO: END
 				// если включен какой-то интерфейс приложения, а не сама игра (уровень, полянка и т.д.) и нет окон
 				new InviteFriendsWindow();
 			}

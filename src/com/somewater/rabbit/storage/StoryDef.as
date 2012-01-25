@@ -38,5 +38,10 @@ package com.somewater.rabbit.storage {
 					return s;
 			return null;
 		}
+
+		public static function all():Array
+		{
+			return storiesByNumber.slice();
+		}
 	}
 }
