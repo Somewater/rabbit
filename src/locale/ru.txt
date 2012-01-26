@@ -58,7 +58,7 @@ INVITE_BUTTON_HINT=Пригласи друзей
 AUTHORS=АВТОРЫ
 AUTHOR_ASFLASH=Павел Найденов;разработчик игры;http://asflash.ru
 AUTHOR_SKINSIN=Екатерина Богданова;идея, дизайн, анимация;http://skinsin.ru
-AUTHOR_NORDWULF=Александр Лисенков;музыка, звуки;http://www.free-lance.ru/users/Nord_Wulf
+AUTHOR_NORDWULF=Александр Лисенков;музыка, звуки;http://free-lance.ru/users/Nord_Wulf
 ###################
 #
 #	LEVELS PAGE

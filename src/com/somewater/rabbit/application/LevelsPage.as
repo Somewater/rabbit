@@ -76,6 +76,12 @@ package com.somewater.rabbit.application
 			Hint.bind(globalScoreCarrot, Lang.t("GLOBAL_SCORE_COUNTER_HINT"));
 			Hint.bind(globalScoreCounterTF, Lang.t("GLOBAL_SCORE_COUNTER_HINT"));
 
+			if(Config.WIDTH < globalScoreCounterTF.x + globalScoreCounterTF.width)
+			{
+				globalScoreCounterTF.visible = false;
+				globalScoreCarrot.visible = false;
+			}
+
 			storiesSwitcher = new StoriesSwitcher(UserProfile.instance);
 			storiesSwitcher.addEventListener(StoriesSwitcher.ON_STORY_CHANGED, onStoryChanged);
 			addChild(storiesSwitcher);
@@ -109,7 +115,7 @@ package com.somewater.rabbit.application
 			var levels:Array = Config.application.levels;
 			var story:StoryDef = storiesSwitcher.selectedStory;
 
-			logo.visible = true;
+			logo.visible = friendBar == null || (friendBar.x + FriendBar.WIDTH + 10 < logo.x);
 			levelIcons = [];
 			while(iconsHolder.numChildren)
 			{

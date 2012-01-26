@@ -85,6 +85,14 @@ package {
 		override public function posting(user:SocialUser = null, title:String = null, message:String = null, image:* = null, imageUrl:String = null, data:String = null, onComplete:Function = null, onError:Function = null, additionParams:Object = null):void {
 			if(additionParams == null) additionParams = {};
 			additionParams['linkText'] = Config.application.translate('POSTING_PLAY_BUTTON');
+			if(data)
+			{
+				var dataObj:Object = {}
+				try{dataObj = serverHandler.fromJson(data);}catch(err:Error){}
+				data = '';
+				for (var key:String in dataObj)
+					data += (data.length ? ';' : '') + key + ':' + dataObj[key]
+			}
 			arrow.posting(user, title, message, image, imageUrl, data, onComplete, onError, additionParams);
 		}
 	}

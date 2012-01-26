@@ -66,6 +66,18 @@ package com.somewater.rabbit.iso
 		
 		public function IsoCameraController()
 		{
+			// пересчитываем константы в зависимости от размера сцены
+			var T_SIZE:int = Math.min(Config.T_WIDTH, Config.T_HEIGHT);
+			if(PADDING * 2 + RESERVE >= T_SIZE)
+			{
+				RESERVE = Math.max(0, T_SIZE - PADDING * 2 - 1)
+				if(RESERVE == 0)
+				{
+					RESERVE = 1;
+					PADDING = (T_SIZE - RESERVE - 1) / 2
+				}
+			}
+
 			initialize("Camera");
 			
 			PBE.processManager.addTickedObject(this, 1);
