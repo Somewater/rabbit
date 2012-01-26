@@ -192,6 +192,7 @@ package com.somewater.rabbit.loader
 
 			preloader.x = (Config.WIDTH - preloader.width) * 0.5;
 			preloader.y = (Config.HEIGHT - preloader.height) * 0.5 - 20;
+			setProgress(0,0);
 
 			if(stage.stageHeight < 500)
 			{

@@ -207,3 +207,21 @@ namespace :gamedesign do
 		Gamedesign::level_stat(all_levels, all_versions, args[:conditions]);
 	end
 end
+
+desc "Mail.ru"
+namespace :mailru do
+	desc "Create archive for hosting"
+	task :zip => ['flash:encode'] do
+		require 'fileutils'
+		puts 'Encoding completed'
+		files = ['lang_ru.swf','RabbitApplication.swf','RabbitGame.swf','xml_pack.swf',\
+			'assets/fonts_ru.swf','assets/interface.swf','assets/music_game.swf',\
+			'assets/music_menu.swf','assets/rabbit_asset.swf','assets/rabbit_images.swf',\
+			'assets/rabbit_reward.swf','assets/rabbit_sound.swf']
+		files.each{|file|
+			FileUtils.cp("#{ROOT}/bin-debug/#{file}", "#{ROOT}/tmp/mailrupack/#{file.sub(/\w+\//, '')}")
+		}
+		File.delete("#{ROOT}/tmp/mailrupack.zip") rescue nil
+		puts %x[zip -j #{ROOT}/tmp/mailrupack.zip #{ROOT}/tmp/mailrupack/*]
+	end
+end
