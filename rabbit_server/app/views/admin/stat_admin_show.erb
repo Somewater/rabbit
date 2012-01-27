@@ -1,10 +1,38 @@
 <h1><a href='<%= STAT_PATH %>'>STAT</a></h1>
-<p>
-	<% @names.each_with_index do |name, index| %>
-		<% if index > 0 && index % 10 == 0 %><br><% end %>
-		<a href="<%= STAT_PATH %>?name=<%= name %>"><%= name.upcase %></a>&nbsp;&nbsp;
-	<% end %>
-</p>
+<form method="post" action="<%= STAT_PATH %>?name=<%= @template ? 'update' : 'create' %>">
+<table border="1" bgcolor="#DDDDDD" width="100%">
+	<tr>
+		<th>Time:</th>
+		<th width="50">From:</th>
+		<td width="100">
+			<input type="text" name="opt[from]" maxlength="10" value="<%= @opt && @opt['from'] ? @opt['from'].to_s(:dd_mm_yyyy) : '01.01.2012' %>" size="11"></input>
+		</td>
+		<th width="50">To:</th>
+		<td width="100">
+			<input type="text" name="opt[to]" maxlength="10" value="<%= @opt && @opt['to'] ? @opt['to'].to_s(:dd_mm_yyyy) : Time.new.to_formatted_s(:dd_mm_yyyy) %>" size="11"></input>
+		</td>
+		<td></td>
+	</tr>
+	<tr>
+		<th>Names:</th>
+		<td colspan="8">
+		<% @names.each_with_index do |name, index| %>
+			<% if index > 0 && index % 8 == 0 %><br><% end %>
+			<input type='checkbox' <%= @opt && @opt['names'] && @opt['names'][name]  ? 'checked' : nil %> 
+																													name='opt[names][<%= name %>]' value='1'>
+				<a href='<%= STAT_PATH %>?names=<%= name %>&from=<%= @opt && @opt['from'] ? @opt['from'].to_s(:dd_mm_yyyy) : nil %>&to=<%= @opt && @opt['to'] ? @opt['to'].to_s(:dd_mm_yyyy) : nil %>'><%= name.upcase %></a>
+			</input>
+		<% end %>
+		<td>
+	</tr>
+	<tr>
+		<td>
+			<input type="submit" value="show"></input>
+		</td>
+	</tr>	
+</table>
+</form>
+
 <% if @stats %>
 	<table border='1'>
 		<tr>
