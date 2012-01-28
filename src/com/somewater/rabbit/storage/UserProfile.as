@@ -173,19 +173,24 @@ package com.somewater.rabbit.storage
 		{
 			var roll:uint = this.roll;
 			if(roll < 1024)
-				roll = Math.abs(parseInt(this.uid)) + 1024;
+				roll = Math.abs(parseInt(this.uid.length > 9 ? this.uid.slice(this.uid.length - 9) : this.uid)) + 1024;
 			roll = ((roll * 16147) % 2147483647)
 			//Config.game.logError(this, 'getRoll', 'ROLL ' + this.roll + ' => ' + roll + ' (' + (roll / 2147483647) + ')')
 			this.roll = roll;
 			CONFIG::debug
 			{
-				trace("GET ROLL: " + (roll / 2147483647));
+				trace("GET ROLL: " + roll + ' => ' + (roll / 2147483647));
 			}
 			return roll / 2147483647;
 		}
 
 
 		override public function setRoll(roll:uint):void {
+			CONFIG::debug
+			{
+				if(this.roll > 0 && this.roll != roll)
+					throw new Error('Roll collision: client_roll=' + this.roll + '\tserver_roll=' + roll);
+			}
 			this.roll = roll;
 		}
 

@@ -41,7 +41,7 @@ class User < ActiveRecord::Base
 	# каждый вызов метода создает новое рандомное значение, автозаписывемое в базу
 	def get_roll()
 		debug = roll = self.roll.to_i
-		roll = (self.uid.to_i + 1024).abs if roll < 1024
+		roll = ((self.uid.size > 9 ? self.uid[-9..-1] : self.uid).to_i).abs + 1024 if roll < 1024
 		self.roll = roll = ((roll * 16147) % 2147483647).to_i
 		result = (roll.to_f / 2147483647)
 		# Application.logger.debug "ROLL #{debug} => #{roll} (#{result})"
