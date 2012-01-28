@@ -53,9 +53,9 @@ package com.somewater.rabbit.application
 				friendBar.x = 35;
 				friendBar.y = Config.HEIGHT -  FriendBar.HEIGHT - 40;
 				addChild(friendBar);
-
-				logo.visible = friendBar.x + FriendBar.WIDTH + 10 < logo.x;
 			}
+
+			logo.visible = (friendBar == null || friendBar.x + FriendBar.WIDTH + 10 < logo.x) && logo.x + logo.width < Config.WIDTH;
 		}
 		
 		override public function clear():void

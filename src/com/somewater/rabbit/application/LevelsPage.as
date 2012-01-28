@@ -6,6 +6,7 @@ package com.somewater.rabbit.application
 	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.application.buttons.StoriesSwitcher;
 	import com.somewater.rabbit.storage.Config;
+	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
 	import com.somewater.rabbit.storage.Lib;
@@ -32,6 +33,7 @@ package com.somewater.rabbit.application
 		private var leftButton:DisplayObject;
 		private var globalScoreCarrot:DisplayObject;
 		private var globalScoreCounterTF:EmbededTextField;
+		private var globalScoreHolder:Sprite;
 
 		private var storiesSwitcher:StoriesSwitcher;
 		private var iconsHolder:Sprite;
@@ -53,16 +55,21 @@ package com.somewater.rabbit.application
 			iconsHolder.y = 20;
 			addChild(iconsHolder);
 
+			globalScoreHolder = new Sprite();
+			globalScoreHolder.x = Math.min(740, Config.WIDTH - 100 - 10);
+			globalScoreHolder.y = Config.WIDTH > 800 ? 30 : (friendBar ? friendBar.y + (FriendBar.HEIGHT - 80) * 0.5 : Config.HEIGHT - 100);
+			addChild(globalScoreHolder)
+
 			globalScoreCarrot = Lib.createMC("interface.Carrot");
-			globalScoreCarrot.x = 740;
-			globalScoreCarrot.y = 30;
-			addChild(globalScoreCarrot);
+			globalScoreCarrot.x = 0;
+			globalScoreCarrot.y = 0;
+			globalScoreHolder.addChild(globalScoreCarrot);
 			
 			globalScoreCounterTF = new EmbededTextField(Config.FONT_SECONDARY, 0x124D18, 14, true, false, false, false, "center");
 			globalScoreCounterTF.width = 100;
 			globalScoreCounterTF.x = globalScoreCarrot.x + globalScoreCarrot.width * 0.5 - 50 - 3;
 			globalScoreCounterTF.y = globalScoreCarrot.y + globalScoreCarrot.height + 5;
-			addChild(globalScoreCounterTF);
+			globalScoreHolder.addChild(globalScoreCounterTF);
 
 			var sumScore:int = 0;
 			var maxScores:int = 0;
@@ -115,7 +122,7 @@ package com.somewater.rabbit.application
 			var levels:Array = Config.application.levels;
 			var story:StoryDef = storiesSwitcher.selectedStory;
 
-			logo.visible = friendBar == null || (friendBar.x + FriendBar.WIDTH + 10 < logo.x);
+			logo.visible = globalScoreHolder.y < Config.WIDTH * 0.5 &&(friendBar == null || (friendBar.x + FriendBar.WIDTH + 10 < logo.x));
 			levelIcons = [];
 			while(iconsHolder.numChildren)
 			{

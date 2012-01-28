@@ -71,7 +71,7 @@ package com.somewater.rabbit.application {
 						arrayElementsIdentical(response['levelInstance']['rewards'] || [], levelInstance.rewards) == false)
 					{
 						// произошла рассинхронизация сервера и клиента
-						Config.application.fatalError('ERROR_SERVER_LOGIC_DESYNCRONIZE')
+						Config.application.fatalError('ERROR_SERVER_LOGIC_DESYNCRONIZE_LEVEL')
 						onError && onError(response);
 					}
 					else
@@ -91,7 +91,7 @@ package com.somewater.rabbit.application {
 					if(response['reward'] == false )
 					{
 						// произошла рассинхронизация сервера и клиента
-						Config.application.fatalError('ERROR_SERVER_LOGIC_DESYNCRONIZE')
+						Config.application.fatalError('ERROR_SERVER_LOGIC_DESYNCRONIZE_REWARD')
 						onError && onError(response);
 					}
 					else

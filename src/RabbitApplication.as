@@ -771,7 +771,7 @@ package
 			if(Config.gameModuleActive == false && PopUpManager.numWindows == 0)
 			{
 				// TODO: START
-				if(UserProfile.instance.levelNumber > 11)
+				if(UserProfile.instance.levelNumber > 8)
 				{
 					new TesterInvitationWindow();
 				}

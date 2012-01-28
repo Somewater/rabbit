@@ -70,6 +70,7 @@ package {
 				filePaths['level_pass_posting_' + i] = 'http://cdn0.appsmail.ru/hosting/649836/level_' + i + '.jpg';
 			for (i = 0; i <= 79;i++)
 				filePaths['reward_posting_' + i] = 'http://cdn7.appsmail.ru/hosting/649836/reward_' + i + '.jpg';
+			filePaths['friends_invite_posting'] = 'http://cdn7.appsmail.ru/hosting/649836/friends_invite_posting.jpg';
 		}
 
 		override public function get net():int { return 3; }

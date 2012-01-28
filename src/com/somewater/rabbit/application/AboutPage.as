@@ -49,6 +49,9 @@ package com.somewater.rabbit.application
 			Hint.bind(leftButton, Lang.t("BACK_TO_MAIN_MENU"));
 			addChild(leftButton);
 
+
+			logo.visible = logo.x + logo.width < Config.WIDTH;
+
 			Config.stat(Stat.ABOUT_PAGE_OPENED);
 		}
 
