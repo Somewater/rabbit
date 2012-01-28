@@ -35,22 +35,26 @@ private
 
 	def create
 		# Левел с максимальной версией
-		head_level = Level.find(:first, :conditions => "number = #{@json['number']}", :order => "version desc")
+		self.create_level(@json['number'], @json, @author)
+		@response = {:number => level.number, :author => level.author, :version => level.version, :id => level.id}
+	end
+
+	def self.create_level(number, level_hash, author)
+		# Левел с максимальной версией
+		head_level = Level.find(:first, :conditions => "number = #{number}", :order => "version desc")
 		version = (head_level ? head_level.version + 1 : 0)
 		level = Level.new({
-							:number => @json['number'],
-							:description => @json['description'],
+							:number => number,
+							:description => level_hash['description'],
 							:version => version,
-							:width => @json['width'],
-							:height => @json['height'],
-							:image => @json['image'],
-							:author => (@json['author'] == nil || @json['author'].size == 0 || @json['author'] == 'nobody'? @author : @json['author']),
-							:conditions => @json['conditions'],
-							:group => @json['group']
+							:width => level_hash['width'],
+							:height => level_hash['height'],
+							:image => level_hash['image'],
+							:author => (level_hash['author'] == nil || level_hash['author'].size == 0 || level_hash['author'] == 'nobody'? author : level_hash['author']),
+							:conditions => level_hash['conditions'],
+							:group => level_hash['group']
 						  })
 		level.save
-		@response = {:number => level.number, :author => level.author, :version => version, :id => level.id}
-
 		Level.clear_cache()
 	end
 end

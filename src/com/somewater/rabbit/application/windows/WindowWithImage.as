@@ -60,7 +60,7 @@ package com.somewater.rabbit.application.windows {
 				addChild(border);
 
 				photo = new Photo(null, Photo.ORIENTED_CENTER, 175, 115, 185/2, 125/2);
-				border.addChild(photo);
+				photo.photoMask = border.getChildByName('photoMask');
 				photo.source = imageSource;
 			}
 		}

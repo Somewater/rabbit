@@ -29,7 +29,7 @@ package com.somewater.rabbit.storage
 		/**
 		 * Для нетипизированных данных
 		 */
-		public static var memory:Object = {'testers':['2']};
+		public static var memory:Object = {};
 		
 		/**
 		 * Означает, что игровой модуль запущен

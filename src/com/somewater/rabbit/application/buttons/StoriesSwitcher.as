@@ -26,7 +26,7 @@ package com.somewater.rabbit.application.buttons {
 			// ищем маскимальную историю, открытую для пльзователя
 			for each(var s:StoryDef in stories)
 			{
-				if(s.start_level <= user.levelNumber)// история доступна
+				if(s.start_level <= user.levelNumber && s.enabled)// история доступна
 				{
 					if(_selectedStory == null || _selectedStory.number < s.number)
 						_selectedStory = s;
@@ -42,7 +42,7 @@ package com.somewater.rabbit.application.buttons {
 				item.y = i * 50;
 				addChild(item);
 
-				item.enabled = story.start_level <= user.levelNumber;
+				item.enabled = story.start_level <= user.levelNumber && story.enabled;
 				item.selected = story.number == _selectedStory.number;
 				item.addEventListener(StoryItem.STORY_ITEM_CLICKED, onItemClicked)
 			}

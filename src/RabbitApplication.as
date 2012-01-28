@@ -260,7 +260,7 @@ package
 								<description>Это тестовая история</description>
 								<image/>
 								<start_level>1</start_level>
-								<end_level>99</end_level>
+								<end_level>12</end_level>
 								<enabled>true</enabled>
 							</story>);
 			}

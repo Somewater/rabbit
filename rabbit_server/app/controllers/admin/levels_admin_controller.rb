@@ -65,6 +65,12 @@ class LevelsAdminController < AdminController::Base
 				delete_current_and_anchestors(@request['id'])
 			when 'head'
 				head_level(@request['id'])
+			when 'copy'
+				lvl = Level.find(@request['id'])
+				@admin_user.level?(lvl)
+				@admin_user.level?(@request['new_id'])
+				LevelsManageController.create_level(@request['new_id'].to_i, lvl, @admin_user.user.login)
+				on_level_changed
 		end
 
 		@levels = Level.all(:order => 'number, version', :conditions => (@request['hidden'] ? nil : 'visible = TRUE'))

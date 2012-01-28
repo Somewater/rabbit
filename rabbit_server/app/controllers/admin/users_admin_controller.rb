@@ -12,7 +12,11 @@ class UsersAdminController < AdminController::Base
 	def call
 
 		if(@request['show'] && @request['show'] =~ /\d+/)
-			@user = User.find(@request['show'])
+			if(@request['net'])
+				@user = User.find_by_uid(@request['uid'] ? @request['uid'] : @request['show'], @request['net'])
+			else
+				@user = User.find(@request['show'])
+			end
 			template File.read("#{TEMPLATE_ROOT}/admin/users_admin_show.erb")
 		elsif(@request['edit'] && @request['edit'] =~ /\d+/)
 			@user = User.find(@request['edit'])

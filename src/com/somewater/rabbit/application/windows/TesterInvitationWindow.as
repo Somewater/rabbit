@@ -20,7 +20,7 @@ package com.somewater.rabbit.application.windows {
 			super('',null, onClick, [BTN_LABEL])
 
 			var image:Bitmap = new imageCl();
-			image.scaleX = image.scaleY = (175/image.width);
+			image.scaleX = image.scaleY = (190/image.width);
 			/*image.x = 20;
 			image.y = 30;
 			addChild(image);
@@ -40,16 +40,17 @@ package com.somewater.rabbit.application.windows {
 			tf.addEventListener(TextEvent.LINK, onLink)
 			addChild(tf)*/
 
+			setSize(WIDTH, HEIGHT);
 			createTextAndImage('<font size="20">Уважаемые игроки!</font>', 'Нам нужны люди для тестирования новых уровней игры. ' +
 					'\nХотите поиграть первыми, желаете попасть в список тестировщиков игры? ' +
-					'Тогда это предложение для Вас!\n' +
-					'\n                 <u><font size="18" color="#31B1E8"><a href="event:invite">Группа игры</a></font><u>', image);
+					'\nТогда это предложение для Вас!\n'
+					//+ '\n<u><font size="18" color="#31B1E8"><a href="event:invite">Группа игры</a></font><u>'
+					, image);
 			tf.size = 16;
 			tf.mouseEnabled = tf.selectable = true;
 			tf.x -= 20;
 			tf.addEventListener(TextEvent.LINK, onLink, false, 0, true);
 
-			setSize(650,450);
 			border.x -= 10;
 			border.scaleX = border.scaleY = 1.5;
 			open();
@@ -71,6 +72,14 @@ package com.somewater.rabbit.application.windows {
 		private function navigateToGroup():void
 		{
 			navigateToURL(new URLRequest('http://vkontakte.ru/wall-33566408_48'), '_blank')
+		}
+
+		override protected function get WIDTH():int {
+			return 650;
+		}
+
+		override protected function get HEIGHT():int {
+			return 450;
 		}
 	}
 }

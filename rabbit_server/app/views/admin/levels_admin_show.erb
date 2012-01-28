@@ -54,6 +54,10 @@
 						</p>
 						<input type="submit" value="Update"></input>
 					</form>
+					<form method="post" action="<%= LEVELS_PATH %>?id=<%= level.id%>&act=copy">
+						Copy with number:<input type="text" name="new_id" value="<%= level.number %>" size="5"></input>
+						<input type="submit" value="Copy"></input>
+					</form>
 				</td>
 			</tr>
 		<% end %>

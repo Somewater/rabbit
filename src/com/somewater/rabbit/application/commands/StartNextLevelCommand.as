@@ -7,15 +7,20 @@ package com.somewater.rabbit.application.commands {
 
 		private var currentPassedLevel:LevelDef;
 
-		public function StartNextLevelCommand(currentPassedLevel:LevelDef) {
+		public function StartNextLevelCommand(currentPassedLevel:LevelDef = null) {
 			this.currentPassedLevel = currentPassedLevel;
 		}
 
 		public function execute():void {
-			// стартуем следующий непройденный уровень, если мы только что прошли новый (ранее непройденный) уровень
-			if(UserProfile.instance.levelNumber - 1 == currentPassedLevel.number
-					&& Config.application.getLevelByNumber(UserProfile.instance.levelNumber) != null)  // и еще есть непройденные уровни
-				Config.application.startGame();
+
+			var nextLevelDef:LevelDef = Config.application.getLevelByNumber(UserProfile.instance.levelNumber);
+
+			// стартуем следующий непройденный уровень, если мы только что прошли новый (ранее непройденный) уровень,
+			// либо если только что пройденый уровень не задан (старт из главного меню по кнопке "Продолжить игру")
+			if((currentPassedLevel == null || UserProfile.instance.levelNumber - 1 == currentPassedLevel.number)
+					&& nextLevelDef != null // и еще есть непройденные уровни
+					&& nextLevelDef.story && nextLevelDef.story.enabled) // уровень относится к активированной истории
+				Config.application.startGame(Config.application.getLevelByNumber(UserProfile.instance.levelNumber));
 			// иначе переходим в меню уровней
 			else
 				Config.application.startPage('levels');

@@ -2,6 +2,7 @@ package com.somewater.rabbit.application
 {
 	import com.somewater.controller.PopUpManager;
 	import com.somewater.rabbit.application.commands.OpenRewardLevelCommand;
+	import com.somewater.rabbit.application.commands.StartNextLevelCommand;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.Lib;
@@ -82,7 +83,7 @@ package com.somewater.rabbit.application
 			{
 				case 	Lang.t("START_GAME"):
 				case 	Lang.t("CONTINUE_GAME"):
-					 	Config.application.startGame();
+					 	new StartNextLevelCommand().execute();
 						break;
 				case Lang.t("LEVEL_SELECTION"):
 						Config.application.startPage("levels");

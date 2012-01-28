@@ -56,7 +56,7 @@ package com.somewater.rabbit.application
 			addChild(iconsHolder);
 
 			globalScoreHolder = new Sprite();
-			globalScoreHolder.x = Math.min(740, Config.WIDTH - 100 - 10);
+			globalScoreHolder.x = Config.WIDTH > 800 ? 740 : Config.WIDTH - 100 - 10;
 			globalScoreHolder.y = Config.WIDTH > 800 ? 30 : (friendBar ? friendBar.y + (FriendBar.HEIGHT - 80) * 0.5 : Config.HEIGHT - 100);
 			addChild(globalScoreHolder)
 
@@ -99,19 +99,10 @@ package com.somewater.rabbit.application
 			
 			Config.stat(Stat.LEVELS_PAGE_OPENED);
 
+			leftButton = Lib.createMC("interface.LeftButton");
+
 			onStoryChanged();
 
-			leftButton = Lib.createMC("interface.LeftButton");
-			if(friendBar == null || 40 + (Math.ceil(levelIcons.length / 5)) * 90 + 50 < friendBar.y)
-			{
-				leftButton.x = iconsHolder.x;
-				leftButton.y = 40 + (Math.ceil(levelIcons.length / 5)) * 90;
-			}
-			else
-			{
-				leftButton.x = iconsHolder.x - leftButton.width - 10;
-				leftButton.y = 20;
-			}
 			leftButton.addEventListener(MouseEvent.CLICK, onLeftButtonClick);
 			Hint.bind(leftButton, Lang.t("BACK_TO_MAIN_MENU"));
 			addChild(leftButton);
@@ -132,7 +123,7 @@ package com.somewater.rabbit.application
 			}
 
 			// TODO: START
-			if(story.number == 1 && story.enabled == false)
+			if(story.number == 1)
 			{
 				var buf:Array = levels.slice();
 				levels = [];
@@ -156,6 +147,17 @@ package com.somewater.rabbit.application
 				levelIcons.push(icon);
 				iconsHolder.addChild(icon);
 				i++;
+			}
+
+			if(friendBar == null || 40 + (Math.ceil(levelIcons.length / 5)) * 90 + 50 < friendBar.y)
+			{
+				leftButton.x = iconsHolder.x;
+				leftButton.y = 40 + (Math.ceil(levelIcons.length / 5)) * 90;
+			}
+			else
+			{
+				leftButton.x = iconsHolder.x - leftButton.width - 10;
+				leftButton.y = 20;
 			}
 		}
 		
