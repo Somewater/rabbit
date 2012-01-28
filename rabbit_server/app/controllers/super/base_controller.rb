@@ -22,6 +22,8 @@ class BaseController
 =end
 
 	def initialize request = nil
+		Application.controller = self
+		@trace = nil
 		start(request) if request
 	end
 
@@ -81,6 +83,8 @@ class BaseController
 
 	def call
 		begin
+			@response['trace'] = @trace if @trace
+			Application.controller = nil if Application.controller == self
 			JSON.fast_generate(@response)
 		rescue
 			'{"error":"E_JSON_GENERATING"}'
@@ -114,6 +118,11 @@ class BaseController
 =end
 	def authorized
 		# do nothing
+	end
+
+	def trace(msg)
+		@trace = '' unless @trace
+		@trace << "#{msg}\n"
 	end
 
 =begin

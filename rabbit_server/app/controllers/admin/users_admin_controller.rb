@@ -29,10 +29,10 @@ class UsersAdminController < AdminController::Base
 			template File.read("#{TEMPLATE_ROOT}/admin/users_admin_show.erb")
 		elsif(@request['delete'] && @request['delete'] =~ /\d+/)
 			User.delete( @request['delete'])
-			@users = User.all
+			@users = []#User.all
 			template File.read("#{TEMPLATE_ROOT}/admin/users_admin_index.erb")
 		else
-			@users = User.all
+			@users = []#User.all
 			template File.read("#{TEMPLATE_ROOT}/admin/users_admin_index.erb")
 		end
 	end

@@ -45,6 +45,7 @@ class User < ActiveRecord::Base
 		self.roll = roll = ((roll * 16147) % 2147483647).to_i
 		result = (roll.to_f / 2147483647)
 		# Application.logger.debug "ROLL #{debug} => #{roll} (#{result})"
+		Application.trace("ROLL #{debug} => #{roll} (#{result})")
 		result
 	end
 

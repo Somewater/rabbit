@@ -4,6 +4,8 @@ class Application
 		self.class.logger
 	end
 
+	cattr_accessor :controller
+
 	class << self
 
 		def logger
@@ -17,6 +19,10 @@ class Application
 				@logger.formatter = Logger::Formatter.new
 			end
 			@logger
+		end
+
+		def trace(msg)
+			self.controller.trace(msg) if self.controller
 		end
 
 		def connect_to(database, &block)
