@@ -13,14 +13,20 @@ package com.somewater.rabbit.application.windows {
 	 * Добавляет к классу Window ф-ю простого создания текста и тайтла, выравниваемых в присутствии картинки
 	 */
 	public class WindowWithImage extends Window{
+
+		protected var titleTF:EmbededTextField;
+		protected var tf:EmbededTextField;
+		protected var border:DisplayObjectContainer;
+		protected var photo:Photo;
+
 		public function WindowWithImage(text:String = null, title:String = null ,closeFunc:Function = null,_buttons:Array = null) {
 			super(text, title, closeFunc, _buttons)
 		}
 
 		protected function createTextAndImage(title:String, text:String = null, image:* = null):void
 		{
-			var titleTF:EmbededTextField = new EmbededTextField(null, 0xDB661B, 21);
-			var tf:EmbededTextField = new EmbededTextField(Config.FONT_SECONDARY, 0x42591E, 14, true, true);
+			titleTF = new EmbededTextField(null, 0xDB661B, 21);
+			tf = new EmbededTextField(Config.FONT_SECONDARY, 0x42591E, 14, true, true);
 			tf.size = 14 + int(text && text.length ? (1 - Math.min(1,text.length / 200)) * 6 : 0)
 			var imageSource:*;
 
@@ -48,12 +54,12 @@ package com.somewater.rabbit.application.windows {
 
 			if(imageSource)
 			{
-				var border:DisplayObjectContainer = Lib.createMC("interface.LevelSwitchImage");
+				border = Lib.createMC("interface.LevelSwitchImage");
 				border.x = 347;
 				border.y = 115;
 				addChild(border);
 
-				var photo:Photo = new Photo(null, Photo.ORIENTED_CENTER, 175, 115, 185/2, 125/2);
+				photo = new Photo(null, Photo.ORIENTED_CENTER, 175, 115, 185/2, 125/2);
 				border.addChild(photo);
 				photo.source = imageSource;
 			}

@@ -9,18 +9,19 @@ package com.somewater.rabbit.application.windows {
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
 
-	public class TesterInvitationWindow extends Window{
+	public class TesterInvitationWindow extends WindowWithImage{
 
 		[Embed(source="TesterInvitation.jpg")]
 		private var imageCl:Class;
 
-		private const BTN_LABEL:String = 'МЕНЯ ЗАИНТЕРЕСОВАЛО ЭТО ПРЕДЛОЖЕНИЕ';
+		private const BTN_LABEL:String = 'ХОЧУ ТЕСТИРОВАТЬ';
 
 		public function TesterInvitationWindow() {
 			super('',null, onClick, [BTN_LABEL])
 
 			var image:Bitmap = new imageCl();
-			image.x = 20;
+			image.scaleX = image.scaleY = (175/image.width);
+			/*image.x = 20;
 			image.y = 30;
 			addChild(image);
 
@@ -37,9 +38,20 @@ package com.somewater.rabbit.application.windows {
 					'Самые активные 10 тестировщиков попадут в раздел "Авторы" игры!\n' +
 					'\n                 <u><font size="18" color="#0000FF"><a href="event:invite">Группа игры</a></font><u>';
 			tf.addEventListener(TextEvent.LINK, onLink)
-			addChild(tf)
+			addChild(tf)*/
 
-			setSize(700,390);
+			createTextAndImage('<font size="20">Уважаемые игроки!</font>', 'Нам нужны люди для тестирования новых уровней игры. ' +
+					'\nХотите поиграть первыми, желаете попасть в список тестировщиков игры? ' +
+					'Тогда это предложение для Вас!\n' +
+					'\n                 <u><font size="18" color="#31B1E8"><a href="event:invite">Группа игры</a></font><u>', image);
+			tf.size = 16;
+			tf.mouseEnabled = tf.selectable = true;
+			tf.x -= 20;
+			tf.addEventListener(TextEvent.LINK, onLink, false, 0, true);
+
+			setSize(650,450);
+			border.x -= 10;
+			border.scaleX = border.scaleY = 1.5;
 			open();
 		}
 

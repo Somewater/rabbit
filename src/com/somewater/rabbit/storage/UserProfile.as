@@ -177,6 +177,10 @@ package com.somewater.rabbit.storage
 			roll = ((roll * 16147) % 2147483647)
 			//Config.game.logError(this, 'getRoll', 'ROLL ' + this.roll + ' => ' + roll + ' (' + (roll / 2147483647) + ')')
 			this.roll = roll;
+			CONFIG::debug
+			{
+				trace("GET ROLL: " + (roll / 2147483647));
+			}
 			return roll / 2147483647;
 		}
 
