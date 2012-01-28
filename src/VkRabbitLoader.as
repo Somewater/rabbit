@@ -183,25 +183,25 @@ package {
 		{
 			basePath = 'http://rabbit.asflash.ru/';
 			swfs = {
-						"Game":{priority:-1,preload:true,url:"http://cs5259.vkontakte.ru/u245894/f3d12ee459a35a.zip"}
+						"Game":{priority:-1,preload:true,url:"http://cs10433.vk.com/u245894/c444e0a3259a7b.zip"}
 						,
 						"Application":{priority:int.MIN_VALUE,
-							preload:true,url:"http://cs5259.vkontakte.ru/u245894/fbdec2c9b5932d.zip"}
-						,"Interface":{preload:true, url:"http://cs301105.vkontakte.ru/u245894/4cef321a434828.zip"}
+							preload:true,url:"http://cs10433.vk.com/u245894/3e45aae581cd28.zip"}
+						,"Interface":{preload:true, url:"http://cs10433.vk.com/u245894/679d955bb76d96.zip"}
 						,"Assets":{preload:true, url:"http://cs301105.vkontakte.ru/u245894/20130588dba46b.zip"}
 						,"Rewards":{preload:true, url:"http://cs305914.vkontakte.ru/u245894/484acef2b22ff3.zip"}
-						,"Images":{preload:true, url:"http://cs5259.vkontakte.ru/u245894/6c458738aed3bd.zip"}
+						,"Images":{preload:true, url:"http://cs10433.vk.com/u245894/136cd96de2f873.zip"}
 						,"MusicMenu":{url:"http://cs301105.vkontakte.ru/u245894/8249c8fc1ffbf9.zip"}
 						,"MusicGame":{url:"http://cs301105.vkontakte.ru/u245894/721ed8935f06d4.zip"}
 						,"Sound":{url:"http://cs5392.vkontakte.ru/u245894/849e0bcdf7ff31.zip"}
-						,"Lang":{priority:100, preload:true, url:"http://cs5259.vkontakte.ru/u245894/aa92c6187fc611.zip"}
-						,"XmlPack":{preload:true, url:"http://cs5259.vkontakte.ru/u245894/2a5aa47f45658a.zip"}
+						,"Lang":{priority:100, preload:true, url:"http://cs10433.vk.com/u245894/4e4a17e3a76dd1.zip"}
+						,"XmlPack":{preload:true, url:"http://cs10433.vk.com/u245894/4c210fadd190ae.zip"}
 
 						,"Font":{priority:100, preload:true, url:"http://cs301105.vkontakte.ru/u245894/e07afb77864e16.zip"}
 					}
 
 			// only for vk
-			swfs['PostingPopup'] = {'url':'http://cs5259.vkontakte.ru/u245894/86bf2f517838bc.zip'}
+			swfs['PostingPopup'] = {'url':'http://cs10433.vk.com/u245894/fd9993c28d5577.zip'}
 		}
 
 		override public function get net():int { return 2; }
