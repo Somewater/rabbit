@@ -35,7 +35,7 @@ private
 
 	def create
 		# Левел с максимальной версией
-		self.create_level(@json['number'], @json, @author)
+		level = self.class.create_level(@json['number'], @json, @author)
 		@response = {:number => level.number, :author => level.author, :version => level.version, :id => level.id}
 	end
 
@@ -56,5 +56,6 @@ private
 						  })
 		level.save
 		Level.clear_cache()
+		level
 	end
 end
