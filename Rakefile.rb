@@ -152,30 +152,35 @@ namespace :srv do
 		notify = Notify.find(:all, :conditions => "enabled=TRUE").first
 		break unless notify
 
-		# select users
-		user_uids = User.find(:all, :select => 'uid', :limit => 100, :offset => notify.position, \
-		 			:conditions => 'net=2', :order => 'uid').map(&:uid)
-
 		app = Vkontakte::App::Secure.new
 
 		logger = Logger.new(File.join(ROOT, %W{ logs vkontakte.log}))
 		logger.level = Logger::DEBUG
 		logger.formatter = Logger::Formatter.new
 
-		begin
-			response = nil
-			response = app.secure.sendNotification({:uids => user_uids.join(','), :message => notify.message})
-			notify.position += 100
-			logger.warn("Success notify\n#{user_uids} => #{response ? response.body : nil}");
-		rescue Vkontakte::App::VkException
-			logger.error("Error when notify\n#{user_uids} => #{$!}")
-		rescue
-			logger.fatal("Fatal when notify\n#{user_uids} => #{$!}")
-		end
+		10.times do
+			break unless notify.enabled
+		
+			# select users
+			user_uids = User.find(:all, :select => 'uid', :limit => 100, :offset => notify.position, \
+			 			:conditions => 'net=2', :order => 'uid').map(&:uid)
+		
+			begin
+				response = nil
+				response = app.secure.sendNotification({:uids => user_uids.join(','), :message => notify.message})
+				notify.position += 100
+				logger.warn("Success notify\n#{user_uids} => #{response ? response.body : nil}");
+			rescue Vkontakte::App::VkException
+				logger.error("Error when notify\n#{user_uids} => #{$!}")
+			rescue
+				logger.fatal("Fatal when notify\n#{user_uids} => #{$!}")
+			end
 
-		# save notified users index in DB
-		notify.enabled = user_uids && user_uids.size > 0
-		notify.save
+			# save notified users index in DB
+			notify.enabled = user_uids && user_uids.size > 0
+			notify.save
+			sleep(1)
+		end
 	end
 end
 

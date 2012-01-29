@@ -54,7 +54,8 @@ module Gamedesign
 			pass_users = 0
 			user_stat.each{|k,v| pass_users += v.to_i if k.to_i >= number }
 
-			puts "LEVEL #{number} - #{head_levels_by_id[number].description.gsub("\n\r",'')}"
+			puts "LEVEL #{number} (version #{head_levels_by_id[number].version})"
+			puts "#{head_levels_by_id[number].description.gsub("\n\r",'')}"
 			puts "users: #{user_stat[number.to_i]}\tpass: #{pass_users}\tavg time: #{stat[:time]}\tmin time: #{stat[:time_min]}\tavg carrot: #{stat[:carrot]}\tmax carrot: #{stat[:carrot_max]}\tavg stars: #{stat[:star]}"
 			head_levels_by_id[number.to_i].conditions_to_hash.each do |key,value|
 				puts "#{key}=#{value}  "
