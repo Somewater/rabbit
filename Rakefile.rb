@@ -157,8 +157,9 @@ namespace :srv do
 		logger = Logger.new(File.join(ROOT, %W{ logs vkontakte.log}))
 		logger.level = Logger::DEBUG
 		logger.formatter = Logger::Formatter.new
-
-		10.times do
+		
+		puts "=== Process started at #{Time.new} ==="
+		100.times do |step|
 			break unless notify.enabled
 		
 			# select users
@@ -179,8 +180,10 @@ namespace :srv do
 			# save notified users index in DB
 			notify.enabled = user_uids && user_uids.size > 0
 			notify.save
+			puts "STEP #{step} completed at #{Time.new}, position #{notify.position}"
 			sleep(1)
 		end
+		puts "=== Notify #{notify.enabled ? 'completed' : 'paused'} at #{Time.new} ==="
 	end
 end
 
