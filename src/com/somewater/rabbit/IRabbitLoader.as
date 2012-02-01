@@ -67,8 +67,12 @@ package com.somewater.rabbit
 		function get content():Sprite
 			
 		function get popups():Sprite
+
+		function get tutorial():Sprite
 			
 		function get tooltips():Sprite
+
+		function get adLayer():Sprite
 			
 		function get cursors():Sprite
 			

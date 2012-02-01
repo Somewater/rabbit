@@ -1,5 +1,6 @@
 package com.somewater.rabbit.storage
 {
+	import com.somewater.rabbit.application.tutorial.TutorialManager;
 	import com.somewater.social.SocialUser;
 	
 	import flash.events.Event;
@@ -22,6 +23,8 @@ package com.somewater.rabbit.storage
 		private var dispatcher:EventDispatcher;
 		
 		private var roll:uint;
+
+		private var _tutorial:int = -1;
 		
 		
 		public function UserProfile(data:Object)
@@ -208,6 +211,20 @@ package com.somewater.rabbit.storage
 					max = inst.levelDef.number;
 			max++;// т.к. уровень человека - это пройденный вроень + 1
 			return Math.max(max, super.levelNumber);
+		}
+
+		public function get tutorial():int
+		{
+			return _tutorial;
+		}
+
+		public function set tutorial(value:int):void
+		{
+			if(value != _tutorial)
+			{
+				_tutorial = value;
+				TutorialManager.instance.startStep(_tutorial);
+			}
 		}
 	}
 }

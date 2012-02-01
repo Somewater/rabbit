@@ -14,9 +14,9 @@ package com.somewater.rabbit.application
 		protected var _width:int;
 		protected var _height:int;
 		
-		private var up:Sprite;
-		private var over:Sprite;
-		private var down:Sprite;
+		protected var up:Sprite;
+		protected var over:Sprite;
+		protected var down:Sprite;
 		
 		private var listenersCreated:Boolean;
 		
@@ -29,22 +29,33 @@ package com.somewater.rabbit.application
 		
 		public function OrangeGround()
 		{
+			recreateGrounds();
 
-			down = createGround("down");
-			addChild(down);
-			
-			over = createGround("over");
-			over.visible = false;
-			over.mouseEnabled = over.mouseChildren = false;
-			addChild(over);
-			
-			up = createGround("up");
-			up.mouseEnabled = up.mouseChildren = false;
-			addChild(up);
-			
 			listenersCreated = false;
 			
 			filters = [new DropShadowFilter(2, 45, 0, 0.24, 10, 10)];
+		}
+
+		protected function recreateGrounds():void
+		{
+			if(down && down.parent)
+				down.parent.removeChild(down);
+			if(over && over.parent)
+				over.parent.removeChild(over);
+			if(up && up.parent)
+				up.parent.removeChild(up);
+
+			up = createGround("up");
+			up.mouseEnabled = up.mouseChildren = false;
+			addChildAt(up, 0);
+
+			over = createGround("over");
+			over.visible = false;
+			over.mouseEnabled = over.mouseChildren = false;
+			addChildAt(over, 0);
+
+			down = createGround("down");
+			addChildAt(down, 0);
 		}
 		
 		public function clear():void

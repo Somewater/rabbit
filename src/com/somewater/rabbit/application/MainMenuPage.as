@@ -79,6 +79,9 @@ package com.somewater.rabbit.application
 		
 		private function onSomeButtonClick(e:MouseEvent):void
 		{
+			if(!OrangeButton(e.currentTarget).enabled)
+				return;
+
 			switch(OrangeButton(e.currentTarget).label)
 			{
 				case 	Lang.t("START_GAME"):
@@ -95,6 +98,19 @@ package com.somewater.rabbit.application
 						Config.application.startPage("about");
 						break;
 			}
+		}
+
+		// для тьюториала
+		public function get startGameButton():OrangeButton
+		{
+			return buttons[0];
+		}
+
+		// для тьюториала
+		public function disableButtons(disable:Boolean = true):void
+		{
+			for each(var b:OrangeButton in buttons)
+				b.enabled = !disable;
 		}
 	}
 }

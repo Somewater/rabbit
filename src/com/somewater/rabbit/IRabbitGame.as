@@ -1,5 +1,6 @@
 package com.somewater.rabbit
 {
+	import com.somewater.rabbit.managers.IGameTutorialModule;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
 	
@@ -45,5 +46,7 @@ package com.somewater.rabbit
 		function initializeEditorModule():void
 
 		function setTemplateTool(toolname:String, template:XML = null, objectReference:XML = null):IEventDispatcher
+
+		function get tutorialModule():IGameTutorialModule
 	}
 }

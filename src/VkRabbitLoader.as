@@ -31,7 +31,6 @@ package {
 	public class VkRabbitLoader extends SocialRabbitLoader{
 
 		private var _clickozavr:Clickozavr;
-		private var adLayer:Sprite;
 
 		public function VkRabbitLoader() {
 		}
@@ -39,7 +38,7 @@ package {
 		override protected function createLayers():void {
 			super.createLayers();
 
-			_content.y= _popups.y = _tooltips.y = _cursors.y = 150;
+			_content.y= _popups.y = _tutorial.y = _tooltips.y = _cursors.y = 150;
 		}
 
 		override protected function netInitialize():void
@@ -61,11 +60,9 @@ package {
 			//var bannerTape: BannerTape = new BannerTape("3298", "791", Config.WIDTH, 1);
 			//stage.addChild(bannerTape);
 
-			adLayer = new Sprite();
 			adLayer.graphics.beginFill(0xFFFFFF);
 			adLayer.graphics.drawRect(0,0,Config.WIDTH, 150);
 			adLayer.graphics.drawRect(0, 150 + Config.HEIGHT, Config.WIDTH, 100)
-			addChild(adLayer);
 
 			_clickozavr = new Clickozavr('637', Config.WIDTH , Config.HEIGHT, adLayer);
 			_clickozavr.addEventListener(ClickozavrEvent.GET_USER_DATA, onClickozavrCanGetUserData);

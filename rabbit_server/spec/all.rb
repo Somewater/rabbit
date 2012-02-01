@@ -26,9 +26,17 @@ class AllSpec
 			controller.call
 			controller.instance_variable_get('@response')
 		end
-		
+
+		def get_uniq_user(uid = 1)
+			user = User.find_by_uid(uid.to_i,1)
+			unless(@user)
+				user = User.new({:uid => uid.to_s, :net => '1'})
+			end
+			user
+		end
+
 		before :each do
-			@user = User.new
+			@user = User.new({:uid => '1', :level => 2})
 		end
 		
 		after :each do
@@ -62,7 +70,7 @@ class AllSpec
 									<carrotMiddle>15</carrotMiddle> 						\
 									<carrotMax>20</carrotMax>								\
 									<carrotAll>20</carrotAll></conditions>',
-									'number' => 1
+									'number' => 2
 									})
 				@conditions = @level.conditions_to_hash
 				Level.class_variable_set('@@all_head_by_number', {@level.number => @level})
@@ -77,9 +85,10 @@ class AllSpec
 		
 			it "Непройденный уровень не обрабатывается" do
 				# очень хороший результат, но с флагом success==false
+				user_init_level = @user.level
 				@levelInstance.data = {'success' => false, 'timeSpended' => 1, 'carrotHarvested' => @conditions['carrotAll']}
 				server_logic_process().size.should == 0
-				@user.level.should == 1
+				@user.level.should == user_init_level
 			end
 			
 			#it "Обнаруживается уровень, непройденный по времени" do
@@ -90,9 +99,10 @@ class AllSpec
 			#end
 			
 			it "Обнаруживается уровень, непройденный по морковкам" do
+				user_init_level = @user.level
 				@levelInstance.data = {'carrotHarvested' => @conditions['carrotMin'].to_i - 1}
 				server_logic_process().size.should == 0
-				@user.level.should == 1
+				@user.level.should == user_init_level
 			end
 
 			it "Нельзя пройти недоступный по левелу для пользователя уровень" do
@@ -209,6 +219,22 @@ class AllSpec
 			it "Умеет выдавать нелевельные реварды" do
 				reward = ServerLogic.checkAddReward(@user, nil, nil, Reward::TYPE_FAMILIAR, 3)
 				reward.should be_a_kind_of(RewardInstance)
+			end
+
+			it "Если игрок впервые проходит 1й (туториальный) левел, он всегда получает награду" do
+				# формируем в конфиге 1-й левел, а не второй
+				@level.number = 1
+				Level.class_variable_set('@@all_head_by_number', {@level.number => @level})
+				@levelInstance.data = @level
+				@levelInstance.data = {'carrotHarvested' => @conditions['carrotMiddle']} # не самое лучшее прохождение
+
+				30.times do |i|
+					rewards = server_logic_process()
+					(rewards.select{|r| r.type == Reward::TYPE_ALL_CARROT}).size.should == 1
+					@user.level_instances = {}
+					@user.rewards = {}
+					@levelInstance.rewards.clear
+				end
 			end
 		end
 		
@@ -458,10 +484,7 @@ class AllSpec
 			end
 
 			before :each do
-				@user = User.find_by_uid(1,1)
-				unless(@user)
-					@user = User.new({:uid => '1', :net => '1'})
-				end
+				@user = get_uniq_user
 				@user.update_attributes({:rewards => {}, :level_instances => {}, :score => 0})
 				@user.save
 			end
@@ -503,10 +526,7 @@ class AllSpec
 			end
 
 			before :each do
-				@user = User.find_by_uid(1,1)
-				unless(@user)
-					@user = User.new({:uid => '1', :net => '1'})
-				end
+				@user = get_uniq_user
 				@user.update_attributes({:postings => 0, :rewards => {}})
 				@user.save
 			end
@@ -559,10 +579,7 @@ class AllSpec
 
 		describe RewardsMoveController do
 			before :each do
-				@user = User.find_by_uid(1,1)
-				unless(@user)
-					@user = User.new({:uid => '1', :net => '1'})
-				end
+				@user = get_uniq_user
 				@user.rewards = {'12345' => {'id' => 12345, 'x' => 2, 'y' => 3}}
 				@user.save
 			end
@@ -611,7 +628,7 @@ class AllSpec
 				@undefined_key = 'undefined_key'
 				
 				@stat_time = Application.time.to_i
-				@stat_time = @stat_time - (@stat_time % 1800)
+				@stat_time = @stat_time - (@stat_time % 7200)
 				
 				Stat.create({:name => @existed_key, :value => 1, :time => @stat_time})
 			end
@@ -639,6 +656,39 @@ class AllSpec
 			
 			it "Если время изменилось, начинается работа с новой записью БД" do
 
+			end
+		end
+
+		describe TutorialController do
+			before :each do
+				@user = get_uniq_user
+				@user.save
+			end
+
+			def request(hash)
+				execute_request(hash, TutorialController)
+			end
+
+		    it "Инкрементить тьюториал" do
+				@user.tutorial = 0
+				@user.save
+
+				request({'net' => @user.net,'uid' => @user.uid, 'json' => {'tutorial' => 2}})
+				@user.reload
+				@user.tutorial.should == 2
+
+				request({'net' => @user.net,'uid' => @user.uid, 'json' => {'tutorial' => 5}})
+				@user.reload
+				@user.tutorial.should == 5
+			end
+
+			it "Не позволяет декрементить тьюториал" do
+				@user.tutorial = 5
+				@user.save
+
+				lambda{
+					request({'net' => @user.net,'uid' => @user.uid, 'json' => {'tutorial' => 2}})
+				}.should raise_error(LogicError, /Tutorial must only increment/)
 			end
 		end
 	end

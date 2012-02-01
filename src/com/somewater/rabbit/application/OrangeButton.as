@@ -20,6 +20,7 @@ package com.somewater.rabbit.application
 
 		private var textField:EmbededTextField;
 		private const defaultHeight:int = 32;
+		private var _enabled:Boolean = true;
 		
 		public function OrangeButton()
 		{
@@ -70,6 +71,30 @@ package com.somewater.rabbit.application
 		{
 			super.onOver(e);
 			textField.color = 0xFFFFFF;
+		}
+
+		public function set enabled(value:Boolean):void
+		{
+			if(_enabled != value)
+			{
+				_enabled = value;
+				recreateGrounds();
+				addChildAt(down, 0);
+				buttonMode = useHandCursor = value;
+				resize();
+			}
+		}
+
+		public function get enabled():Boolean
+		{
+			return _enabled;
+		}
+
+		override protected function createGround(type:String):Sprite {
+			if(_enabled)
+				return super.createGround(type)
+			else
+				return Lib.createMC("interface.ShadowOrangeButton_" + 'up');
 		}
 	}
 }

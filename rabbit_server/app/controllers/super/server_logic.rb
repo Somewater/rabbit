@@ -40,7 +40,8 @@ class ServerLogic
 			if(levelInstance.carrotHarvested >= levelCarrotMiddle && # если собрано морковок не мнее, чем для получения 2-х звезд
 					lastLevelInstance == nil)  # ранее уровень не проходили
 				if(
-						(levelInstance.carrotHarvested >= levelCarrotMax && user.get_roll() > 0.1) ||
+						(levelInstance.levelDef.number == 1 || # на первом (туториальном) уровне всегда выдаем награду, если он проходится впервые
+						 levelInstance.carrotHarvested >= levelCarrotMax && user.get_roll() > 0.1) ||
 						(levelInstance.carrotHarvested < levelCarrotMax && user.get_roll() > 0.7)
 					)
 					checkAddReward(user, levelInstance, lastLevelInstance, Reward::TYPE_ALL_CARROT);

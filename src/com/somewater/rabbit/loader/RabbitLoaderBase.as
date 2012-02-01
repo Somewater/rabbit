@@ -106,7 +106,9 @@ package com.somewater.rabbit.loader
 		// слои интерфейса игры
 		protected var _content:Sprite;
 		protected var _popups:Sprite;
+		protected var _tutorial:Sprite;
 		protected var _tooltips:Sprite;
+		protected var _adLayer:Sprite;
 		protected var _cursors:Sprite;
 
 		protected var _serverHandler:IServerHandler;
@@ -143,8 +145,12 @@ package com.somewater.rabbit.loader
 		public function get content():Sprite{	return _content	}
 		
 		public function get popups():Sprite{	return _popups	}
+
+		public function get tutorial():Sprite{	return _tutorial	}
 		
 		public function get tooltips():Sprite{	return _tooltips	}
+
+		public function get adLayer():Sprite{	return _adLayer	}
 		
 		public function get cursors():Sprite{	return _cursors	}
 		
@@ -159,9 +165,15 @@ package com.somewater.rabbit.loader
 			
 			_popups = new Sprite();
 			addChild(_popups);
-			
+
+			_tutorial = new Sprite();
+			addChild(_tutorial);
+
 			_tooltips = new Sprite();
 			addChild(_tooltips);
+
+			_adLayer = new Sprite();
+			addChild(_adLayer);
 			
 			_cursors = new Sprite();
 			addChild(_cursors);

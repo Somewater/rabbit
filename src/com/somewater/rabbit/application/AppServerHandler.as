@@ -123,6 +123,11 @@ package com.somewater.rabbit.application {
 					}, onError, null)
 		}
 
+		public function incrementTutorial(newValue:int):void
+		{
+			handler.call('tutorial/inc', {'tutorial':newValue});
+		}
+
 
 		//////////////////////////////////
 		//                              //

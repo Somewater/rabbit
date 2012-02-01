@@ -20,6 +20,8 @@ package
 	import com.somewater.rabbit.iso.IsoCameraController;
 	import com.somewater.rabbit.iso.scene.IsoSpatialManager;
 	import com.somewater.rabbit.iso.scene.SceneView;
+	import com.somewater.rabbit.managers.GameTutorialModule;
+	import com.somewater.rabbit.managers.IGameTutorialModule;
 	import com.somewater.rabbit.managers.InitializeManager;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
@@ -289,5 +291,10 @@ package
 		
 		override public function get width():Number{return Config.WIDTH;}
 		override public function get height():Number{return Config.HEIGHT;}
+
+		public function get tutorialModule():IGameTutorialModule
+		{
+			return GameTutorialModule.instance;
+		}
 	}
 }

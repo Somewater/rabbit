@@ -22,6 +22,7 @@ package
 	import com.somewater.rabbit.application.RewardManager;
 	import com.somewater.rabbit.application.ServerLogic;
 	import com.somewater.rabbit.application.WindowBackground;
+	import com.somewater.rabbit.application.tutorial.TutorialManager;
 	import com.somewater.rabbit.application.windows.InviteFriendsWindow;
 	import com.somewater.rabbit.application.windows.LevelFinishFailWindow;
 	import com.somewater.rabbit.application.windows.LevelFinishSuccessWindow;
@@ -85,7 +86,7 @@ package
 												'RewardLevel':RewardLevelGUI
 											}
 			
-		public var currentPage:DisplayObject;
+		public var currentPage:PageBase;
 		
 		private var _content:Sprite;
 		
@@ -109,6 +110,11 @@ package
 		private var soundLibraryLoaded:Boolean = false;
 
 		private var friendInviteTimer:Timer;
+
+		/**
+		 * Игра стартовала, загрузила все необходимые ей ассеты и уже было открыто окно SwitchWindow (если это не награды)
+		 */
+		public var gameStartedCompletely:Boolean = false;
 		
 		public function RabbitApplication()
 		{
@@ -323,6 +329,8 @@ package
 			}
 
 			startPage("main_menu");
+			UserProfile.instance.tutorial = 0;
+			TutorialManager.instance;// Initialize TutorialManager
 
 			Config.stat(Stat.APP_STARTED);
 
@@ -425,6 +433,7 @@ package
 			var game:DisplayObject = Config.game as DisplayObject;
 			_content.addChild(game);
 			Config.gameModuleActive = true;
+			gameStartedCompletely = false;
 			
 			if(!__gameAlreadyRun)
 			{
@@ -459,6 +468,8 @@ package
 					else
 						Config.stat(Stat.FRIEND_REWARDS_OPENED);
 				}
+
+				gameStartedCompletely = true;
 			}
 		}
 		private var __gameAlreadyRun:Boolean = false;

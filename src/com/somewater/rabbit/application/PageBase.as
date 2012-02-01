@@ -18,7 +18,7 @@ package com.somewater.rabbit.application
 	public class PageBase extends Sprite implements IClear
 	{
 		protected static var ground:DisplayObject;
-		protected var logo:MovieClip;
+		public var logo:MovieClip;// паблик для туториала
 		
 		public function PageBase()
 		{

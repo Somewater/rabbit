@@ -83,6 +83,8 @@ class Application
 					UserInfoController.new(request).call
 				when "posting/complete"
 					PostingController.new(request).call
+				when 'tutorial/inc'
+					TutorialController.new(request).call
 
 				when "levels.xml"
 					LevelsAdminController.generate_xml_file(request['release'])

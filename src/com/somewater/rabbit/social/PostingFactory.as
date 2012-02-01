@@ -58,8 +58,8 @@ package com.somewater.rabbit.social {
 			else if(Lib.hasMC(image))
 			{
 				var mc:DisplayObject = Lib.createMC(image);
-				if(mc is MovieClip)
-					 MovieClipHelper.stopAll(mc as MovieClip);
+				//if(mc is MovieClip)
+				//	 MovieClipHelper.stopAll(mc as MovieClip);
 				var wrapper:Sprite = new Sprite()
 				wrapper.addChild(mc);
 				var bounds:Rectangle = mc.getBounds(mc);

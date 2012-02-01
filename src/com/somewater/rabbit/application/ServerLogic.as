@@ -71,7 +71,8 @@ package com.somewater.rabbit.application {
 					lastLevelInstance == null)  // ранее уровень не проходили
 			{
 				if(
-						(levelInstance.carrotHarvested >= levelCarrotMax && user.getRoll() > 0.1) ||
+						(levelInstance.number == 1 || // на первом (туториальном) уровне всегда выдаем награду, если он проходится впервые
+						 levelInstance.carrotHarvested >= levelCarrotMax && user.getRoll() > 0.1) ||
 						(levelInstance.carrotHarvested < levelCarrotMax && user.getRoll() > 0.7)
 					)
 				{

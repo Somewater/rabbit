@@ -7,7 +7,9 @@ package com.somewater.rabbit.application
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.text.EmbededTextField;
-	
+
+	import flash.display.DisplayObject;
+
 	import flash.display.Graphics;
 	import flash.display.Shape;
 	import flash.display.SimpleButton;
@@ -189,6 +191,30 @@ package com.somewater.rabbit.application
 			seconds = seconds - (minutes * 60);
 			return (minutes > 9?minutes:"0" + minutes)
 				+ ":" + (seconds > 9?seconds:"0" + seconds);
+		}
+
+		// для тьюториала
+		public function get carrotIndicator():DisplayObject
+		{
+			return carrotTF;
+		}
+
+		// для тьюториала
+		public function get healthIndicator():DisplayObject
+		{
+			return statPanel.getChildByName("progressBar");
+		}
+
+		// для тьюториала
+		public function get timeIndicator():DisplayObject
+		{
+			return timeTF;
+		}
+
+		// для тьюториала
+		public function get pauseButton():DisplayObject
+		{
+			return playPauseButton;
 		}
 	}
 }
