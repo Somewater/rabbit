@@ -11,6 +11,12 @@ package com.somewater.rabbit.components
 	public dynamic class HeroDataComponent extends DataComponent
 	{
 		public static var instance:HeroDataComponent;
+
+		/**
+		 * Флаг означает, что нельзя менять здоровье персонажа, т.е. он под защитой, елси флаг больше нуля
+		 * (количество означает сколько паверапов протекта применено)
+		 */
+		public var protectedFlag:int = 0;
 		
 		public function HeroDataComponent()
 		{
@@ -45,7 +51,7 @@ package com.somewater.rabbit.components
 
 		override public function set health(value:Number):void
 		{
-			if(value != _health)
+			if(protectedFlag <= 0 && value != _health)
 			{
 				if(_health > value)
 					Config.application.play(Sounds.DAMAGE, SoundTrack.GAME_DAMAGE);

@@ -19,6 +19,9 @@
 				<_>harvest</_>
 			</harvestType>
 		</component>
+		<component type="com.somewater.rabbit.components.PowerupControllerComponent" name="PowerupController">
+			<sense>false</sense>
+		</component>
 	</entity>
 	
 	
@@ -138,7 +141,6 @@
 				<x>1</x>
 				<y>1</y>
 			</size>		
-			<tile type="RandomTilePoint.free"></tile>
 		</component>
 	</template>
 	
@@ -172,8 +174,7 @@
 				<x>3</x>
 				<y>1</y>
 			</size>
-			<tile type="RandomTilePoint.free"></tile>
-		</component>		
+		</component>
 	</template>
 	
 	<template name="BeamRight" template="Beam">
@@ -584,6 +585,62 @@
 			<layerIndex>20</layerIndex>
 			<scene entityName="SceneDB" componentName="Scene"/>
 			<positionProperty>@Spatial.position</positionProperty>
+		</component>
+	</template>
+
+
+	<!--
+
+		POWERUPS
+
+	-->
+	<template name="PowerupBase" template="IsoBase" sets="powerups">
+		<component name="Render">
+			<frameRate>15</frameRate>
+			<useDirection>4</useDirection>
+			<correctX>-0.99</correctX><correctY>-0.99</correctY>
+		</component>
+		<component name="Spatial">
+			<objectMask childType="String">
+				<_0>powerups</_0>
+			</objectMask>
+			<passMask>1</passMask>
+			<occupyMask>1</occupyMask>
+			<size>
+				<x>1</x>
+				<y>1</y>
+			</size>
+		</component>
+		<component type="com.somewater.rabbit.components.DataComponent" name="Data">
+		</component>
+	</template>
+
+	<template name="PowerupHealth" template="PowerupBase">
+		<component name="Render">
+			<slug>rabbit.PowerupHealthActor</slug>
+		</component>
+		<component name="Data">
+			<health>0.5</health>
+		</component>
+	</template>
+
+	<template name="PowerupProtection" template="PowerupBase">
+		<component name="Render">
+			<slug>rabbit.PowerupProtectionActor</slug>
+		</component>
+		<component name="Data">
+			<protection>true</protection>
+			<time>10000</time>
+		</component>
+	</template>
+
+	<template name="PowerupSpeed" template="PowerupBase">
+		<component name="Render">
+			<slug>rabbit.PowerupSpeedActor</slug>
+		</component>
+		<component name="Data">
+			<speedAdd>2</speedAdd>
+			<time>10000</time>
 		</component>
 	</template>
 </things>

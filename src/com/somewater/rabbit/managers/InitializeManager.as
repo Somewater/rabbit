@@ -12,6 +12,7 @@ package com.somewater.rabbit.managers
 	import com.somewater.rabbit.components.HeroHarvesterComponent;
 	import com.somewater.rabbit.components.ObviousHarvesterComponent;
 	import com.somewater.rabbit.components.ObviousHunterComponent;
+	import com.somewater.rabbit.components.PowerupControllerComponent;
 	import com.somewater.rabbit.creature.CrowHarvesterComponent;
 	import com.somewater.rabbit.creature.HeroIsoMover;
 	import com.somewater.rabbit.creature.ShapeSpatialComponent;
@@ -174,6 +175,7 @@ package com.somewater.rabbit.managers
 			PBE.registerType(CowardComponent);
 			PBE.registerType(CrowHarvesterComponent);
 			PBE.registerType(HeroIsoMover);
+			PBE.registerType(PowerupControllerComponent);
 
 			RandomizeUtil.initialize();				
 		}
