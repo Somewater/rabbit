@@ -86,7 +86,7 @@ package
 												'RewardLevel':RewardLevelGUI
 											}
 			
-		public var currentPage:PageBase;
+		public var currentPage:DisplayObject;
 		
 		private var _content:Sprite;
 		
@@ -402,10 +402,11 @@ package
 			var pageClass:Class = PAGES[name];
 			if(pageClass == null)
 				throw new Error("Undefined page identifier \"" + name + "\"");
+			clearContent();
 			currentPage = new pageClass();
-			clearContent();			
 			_content.addChild(currentPage);
 			Config.gameModuleActive = false;
+			_gameGUI = null;
 			play(Sounds.MUSIC_MENU, SoundTrack.MUSIC);
 		}
 		
@@ -430,8 +431,8 @@ package
 			showSlash(-1);
 			play(level.type == RewardLevelDef.TYPE ? Sounds.MUSIC_MENU : Sounds.MUSIC_GAME, SoundTrack.MUSIC);
 			
-			var game:DisplayObject = Config.game as DisplayObject;
-			_content.addChild(game);
+			currentPage = Config.game as DisplayObject;
+			_content.addChild(currentPage);
 			Config.gameModuleActive = true;
 			gameStartedCompletely = false;
 			
@@ -454,7 +455,10 @@ package
 
 				var guiClass:Class = LEVELS_GUI[level.type];
 				if(guiClass)
-					_content.addChild(new guiClass());
+				{
+					_gameGUI = new guiClass()
+					_content.addChild(_gameGUI);
+				}
 
 				if(level.type == LevelDef.TYPE)
 				{
@@ -487,6 +491,7 @@ package
 				if(child is IClear)
 					IClear(child).clear();
 			}
+			currentPage = null;
 		}
 		
 		
@@ -736,6 +741,8 @@ package
 		}
 
 		private var settingsLoadingFlag:Boolean = false;
+		private var _gameGUI:DisplayObject;
+
 		private function saveAudioSettings():void
 		{
 			if(!settingsLoadingFlag)
@@ -791,6 +798,12 @@ package
 				// если включен какой-то интерфейс приложения, а не сама игра (уровень, полянка и т.д.) и нет окон
 				new InviteFriendsWindow();
 			}
+		}
+
+
+		public function get gameGUI():DisplayObject
+		{
+			return _gameGUI;
 		}
 	}
 }

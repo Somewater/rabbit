@@ -1,12 +1,4 @@
 package com.somewater.rabbit.application.tutorial {
-	import com.somewater.rabbit.application.GameGUI;
-	import com.somewater.rabbit.application.MainMenuPage;
-	import com.somewater.rabbit.storage.Config;
-	import com.somewater.rabbit.storage.LevelDef;
-	import com.somewater.rabbit.storage.UserProfile;
-	import com.somewater.storage.Lang;
-
-	import flash.geom.Point;
 	import flash.utils.getTimer;
 
 	public class TutorialStep8 extends TutorialStepBase{

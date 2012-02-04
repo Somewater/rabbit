@@ -50,7 +50,7 @@ package com.somewater.rabbit.application
 			addChild(leftButton);
 
 
-			logo.visible = logo.x + logo.width < Config.WIDTH;
+			logo.visible = logo.visible ? logo.x + logo.width < Config.WIDTH : false;
 
 			Config.stat(Stat.ABOUT_PAGE_OPENED);
 		}

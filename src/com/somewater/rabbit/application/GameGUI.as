@@ -20,6 +20,8 @@ package com.somewater.rabbit.application
 	
 	public class GameGUI extends Sprite implements IClear
 	{
+		public var rightGameGUI:Boolean = true;// флаг для отличия от других GameGUI при нетипизированном использовании
+
 		private var playPauseButton:SimpleButton;
 		private var statPanel:Sprite;
 		private var timeTF:EmbededTextField;
@@ -75,7 +77,6 @@ package com.somewater.rabbit.application
 					statPanel.getChildByName('carrotGround').height);
 			carrotMask.scaleY = 0;
 			
-			Config.memory["GameGUI"] = this;
 			life = 0;
 			time = 0;
 			carrot = 0;
@@ -84,7 +85,6 @@ package com.somewater.rabbit.application
 		public function clear():void
 		{
 			playPauseButton.removeEventListener(MouseEvent.CLICK, onPlayPauseClick);
-			delete Config.memory["GameGUI"];
 		}
 		
 		private function onPlayPauseClick(e:Event):void

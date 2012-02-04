@@ -65,5 +65,7 @@ package com.somewater.rabbit
 		function positionizeRewards(user:GameUser):void
 
 		function play(soundName:String, track:String, force:Boolean = false):void
+
+		function get gameGUI():DisplayObject
 	}
 }

@@ -24,9 +24,9 @@ package com.somewater.rabbit.application.tutorial {
 			if(!messageShowed)
 			{
 				TutorialManager.instance.gameMessage('TUTORIAL_TIME_COUNTER_HINT', onAccepted);
-				var gameGuiRef:Object = Config.memory["GameGUI"];
+				var gameGuiRef:GameGUI = Config.application.gameGUI as GameGUI;
 				if(gameGuiRef)
-					TutorialManager.instance.highlightGui(gameGuiRef['timeIndicator']);
+					TutorialManager.instance.highlightGui(gameGuiRef.timeIndicator);
 				stepStartTime = getTimer();
 				messageShowed = true;
 			}

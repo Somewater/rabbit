@@ -1,6 +1,7 @@
 package com.somewater.rabbit.application
 {
 	import com.somewater.control.IClear;
+	import com.somewater.rabbit.application.tutorial.TutorialManager;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.storage.Lang;
@@ -54,6 +55,8 @@ package com.somewater.rabbit.application
 			addChild(logo);
 
 			Hint.bind(logo, Lang.t('I_AM_RABBIT'))
+
+			logo.visible = !TutorialManager.instance.active;
 		}
 		
 		protected function getButton(label:String, parent:DisplayObjectContainer, 

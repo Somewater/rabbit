@@ -13,6 +13,9 @@ package com.somewater.rabbit.application.tutorial {
 		public function HighlightArrow() {
 			arrow = Lib.createMC('tutorial.TutorialArrow')
 			addChild(arrow);
+
+			mouseEnabled = false;
+			mouseChildren = false;
 		}
 
 		public function clear():void {

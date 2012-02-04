@@ -11,7 +11,9 @@ package com.somewater.rabbit.application
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.storage.Lang;
 	import com.somewater.text.EmbededTextField;
-	
+
+	import flash.display.DisplayObject;
+
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -155,7 +157,7 @@ package com.somewater.rabbit.application
 			this.user = user;
 			if(user)
 			{
-				photo.source = user.socialUser.photoMedium;
+				photo.source = user is ImaginaryGameUser ? ImaginaryGameUser.getAvatar() : user.socialUser.photoMedium;
 				nameText.text = user.socialUser.name;
 				nameText.y = 15 + (45 - nameText.height) * 0.5
 				starText.text = user.levelNumber.toString();
@@ -168,6 +170,18 @@ package com.somewater.rabbit.application
 				setMode(0);
 				hint = Lang.t('INVITE_BUTTON_HINT');
 			}
+		}
+
+		// для тьюториала
+		public function get imaginaryFriendIcon():Boolean
+		{
+			return this.user && this.user is ImaginaryGameUser;
+		}
+
+		// для тьюториала
+		public function get highlightTarget():DisplayObject
+		{
+			return photo;
 		}
 	}
 }

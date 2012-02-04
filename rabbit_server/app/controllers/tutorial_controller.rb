@@ -5,8 +5,12 @@ class TutorialController < BaseUserController
 	def process
 		tutorial = @json['tutorial'].to_i
 		user_tutorial = @user.tutorial.to_i
-		raise LogicError, "Tutorial must only increment. User totorial = #{user_tutorial}" if tutorial <= user_tutorial
-		@user.tutorial = tutorial
-		@response['user'] = @user.to_json
+		if tutorial <= user_tutorial
+			# вместо трова ошибки просто выдаем такой ответ. Иначе весь лог заспамится ошибками про тьюториал
+			@response['status'] = "Tutorial must only increment. User totorial = #{user_tutorial}"
+		else
+			@user.tutorial = tutorial
+			@response['user'] = @user.to_json
+		end
 	end
 end

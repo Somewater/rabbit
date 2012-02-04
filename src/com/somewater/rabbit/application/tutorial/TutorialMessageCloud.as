@@ -19,6 +19,8 @@ package com.somewater.rabbit.application.tutorial {
 	 */
 	public class TutorialMessageCloud extends Sprite implements ITutorialMessage{
 
+		private const PADDING:int = 10;
+
 		private var message:String;
 		private var onAccept:Function;
 		private var image:*;
@@ -26,6 +28,7 @@ package com.somewater.rabbit.application.tutorial {
 
 		private var cloud:DisplayObject;
 		private var miniCloud:DisplayObject;
+		private var microCloud:DisplayObject;
 		private var contentHolder:Sprite;
 		private var textField:EmbededTextField;
 		private var photo:Photo;
@@ -42,8 +45,17 @@ package com.somewater.rabbit.application.tutorial {
 		}
 
 		private function recreate():void {
+
+			while(numChildren)
+				removeChildAt(0);
+
+			microCloud = Lib.createMC('tutorial.TutorialMiniCloud');
+			microCloud.y = -50;
+			microCloud.scaleX = microCloud.scaleY = 0.75;
+			addChild(microCloud);
+
 			miniCloud = Lib.createMC('tutorial.TutorialMiniCloud');
-			miniCloud.y = -65;
+			miniCloud.y = -75;
 			addChild(miniCloud);
 
 			cloud = Lib.createMC('tutorial.TutorialCloud');
@@ -52,9 +64,9 @@ package com.somewater.rabbit.application.tutorial {
 			contentHolder = new Sprite();
 			addChild(contentHolder);
 
-			textField = new EmbededTextField(null, null, 12, false, true);
+			textField = new EmbededTextField(null, 0x565C12, 12, false, true);
 			textField.width = 150;
-			textField.x = 10;
+			textField.x = PADDING;
 			textField.text = message;
 			contentHolder.addChild(textField);
 
@@ -84,25 +96,30 @@ package com.somewater.rabbit.application.tutorial {
 			}
 
 			// resize
-			cloud.width = (photoBorder ? photoBorder.x + photoBorder.width - textField.x : textField.x + textField.width) + 30;
-			cloud.height = buttonNext ? buttonNext.y + buttonNext.height + 25 : (photoBorder ? Math.max(photoBorder.y + photoBorder.height, textField.y + textField.height) : textField.height) + 25;
-			cloud.y = -95 - cloud.height;
+			cloud.width = (photoBorder ? photoBorder.x + photoBorder.width + 15 : textField.x + textField.width) + 10 + PADDING * 2;
+			cloud.height = buttonNext ? buttonNext.y + buttonNext.height + 45 : (photoBorder ? Math.max(photoBorder.y + photoBorder.height, textField.y + textField.height) : textField.height) + 25 + PADDING * 2;
+			cloud.y = -90 - cloud.height;
 
 			_toLeft = !_toLeft;
 			toLeft = !_toLeft;
 
+			microCloud.alpha = 0;
 			miniCloud.alpha = 0;
 			cloud.alpha = 0;
 			contentHolder.alpha = 0;
-			TweenMax.to(miniCloud, 0.3, {alpha: 1, onComplete: onMiniCloudComplete, delay: 0.3});
+			TweenMax.to(microCloud, 0.1, {alpha: 1, onComplete: onMicroCloudComplete, delay: 0.1});
+		}
+
+		private function onMicroCloudComplete():void {
+			TweenMax.to(miniCloud, 0.1, {alpha: 1, onComplete: onMiniCloudComplete, delay: 0.1});
 		}
 
 		private function onMiniCloudComplete():void {
-			TweenMax.to(cloud, 0.3, {alpha: 1, onComplete: onCloudComplete});
+			TweenMax.to(cloud, 0.1, {alpha: 1, onComplete: onCloudComplete});
 		}
 
 		private function onCloudComplete():void {
-			TweenMax.to(contentHolder, 0.3, {alpha: 1});
+			TweenMax.to(contentHolder, 0.1, {alpha: 1});
 		}
 
 		private function onAcceptClicked(e:Event = null):void
@@ -129,10 +146,11 @@ package com.somewater.rabbit.application.tutorial {
 			{
 				_toLeft = value;
 
-				miniCloud.x = _toLeft ? -60 : 60;
-				cloud.x = _toLeft ? -80 - cloud.width : 80;
-				contentHolder.x = cloud.x + 10;
-				contentHolder.y = cloud.y + 10;
+				microCloud.x = _toLeft ? -45 : 45;
+				miniCloud.x = _toLeft ? -65 : 65;
+				cloud.x = _toLeft ? -40 - cloud.width : 40;
+				contentHolder.x = cloud.x + PADDING;
+				contentHolder.y = cloud.y + PADDING + 10;
 			}
 		}
 	}

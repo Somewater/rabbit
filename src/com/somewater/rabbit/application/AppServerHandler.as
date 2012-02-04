@@ -125,7 +125,8 @@ package com.somewater.rabbit.application {
 
 		public function incrementTutorial(newValue:int):void
 		{
-			handler.call('tutorial/inc', {'tutorial':newValue});
+			if(UserProfile.instance.tutorial < newValue)
+				handler.call('tutorial/inc', {'tutorial':newValue});
 		}
 
 

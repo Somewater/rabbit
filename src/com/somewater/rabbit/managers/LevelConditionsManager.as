@@ -200,9 +200,14 @@ package com.somewater.rabbit.managers
 			//////////////////////////////////////////
 			if(gameGuiRef == null)
 			{
-				gameGuiRef = Config.memory["GameGUI"];// ссылка на gui из application
-				gameGuiRef.timeEnd = conditionsRef["time"] * 0.001;
-				gameGuiRef.carrotMax = conditionsRef["carrotMax"];
+				gameGuiRef = Config.application.gameGUI;// ссылка на gui из application
+				if(gameGuiRef.hasOwnProperty('rightGameGUI'))
+				{
+					gameGuiRef.timeEnd = conditionsRef["time"] * 0.001;
+					gameGuiRef.carrotMax = conditionsRef["carrotMax"];
+				}
+				else
+					gameGuiRef = null;
 			}
 			else
 			{

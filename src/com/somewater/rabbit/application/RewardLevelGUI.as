@@ -35,5 +35,11 @@ package com.somewater.rabbit.application {
 			Config.application.play(Sounds.ALPHA_BUTTON_CLICK, SoundTrack.INTERFACE, true);
 			Config.application.startPage('main_menu');
 		}
+
+		// для тьюториала
+		public function get backButton():DisplayObject
+		{
+			return leftButton;
+		}
 	}
 }

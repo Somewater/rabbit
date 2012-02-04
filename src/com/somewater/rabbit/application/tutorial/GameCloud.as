@@ -42,6 +42,8 @@ package com.somewater.rabbit.application.tutorial {
 		public function tick():void {
 			// позиционируемся
 			var personageDO:DisplayObject = TutorialManager.modile.heroDisplayObject;
+			if(personageDO == null)
+				return;
 			tmpPoint.x = 0;
 			tmpPoint.y = 0;
 			tmpPoint = personageDO.localToGlobal(tmpPoint);

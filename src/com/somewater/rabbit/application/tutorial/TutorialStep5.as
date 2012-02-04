@@ -40,9 +40,9 @@ package com.somewater.rabbit.application.tutorial {
 					(messageAccepted || TutorialManager.modile.health < startRabbitHealth || (stepStartTime - getTimer()) > TutorialManager.TIME_WAITING))
 			{
 				TutorialManager.instance.gameMessage('TUTORIAL_HEALTH_INDICATOR_HINT', onAccepted2);
-				var gameGuiRef:Object = Config.memory["GameGUI"];
+				var gameGuiRef:GameGUI = Config.application.gameGUI as GameGUI;
 				if(gameGuiRef)
-					TutorialManager.instance.highlightGui(gameGuiRef['healthIndicator']);
+					TutorialManager.instance.highlightGui(gameGuiRef.healthIndicator);
 				stepStartTime = getTimer();
 				message2Showed = true;
 			}

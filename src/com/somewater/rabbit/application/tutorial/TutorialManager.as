@@ -1,6 +1,8 @@
 package com.somewater.rabbit.application.tutorial {
 	import com.somewater.control.IClear;
 	import com.somewater.controller.PopUpManager;
+	import com.somewater.rabbit.application.AppServerHandler;
+	import com.somewater.rabbit.application.LevelsPage;
 	import com.somewater.rabbit.application.MainMenuPage;
 	import com.somewater.rabbit.application.windows.LevelStartWindow;
 	import com.somewater.rabbit.managers.IGameTutorialModule;
@@ -40,36 +42,37 @@ package com.somewater.rabbit.application.tutorial {
 	 * 		"Нажми крестик на окне или кнопку 'Пробел' на клавиатуре, чтобы продолжить игру" (триггер на выход из режима паузы)
 	 * 	8) как двигать кролика по диагонали
 	 * 		"Нажимай по две кнопки одновременно, чтобы двигаться по диагонали"
-	 *  9) после прохождения 1-го левела открыть главное меню, а не следующий левел
+	 *  9) после прохождения 1-го левела открыть главное меню, а не следующий левел, как посмотреть на свои награды  морковок
 	 *  	"Поздравляю, мы прошли первый уровень и получили награду!"
-	 * 10) как посмотреть на свои награды  морковок
 	 * 		"Нажми на кнопку 'Награды', чтобы полюбоваться своими достижениями"
+	 * 		"На полянке, около норы кролика, выставлены все награды, полученные в игре"
 	 * 		"Нажми на стрелку, чтобы вернуться в главное меню"
-	 * 11) как увидеть уровни
+	 * 10) как увидеть уровни
 	 * 		"Нажми на кнопку LEVEL_SELECTION, чтобы увидеть уровни игры"
 	 * 		"Все уровни разбиты на отдельные истории. Пройди уровни первой истории и получи доступ к уровням следующей" (2 секунды)
-	 * 		"Счетчик морковок показывает общее количество собранной морковки (выделить первое число)"
 	 * 		"Нажми на стрелку, чтобы вернуться в главное меню"
-	 * 12) если сеть поддерживает friendsApi: как зайти к другу (добавлять фейкового друга, пока не рпойден тьюториал и у человека нет собственных друзей)
+	 * 11) если сеть поддерживает friendsApi: как зайти к другу (добавлять фейкового друга, пока не рпойден тьюториал и у человека нет собственных друзей)
 	 * 		"Нажми на портрет друга, чтобы посмотреть на его полянку с наградами"
 	 * 		"Каждый день заходя к другу, ты можешь собрать 1 морковку"
 	 * 		"Нажми на стрелку, чтобы вернуться в главное меню"
-	 * 13) посмотреть на топ
-	 * 		"нажми кнопку ТОП, чтобы посмотреть на самых успешных кроликов"
-	 * 		"нажми стрелку, чтобы вернуться в главное меню"
-	 * 14) заключительное слово
+	 * ////            ////12) посмотреть на топ
+	 * ////	 ИСКЛЮЧЕН  ////	"нажми кнопку ТОП, чтобы посмотреть на самых успешных кроликов"
+	 * ////	           ////	"нажми стрелку, чтобы вернуться в главное меню"
+	 * 13) заключительное слово
 	 * 		"Поздравляю, теперь ты умный кролик и самостоятельно можешь собирать морковку"
 	 */
 	public class TutorialManager implements IClear{
 
 		public static const TIME_WAITING:int = 8000;
 
+		public static const LEVEL_LAST_STEP:int = 7;// 7й шаг тьюториала (считая по массиву STEPS) все еще относится к 1му левелу
+
 		private static var _instance:TutorialManager;
 
 		private var age:int = 0;
 		private var cleared:Boolean = false;
 		private const YOUNG_AGE:int = 1;// первые 2 секнуды тьюториал не стартует, он "ждет"
-		internal const STEPS:Array = [
+		internal var STEPS:Array = [
 										 TutorialStep1
 										,TutorialStep2
 										,TutorialStep3
@@ -79,6 +82,10 @@ package com.somewater.rabbit.application.tutorial {
 										,TutorialStep7
 										,TutorialStep8
 										,TutorialStep9
+										,TutorialStep10
+										,TutorialStep11
+										,TutorialStep12
+										,TutorialStep13
 									 ];
 
 		private var tickTimer:Timer;
@@ -98,13 +105,20 @@ package com.somewater.rabbit.application.tutorial {
 		private var onObjectHighlightedActiveWindow:Class;
 
 		public function TutorialManager() {
-			tickTimer = new Timer(1000);
+			tickTimer = new Timer(300);
 			tickTimer.addEventListener(TimerEvent.TIMER, onTick);
 			tickTimer.start();
 
 			arrowRepositTimer = new Timer(200);
 			arrowRepositTimer.addEventListener(TimerEvent.TIMER, refrestarrowPosition);
 			arrowRepositTimer.start();
+
+			// при старте менеджера, проверить, как обстоят дела с friends api и удалить шаг посещения друга, если надо
+			if(!Config.loader.hasFriendsApi)
+			{
+				if(STEPS.indexOf(TutorialStep11) != -1)
+					STEPS.splice(STEPS.indexOf(TutorialStep11), 1);
+			}
 		}
 
 		public static function get instance():TutorialManager
@@ -133,6 +147,8 @@ package com.somewater.rabbit.application.tutorial {
 				{
 					currentStep = new cl();
 					currentStep.execute();
+
+					AppServerHandler.instance.incrementTutorial(currentStep.index);
 				}
 				else
 				{
@@ -141,7 +157,7 @@ package com.somewater.rabbit.application.tutorial {
 				}
 			}
 			else if(step < currentStep.index)
-				throw new Error('Tutorial step is ' + currentStep.index + ', cannot assign ' + step);
+				trace('Tutorial step is ' + currentStep.index + ', cannot assign ' + step);
 		}
 
 		/**
@@ -158,10 +174,17 @@ package com.somewater.rabbit.application.tutorial {
 
 			if(currentStep)
 			{
-				// HOOK: если юзер прошел 1-й левел, автоматом отметить ему прохождение шагов тьюториала вплоть до 8-го
-				if(currentStep.index <= 7 && UserProfile.instance.levelNumber > 1 && !(CONFIG::debug))
+				// HOOK: если юзер уже прошел 2-й уровень, то не показываем ему полянку наград и страницу левелов
+				if(currentStep.index <= STEPS.indexOf(TutorialStep10) && UserProfile.instance.levelNumber > 2)
 				{
-					TutorialManager.instance.startStep(new TutorialStep8().index + 1);// HARDCODE
+					TutorialManager.instance.startStep(STEPS.indexOf(TutorialStep10) + 1);
+					return;
+				}
+
+				// HOOK: если юзер прошел 1-й левел, автоматом отметить ему прохождение шагов тьюториала вплоть до 8-го
+				if(currentStep.index <= STEPS.indexOf(TutorialStep8) && UserProfile.instance.levelNumber > 1)
+				{
+					TutorialManager.instance.startStep(STEPS.indexOf(TutorialStep8) + 1);
 					return;
 				}
 
@@ -169,9 +192,14 @@ package com.somewater.rabbit.application.tutorial {
 
 				if(currentStep.completed())
 				{
-					UserProfile.instance.tutorial++;
+					UserProfile.instance.tutorial = currentStep.index + 1;
 				}
 			}
+		}
+
+		public function stepIndex():int
+		{
+			return currentStep ? currentStep.index : -1;
 		}
 
 		public function clear():void {
@@ -231,7 +259,9 @@ package com.somewater.rabbit.application.tutorial {
 			{
 				if(highlightedObjects.indexOf(gui) == -1)
 				{
-					gui.filters = [new GlowFilter(0x31B1E8, 1, 5, 5, 10)];
+					clearHighlights();
+
+					gui.filters = [new GlowFilter(0xF57800, 1, 5, 5, 10)];
 					arrow = new HighlightArrow();
 					if(gui.localToGlobal(new Point()).y < 60)
 						arrow.rotation = 180;
@@ -355,6 +385,11 @@ package com.somewater.rabbit.application.tutorial {
 			return (Config.application as RabbitApplication).currentPage as MainMenuPage
 		}
 
+		public function get levelsPage():LevelsPage
+		{
+			return (Config.application as RabbitApplication).currentPage as LevelsPage
+		}
+
 		/**
 		 * LevelStartWindow был закрыт
 		 */
@@ -373,9 +408,13 @@ package com.somewater.rabbit.application.tutorial {
 			if(target == null)
 				target = (Config.application as RabbitApplication).currentPage;
 			if(clazz)
-				return Object(target).constructor;
+				return target ? Object(target).constructor : null;
 			else
 				return target
+		}
+
+		public function get active():Boolean {
+			return currentStep != null || UserProfile.instance.tutorial <= STEPS.length;
 		}
 	}
 }

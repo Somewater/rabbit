@@ -113,7 +113,8 @@ package com.somewater.rabbit.application
 			var levels:Array = Config.application.levels;
 			var story:StoryDef = storiesSwitcher.selectedStory;
 
-			logo.visible = globalScoreHolder.y < Config.WIDTH * 0.5 &&(friendBar == null || (friendBar.x + FriendBar.WIDTH + 10 < logo.x));
+			if(logo.visible)
+				logo.visible = globalScoreHolder.y < Config.WIDTH * 0.5 &&(friendBar == null || (friendBar.x + FriendBar.WIDTH + 10 < logo.x));
 			levelIcons = [];
 			while(iconsHolder.numChildren)
 			{
@@ -200,6 +201,12 @@ package com.somewater.rabbit.application
 			while(result.length < 4)
 				result = '0' + result;
 			return result;
+		}
+
+		// для тьюториала
+		public function get backButton():DisplayObject
+		{
+			return leftButton;
 		}
 	}
 }

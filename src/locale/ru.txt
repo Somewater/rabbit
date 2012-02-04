@@ -4,6 +4,8 @@ OK=OK
 PAUSE=ПАУЗА
 RABBIT=Кролик
 NUM_FRIENDS={number} друзей
+IMAGINARY_FRIEND_FIRST_NAME=Кроль
+IMAGINARY_FRIEND_LAST_NAME=Кроль
 ###################
 #
 #	ERROR MASSAGES
@@ -171,10 +173,19 @@ TUTORIAL_CLICK_ON_START_BTN=Щелкни на кнопку "{button_label}"
 TUTORIAL_USE_CURSOR_KEYS=Используй\nкнопки-стрелки, чтобы управлять кроликом
 TUTORIAL_MOVE_TO_CARROT=Подведи кролика к морковкам, чтобы их собрать
 TUTORIAL_CARROT_INDICATOR_HINT=Индикатор морковок показывает, сколько морковок еще не собрано
-TUTORIAL_HEDGEHOG_ATTENTION=Не наступай на ежей, они могут уколоть!
+TUTORIAL_HEDGEHOG_ATTENTION=Не наступай на ежа, он может уколоть!
 TUTORIAL_HEALTH_INDICATOR_HINT=Это индикатор жизни, он не должен дойти до нуля!
-TUTORIAL_TIME_COUNTER_HINT=Это счетчик времени. если время закончится, я уже не смогу собрать все морковки
+TUTORIAL_TIME_COUNTER_HINT=Это счетчик времени. Собери морковки до того, как выйдет время
 TUTORIAL_PAUSE_HINT=Нажми на паузу или кнопку "Пробел" на клавиатуре, если хочешь приостановить игру
 TUTORIAL_UN_PAUSE_HINT=Нажми крестик на окне или кнопку "Пробел" на клавиатуре, чтобы продолжить игру
-TUTORIAL_DIAGONAL_KEYS=Нажимай по две кнопки одновременно, чтобы двигаться по диагонали
-TUTORIAL_ON_LEVEL_COMPLETE=Поздравляю, мы прошли первый уровень и получили награду!
+TUTORIAL_DIAGONAL_KEYS=Нажимай на две кнопки одновременно, чтобы двигаться по диагонали
+TUTORIAL_ON_LEVEL_COMPLETE=Поздравляю, ты {male:прошел|прошла} первый уровень и получили{male:|а} награду!
+TUTORIAL_REWARD_BUTTON=Нажми на кнопку "{button_label}", чтобы полюбоваться на полянку со своими достижениями
+TUTORIAL_REWARD_PLACE_DESC=На полянке, около норы кролика, выставлены все награды, полученные в игре
+TUTORIAL_CLICK_ON_BACK_ARROW_TO_MENU=Нажми на стрелку, чтобы вернуться в главное меню
+TUTORIAL_CLICK_TO_LEVELS_BTN=Нажми на кнопку "{button_label}", чтобы увидеть уровни игры
+TUTORIAL_LEVELS_DESC=Все уровни разбиты на отдельные истории. Пройди уровни первой истории и получи доступ к следующей
+TUTORIAL_CLICK_ON_FRIEND=Нажми на портрет кролика, чтобы посмотреть на его полянку с наградами
+#TUTORIAL_FRIEND_BONUS_DESC=Каждый день заходя к другу, ты можешь собрать 1 морковку
+TUTORIAL_FRIEND_BONUS_DESC=Ты можешь заходить в гости к друзьям и смотреть, какие награды есть у них
+TUTORIAL_TITRE=Поздравляю, теперь ты умный кролик и самостоятельно можешь собирать морковку!

@@ -1,5 +1,6 @@
 package com.somewater.rabbit.application.commands {
 	import com.somewater.rabbit.application.AppServerHandler;
+	import com.somewater.rabbit.application.ImaginaryGameUser;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.GameUser;
 	import com.somewater.rabbit.storage.RewardLevelDef;
@@ -18,6 +19,9 @@ package com.somewater.rabbit.application.commands {
 
 		public function OpenRewardLevelCommand(gameUser:GameUser) {
 			this.gameUser = gameUser;
+
+			//  hook для того чтобы не загружать понялку воображаемого друга с сервера
+			gameUserRewardsCache[ImaginaryGameUser.instance] = true;
 		}
 
 		public function execute():void {

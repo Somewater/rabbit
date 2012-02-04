@@ -36,9 +36,9 @@ package com.somewater.rabbit.application.tutorial {
 			if(!messageShowed && pauseWindow == null)
 			{
 				TutorialManager.instance.gameMessage('TUTORIAL_PAUSE_HINT', onAccepted);
-				var gameGuiRef:Object = Config.memory["GameGUI"];
+				var gameGuiRef:GameGUI = Config.application.gameGUI as GameGUI;
 				if(gameGuiRef)
-					TutorialManager.instance.highlightGui(gameGuiRef['pauseButton']);
+					TutorialManager.instance.highlightGui(gameGuiRef.pauseButton);
 				messageShowed = true;
 				stepStartTime = getTimer();
 			}else if(messageShowed && !message2Showed && pauseWindow != null)

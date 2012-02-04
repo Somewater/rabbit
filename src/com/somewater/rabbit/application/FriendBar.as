@@ -60,7 +60,8 @@ package com.somewater.rabbit.application
 			rightStuporArrow.y = 72;
 			addChild(rightStuporArrow);
 			
-			friends = UserProfile.instance.appFriends;
+			friends = UserProfile.instance.appFriends.slice();
+			friends.push(ImaginaryGameUser.instance)
 			friends.sortOn("levelNumber", Array.NUMERIC | Array.DESCENDING);
 			
 			for(var i:int = 0;i<=ITEMS;i++)
@@ -128,6 +129,18 @@ package com.somewater.rabbit.application
 				value = 100000;
 			
 			position += value;
+		}
+
+		// для тьюториала
+		public function getImaginaryFriendIcon():DisplayObject
+		{
+			// перемотать так, чтобы была видна иконка воображаемого друга
+			this.position = friends.indexOf(ImaginaryGameUser.instance);
+
+			for each(var icon:FriendIcon in friendIcons)
+				if(icon.imaginaryFriendIcon)
+					return icon.highlightTarget;
+			return null;
 		}
 	}
 }

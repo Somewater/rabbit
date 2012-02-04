@@ -56,7 +56,8 @@ package com.somewater.rabbit.application
 				addChild(friendBar);
 			}
 
-			logo.visible = (friendBar == null || friendBar.x + FriendBar.WIDTH + 10 < logo.x) && logo.x + logo.width < Config.WIDTH;
+			if(logo.visible)
+				logo.visible = (friendBar == null || friendBar.x + FriendBar.WIDTH + 10 < logo.x) && logo.x + logo.width < Config.WIDTH;
 		}
 		
 		override public function clear():void
@@ -107,10 +108,28 @@ package com.somewater.rabbit.application
 		}
 
 		// для тьюториала
+		public function get rewardButton():OrangeButton
+		{
+			return buttons[2];
+		}
+
+		// для тьюториала
+		public function get levelsButton():OrangeButton
+		{
+			return buttons[1];
+		}
+
+		// для тьюториала
 		public function disableButtons(disable:Boolean = true):void
 		{
 			for each(var b:OrangeButton in buttons)
 				b.enabled = !disable;
+		}
+
+		// для тьюториала
+		public function getFriendBar():FriendBar
+		{
+			return friendBar;
 		}
 	}
 }

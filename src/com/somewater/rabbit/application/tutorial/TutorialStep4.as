@@ -25,9 +25,9 @@ package com.somewater.rabbit.application.tutorial {
 			{
 				// "Индикатор морковок показывает, сколько морковок еще не собрано"
 				TutorialManager.instance.gameMessage('TUTORIAL_CARROT_INDICATOR_HINT', onAccepted);
-				var gameGuiRef:Object = Config.memory["GameGUI"];
+				var gameGuiRef:GameGUI = Config.application.gameGUI as GameGUI;
 				if(gameGuiRef)
-					TutorialManager.instance.highlightGui(gameGuiRef['carrotIndicator']);
+					TutorialManager.instance.highlightGui(gameGuiRef.carrotIndicator);
 				stepStartTime = getTimer();
 				messageShowed = true;
 			}
