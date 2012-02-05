@@ -4,7 +4,7 @@ OK=OK
 PAUSE=ПАУЗА
 RABBIT=Кролик
 NUM_FRIENDS={number} друзей
-IMAGINARY_FRIEND_FIRST_NAME=Кроль
+IMAGINARY_FRIEND_FIRST_NAME=Кролик
 IMAGINARY_FRIEND_LAST_NAME=Кроль
 ###################
 #

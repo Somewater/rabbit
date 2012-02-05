@@ -47,8 +47,6 @@ package
 				//,"Font":{priority:1000, preload:true, url:"assets/fonts_ru.swf"}
 			}
 
-			swfs['Tutorial'] = {preload:true, url:"assets/tutorial.swf"};
-
 			CONFIG::debug
 			{
 				swfs["Editor"] = {priority:1, preload:true, url:"RabbitEditor.swf"};

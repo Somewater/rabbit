@@ -42,6 +42,8 @@ package com.somewater.rabbit.application
 			
 			core = Lib.createMC("interface.FriendIcon");
 			addChild(core);
+			core.ground_big.visible = false;
+			core.ground_big.alpha = 0;
 			
 			var inviteText:EmbededTextField = new EmbededTextField(null, 0xFFFFFF, 12, true, true, false, false, "center");
 			inviteText.width = 70;

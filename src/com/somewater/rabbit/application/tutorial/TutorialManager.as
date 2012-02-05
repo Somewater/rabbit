@@ -413,7 +413,7 @@ package com.somewater.rabbit.application.tutorial {
 		}
 
 		public function get active():Boolean {
-			return currentStep != null || UserProfile.instance.tutorial <= STEPS.length;
+			return currentStep != null || UserProfile.instance.tutorial < STEPS.length;
 		}
 	}
 }

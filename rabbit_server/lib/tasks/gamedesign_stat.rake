@@ -51,8 +51,7 @@ module Gamedesign
 			stat[:time] /= stat[:counter]
 			stat[:carrot] /= stat[:counter]
 			stat[:star] = ((stat[:star] / stat[:counter].to_f) * 100).to_i / 100.0
-			pass_users = 0
-			user_stat.each{|k,v| pass_users += v.to_i if k.to_i >= number }
+			pass_users = stat[:counter]
 
 			puts "LEVEL #{number} (version #{head_levels_by_id[number].version})"
 			puts "#{head_levels_by_id[number].description.gsub("\n\r",'')}"
