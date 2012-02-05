@@ -260,7 +260,7 @@ package com.somewater.rabbit.application.tutorial {
 				{
 					clearHighlights();
 
-					gui.filters = [new GlowFilter(0xF57800, 1, 5, 5, 10)];
+					gui.filters = [new GlowFilter(0xF70938, 1, 5, 5, 10)];
 					arrow = new HighlightArrow();
 					if(gui.localToGlobal(new Point()).y < 60)
 						arrow.rotation = 180;

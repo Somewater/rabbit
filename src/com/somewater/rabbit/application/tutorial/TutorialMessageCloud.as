@@ -12,6 +12,7 @@ package com.somewater.rabbit.application.tutorial {
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.text.TextFieldAutoSize;
 
 	/**
 	 * Облачко с текстом (возможно с рисунком, возможно с кнопкой "Далее")
@@ -64,7 +65,8 @@ package com.somewater.rabbit.application.tutorial {
 			contentHolder = new Sprite();
 			addChild(contentHolder);
 
-			textField = new EmbededTextField(null, 0x565C12, 12, false, true);
+			textField = new EmbededTextField(null, 0x565C12, 12, false, true, false, false, 'center');
+			textField.autoSize = TextFieldAutoSize.CENTER;
 			textField.width = 150;
 			textField.x = PADDING;
 			textField.text = message;
