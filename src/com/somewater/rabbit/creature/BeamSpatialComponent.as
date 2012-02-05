@@ -138,7 +138,15 @@ package com.somewater.rabbit.creature
 		override protected function onAdd():void
 		{
 			if(sideMode == 0)
+			{
+				// самостоятельно "придумываем" координату для бревра, чтоб не возникло ошибки в связи с тем, что координата бревна непроинициализирована
+				if(this._position.x == int.MIN_VALUE || this._position.y == int.MIN_VALUE)
+				{
+					this._position.x = 0;
+					this._position.y = 0;
+				}
 				changeSide(initialSide ? initialSide : RandomizeUtil.rnd > 0.5?1:-1);
+			}
 			super.onAdd();
 		}
 		
