@@ -65,7 +65,7 @@ package com.somewater.rabbit.application.tutorial {
 
 		public static const TIME_WAITING:int = 8000;
 
-		public static const LEVEL_LAST_STEP:int = 7;// 7й шаг тьюториала (считая по массиву STEPS) все еще относится к 1му левелу
+		public static const AFTER_LEVEL_STEP:int = 8;// 8й шаг тьюториала (считая по массиву STEPS) наступает, елси игрок прошел левел 1
 
 		private static var _instance:TutorialManager;
 
@@ -147,8 +147,6 @@ package com.somewater.rabbit.application.tutorial {
 				{
 					currentStep = new cl();
 					currentStep.execute();
-
-					AppServerHandler.instance.incrementTutorial(currentStep.index);
 				}
 				else
 				{
@@ -192,6 +190,7 @@ package com.somewater.rabbit.application.tutorial {
 
 				if(currentStep.completed())
 				{
+					AppServerHandler.instance.incrementTutorial(currentStep.index + 1);
 					UserProfile.instance.tutorial = currentStep.index + 1;
 				}
 			}

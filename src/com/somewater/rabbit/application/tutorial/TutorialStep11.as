@@ -35,8 +35,11 @@ package com.somewater.rabbit.application.tutorial {
 				{
 					phase = 1;
 					TutorialManager.instance.guiMessage(Lang.t('TUTORIAL_CLICK_ON_FRIEND'), Config.WIDTH - 100, Config.HEIGHT - 100, null, null, true);
-					TutorialManager.instance.highlightGui(TutorialManager.instance.mainMenuPage.getFriendBar().getImaginaryFriendIcon());
 				}
+			}else if(phase == 1 && TutorialManager.instance.mainMenuPage != null)
+			{
+				// каждый тик выделяем иконку заново, т.к. она может переместиться под действием стрелочек
+				TutorialManager.instance.highlightGui(TutorialManager.instance.mainMenuPage.getFriendBar().getImaginaryFriendIcon());
 			}
 
 			if(Config.gameModuleActive && Config.game.level && Config.game.level.type == RewardLevelDef.TYPE && RewardLevelDef(Config.game.level).gameUser is ImaginaryGameUser)

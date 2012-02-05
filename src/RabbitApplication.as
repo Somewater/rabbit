@@ -329,7 +329,6 @@ package
 			}
 
 			startPage("main_menu");
-			UserProfile.instance.tutorial = 0;
 			TutorialManager.instance;// Initialize TutorialManager
 
 			Config.stat(Stat.APP_STARTED);
