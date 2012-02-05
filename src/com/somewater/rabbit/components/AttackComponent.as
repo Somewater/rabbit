@@ -123,7 +123,8 @@ package com.somewater.rabbit.components
 			var victioms:Array = sense.data.victims;
 			this.victims = new Dictionary();
 			var victimsLength:int = 0;
-			var victim:IEntity
+			var victim:IEntity;
+			var victimAttacked:Boolean = false;
 			if(victioms)
 			{
 				var l:int = victioms.length;
@@ -133,7 +134,8 @@ package com.somewater.rabbit.components
 						victim = IsoSpatial(victioms[i]).owner;
 						if(attackDuration == 0)
 						{
-							processAttack(victim, attackRange);
+							if(processAttack(victim, attackRange))
+								victimAttacked = true;
 						}
 						else
 						{
@@ -144,7 +146,8 @@ package com.somewater.rabbit.components
 			}
 			
 			startAttackTime = lastAttackTime = PBE.processManager.virtualTime;
-			owner.setProperty(renderStateRef, States.ATTACK);
+			if(victimAttacked)
+				owner.setProperty(renderStateRef, States.ATTACK);
 			
 			// закончить процесс атаки
 			if(attackDuration == 0)
@@ -174,8 +177,8 @@ package com.somewater.rabbit.components
 				}
 				else
 				{
-					hasVictims = true;
-					processAttack(victim, attack);
+					if(processAttack(victim, attack))
+						hasVictims = true;
 				}
 			}
 			
@@ -210,10 +213,15 @@ package com.somewater.rabbit.components
 					owner.setProperty(renderStateRef, States.STAND);
 			}
 		}
-		
-		protected function processAttack(victim:IEntity, attack:Number):void
+
+		/**
+		 * @param victim
+		 * @param attack
+		 * @return жертву получилось атаковать (жертва в данный момент не защищена особой магией и подвержена атаке
+		 */
+		protected function processAttack(victim:IEntity, attack:Number):Boolean
 		{
-			if(!victim) return;
+			if(!victim) return false;
 			
 			// повернуться лицом к жертве
 			var victimPos:Point = victim.getProperty(positionRef);
@@ -221,10 +229,18 @@ package com.somewater.rabbit.components
 			
 			// и убить её
 			var data:DataComponent = victim.getProperty(dataComponentRef);
+
+			// если это кролик и он под защитой, мы не можем атаковать
+			if(data is HeroDataComponent && HeroDataComponent(data).protectedFlag > 0)
+				return false;
+
 			if(data)
 			{
 				data.health -= attack;
+				return true;
 			}
+			else
+				return false;
 		}
 	}
 }

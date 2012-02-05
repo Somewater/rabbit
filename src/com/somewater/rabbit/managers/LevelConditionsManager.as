@@ -36,7 +36,7 @@ package com.somewater.rabbit.managers
 	 */
 	public class LevelConditionsManager extends PBObject implements ITickedObject
 	{
-		public var instance:LevelConditionsManager;
+		public static var instance:LevelConditionsManager;
 		
 		private var startLevelTime:uint;
 		private var currentTime:uint;
@@ -53,9 +53,6 @@ package com.somewater.rabbit.managers
 		
 		public function LevelConditionsManager()
 		{
-			if(instance)
-				throw new Error("Singletone");
-			
 			instance = this;
 			
 			initialize("LevelConditionsManager");
@@ -239,6 +236,12 @@ package com.somewater.rabbit.managers
 			else
 				finishLevel(false, LevelInstanceDef.LEVEL_FATAL_TIME);
 		}
+
+		public function clear():void
+		{
+			if(instance == this)
+				instance = null;
+		}
 		
 		
 		/**
@@ -278,10 +281,21 @@ package com.somewater.rabbit.managers
 				if(time <= conditionsRef["time"] && event.stars == 3 && HeroDataComponent.instance)
 					event.currentCarrotHarvested = event.carrotHarvested =  HeroDataComponent.instance.carrot;
 
+				clear();
+
 				Config.application.addFinishedLevel(event);
 				Config.application.levelFinishMessage(event);
 				Config.game.finishLevel(event, true);
 			});
+		}
+
+		/**
+		 * Уменишить время, прошедшее с момента старта уровня, на заданную величину
+		 * @param seconds
+		 */
+		public function decrementSpendedTime(milliseconds:Number):void
+		{
+			startLevelTime = Math.min(currentTime, startLevelTime + milliseconds);
 		}
 	}
 }

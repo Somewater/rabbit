@@ -16,7 +16,6 @@ package com.somewater.rabbit.components
 		
 		public function DataComponent()
 		{
-			this.score = 0;
 		}
 		
 		

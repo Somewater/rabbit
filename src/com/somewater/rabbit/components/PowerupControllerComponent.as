@@ -3,6 +3,7 @@ package com.somewater.rabbit.components {
 	import com.pblabs.engine.entity.IEntity;
 	import com.somewater.rabbit.iso.IsoMover;
 	import com.somewater.rabbit.iso.IsoRenderer;
+	import com.somewater.rabbit.managers.LevelConditionsManager;
 
 	import flash.filters.BitmapFilter;
 	import flash.filters.GlowFilter;
@@ -18,6 +19,7 @@ package com.somewater.rabbit.components {
 		private var isoMoverRef:IsoMover;
 		private var heroDataRef:HeroDataComponent;
 		private var rendererRef:IsoRenderer;
+		private var levelConditionsRef:LevelConditionsManager;
 
 		/**
 		 * Массив временных паверапов
@@ -52,6 +54,9 @@ package com.somewater.rabbit.components {
 
 
 		override public function onTick(deltaTime:Number):void {
+			if(levelConditionsRef == null)
+				levelConditionsRef = LevelConditionsManager.instance;
+
 			var i:int = 0;
 			var filterDeleted:Boolean = false;
 			while(i < temporaryPowerups.length)
@@ -63,10 +68,10 @@ package com.somewater.rabbit.components {
 					// закончить действие паверапа
 					var data:DataComponent = info.data;
 
-					if(data.hasOwnProperty('protection'))
+					if(data.protection)
 						heroDataRef.protectedFlag--;
 
-					if(data.hasOwnProperty('speedAdd'))
+					if(data.speedAdd)
 						isoMoverRef.speed -= data.speedAdd;
 
 					temporaryPowerups.splice(i, 1);
@@ -89,20 +94,43 @@ package com.somewater.rabbit.components {
 		 */
 		override protected function applyHarvest(harvest:Array):void
 		{
+			if(levelConditionsRef == null)
+				levelConditionsRef = LevelConditionsManager.instance;
+
 			for each(var entity:IEntity in harvest)
 			{
-				var data:DataComponent = entity.lookupComponentByName('Data') as DataComponent;
+				var data:PowerupDataComponent = entity.lookupComponentByName('Data') as PowerupDataComponent;
 
-				if(data.hasOwnProperty('health'))
-					heroDataRef.health = Math.min(1, heroDataRef.health + data.health);
+				if(data.health)
+				{
+					if(heroDataRef.health == 1)
+						continue;
+					else
+						heroDataRef.health = Math.min(1, heroDataRef.health + data.health);
+				}
 
-				if(data.hasOwnProperty('protection'))
-					heroDataRef.protectedFlag++;
+				if(data.protection)
+				{
+					if(heroDataRef.protectedFlag > 0)
+						continue;
+					else
+						heroDataRef.protectedFlag++;
+				}
 
-				if(data.hasOwnProperty('speedAdd'))
-					isoMoverRef.speed += parseFloat(data.speedAdd);
+				if(data.speedAdd)
+				{
+					if(isoMoverRef.speed + data.speedAdd > heroDataRef.maxSpeed)
+						continue;
+					else
+						isoMoverRef.speed += data.speedAdd;
+				}
 
-				if(data.hasOwnProperty('time'))
+				if(data.timeAdd)
+				{
+					levelConditionsRef.decrementSpendedTime(data.timeAdd);
+				}
+
+				if(data.time)
 					pushToTemporaryPowerups(data);
 
 				entity.destroy();
@@ -128,9 +156,9 @@ package com.somewater.rabbit.components {
 			var currentFilters:Array = [];
 			for each(var info:PowerupInfo in temporaryPowerups)
 			{
-				if(info.data.hasOwnProperty('speedAdd') && currentFilters.indexOf(SPEED_UP) == -1)
+				if(info.data.speedAdd && currentFilters.indexOf(SPEED_UP) == -1)
 					currentFilters.push(SPEED_UP);
-				if(info.data.hasOwnProperty('protection') && currentFilters.indexOf(PROTECTION) == -1)
+				if(info.data.protection && currentFilters.indexOf(PROTECTION) == -1)
 					currentFilters.push(PROTECTION);
 			}
 			rendererRef.displayObject.filters = currentFilters;

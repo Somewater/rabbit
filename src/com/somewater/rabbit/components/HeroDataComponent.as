@@ -17,6 +17,11 @@ package com.somewater.rabbit.components
 		 * (количество означает сколько паверапов протекта применено)
 		 */
 		public var protectedFlag:int = 0;
+
+		/**
+		 * Какая скорость может быть максимальной
+		 */
+		public var maxSpeed:Number = 8;
 		
 		public function HeroDataComponent()
 		{
@@ -34,7 +39,7 @@ package com.somewater.rabbit.components
 			super.onRemove();
 		}
 		
-		private var _carrot:int;
+		private var _carrot:int = 0;
 		public function set carrot(value:int):void
 		{
 			if(value != _carrot)
@@ -51,7 +56,7 @@ package com.somewater.rabbit.components
 
 		override public function set health(value:Number):void
 		{
-			if(protectedFlag <= 0 && value != _health)
+			if(value != _health)
 			{
 				if(_health > value)
 					Config.application.play(Sounds.DAMAGE, SoundTrack.GAME_DAMAGE);

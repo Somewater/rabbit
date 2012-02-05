@@ -611,7 +611,7 @@
 				<y>1</y>
 			</size>
 		</component>
-		<component type="com.somewater.rabbit.components.DataComponent" name="Data">
+		<component type="com.somewater.rabbit.components.PowerupDataComponent" name="Data">
 		</component>
 	</template>
 
@@ -641,6 +641,15 @@
 		<component name="Data">
 			<speedAdd>2</speedAdd>
 			<time>10000</time>
+		</component>
+	</template>
+
+	<template name="PowerupTime" template="PowerupBase">
+		<component name="Render">
+			<slug>rabbit.PowerupTimeActor</slug>
+		</component>
+		<component name="Data">
+			<timeAdd>10000</timeAdd>
 		</component>
 	</template>
 </things>

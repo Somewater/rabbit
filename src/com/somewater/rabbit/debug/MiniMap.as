@@ -3,6 +3,7 @@ package com.somewater.rabbit.debug
 	import com.astar.BasicTile;
 	import com.pblabs.engine.PBE;
 	import com.pblabs.engine.components.TickedComponent;
+	import com.somewater.rabbit.iso.IsoSpatial;
 	import com.somewater.rabbit.iso.scene.IsoSpatialManager;
 	
 	import flash.display.Bitmap;
@@ -125,17 +126,27 @@ package com.somewater.rabbit.debug
 			var boxWidth:Number = HEIGHT / IsoSpatialManager.instance.height;
 			var boxHeight:Number  = WIDTH /  IsoSpatialManager.instance.width;
 			
-			var spatials:Array = IsoSpatialManager.instance.mapPath._map;
-			var yLength:int = spatials.length;
+			var mapPath:Array = IsoSpatialManager.instance.mapPath._map;
+			var mapSpatial:Array = IsoSpatialManager.instance.mapSpatial;
+			var yLength:int = mapPath.length;
 			for(var i:int = 0;i<yLength;i++)
 			{
-				var line:Array = spatials[i];
+				var line:Array = mapPath[i];
 				var xLength:int = line.length;
 				for(var j:int = 0;j<xLength;j++)
 				{
 					var tile:BasicTile = line[j];
 					if(tile && tile.mask != 0xFFFFFFFF)
 					{
+						if(mapSpatial[j][i].length > 1)
+						{
+							var names:String = '';
+							for each(var isp:IsoSpatial in mapSpatial[j][i])
+								names += ',' + isp.owner.debugName;
+							trace('X: ' + j + ', Y: ' + i + "\t" + names);
+							g.beginFill(0);
+						}
+						else
 						g.beginFill(colors[0xFFFFFFFF - tile.mask]);
 						g.drawRect(j * boxHeight, i * boxWidth, boxWidth, boxHeight);
 					}

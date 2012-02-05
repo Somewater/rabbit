@@ -4,6 +4,7 @@ package com.somewater.rabbit.creature
 	import com.pblabs.engine.entity.IEntity;
 	import com.somewater.rabbit.States;
 	import com.somewater.rabbit.components.DataComponent;
+	import com.somewater.rabbit.components.HeroDataComponent;
 	import com.somewater.rabbit.components.SwitchableAttackComponent;
 	import com.somewater.rabbit.iso.IsoMover;
 	import com.somewater.rabbit.iso.IsoSpatial;
@@ -24,26 +25,28 @@ package com.somewater.rabbit.creature
 		override public function breakAction():void
 		{
 			victims = null;
-			
-			// в отличае от оригинальной функции, не только не переводим персонаж в стейт stand
-			// но даже специально фиксируем его в стейте attack (анимация "уши кролика торчат из морковки")
-			owner.setProperty(renderStateRef, States.ATTACK);
 		}
 		
 		/**
 		 * Откладываем "убийство" кролика, т.к. кролик должен исчезнуть не сейчас, 
 		 * а когда морковка наклонится к нему
 		 */
-		override protected function processAttack(victim:IEntity, attack:Number):void
+		override protected function processAttack(victim:IEntity, attack:Number):Boolean
 		{
-			if(!victim) return;
+			if(!victim) return false;
+
+			var data:HeroDataComponent = victim.getProperty(dataComponentRef) as HeroDataComponent;
+			var victimIsoMover:IsoMover = victim.lookupComponentByType(IsoMover) as IsoMover;
+			if(data == null
+					|| data.protectedFlag > 0 // жерта под защитой
+					|| victimIsoMover.speed <= 0.05) // жетву уже кто-то замедлил (другая злая морковка)
+				return false;
 			
 			// повернуться лицом к жертве
 			var victimPos:Point = victim.getProperty(positionRef);
 			owner.setProperty(renderViewPointRef, victimPos);
 			
 			// и убить её
-			var data:DataComponent = victim.getProperty(dataComponentRef);
 			if(data)
 			{
 				PBE.processManager.schedule(1000, this, function(data:DataComponent, attack:Number):void{
@@ -53,6 +56,8 @@ package com.somewater.rabbit.creature
 			
 			// заодно выставим кролику скорость на 0, чтобы он не убежал :)
 			IsoMover(victim.lookupComponentByType(IsoMover)).speed = 0.05;
+
+			return true;
 		}
 	}
 }
