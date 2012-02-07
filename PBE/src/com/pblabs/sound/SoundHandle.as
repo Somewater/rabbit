@@ -76,7 +76,10 @@ package com.pblabs.sound
         
         public function resume():void
         {
-            Profiler.enter("SoundHandle.resume");
+            CONFIG::debug
+			{
+				Profiler.enter("SoundHandle.resume");
+			}
             
             dirty = true;
             
@@ -96,7 +99,10 @@ package com.pblabs.sound
             }
             
 
-            Profiler.exit("SoundHandle.resume");
+            CONFIG::debug
+			{
+				Profiler.exit("SoundHandle.resume");
+			}
         }
         
         /**

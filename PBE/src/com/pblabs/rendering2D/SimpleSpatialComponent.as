@@ -138,14 +138,14 @@ package com.pblabs.rendering2D
         /**
          * @inheritDoc
          */
-        override public function onTick(tickRate:Number):void
+        /*override public function onTick(tickRate:Number):void
         {
             // Note we set directly, as position (the accessor) clones the point,
             // which would result in a nop.
             _position.x += velocity.x * tickRate;
             _position.y += velocity.y * tickRate;
             rotation   += angularVelocity * tickRate;
-        }
+        }*/
         
         /**
          * @inheritDoc

@@ -30,7 +30,7 @@ package com.pblabs.engine.entity
       
       public function set owner(value:IEntity):void
       {
-          _owner = value;
+          _owner = value as Entity;
       }
       
       /**
@@ -60,7 +60,7 @@ package com.pblabs.engine.entity
             throw new Error("Trying to register an already-registered component!");
             
          _name = name;
-         _owner = owner;
+         _owner = owner as Entity;
          onAdd();
          _isRegistered = true;
       }
@@ -119,7 +119,7 @@ package com.pblabs.engine.entity
       }
       
       private var _isRegistered:Boolean = false;
-      protected var _owner:IEntity = null;
+      public var _owner:Entity = null;
       private var _name:String = null;
    }
 }

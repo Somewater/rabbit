@@ -298,14 +298,14 @@
 			CROW
 
 	-->
-	<template name="CrowConcealed" template="CrowBase">
+	<template name="CrowConcealed" template="CrowBase" tick="always">
 		<component name="Conceal" type="com.somewater.rabbit.components.ConcealComponent">
 			<priority>10</priority>
 			<concealOnStart>true</concealOnStart>
 		</component>
 	</template>
 
-	<template name="Crow" template="CrowBase">
+	<template name="Crow" template="CrowBase" tick="always">
 		<component name="Walk" type="com.somewater.rabbit.components.WalkComponent">
 			<priority>-10</priority>
 		</component>

@@ -52,6 +52,7 @@ package com.somewater.rabbit.iso
 		public function IsoSpatial()
 		{
 			super();
+			registerForTicks = false;
 		}
 		
 		

@@ -10,8 +10,6 @@ package com.pblabs.engine.entity
 {
     import com.pblabs.engine.core.IPBObject;
     
-    import flash.utils.Dictionary;
-    
    /**
     * Game objects in PBE are referred to as entities. This interface defines the
     * behavior for an entity. A full featured implementation of this interface is

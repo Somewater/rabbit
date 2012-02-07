@@ -28,6 +28,8 @@ package com.pblabs.engine.core
      */
     public class InputManager extends EventDispatcher implements ITickedObject
     {
+		private var dirty:Boolean = true;
+
         public function InputManager()
         {
             PBE.mainStage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
@@ -49,6 +51,7 @@ package com.pblabs.engine.core
          */
         public function onTick(deltaTime:Number):void
         {
+			if(!dirty) return;
             // This function tracks which keys were just pressed (or released) within the last tick.
             // It should be called at the beginning of the tick to give the most accurate responses possible.
             
@@ -68,6 +71,8 @@ package com.pblabs.engine.core
                 
                 _keyStateOld[cnt] = _keyState[cnt];
             }
+
+			dirty = false;
         }
         
         /**
@@ -182,12 +187,14 @@ package com.pblabs.engine.core
 
             _keyState[event.keyCode] = true;
             dispatchEvent(event);
+			dirty = true;
         }
 
         private function onKeyUp(event:KeyboardEvent):void
         {
             _keyState[event.keyCode] = false;
             dispatchEvent(event);
+			dirty = true;
         }
 
         private function onMouseDown(event:MouseEvent):void

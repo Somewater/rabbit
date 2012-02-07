@@ -1,5 +1,6 @@
 package
 {
+	import com.pblabs.engine.debug.Stats;
 	import com.somewater.net.ServerHandler;
 	import com.somewater.rabbit.loader.RabbitLoaderBase;
 	import com.somewater.rabbit.net.LocalServerHandler;
@@ -19,6 +20,8 @@ package
 		public function EmbedRabbitLoader()
 		{
 			super();
+
+			addChild(new Stats())
 		}
 		
 		
@@ -52,8 +55,8 @@ package
 				swfs["Editor"] = {priority:1, preload:true, url:"RabbitEditor.swf"};
 			}
 
-			if(!CONFIG::debug)
-				swfs["XmlPack"] = {preload:true, url:"xml_pack.swf"};
+			//if(!CONFIG::debug)
+			//	swfs["XmlPack"] = {preload:true, url:"xml_pack.swf"};
 		}
 		
 		override protected function initializeServerHandler():void

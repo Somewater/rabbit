@@ -10,12 +10,26 @@ package com.pblabs.engine.core
 {
     import com.pblabs.engine.PBE;
     import com.pblabs.engine.PBUtil;
-    import com.pblabs.engine.debug.*;
-    import com.pblabs.engine.serialization.TypeUtility;
-    import com.somewater.rabbit.events.ExceptionEvent;
-    
-    import flash.events.Event;
-    import flash.utils.getTimer;
+	import com.pblabs.engine.components.TickedComponent;
+	import com.pblabs.engine.debug.*;
+	import com.pblabs.engine.entity.Entity;
+	import com.pblabs.engine.entity.IEntity;
+	import com.pblabs.engine.serialization.TypeUtility;
+	import com.pblabs.rendering2D.DisplayObjectRenderer;
+	import com.pblabs.rendering2D.SimpleSpatialComponent;
+	import com.somewater.rabbit.events.ExceptionEvent;
+	import com.somewater.rabbit.iso.IsoCameraController;
+	import com.somewater.rabbit.iso.IsoRenderer;
+	import com.somewater.rabbit.iso.IsoSpatial;
+	import com.somewater.rabbit.storage.Config;
+	import com.somewater.rabbit.ui.HorizontRender;
+
+	import flash.display.DisplayObject;
+
+	import flash.events.Event;
+	import flash.geom.Point;
+	import flash.utils.Dictionary;
+	import flash.utils.getTimer;
     
     /**
      * The process manager manages all time related functionality in the engine.
@@ -68,6 +82,12 @@ package com.pblabs.engine.core
          * if you have disableSlowWarning set to false.</p>
          */
         public static const MAX_TICKS_PER_FRAME:int = 5;
+
+		/**
+		 * Тикать всех подряд, не проводить оптимизацию
+		 */
+		public var optimizeModeCounter:int = -1;
+		private function get optimizeMode():Boolean{return optimizeModeCounter > 2;}
         
         /**
          * The scale at which time advances. If this is set to 2, the game
@@ -220,7 +240,7 @@ package com.pblabs.engine.core
          */
         public function addAnimatedObject(object:IAnimatedObject, priority:Number = 0.0):void
         {
-            addObject(object, priority, animatedObjects);
+            addObject(object, priority, animatedObjects, entityAnimatedObjects);
         }
         
         /**
@@ -234,7 +254,7 @@ package com.pblabs.engine.core
          */
         public function addTickedObject(object:ITickedObject, priority:Number = 0.0):void
         {
-            addObject(object, priority, tickedObjects);
+            addObject(object, priority, tickedObjects, entityTickedObjects);
         }
         
         /**
@@ -248,14 +268,20 @@ package com.pblabs.engine.core
             if(object.nextThinkTime < _virtualTime)
                 throw new Error("Tried to queue something into the past, but no flux capacitor is present!");
             
-            Profiler.enter("queueObject");
+            CONFIG::debug
+			{
+				Profiler.enter("queueObject");
+			}
             
             if(object.nextThinkTime >= _virtualTime && thinkHeap.contains(object))
                 thinkHeap.remove(object);
             
             thinkHeap.enqueue(object);
             
-            Profiler.exit("queueObject");
+            CONFIG::debug
+			{
+				Profiler.exit("queueObject");
+			}
         }
         
         /**
@@ -265,7 +291,7 @@ package com.pblabs.engine.core
          */
         public function removeAnimatedObject(object:IAnimatedObject):void
         {
-            removeObject(object, animatedObjects);
+            removeObject(object, animatedObjects, entityAnimatedObjects);
         }
         
         /**
@@ -275,7 +301,7 @@ package com.pblabs.engine.core
          */
         public function removeTickedObject(object:ITickedObject):void
         {
-            removeObject(object, tickedObjects);
+            removeObject(object, tickedObjects, entityTickedObjects);
         }
         
         /**
@@ -328,12 +354,12 @@ package com.pblabs.engine.core
          * @param priority Priority; this is used to keep the list ordered.
          * @param list List to add to.
          */
-        private function addObject(object:*, priority:Number, list:Array):void
+        private function addObject(object:*, priority:Number, list:Array, entityList:Array):void
         {
             // If we are in a tick, defer the add.
             if(duringAdvance)
             {
-                PBE.callLater(addObject, [ object, priority, list]);
+                PBE.callLater(addObject, [ object, priority, list, entityList]);
                 return;
             }
             
@@ -341,6 +367,14 @@ package com.pblabs.engine.core
                 start();
             
             var position:int = -1;
+
+			var entityComponent:Boolean = false;
+			if(optimizeMode && isEntityComponent(object))
+			{
+				list = entityList;
+				entityComponent = true;
+			}
+
             for (var i:int = 0; i < list.length; i++)
             {
                 if(!list[i])
@@ -368,6 +402,18 @@ package com.pblabs.engine.core
                 list.push(processObject);
             else
                 list.splice(position, 0, processObject);
+
+			CONFIG::debug
+			{
+				if(entityComponent && object._owner == null)
+					throw new Error('Can`t manipilate unbind component')
+			}
+
+			if(entityComponent && entities.indexOf(object._owner) == -1)
+			{
+				entities.push(object._owner);
+			}
+
         }
         
         /**
@@ -375,31 +421,50 @@ package com.pblabs.engine.core
          * @param object Object to remove.
          * @param list List from which to remove.
          */
-        private function removeObject(object:*, list:Array):void
+        private function removeObject(object:*, list:Array, entityList:Array):void
         {
             if (listenerCount == 1 && thinkHeap.size == 0)
                 stop();
-            
-            for (var i:int = 0; i < list.length; i++)
-            {
-                if(!list[i])
-                    continue;
-                
-                if (list[i].listener == object)
-                {
-                    if(duringAdvance)
-                    {
-                        list[i] = null;
-                        needPurgeEmpty = true;
-                    }
-                    else
-                    {
-                        list.splice(i, 1);                        
-                    }
-                    
-                    return;
-                }
-            }
+            for(var k:int = 0; k<2; k++)
+			{
+				for (var i:int = 0; i < list.length; i++)
+				{
+					if(!list[i])
+						continue;
+
+					if (list[i].listener == object)
+					{
+						CONFIG::debug
+						{
+							if(object._owner == null && this.optimizeMode)
+								throw new Error('Can`t manipilate unbind component')
+						}
+						if(k == 1 && object is IsoRenderer)
+						{
+							// если производится удаление рендера у ентити, очевидно, что ентити удаляется насовсем
+							var idx:int = entities.indexOf(object._owner);
+							CONFIG::debug
+							{
+								if(idx == -1)
+									throw new Error('Some entity component hide our owner later');
+							}
+							entities.splice(idx, 1);
+						}
+						if(duringAdvance)
+						{
+							list[i] = null;
+							needPurgeEmpty = true;
+						}
+						else
+						{
+							list.splice(i, 1);
+						}
+
+						return;
+					}
+				}
+				list = entityList;
+			}
             
             Logger.warn(object, "RemoveProcessObject", "This object has not been added to the process manager.");
         }
@@ -411,7 +476,10 @@ package com.pblabs.engine.core
         {
             // This is called from a system event, so it had better be at the 
             // root of the profiler stack!
-            Profiler.ensureAtRoot();
+            CONFIG::debug
+			{
+				Profiler.ensureAtRoot();
+			}
             
             // Track current time.
             var currentTime:Number = getTimer();
@@ -423,7 +491,14 @@ package com.pblabs.engine.core
             
             // Calculate time since last frame and advance that much.
             var deltaTime:Number = Number(currentTime - lastTime) * _timeScale;
-			
+
+			CONFIG::debug
+			{
+				// не оборачиваем в try-catch, чтобы воочию видет environment ошибки
+				advance(deltaTime);
+				lastTime = currentTime;
+				return;
+			}
 			// advance(deltaTime);
 			try{
 				advance(deltaTime);
@@ -436,8 +511,14 @@ package com.pblabs.engine.core
             lastTime = currentTime;
         }
         
-        private function advance(deltaTime:Number, suppressSafety:Boolean = false):void
+        protected function advance(deltaTime:Number, suppressSafety:Boolean = false):void
         {
+			// FIX: 56.02.2012, check visibility of owner of ticked and animation component
+			this.optimizeModeCounter++;
+			if(optimizeModeCounter == 3)// т.е. если это первый тик с оптимизацией
+				separateProcessObjects();
+			var optimizeMode:Boolean = this.optimizeMode;
+
             // Update platform time, to avoid lots of costly calls to getTimer.
             _platformTime = getTimer();
             
@@ -446,9 +527,70 @@ package com.pblabs.engine.core
             
             // Add time to the accumulator.
             elapsed += deltaTime;
-            
+
+			var unvisibleEntities:Dictionary = new Dictionary();
+			var untickedEntities:Dictionary = new Dictionary();
+			if(optimizeMode)
+			{
+				CONFIG::debug
+				{
+					Profiler.enter("Check visible entities");
+				}
+				const PADDING:int = 2;
+				var camera:IsoCameraController = IsoCameraController.getInstance();
+
+				var minXPosVisible:int = camera.x;
+				var minYPosVisible:int = camera.y;
+				var maxXPosVisible:int = Math.ceil(camera.x + Config.T_WIDTH);
+				var maxYPosVisible:int = Math.ceil(camera.y + Config.T_HEIGHT);
+				var minXPos:int = minXPosVisible - PADDING;
+				var minYPos:int = minYPosVisible - PADDING;
+				var maxXPos:int = maxXPosVisible + PADDING;
+				var maxYPos:int = maxYPosVisible + PADDING;
+
+				// для удаленив визуальных артефактов
+				minXPosVisible -= 1;
+				maxXPosVisible += 1;
+				maxYPosVisible += 1;
+
+				var ticker:TickedComponent;
+				var render:DisplayObjectRenderer;
+				var own:Entity;
+
+				for each(own in this.entities)
+				{
+					var spatialRef:SimpleSpatialComponent = own.spatialRef
+					var pos:Point = spatialRef._position;
+					var size:Point = spatialRef._size;
+					var minX:int = pos.x;
+					var minY:int = pos.y;
+					var maxX:int = minX + size.x;
+					var maxY:int = minY + size.y;
+					if(!own.noSleep && (minX > maxXPos || minY > maxYPos || maxX < minXPos || maxY < minYPos))
+					{
+						// не тикается и невидим
+						untickedEntities[own] = true;
+						unvisibleEntities[own] = true;
+						continue;
+					}
+					if(minX > maxXPosVisible || minY > maxYPosVisible || maxX < minXPosVisible || maxY < minYPosVisible)
+					{
+						// невидим (но тикается)
+						unvisibleEntities[own] = true;
+					}
+
+					// тикается и видим
+				}
+				CONFIG::debug
+				{
+					Profiler.exit("Check visible entities");
+				}
+			}
+
             // Perform ticks, respecting tick caps.
             var tickCount:int = 0;
+			var object:ProcessObject;
+			var j:int;
             while (elapsed >= TICK_RATE_MS && (suppressSafety || tickCount < MAX_TICKS_PER_FRAME))
             {
                 // Ticks always happen on interpolation boundary.
@@ -459,22 +601,56 @@ package com.pblabs.engine.core
                 processScheduledObjects();
                 
                 // Do the onTick callbacks, noting time in profiler appropriately.
-                Profiler.enter("Tick");
+                CONFIG::debug
+				{
+					Profiler.enter("Tick");
+				}
                 
                 duringAdvance = true;
-                for(var j:int=0; j<tickedObjects.length; j++)
+                for(j=0; j<tickedObjects.length; j++)
                 {
-                    var object:ProcessObject = tickedObjects[j] as ProcessObject;
+                    object = tickedObjects[j] as ProcessObject;
                     if(!object)
                         continue;
-                    
-                    Profiler.enter(object.profilerKey);
+
+                    CONFIG::debug
+					{
+						Profiler.enter(object.profilerKey);
+					}
                     (object.listener as ITickedObject).onTick(TICK_RATE);
-                    Profiler.exit(object.profilerKey);
+                    CONFIG::debug
+					{
+						Profiler.exit(object.profilerKey);
+					}
                 }
+
+				for(j=0; j<entityTickedObjects.length; j++)
+				{
+					object = entityTickedObjects[j] as ProcessObject;
+					if(!object)
+						continue;
+
+					ticker = object.listener;
+
+					if(untickedEntities[ticker._owner])
+						continue;
+
+					CONFIG::debug
+					{
+						Profiler.enter(object.profilerKey);
+					}
+					ticker.onTick(TICK_RATE);
+					CONFIG::debug
+					{
+						Profiler.exit(object.profilerKey);
+					}
+				}
                 duringAdvance = false;
                 
-                Profiler.exit("Tick");
+                CONFIG::debug
+				{
+					Profiler.exit("Tick");
+				}
                 
                 // Update virtual time by subtracting from accumulator.
                 _virtualTime += TICK_RATE_MS;
@@ -504,28 +680,74 @@ package com.pblabs.engine.core
             // processScheduledObjects();
             
             // Update objects wanting OnFrame callbacks.
-            Profiler.enter("frame");
+            CONFIG::debug
+			{
+				Profiler.enter("frame");
+			}
             duringAdvance = true;
             _interpolationFactor = elapsed / TICK_RATE_MS;
-            for(var i:int=0; i<animatedObjects.length; i++)
+            for(j = 0; j<animatedObjects.length; j++)
             {
-                var animatedObject:ProcessObject = animatedObjects[i] as ProcessObject;
-                if(!animatedObject)
+                object = animatedObjects[j] as ProcessObject;
+                if(!object)
                     continue;
-                
-                Profiler.enter(animatedObject.profilerKey);
-                (animatedObject.listener as IAnimatedObject).onFrame(deltaTime / 1000);
-                Profiler.exit(animatedObject.profilerKey);
+
+                CONFIG::debug
+				{
+					Profiler.enter(object.profilerKey);
+				}
+                (object.listener as IAnimatedObject).onFrame(deltaTime / 1000);
+                CONFIG::debug
+				{
+					Profiler.exit(object.profilerKey);
+				}
+            }
+			for(j = 0; j<entityAnimatedObjects.length; j++)
+            {
+                object = entityAnimatedObjects[j] as ProcessObject;
+                if(!object)
+                    continue;
+
+				render = object.listener;
+				var dor:DisplayObject = render._displayObject;
+				if(unvisibleEntities[render._owner])
+				{
+					CONFIG::debug
+					{
+						continue;
+					}
+					if(dor)
+						dor.visible = false;
+					continue;
+				}
+
+                CONFIG::debug
+				{
+					Profiler.enter(object.profilerKey);
+				}
+				if(dor)
+					dor.visible = true;
+                render.onFrame(deltaTime / 1000);
+                CONFIG::debug
+				{
+					Profiler.exit(object.profilerKey);
+				}
             }
             duringAdvance = false;
-            Profiler.exit("frame");
+            CONFIG::debug
+			{
+				Profiler.exit("frame");
+			}
 
             // Purge the lists if needed.
             if(needPurgeEmpty)
             {
                 needPurgeEmpty = false;
                 
-                Profiler.enter("purgeEmpty");
+                CONFIG::debug
+				{
+					Profiler.enter("purgeEmpty");
+				}
                 
                 for(j=0; j<animatedObjects.length; j++)
                 {
@@ -545,10 +767,16 @@ package com.pblabs.engine.core
                     k--;
                 }
 
-                Profiler.exit("purgeEmpty");
+                CONFIG::debug
+				{
+					Profiler.exit("purgeEmpty");
+				}
             }
             
-            Profiler.ensureAtRoot();
+            CONFIG::debug
+			{
+				Profiler.ensureAtRoot();
+			}
         }
         
         private function processScheduledObjects():void
@@ -557,7 +785,10 @@ package com.pblabs.engine.core
             var oldDeferredMethodQueue:Array = deferredMethodQueue;
             if(oldDeferredMethodQueue.length)
             {
-                Profiler.enter("callLater");
+                CONFIG::debug
+				{
+					Profiler.enter("callLater");
+				}
 
                 // Put a new array in the queue to avoid getting into corrupted
                 // state due to more calls being added.
@@ -572,13 +803,19 @@ package com.pblabs.engine.core
                 // Wipe the old array now we're done with it.
                 oldDeferredMethodQueue.length = 0;
 
-                Profiler.exit("callLater");      	
+                CONFIG::debug
+				{
+					Profiler.exit("callLater");
+				}
             }
 
             // Process any queued items.
             if(thinkHeap.size)
             {
-                Profiler.enter("Queue");
+                CONFIG::debug
+				{
+					Profiler.enter("Queue");
+				}
                 
                 while(thinkHeap.front && thinkHeap.front.priority >= -_virtualTime)
                 {
@@ -588,7 +825,10 @@ package com.pblabs.engine.core
                     
                     var type:String = TypeUtility.getObjectClassName(itemRaw);
                     
-                    Profiler.enter(type);
+                    CONFIG::debug
+					{
+						Profiler.enter(type);
+					}
                     if(qItem)
                     {
                         // Check here to avoid else block that throws an error - empty callback
@@ -604,13 +844,87 @@ package com.pblabs.engine.core
                     {
                         throw new Error("Unknown type found in thinkHeap.");
                     }
-                    Profiler.exit(type);                    
+                    CONFIG::debug
+					{
+						Profiler.exit(type);
+					}
                     
                 }
                 
-                Profiler.exit("Queue");                
+                CONFIG::debug
+				{
+					Profiler.exit("Queue");
+				}
             }
         }
+
+		private function isEntityComponent(component:*):Boolean
+		{
+			var own:Entity;
+			if(component is TickedComponent)
+			{
+				own = component.owner;
+				if(own.noSleep)
+					return false;
+			}
+			else if(component is DisplayObjectRenderer)
+				own = component.owner;
+
+			if(own && own.spatialRef)
+				return true;
+
+			return false;
+		}
+
+		private function separateProcessObjects():void
+		{
+			var i:int = 0;
+			var owner:Entity;
+			var object:ProcessObject;
+			while(i < tickedObjects.length)
+			{
+				object = tickedObjects[i];
+				if(isEntityComponent(object.listener))
+				{
+					entityTickedObjects.push(object)
+
+					owner = object.listener._owner;
+					CONFIG::debug
+					{
+						if(owner == null)
+							throw new Error('Entity component without owner')
+					}
+					if(entities.indexOf(owner) == -1)
+						entities.push(owner);
+
+					tickedObjects.splice(i, 1)
+				}
+				else
+					i++
+			}
+			i = 0;
+			while(i < animatedObjects.length)
+			{
+				object = animatedObjects[i]
+				if(isEntityComponent(object.listener))
+				{
+					entityAnimatedObjects.push(object)
+
+					owner = object.listener._owner;
+					CONFIG::debug
+					{
+						if(owner == null)
+							throw new Error('Entity component without owner')
+					}
+					if(entities.indexOf(owner) == -1)
+						entities.push(owner);
+
+					animatedObjects.splice(i, 1)
+				}
+				else
+					i++
+			}
+		}
         
         protected var deferredMethodQueue:Array = [];
         protected var started:Boolean = false;
@@ -622,12 +936,19 @@ package com.pblabs.engine.core
         protected var animatedObjects:Array = new Array();
         protected var tickedObjects:Array = new Array();
         protected var needPurgeEmpty:Boolean = false;
-        
+
         protected var _platformTime:int = 0;
         
         protected var duringAdvance:Boolean = false;
         
         protected var thinkHeap:SimplePriorityQueue = new SimplePriorityQueue(1024);
+
+		/**
+		 * Очередь компонентов, которые принадлежат обычным игровым Entity, снабженными SpatialComponent и которые могут "спать"
+		 */
+		protected var entityAnimatedObjects:Array = new Array();
+        protected var entityTickedObjects:Array = new Array();
+		protected var entities:Array = [];
     }
 }
 

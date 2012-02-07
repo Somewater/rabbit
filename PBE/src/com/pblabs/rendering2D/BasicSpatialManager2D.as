@@ -73,7 +73,10 @@ package com.pblabs.rendering2D
        */
       public function queryRectangle(box:Rectangle, mask:ObjectType, results:Array):Boolean
       {
-         Profiler.enter("QueryRectangle");
+         CONFIG::debug
+		 {
+			 Profiler.enter("QueryRectangle");
+		 }
 
          var foundAny:Boolean = false;
          for each (var object:ISpatialObject2D in _objectList)
@@ -91,7 +94,10 @@ package com.pblabs.rendering2D
             foundAny = true;
          }
          
-         Profiler.exit("QueryRectangle");
+         CONFIG::debug
+		 {
+			 Profiler.exit("QueryRectangle");
+		 }
          return foundAny;
       }
       
@@ -100,7 +106,10 @@ package com.pblabs.rendering2D
        */
       public function queryCircle(center:Point, radius:Number, mask:ObjectType, results:Array):Boolean
       {
-         Profiler.enter("QueryCircle");
+         CONFIG::debug
+		 {
+			 Profiler.enter("QueryCircle");
+		 }
 
          var foundAny:Boolean = false;
          
@@ -131,7 +140,10 @@ package com.pblabs.rendering2D
             foundAny = true;
          }
 
-         Profiler.exit("QueryCircle");
+         CONFIG::debug
+		 {
+			 Profiler.exit("QueryCircle");
+		 }
 
          return foundAny;
       }

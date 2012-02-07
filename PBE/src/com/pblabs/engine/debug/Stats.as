@@ -54,6 +54,10 @@ package com.pblabs.engine.debug
 
         private var ver:Sprite;
 
+		private var tickCounter:int = 0;
+		private var fpsCounter:uint = 0;
+		private var msCounter:uint = 0;
+
         private function onAddedToStage(e:Event):void
         {
             removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
@@ -82,7 +86,6 @@ package com.pblabs.engine.debug
             verText.selectable = fpsText.selectable = msText.selectable = memText.selectable = false;
 
             verText.textColor = 0xFFFFFF;
-            verText.text = Capabilities.version.split(" ")[0] + "\n" + Capabilities.version.split(" ")[1];
             ver.addChild(verText);
 
             fpsText.textColor = 0xFFFF00;
@@ -114,11 +117,17 @@ package com.pblabs.engine.debug
         private function onMouseOut(event:MouseEvent):void
         {
             ver.visible = false;
+			fpsCounter = 0;
+			tickCounter = 0;
+			msCounter = 0;
         }
 
         private function onMouseOver(event:MouseEvent):void
         {
             ver.visible = true;
+			verText.text = //Capabilities.version.split(" ")[0] + "\n" + Capabilities.version.split(" ")[1] +
+					"FPS: " + Number(fpsCounter / tickCounter).toFixed(2) +
+					"\nMS:  " + Number(msCounter  / tickCounter).toFixed(2);
         }
 
         private function update(e:Event):void
@@ -152,6 +161,10 @@ package com.pblabs.engine.debug
                 if (stage)
                     fpsText.text = "FPS: " + (fps * 4) + " / " + stage.frameRate;
                 memText.text = "MEM: " + mem;
+
+				msCounter += (timer - ms);
+				fpsCounter += (fps * 4);
+				tickCounter++;
 
                 fps = 0;
             }

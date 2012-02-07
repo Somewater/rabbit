@@ -244,8 +244,10 @@ package com.astar
 		{
 			if(_isSearching == false) return;
 			
-			Profiler.enter("Astar.runCore");
-			
+			CONFIG::debug
+			{
+				Profiler.enter("Astar.runCore");
+			}
 			var current : DataTile;
 			
 			var curPos:Point = null;
@@ -297,7 +299,10 @@ package com.astar
 				searchForNextPath();
 			}
 			//path is still being looked for...
-			Profiler.exit("Astar.runCore");
+			CONFIG::debug
+			{
+				Profiler.exit("Astar.runCore");
+			}
 		}
 		
 		/**

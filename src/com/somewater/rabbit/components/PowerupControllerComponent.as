@@ -42,7 +42,7 @@ package com.somewater.rabbit.components {
 			if(rendererRef == null)
 				rendererRef = owner.lookupComponentByName('Render') as IsoRenderer;
 		}
-		                                 ;
+
 
 		override protected function onRemove():void {
 			super.onRemove();

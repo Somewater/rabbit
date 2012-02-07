@@ -259,7 +259,7 @@ package com.somewater.rabbit.iso
 				onClipAdded(clip);
 				_clipDirty = false;
 			}
-			
+
 			// клип имеет право передвинуть анимацию 
 			// ("+1" чтобы из за округлений не получалось 33 и 33.3 и анимация не двигалась, хотя и должна)
 			var frameTime:Boolean = PBE.processManager.virtualTime - _clipLastUpdate + 1 >= 1000/frameRate;
@@ -281,7 +281,8 @@ package com.somewater.rabbit.iso
 				updareStateAndDirection();
 			}
 						
-			super.onFrame(elapsed);
+			if (_transformDirty)
+                updateTransform();
 		}
 		
 		public function set useDirection(value:int):void
@@ -466,8 +467,11 @@ package com.somewater.rabbit.iso
 			
 			_transformDirty = true;
 		}
-		
-		
+
+		override protected function updateProperties():void {
+			// ничего полезного эта ф-я не делает
+		}
+
 		override public function updateTransform(updateProps:Boolean = false):void
 		{
 			if(!_displayObject)

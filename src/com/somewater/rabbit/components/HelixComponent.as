@@ -132,6 +132,7 @@ package com.somewater.rabbit.components
 		 */
 		override protected function onRemove():void
 		{
+			super.onRemove();
 			shell = null;
 			shellSpatial = null;
 		}

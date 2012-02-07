@@ -342,7 +342,10 @@ package com.pblabs.engine.debug
 			
 			if (_output)
 			{
-				Profiler.enter("LogViewer.addLogMessage");
+				CONFIG::debug
+				{
+					Profiler.enter("LogViewer.addLogMessage");
+				}
 				
 				var append:String = "<p><font size=\"" +
 					_input.getTextFormat().size+"\" color=\"" + 
@@ -357,7 +360,10 @@ package com.pblabs.engine.debug
 				
 				_output.scrollV = _output.maxScrollV;
 				
-				Profiler.exit("LogViewer.addLogMessage");
+				CONFIG::debug
+				{
+					Profiler.exit("LogViewer.addLogMessage");
+				}
 			}
 		}
 		

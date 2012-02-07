@@ -57,7 +57,7 @@ package com.somewater.rabbit.iso
 		 * поэтому пересчет координат производить нельзя
 		 */
 		private var tweeningFlag:Boolean = false;
-		private var tween:TweenLite;
+		private var tween:Point;
 		
 		/**
 		 * Листенеры на изменение позиции сцены (движение камеры)
@@ -106,7 +106,7 @@ package com.somewater.rabbit.iso
 				mouseStartPos.y = PBE.mainStage.mouseY;
 				
 				if(tween)
-					tween.kill();
+					tween = null;
 			}
 		}
 		
@@ -167,8 +167,11 @@ package com.somewater.rabbit.iso
 		
 		public function onTick(deltaTime:Number):void
 		{
-			if(tweeningFlag)
+			if(tweeningFlag && tween)
+			{
+				onTween();
 				return;
+			}
 			
 			if(trackObject)
 			{
@@ -230,17 +233,28 @@ package com.somewater.rabbit.iso
 			tweeningFlag = true;
 			var dist:Number = Math.sqrt(Math.pow(scenePos.x - newPosition.x, 2) + Math.pow(scenePos.y - newPosition.y, 2)); 
 			
-			if(tween) tween.kill();
-			tween = TweenLite.to(this, 0.1 + Math.max(0.2,Math.min(0,Math.log(dist)/10)), 
-				{"x":newPosition.x, "y":newPosition.y, "onComplete": tweenOff, "ease": com.greensock.easing.Linear.easeIn});
+			tween = newPosition;
+			//TweenLite.to(this, 0.1 + Math.max(0.2,Math.min(0,Math.log(dist)/10)),
+			//	{"x":newPosition.x, "y":newPosition.y, "onComplete": tweenOff, "ease": com.greensock.easing.Linear.easeIn});
 		}
 		
 		
-		
-		private function tweenOff():void
+
+		private var tmpPositionPoint:Point = new Point()
+		private function onTween():void
 		{
-			tweeningFlag = false;
-			tween = null;
+			var position:Point = this.position;
+			tmpPositionPoint.x = tween.x * 0.3 + position.x * 0.7;
+			tmpPositionPoint.y = tween.y * 0.3 + position.y * 0.7;
+
+			if(Math.abs(tmpPositionPoint.x - position.x) < 0.05 && Math.abs(tmpPositionPoint.y - position.y) < 0.05)
+			{
+				this.position = tween;
+				tweeningFlag = false;
+				tween = null;
+			}
+			else
+				this.position = tmpPositionPoint;
 		}
 		
 		

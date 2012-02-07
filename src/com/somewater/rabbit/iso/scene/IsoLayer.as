@@ -14,6 +14,11 @@ package com.somewater.rabbit.iso.scene
 		public static var instance:IsoLayer;
 		
 		public const NUM_GROUNDS:int = 0;// учитывает присутствие фона
+
+		/**
+		 * Через сколько тиков произвести полную сортировку
+		 */
+		public var tickForGlobalSorting:int = 1;
 		
 		/**
 		 * Массив объевтов на сортировки z-индексов, требующих простой сортировки 
@@ -39,7 +44,16 @@ package com.somewater.rabbit.iso.scene
 				//	if(unsortedSimpleQueue.indexOf(rendererList[i]) != -1)
 				//		unsortedSimpleQueue.push(rendererList[i]);
 				//simpleSorting();
-				recursiveSorting();
+				if(tickForGlobalSorting == 0)
+					tickForGlobalSorting = 15;// таким образом, делаем пересортировку не чаще 2 раз в секунду
+				else
+				{
+					tickForGlobalSorting--;
+					if(tickForGlobalSorting == 0)
+						recursiveSorting();
+					else if(unsortedSimpleQueue.length)
+						simpleSorting();
+				}
 			}else if(unsortedSimpleQueue.length){
 				simpleSorting();
 			}
@@ -59,7 +73,10 @@ package com.somewater.rabbit.iso.scene
 		 */
 		private function recursiveSorting ():void
 		{
-			Profiler.enter("recursiveSorting");
+			CONFIG::debug
+			{
+				Profiler.enter("recursiveSorting");
+			}
 			//var startTime:uint = getTimer();6
 			var depth:uint;6
 			var visited:Dictionary = new Dictionary();
@@ -125,7 +142,10 @@ package com.somewater.rabbit.iso.scene
 				place(obj);
 			
 			needSort = false;
-			Profiler.exit("recursiveSorting");
+			CONFIG::debug
+			{
+				Profiler.exit("recursiveSorting");
+			}
 			/**
 			 * Dependency-ordered depth placement of the given objects and its dependencies.
 			 */
@@ -167,7 +187,10 @@ package com.somewater.rabbit.iso.scene
 		 * @see com.progrestar.common.new_iso.recursiveSorting
 		 */
 		private function simpleSorting():void{	
-			Profiler.enter("simpleSorting");
+			CONFIG::debug
+			{
+				Profiler.enter("simpleSorting");
+			}
 			var max:int = unsortedSimpleQueue.length;
 			var i:int;
 			var j:int;
@@ -215,7 +238,10 @@ package com.somewater.rabbit.iso.scene
 					setChildIndex(rendererList[i].displayObject, i + NUM_GROUNDS);// numGrounds учитывает присутствие фона
 					IsoRenderer(rendererList[i]).zIndexSorted = true;
 				}
-			Profiler.exit("simpleSorting");
+			CONFIG::debug
+			{
+				Profiler.exit("simpleSorting");
+			}
 		}
 	}
 }

@@ -9,11 +9,13 @@ package com.pblabs.engine.entity
     import com.pblabs.engine.debug.Profiler;
     import com.pblabs.engine.serialization.Serializer;
     import com.pblabs.engine.serialization.TypeUtility;
-    
-    import flash.events.Event;
+	import com.pblabs.rendering2D.SimpleSpatialComponent;
+	import com.somewater.rabbit.iso.IsoSpatial;
+
+	import flash.events.Event;
     import flash.events.EventDispatcher;
     import flash.events.IEventDispatcher;
-    import flash.utils.Dictionary;
+	import flash.utils.Dictionary;
     import flash.utils.getQualifiedClassName;
     
     /**
@@ -23,7 +25,7 @@ package com.pblabs.engine.entity
      * us to pool Entities at a later date if needed and do other tricks. Please
      * program against IEntity, not Entity, to avoid dependencies.</p>
      */
-    internal class Entity extends PBObject implements IEntity
+    public class Entity extends PBObject implements IEntity
     {
 		public function Entity()
 		{
@@ -382,6 +384,7 @@ package com.pblabs.engine.entity
         private function doResetComponents():void
         {
             var oldDefer:Boolean = _deferring;
+			this.spatialRef = null;
             deferring = true;
             for each(var component:IEntityComponent in _components)
             {
@@ -390,7 +393,10 @@ package com.pblabs.engine.entity
                     continue;
                 
                 // Reset it!
-                component.reset();                
+                component.reset();
+
+				if(component is SimpleSpatialComponent)
+					this.spatialRef = component as IsoSpatial;
             }
             deferring = false;
         }
@@ -403,7 +409,10 @@ package com.pblabs.engine.entity
             if (!reference || reference.property == null || reference.property == "")
                 return null;
             
-            Profiler.enter("Entity.findProperty");
+            CONFIG::debug
+			{
+				Profiler.enter("Entity.findProperty");
+			}
             
             // Must have a propertyInfo to operate with.
             if(!providedPi)
@@ -418,7 +427,10 @@ package com.pblabs.engine.entity
                 {
                     if(!suppressErrors)
                         Logger.warn(this, "findProperty", "Could not resolve component named '" + cl[0] + "' for property '" + reference.property + "' with cached reference. " + Logger.getCallStack());
-                    Profiler.exit("Entity.findProperty");
+                    CONFIG::debug
+					{
+						Profiler.exit("Entity.findProperty");
+					}
                     return null;
                 }
                 
@@ -430,7 +442,10 @@ package com.pblabs.engine.entity
                     {
                         if(!suppressErrors)
                             Logger.warn(this, "findProperty", "Could not resolve property '" + cl[i] + "' for property reference '" + reference.property + "' with cached reference"  + Logger.getCallStack());
-                        Profiler.exit("Entity.findProperty");
+                        CONFIG::debug
+						{
+							Profiler.exit("Entity.findProperty");
+						}
                         return null;
                     }
                 }
@@ -438,7 +453,10 @@ package com.pblabs.engine.entity
                 var cachedPi:PropertyInfo = providedPi;
                 cachedPi.propertyParent = cachedWalk;
                 cachedPi.propertyName = (cl.length > 1) ? cl[cl.length-1] : null;
-                Profiler.exit("Entity.findProperty");
+                CONFIG::debug
+				{
+					Profiler.exit("Entity.findProperty");
+				}
                 return cachedPi;
             }
             
@@ -461,7 +479,10 @@ package com.pblabs.engine.entity
                 if(!parentElem)
                 {
                     Logger.warn(this, "findProperty", "Could not resolve component named '" + curLookup + "' for property '" + reference.property + "'");
-                    Profiler.exit("Entity.findProperty");
+                    CONFIG::debug
+					{
+						Profiler.exit("Entity.findProperty");
+					}
                     return null;
                 }
                 
@@ -476,7 +497,10 @@ package com.pblabs.engine.entity
                 if(!parentElem)
                 {
                     Logger.warn(this, "findProperty", "Could not resolve named object named '" + curLookup + "' for property '" + reference.property + "'");
-                    Profiler.exit("Entity.findProperty");
+                    CONFIG::debug
+					{
+						Profiler.exit("Entity.findProperty");
+					}
                     return null;
                 }
                 
@@ -487,7 +511,10 @@ package com.pblabs.engine.entity
                 if(!comLookup)
                 {
                     Logger.warn(this, "findProperty", "Could not find component '" + curLookup + "' on named entity '" + (parentElem as IEntity).name + "' for property '" + reference.property + "'");
-                    Profiler.exit("Entity.findProperty");
+                    CONFIG::debug
+					{
+						Profiler.exit("Entity.findProperty");
+					}
                     return null;
                 }
                 parentElem = comLookup;
@@ -500,7 +527,10 @@ package com.pblabs.engine.entity
                 if(!parentElem)
                 {
                     Logger.warn(this, "findProperty", "Could not find XML named '" + curLookup + "' for property '" + reference.property + "'");
-                    Profiler.exit("Entity.findProperty");
+                    CONFIG::debug
+					{
+						Profiler.exit("Entity.findProperty");
+					}
                     return null;
                 }
                 
@@ -537,7 +567,10 @@ package com.pblabs.engine.entity
                 if(!nextElem)
                 {
                     Logger.warn(this, "findProperty", "Could not find component '" + path[1] + "' in XML template '" + path[0].slice(1) + "' for property '" + reference.property + "'");
-                    Profiler.exit("Entity.findProperty");
+                    CONFIG::debug
+					{
+						Profiler.exit("Entity.findProperty");
+					}
                     return null;
                 }
                 
@@ -550,7 +583,10 @@ package com.pblabs.engine.entity
             else
             {
                 Logger.warn(this, "findProperty", "Got a property path that doesn't start with !, #, or @. Started with '" + startChar + "' for property '" + reference.property + "'");
-                Profiler.exit("Entity.findProperty");
+                CONFIG::debug
+				{
+					Profiler.exit("Entity.findProperty");
+				}
                 return null;
             }
             
@@ -594,7 +630,10 @@ package com.pblabs.engine.entity
                 if(gotEmpty)
                 {
                     Logger.warn(this, "findProperty", "Could not resolve property '" + curLookup + "' for property reference '" + reference.property + "'");
-                    Profiler.exit("Entity.findProperty");
+                    CONFIG::debug
+					{
+						Profiler.exit("Entity.findProperty");
+					}
                     return null;
                 }
                 
@@ -608,11 +647,17 @@ package com.pblabs.engine.entity
                 var pi:PropertyInfo = providedPi;
                 pi.propertyParent = parentElem;
                 pi.propertyName = curLookup;
-                Profiler.exit("Entity.findProperty");
+                CONFIG::debug
+				{
+					Profiler.exit("Entity.findProperty");
+				}
                 return pi;
             }
             
-            Profiler.exit("Entity.findProperty");
+            CONFIG::debug
+			{
+				Profiler.exit("Entity.findProperty");
+			}
             return null;
         }
 		
@@ -681,7 +726,10 @@ package com.pblabs.engine.entity
         protected var _tempPropertyInfo:PropertyInfo = new PropertyInfo();
         protected var _deferredComponents:Array = new Array();
         protected var _eventDispatcher:EventDispatcher = new EventDispatcher();
-    }
+
+		public var spatialRef:IsoSpatial;
+		public var noSleep:Boolean = false;// ентити не спит, даже если находится за пределами видимости
+	}
 }
 
 import com.pblabs.engine.entity.IEntityComponent;

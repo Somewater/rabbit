@@ -239,8 +239,6 @@ package com.somewater.rabbit.managers
 
 		public function clear():void
 		{
-			if(instance == this)
-				instance = null;
 		}
 		
 		

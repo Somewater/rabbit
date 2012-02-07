@@ -11,6 +11,7 @@ package com.pblabs.engine.core
 	import com.pblabs.engine.PBE;
 	import com.pblabs.engine.debug.Logger;
 	import com.pblabs.engine.debug.Profiler;
+	import com.pblabs.engine.entity.Entity;
 	import com.pblabs.engine.entity.IEntity;
 	import com.pblabs.engine.entity.PropertyReference;
 	import com.pblabs.engine.entity.allocateEntity;
@@ -111,7 +112,10 @@ package com.pblabs.engine.core
 		 */
 		public function instantiateEntity(name:String):IEntity
 		{
-			Profiler.enter("instantiateEntity");
+			CONFIG::debug
+			{
+				Profiler.enter("instantiateEntity");
+			}
 
 			try
 			{
@@ -124,7 +128,10 @@ package com.pblabs.engine.core
 					if (_things[name].entityCallback)
 					{
 						var instantiated:IEntity=_things[name].entityCallback();
-						Profiler.exit("instantiateEntity");
+						CONFIG::debug
+						{
+							Profiler.exit("instantiateEntity");
+						}
 						return instantiated;
 					}
 				}
@@ -133,18 +140,31 @@ package com.pblabs.engine.core
 				if (!xml)
 				{
 					Logger.error(this, "instantiateEntity", "Unable to find a template or entity with the name " + name + ".");
-					Profiler.exit("instantiateEntity");
+					CONFIG::debug
+					{
+						Profiler.exit("instantiateEntity");
+					}
 					return null;
 				}
 
-				var entity:IEntity=instantiateEntityFromXML(xml);
-				Profiler.exit("instantiateEntity");
+				var entity:Entity=instantiateEntityFromXML(xml) as Entity;
+				if(String(xml.@tick) == 'always')
+				{
+					entity.noSleep = true;
+				}
+				CONFIG::debug
+				{
+					Profiler.exit("instantiateEntity");
+				}
 			}
 			catch (e:Error)
 			{
 				Logger.error(this, "instantiateEntity", "Failed instantiating '" + name + "' due to: " + e.toString() + "\n" + e.getStackTrace());
 				entity=null;
-				Profiler.exit("instantiateEntity");
+				CONFIG::debug
+				{
+					Profiler.exit("instantiateEntity");
+				}
 			}
 
 			return entity;
@@ -160,7 +180,10 @@ package com.pblabs.engine.core
 		 */
 		public function instantiateEntityFromObjectReference(objectReference:XML):IEntity
 		{
-			Profiler.enter("instantiateEntityFromObjectReference");
+			CONFIG::debug
+			{
+				Profiler.enter("instantiateEntityFromObjectReference");
+			}
 			var name:String = objectReference.attribute("name");
 			try
 			{
@@ -173,7 +196,10 @@ package com.pblabs.engine.core
 					if (_things[name].entityCallback)
 					{
 						var instantiated:IEntity=_things[name].entityCallback();
-						Profiler.exit("instantiateEntityFromObjectReference");
+						CONFIG::debug
+						{
+							Profiler.exit("instantiateEntityFromObjectReference");
+						}
 						return instantiated;
 					}
 				}
@@ -200,18 +226,32 @@ package com.pblabs.engine.core
 				if (!xml)
 				{
 					Logger.error(this, "instantiateEntity", "Unable to find a template or entity with the name " + name + ".");
-					Profiler.exit("instantiateEntityFromObjectReference");
+					CONFIG::debug
+					{
+						Profiler.exit("instantiateEntityFromObjectReference");
+					}
 					return null;
 				}
 
-				var entity:IEntity=instantiateEntityFromXML(xml);
-				Profiler.exit("instantiateEntityFromObjectReference");
+				var entity:Entity=instantiateEntityFromXML(xml) as Entity;
+				if(String(xml.@tick) == 'always')
+				{
+					trace("NAE: " + name);
+					entity.noSleep = true;
+				}
+				CONFIG::debug
+				{
+					Profiler.exit("instantiateEntityFromObjectReference");
+				}
 			}
 			catch (e:Error)
 			{
 				Logger.error(this, "instantiateEntity", "Failed instantiating '" + name + "' due to: " + e.toString() + "\n" + e.getStackTrace());
 				entity=null;
-				Profiler.exit("instantiateEntityFromObjectReference");
+				CONFIG::debug
+				{
+					Profiler.exit("instantiateEntityFromObjectReference");
+				}
 			}
 
 			return entity;
@@ -222,7 +262,10 @@ package com.pblabs.engine.core
 		 */
 		public function instantiateEntityFromXML(xml:XML):IEntity
 		{
-			Profiler.enter("instantiateEntityFromXML");
+			CONFIG::debug
+			{
+				Profiler.enter("instantiateEntityFromXML");
+			}
 
 			try
 			{
@@ -253,7 +296,10 @@ package com.pblabs.engine.core
                 if (!doInstantiateTemplate(entity, xml.attribute("template"), new Dictionary(), Serializer.instance.componentMap))
 				{
 					entity.destroy();
-					Profiler.exit("instantiateEntityFromXML");
+					CONFIG::debug
+					{
+						Profiler.exit("instantiateEntityFromXML");
+					}
 					return null;
 				}
 
@@ -266,13 +312,19 @@ package com.pblabs.engine.core
 				if (!_inGroup)
 					Serializer.instance.reportMissingReferences();
 
-				Profiler.exit("instantiateEntityFromXML");
+				CONFIG::debug
+				{
+					Profiler.exit("instantiateEntityFromXML");
+				}
 			}
 			catch (e:Error)
 			{
 				Logger.error(this, "instantiateEntity", "Failed instantiating '" + name + "' due to: " + e.toString() + "\n" + e.getStackTrace());
 				entity=null;
-				Profiler.exit("instantiateEntityFromXML");
+				CONFIG::debug
+				{
+					Profiler.exit("instantiateEntityFromXML");
+				}
 			}
 
 			return entity;

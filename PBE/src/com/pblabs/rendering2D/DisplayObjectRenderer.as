@@ -97,7 +97,7 @@ package com.pblabs.rendering2D
          */
         public var objectMask:ObjectType;
         
-        protected var _displayObject:DisplayObject;
+        public var _displayObject:DisplayObject;
         protected var _scene:IScene2D;
         
         protected var _layerIndex:int = 0;
@@ -637,9 +637,9 @@ package com.pblabs.rendering2D
             // underlying DisplayObject if necessary.
             if (!displayObject)
                 return;
-            
+
             updateProperties();
-            
+
             // Now that we've read all our properties, apply them to our transform.
             if (_transformDirty)
                 updateTransform();
@@ -775,5 +775,5 @@ package com.pblabs.rendering2D
             
             _transformDirty = false;
         }
-    }
+	}
 }

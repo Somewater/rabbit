@@ -38,12 +38,18 @@ package com.pblabs.sound
         
         public function play(sound:*, category:String="sfx", pan:Number=0.0, loopCount:int=0, startDelay:Number=0.0, resourceType:Class=null):SoundHandle
         {
-            Profiler.enter("SoundManager.play");
+            CONFIG::debug
+			{
+				Profiler.enter("SoundManager.play");
+			}
             
             // Cap sound playback.
             if(playingSounds.length > maxConcurrentSounds)
             {
-                Profiler.exit("SoundManager.play");
+                CONFIG::debug
+				{
+					Profiler.exit("SoundManager.play");
+				}
                 return null;
             }
             
@@ -72,7 +78,10 @@ package com.pblabs.sound
                         play(r as SoundResource, category, pan, loopCount, startDelay);
                     });
                     
-                    Profiler.exit("SoundManager.play");
+                    CONFIG::debug
+					{
+						Profiler.exit("SoundManager.play");
+					}
                     return null;
                 }
                 
@@ -95,7 +104,10 @@ package com.pblabs.sound
             // Add to the list of playing sounds.
             playingSounds.push(sh);
             
-            Profiler.exit("SoundManager.play");
+            CONFIG::debug
+			{
+				Profiler.exit("SoundManager.play");
+			}
             return sh;
         }
 
@@ -224,7 +236,10 @@ package com.pblabs.sound
         
         internal function updateSounds():void
         {
-            Profiler.enter("SoundManager.updateSounds");
+            CONFIG::debug
+			{
+				Profiler.enter("SoundManager.updateSounds");
+			}
 
             // Push dirty state down.
             if(!rootCategory.dirty)
@@ -281,7 +296,10 @@ package com.pblabs.sound
             // Clean the root category.
             rootCategory.dirty = false;
             
-            Profiler.exit("SoundManager.updateSounds");
+            CONFIG::debug
+			{
+				Profiler.exit("SoundManager.updateSounds");
+			}
         }
         
         public function onTick(elapsed:Number):void

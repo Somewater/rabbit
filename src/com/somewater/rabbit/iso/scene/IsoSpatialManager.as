@@ -183,7 +183,10 @@ package com.somewater.rabbit.iso.scene
 		 */
 		public function queryRectangle(box:Rectangle, mask:ObjectType, results:Array):Boolean
 		{
-			Profiler.enter("QueryRectangle");
+			CONFIG::debug
+			{
+				Profiler.enter("QueryRectangle");
+			}
 
 			var foundAny:Boolean = false;
 			
@@ -221,7 +224,10 @@ package com.somewater.rabbit.iso.scene
 			}
 			while(++i < maxX)
 			
-			Profiler.exit("QueryRectangle");
+			CONFIG::debug
+			{
+				Profiler.exit("QueryRectangle");
+			}
 			return foundAny;
 		}
 		
@@ -230,7 +236,10 @@ package com.somewater.rabbit.iso.scene
 		 */
 		public function queryCircle(center:Point, radius:Number, mask:ObjectType, results:Array):Boolean
 		{
-			Profiler.enter("QueryCircle");
+			CONFIG::debug
+			{
+				Profiler.enter("QueryCircle");
+			}
 
 			var foundAny:Boolean = false;
 			
@@ -274,7 +283,10 @@ package com.somewater.rabbit.iso.scene
 					
 				}
 			}
-			Profiler.exit("QueryCircle");
+			CONFIG::debug
+			{
+				Profiler.exit("QueryCircle");
+			}
 			
 			return foundAny;
 		}

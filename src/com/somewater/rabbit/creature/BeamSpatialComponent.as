@@ -83,6 +83,7 @@ package com.somewater.rabbit.creature
 			
 			renderStateRef = new PropertyReference("@Render.state");
 			renderRotationRef = new PropertyReference("@Render.rotation");
+			registerForTicks = true;
 		}
 		
 		

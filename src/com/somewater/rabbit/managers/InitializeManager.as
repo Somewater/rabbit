@@ -21,6 +21,7 @@ package com.somewater.rabbit.managers
 	import com.somewater.rabbit.decor.GroundGrassRenderer;
 	import com.somewater.rabbit.decor.PopupEffectRenderer;
 	import com.somewater.rabbit.events.ExceptionEvent;
+	import com.somewater.rabbit.iso.scene.IsoLayer;
 	import com.somewater.rabbit.rewards.RabbitHoleRenderer;
 	import com.somewater.rabbit.components.AttackComponent;
 	import com.somewater.rabbit.components.ConcealComponent;
@@ -99,7 +100,7 @@ package com.somewater.rabbit.managers
 			new MonsterDebugger(_app);
 			
 			Config.init();
-			
+
 			PBE.startup(app);
 			
 			RabbitGame.worldScene = new SceneView();
@@ -108,7 +109,7 @@ package com.somewater.rabbit.managers
 			
 			PBE.initializeScene(RabbitGame.worldScene, "SceneDB", null, IsoSpatialManager);
 			PBE.scene.sceneAlignment = SceneAlignment.TOP_LEFT;
-			
+
 			app.uiLayer = new Sprite();
 			app.addChild(app.uiLayer);
 			
@@ -215,7 +216,9 @@ package com.somewater.rabbit.managers
 			RandomizeUtil.initializeSeed();
 			
 			Profiler.clear();
-			
+
+			PBE.processManager.optimizeModeCounter = 0;// прорисовать все кустики, инициализировать все цветочки
+
 			instantiateLevel(app.level);
 			
 			IsoCameraController.getInstance().position = new Point(int((level.width - Config.T_WIDTH)*0.5),
@@ -240,6 +243,9 @@ package com.somewater.rabbit.managers
 			}
 			
 			levelManagersInited = true;
+
+			PBE.processManager.optimizeModeCounter = 0;// прорисовать все кустики, инициализировать все цветочки
+			IsoLayer.instance.tickForGlobalSorting = 1;
 		}
 		
 		

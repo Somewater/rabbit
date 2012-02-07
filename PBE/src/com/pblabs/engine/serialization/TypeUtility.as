@@ -99,7 +99,7 @@ package com.pblabs.engine.serialization
             {
                 if(!suppressError)
                 {
-                    Logger.warn(null, "Instantiate", "Failed to instantiate " + className + " due to " + e.toString());
+                    Logger.warn(null, "Instantiate", "Failed to instantiate " + className + " due to " + e.getStackTrace());
                     Logger.warn(null, "Instantiate", "Is " + className + " included in your SWF? Make sure you call PBE.registerType(" + className + "); somewhere in your project.");				 
                 }
             }
