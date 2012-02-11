@@ -83,7 +83,6 @@ package com.somewater.rabbit.creature
 			
 			renderStateRef = new PropertyReference("@Render.state");
 			renderRotationRef = new PropertyReference("@Render.rotation");
-			registerForTicks = true;
 		}
 		
 		
@@ -149,6 +148,7 @@ package com.somewater.rabbit.creature
 				changeSide(initialSide ? initialSide : RandomizeUtil.rnd > 0.5?1:-1);
 			}
 			super.onAdd();
+			registerForTicks = true;
 		}
 		
 		override public function onTick(deltaTime:Number):void
