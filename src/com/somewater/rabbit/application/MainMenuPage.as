@@ -21,6 +21,7 @@ package com.somewater.rabbit.application
 		private var buttons:Array;
 		private var audioControls:AudioControls
 		private var friendBar:FriendBar;
+		private var offerStat:OfferStatPanel;
 		
 		public function MainMenuPage()
 		{
@@ -58,6 +59,11 @@ package com.somewater.rabbit.application
 
 			if(logo.visible)
 				logo.visible = (friendBar == null || friendBar.x + FriendBar.WIDTH + 10 < logo.x) && logo.x + logo.width < Config.WIDTH;
+
+			offerStat = new OfferStatPanel(OfferStatPanel.INTERFACE_MODE);
+			offerStat.x = Config.WIDTH - offerStat.width - 15;
+			offerStat.y = 15;
+			addChild(offerStat);
 		}
 		
 		override public function clear():void
@@ -67,6 +73,7 @@ package com.somewater.rabbit.application
 			if(friendBar)
 				friendBar.clear();
 			audioControls.clear();
+			offerStat.clear();
 		}
 		
 		override protected function createGround():void

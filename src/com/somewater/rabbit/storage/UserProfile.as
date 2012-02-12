@@ -226,5 +226,19 @@ package com.somewater.rabbit.storage
 				TutorialManager.instance.startStep(_tutorial);
 			}
 		}
+
+
+		override public function addOfferInstance(offer:OfferDef):void {
+			super.addOfferInstance(offer);
+			dispatchChange();
+		}
+
+		public function get offers():int
+		{
+			var i:int = 0;
+			for each(var of:OfferDef in _offerInstances)
+				i++;
+			return i;
+		}
 	}
 }

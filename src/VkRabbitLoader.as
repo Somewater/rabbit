@@ -25,12 +25,16 @@ package {
 	import flash.system.LoaderContext;
 	import flash.system.Security;
 	import flash.system.SecurityDomain;
+	import flash.utils.getDefinitionByName;
 
 
-	[SWF(width="810", height="800", backgroundColor="#FFFFFF", frameRate="30")]
+	[SWF(width="810", height="920", backgroundColor="#FFFFFF", frameRate="30")]
 	public class VkRabbitLoader extends SocialRabbitLoader{
 
 		private var _clickozavr:Clickozavr;
+
+		[Embed(source="krolik_jo.jpg")]
+		private var livecardsAd:Class;
 
 		public function VkRabbitLoader() {
 		}
@@ -68,6 +72,10 @@ package {
 			_clickozavr.addEventListener(ClickozavrEvent.GET_USER_DATA, onClickozavrCanGetUserData);
 			_clickozavr.init([
 			new ContainerInfo(ContainerInfo.WIDE600x150_BAR, (Config.WIDTH - 600) * 0.5, 0)], true);
+
+			var image:DisplayObject = new livecardsAd();// 120 x 800
+			image.x = 800;
+			adLayer.addChild(image);
 
 //			var ads:AdAppUtil = new AdAppUtil('370', arrow.flashVars['api_id'], arrow.key,
 //									 arrow.flashVars['api_url'], arrow.flashVars['viewer_id'], arrow.flashVars['secret']);

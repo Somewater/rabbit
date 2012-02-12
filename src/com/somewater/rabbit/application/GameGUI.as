@@ -6,7 +6,9 @@ package com.somewater.rabbit.application
 	import com.somewater.rabbit.application.windows.PauseMenuWindow;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Lib;
+	import com.somewater.storage.Lang;
 	import com.somewater.text.EmbededTextField;
+	import com.somewater.text.Hint;
 
 	import flash.display.DisplayObject;
 
@@ -28,6 +30,11 @@ package com.somewater.rabbit.application
 		private var carrotTF:EmbededTextField;
 		private var minutesArrowShelf:Shape;
 		private var carrotMask:Shape;
+		private var offerStat:OfferStatPanel;
+
+		private var healthHintArea:Sprite;
+		private var timeHintArea:Sprite;
+		private var scoreHintArea:Sprite;
 		
 		public function GameGUI()
 		{
@@ -80,11 +87,49 @@ package com.somewater.rabbit.application
 			life = 0;
 			time = 0;
 			carrot = 0;
+
+			Hint.bind(statPanel.getChildByName('scoreHintArea'), scoreHint);
+			statPanel.getChildByName('scoreHintArea').alpha = 0;
+			Hint.bind(statPanel.getChildByName('timeHintArea'), timeHint);
+			statPanel.getChildByName('timeHintArea').alpha = 0;
+			Hint.bind(statPanel.getChildByName('healthHintArea'), healthHint);
+			statPanel.getChildByName('healthHintArea').alpha = 0;
+
+			offerStat = new OfferStatPanel(OfferStatPanel.GAME_MODE);
+			offerStat.x = statPanel.x - 10 - offerStat.width;
+			offerStat.y = statPanel.y;
+			addChild(offerStat);
+
+
+		}
+
+
+		//	GAME_INTERFACE_HEALTH_BAR=Здоровье кролика {persent}%
+		//	GAME_INTERFACE_SCORES=На уровне осталось {number} морковок
+		//	GAME_INTERFACE_TIME=Осталось {seconds} секунд до конца уровня
+		private function healthHint():String
+		{
+			return Lang.t('GAME_INTERFACE_HEALTH_BAR', {persent: Math.round(_life * 100)});
+		}
+
+		private function timeHint():String
+		{
+			return Lang.t('GAME_INTERFACE_TIME', {seconds: (_timeEnd - _time)});
+		}
+
+		private function scoreHint():String
+		{
+			return Lang.t('GAME_INTERFACE_SCORES', {number: (_carrotMax - _carrot)});
 		}
 		
 		public function clear():void
 		{
 			playPauseButton.removeEventListener(MouseEvent.CLICK, onPlayPauseClick);
+			offerStat.clear();
+
+			Hint.removeHint(statPanel.getChildByName('scoreHintArea'));
+			Hint.removeHint(statPanel.getChildByName('timeHintArea'));
+			Hint.removeHint(statPanel.getChildByName('healthHintArea'));
 		}
 		
 		private function onPlayPauseClick(e:Event):void
@@ -96,8 +141,13 @@ package com.somewater.rabbit.application
 		// 0..1
 		public function set life(value:Number):void
 		{
-			statPanel.getChildByName("progressBar").scaleX = Math.max(0,Math.min(1, value));
+			if(_life != value)
+			{
+				statPanel.getChildByName("progressBar").scaleX = Math.max(0,Math.min(1, value));
+				_life = value;
+			}
 		}
+		private var _life:Number = 1;
 		
 		/**
 		 * Сколько максимально длится раунд, секунды
@@ -181,6 +231,7 @@ package com.somewater.rabbit.application
 			{
 				carrotTF.text = (_carrotMax - value).toString();
 				carrotMask.scaleY = Math.min(1, value / _carrotMax);
+				_carrot = value
 			}
 		}
 		private var _carrot:int;

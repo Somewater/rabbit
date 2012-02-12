@@ -37,7 +37,7 @@ package com.somewater.rabbit.application
 
 		private var storiesSwitcher:StoriesSwitcher;
 		private var iconsHolder:Sprite;
-		
+
 		public function LevelsPage()
 		{
 			super();

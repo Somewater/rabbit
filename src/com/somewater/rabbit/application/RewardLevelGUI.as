@@ -15,6 +15,7 @@ package com.somewater.rabbit.application {
 	public class RewardLevelGUI extends Sprite implements IClear{
 
 		private var leftButton:DisplayObject;
+		private var offerStat:OfferStatPanel;
 
 		public function RewardLevelGUI() {
 			leftButton = Lib.createMC("interface.LeftButton");
@@ -23,12 +24,18 @@ package com.somewater.rabbit.application {
 			leftButton.addEventListener(MouseEvent.CLICK, onLeftButtonClick);
 			Hint.bind(leftButton, Lang.t("BACK_TO_MAIN_MENU"));
 			addChild(leftButton);
+
+			offerStat = new OfferStatPanel(OfferStatPanel.GAME_MODE);
+			offerStat.x = Config.WIDTH - offerStat.width - 15;
+			offerStat.y = 15;
+			addChild(offerStat);
 		}
 
 		public function clear():void
 		{
 			leftButton.removeEventListener(MouseEvent.CLICK, onLeftButtonClick);
 			Hint.removeHint(leftButton);
+			offerStat.clear();
 		}
 
 		private function onLeftButtonClick(event:MouseEvent):void {

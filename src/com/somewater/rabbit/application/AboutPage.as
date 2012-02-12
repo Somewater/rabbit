@@ -17,6 +17,7 @@ package com.somewater.rabbit.application
 	{
 		private var leftButton:DisplayObject;
 		private var items:Array = [];
+		private var offerStat:OfferStatPanel;
 
 		public function AboutPage()
 		{
@@ -52,6 +53,11 @@ package com.somewater.rabbit.application
 
 			logo.visible = logo.visible ? logo.x + logo.width < Config.WIDTH : false;
 
+			offerStat = new OfferStatPanel(OfferStatPanel.INTERFACE_MODE);
+			offerStat.x = Config.WIDTH - offerStat.width - 15;
+			offerStat.y = 15;
+			addChild(offerStat);
+
 			Config.stat(Stat.ABOUT_PAGE_OPENED);
 		}
 
@@ -69,6 +75,7 @@ package com.somewater.rabbit.application
 				for (var i:int = 0; i < items.length; i++)
 					IClear(items[i]).clear();
 			items = null;
+			offerStat.clear();
 		}
 	}
 }

@@ -2,6 +2,7 @@ package com.somewater.rabbit.creature {
 	import com.pblabs.engine.PBE;
 	import com.pblabs.engine.entity.IEntity;
 	import com.somewater.rabbit.components.FinderComponentBase;
+	import com.somewater.rabbit.decor.PopupEffectFactory;
 	import com.somewater.rabbit.events.OfferEvent;
 	import com.somewater.rabbit.iso.IsoMover;
 	import com.somewater.rabbit.iso.IsoSpatial;
@@ -66,6 +67,9 @@ package com.somewater.rabbit.creature {
 				// диспатчить начисление еще одного оффера, передать событию координаты размещения оффера
 				var spatial:IsoSpatial = owner.lookupComponentByName('Spatial') as IsoSpatial;
 				Config.application.dispatchEvent(new OfferEvent(spatial.tile.x,  spatial.tile.y))
+
+				// создать попап эффекта
+				PopupEffectFactory.createEffect('rabbit.OfferBonusAnimation', spatial.tile, this.owner);
 
 				// и самоудалиться
 				this.owner.destroy();

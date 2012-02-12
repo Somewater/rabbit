@@ -184,7 +184,13 @@ package com.somewater.rabbit.application {
 
 			gameUser.clearOfferInstances();
 			for(id in toJsonSafety(json['offer_instances']))
-				gameUser.addOfferInstance(OfferManager.instance.getOfferById(parseInt(id)));
+			{
+				var offer:OfferDef = OfferManager.instance.getOfferById(parseInt(id));
+				if(offer)
+					gameUser.addOfferInstance(offer);
+				else
+					trace('[OFFER] Creation error, offer id=' + id);// если у игрока оффер, которого нет в природе, не возбуждаем исключения
+			}
 
 			if(json['roll'])
 				gameUser.setRoll(json['roll']);

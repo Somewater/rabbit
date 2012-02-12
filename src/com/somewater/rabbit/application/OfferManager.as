@@ -9,6 +9,7 @@ package com.somewater.rabbit.application {
 
 		private static var _instance:OfferManager;
 		private var offersById:Array = [];
+		private var _quantity:int = 0;
 
 		public static function get instance():OfferManager
 		{
@@ -58,6 +59,23 @@ package com.somewater.rabbit.application {
 			if(offersById[offer.id])
 				throw new Error('Offer already added: x=' + offer.x + ', y=' + offer.y + ', level=' + offer.level);
 			offersById[offer.id] = offer;
+			_quantity++;
+		}
+
+		/**
+		 * Общее число офферов
+		 */
+		public function get quantity():int
+		{
+			return _quantity;
+		}
+
+		/**
+		 * Сколько следует собрать офферов для получения приза
+		 */
+		public function get prizeQuantity():int
+		{
+			return 50;
 		}
 
 		public function getOfferById(id:int):OfferDef
