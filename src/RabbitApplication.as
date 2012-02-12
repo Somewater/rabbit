@@ -29,6 +29,7 @@ package
 	import com.somewater.rabbit.application.windows.LevelFinishSuccessWindow;
 	import com.somewater.rabbit.application.windows.LevelStartWindow;
 	import com.somewater.rabbit.application.windows.LevelSwitchWindow;
+	import com.somewater.rabbit.application.windows.OfferDescriptionWindow;
 	import com.somewater.rabbit.application.windows.PauseMenuWindow;
 	import com.somewater.rabbit.application.windows.PendingRewardsWindow;
 	import com.somewater.rabbit.application.windows.TesterInvitationWindow;
@@ -64,6 +65,8 @@ package
 	import flash.text.TextFieldAutoSize;
 	import flash.ui.Keyboard;
 	import flash.utils.Timer;
+	import flash.utils.clearInterval;
+	import flash.utils.setInterval;
 	import flash.utils.setTimeout;
 
 
@@ -186,6 +189,14 @@ package
 				friendInviteTimer = new Timer(3*60*1000);
 				friendInviteTimer.addEventListener(TimerEvent.TIMER, onFriendInviteTimer);
 				friendInviteTimer.start();
+
+				var interv:uint = setInterval(function():void{
+					if(Config.gameModuleActive == false && PopUpManager.numWindows == 0)
+					{
+						clearInterval(interv);
+						new OfferDescriptionWindow();
+					}
+				}, 10*1000)
 			}
 		}
 
