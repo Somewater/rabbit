@@ -67,6 +67,14 @@
 			<td><input type="text" name="user[tutorial]" maxlength="10" value="<%= @user.tutorial %>" size="50"></input></td>
 		</tr>
 		<tr width='100%'>
+			<th>offer_instances</th>
+			<td><textarea name="user[offer_instances]" rows="3" cols="100"><%= CGI::escapeHTML(@user.offer_instances ? @user.offer_instances.to_json : '') %></textarea></td>
+		</tr>
+		<tr width='100%'>
+			<th>offers</th>
+			<td><input type="text" name="user[offers]" maxlength="10" value="<%= @user.offers %>" size="50"></input></td>
+		</tr>
+		<tr width='100%'>
 			<th>created_at</th>
 			<td><input type="text" name="user[created_at]" maxlength="50" value="<%= @user.created_at %>" size="50"></input></td>
 		</tr>
