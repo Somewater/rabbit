@@ -38,6 +38,8 @@ package com.somewater.rabbit.application
 		private var storiesSwitcher:StoriesSwitcher;
 		private var iconsHolder:Sprite;
 
+		private var offerStat:OfferStatPanel;
+
 		public function LevelsPage()
 		{
 			super();
@@ -69,7 +71,13 @@ package com.somewater.rabbit.application
 			globalScoreCounterTF.width = 100;
 			globalScoreCounterTF.x = globalScoreCarrot.x + globalScoreCarrot.width * 0.5 - 50 - 3;
 			globalScoreCounterTF.y = globalScoreCarrot.y + globalScoreCarrot.height + 5;
+			globalScoreCounterTF.text = ' ';
 			globalScoreHolder.addChild(globalScoreCounterTF);
+
+			offerStat = new OfferStatPanel(OfferStatPanel.INTERFACE_MODE);
+			offerStat.x = -offerStat.width * 0.5 + 10;
+			offerStat.y = globalScoreCounterTF.y + globalScoreCounterTF.textHeight + 15;
+			globalScoreHolder.addChild(offerStat);
 
 			var sumScore:int = 0;
 			var maxScores:int = 0;

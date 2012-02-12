@@ -52,6 +52,7 @@ package com.somewater.rabbit.application {
 					case INTERFACE_MODE:
 						(core.getChildByName('icon') as MovieClip).gotoAndStop(2);
 						core.getChildByName('background').alpha = 0;
+						textField.color = 0x124D18;
 						break
 				}
 			}
