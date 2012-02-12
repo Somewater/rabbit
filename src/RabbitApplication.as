@@ -15,6 +15,7 @@ package
 	import com.somewater.rabbit.application.GameGUI;
 	import com.somewater.rabbit.application.LevelsPage;
 	import com.somewater.rabbit.application.MainMenuPage;
+	import com.somewater.rabbit.application.OfferManager;
 	import com.somewater.rabbit.application.OrangeButton;
 	import com.somewater.rabbit.application.OrangeGround;
 	import com.somewater.rabbit.application.PageBase;
@@ -272,6 +273,10 @@ package
 			}
 			// TODO: END
 
+			var offers:XMLList = data.offers;
+			for each(var offer:XML in offers.*)
+				OfferManager.instance.createOffer(offer);
+
 			RewardManager.instance.initialize(Config.loader.getXML('Rewards'))
 		}
 
@@ -463,6 +468,8 @@ package
 				{
 					levelStartMessage(level);
 					Config.stat(Stat.LEVEL_STARTED);
+
+					OfferManager.instance.onLevelStarted(level);
 				}
 				else if(level.type == RewardLevelDef.TYPE)
 				{

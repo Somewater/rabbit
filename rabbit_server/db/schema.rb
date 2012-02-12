@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 12) do
+ActiveRecord::Schema.define(:version => 13) do
 
   create_table "admins", :force => true do |t|
     t.string   "login",                           :null => false
@@ -85,6 +85,8 @@ ActiveRecord::Schema.define(:version => 12) do
     t.datetime "updated_at"
     t.integer  "day_counter",                                    :default => 0
     t.integer  "tutorial",                                       :default => 0
+    t.string   "offer_instances"
+    t.integer  "offers",                                         :default => 0
   end
 
   add_index "users", ["uid", "net"], :name => "index_users_on_uid_and_net", :unique => true

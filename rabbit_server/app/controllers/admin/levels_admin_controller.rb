@@ -86,6 +86,7 @@ class LevelsAdminController < AdminController::Base
 
 	# генерировать содержание файла левелов (наиболее новой версии, в соответствии с БД)
 	def self.generate_xml_file(release)
+		raise "deprecated, use LevelXmlGenerator.generate"
 		head_levels = Level.all_head
 		if(release)
 			head_levels.delete_if{|l| l.number > 99}

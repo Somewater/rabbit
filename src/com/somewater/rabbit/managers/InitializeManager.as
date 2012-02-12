@@ -16,6 +16,7 @@ package com.somewater.rabbit.managers
 	import com.somewater.rabbit.components.PowerupDataComponent;
 	import com.somewater.rabbit.creature.CrowHarvesterComponent;
 	import com.somewater.rabbit.creature.HeroIsoMover;
+	import com.somewater.rabbit.creature.OfferControllerComponent;
 	import com.somewater.rabbit.creature.ShapeSpatialComponent;
 	import com.somewater.rabbit.decor.BackgroundRenderer;
 	import com.somewater.rabbit.decor.GroundGrassRenderer;
@@ -75,7 +76,7 @@ package com.somewater.rabbit.managers
 		
 		private static var restartLevelCallbacks:Array;
 		
-		private static var lastLevelGroup:String;// название группы, которая была инициализирована при прошлом запуске
+		public static var lastLevelGroup:String;// название группы, которая была инициализирована при прошлом запуске
 		private static var lastLevelManagers:String;// название группы менеджеров, которые были инициированы при запуске прошлого уровня
 		
 		
@@ -179,6 +180,7 @@ package com.somewater.rabbit.managers
 			PBE.registerType(HeroIsoMover);
 			PBE.registerType(PowerupControllerComponent);
 			PBE.registerType(PowerupDataComponent);
+			PBE.registerType(OfferControllerComponent);
 
 			RandomizeUtil.initialize();				
 		}

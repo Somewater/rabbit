@@ -48,5 +48,7 @@ package com.somewater.rabbit
 		function setTemplateTool(toolname:String, template:XML = null, objectReference:XML = null):IEventDispatcher
 
 		function get tutorialModule():IGameTutorialModule
+
+		function createOffer(x:int,  y:int):void
 	}
 }

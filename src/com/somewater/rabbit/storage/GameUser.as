@@ -10,6 +10,7 @@ package com.somewater.rabbit.storage
 		protected var _score:int;
 		protected var _levelInstances:Array = [];
 		protected var _rewards:Array = [];
+		protected var _offerInstances:Array = [];
 		protected var _postings:int;
 		protected var _friendsInvited:int;
 		private var _levelNumber:int;
@@ -95,6 +96,23 @@ package com.somewater.rabbit.storage
 			_rewards[reward.id] = reward;
 		}
 
+		public function addOfferInstance(offer:OfferDef):void
+		{
+			if(_offerInstances[offer.id] != null)
+				throw new Error('Offer already added')
+			_offerInstances[offer.id] = offer;
+		}
+
+		public function getOfferInstanceById(id:int):OfferDef
+		{
+			return _offerInstances[id];
+		}
+
+		public function removeOfferInstanceById(id:int):void
+		{
+			delete(_offerInstances[id]);
+		}
+
 		public function get uid():String
 		{
 			return socialUser.id;
@@ -118,6 +136,11 @@ package com.somewater.rabbit.storage
 		public function clearRewards():void
 		{
 			_rewards = [];
+		}
+
+		public function clearOfferInstances():void
+		{
+			_offerInstances = [];
 		}
 
 		public function set postings(postings:int):void {

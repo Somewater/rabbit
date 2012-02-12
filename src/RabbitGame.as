@@ -34,6 +34,7 @@ package
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	import flash.events.IOErrorEvent;
+	import flash.geom.Point;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.system.ApplicationDomain;
@@ -295,6 +296,13 @@ package
 		public function get tutorialModule():IGameTutorialModule
 		{
 			return GameTutorialModule.instance;
+		}
+
+		public function createOffer(x:int, y:int):void {
+			//var entity:IEntity =
+			var offer:IEntity = PBE.templateManager.instantiateEntity('OfferTemplate');
+			offer.owningGroup = PBE.lookup(InitializeManager.lastLevelGroup) as PBGroup;
+			offer.setProperty(new PropertyReference('@Spatial.position'), new Point(x,  y))
 		}
 	}
 }

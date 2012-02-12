@@ -90,16 +90,27 @@ package com.somewater.rabbit.debug {
 		}
 
 		private function onMouseClick(event:MouseEvent):void {
- 			if(tool)
+			try
 			{
-				var tile:Point = IsoSpatialManager.globalToIso(new Point(PBE.cachedMainStage.mouseX, PBE.cachedMainStage.mouseY));
-				tile.x = int(tile.x);
-				tile.y = int(tile.y);
+			var tile:Point = IsoSpatialManager.globalToIso(new Point(PBE.cachedMainStage.mouseX, PBE.cachedMainStage.mouseY));
+			tile.x = int(tile.x);
+			tile.y = int(tile.y);
+			}catch(err:Error)
+			{
+				trace(err.getStackTrace());
+			}
 
+ 			if(tool && tile)
+			{
 				if(tile.x < 0 || tile.y < 0 || tile.x >= IsoSpatialManager.instance.width || tile.y >= IsoSpatialManager.instance.height)
 					return;// точка за пределами карты
 
 				tool.onClick(tile);
+			}
+
+			if(tile)
+			{
+				trace('[TILE CLICKED]\n- x: ' + tile.x + '\n  y: ' + tile.y + '\n');
 			}
 		}
 

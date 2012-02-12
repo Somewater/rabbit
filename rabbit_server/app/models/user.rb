@@ -38,6 +38,18 @@ class User < ActiveRecord::Base
 		@rewards = hash
 	end
 
+	def offer_instances
+		unless @offer_instances
+			str = self['offer_instances']
+			str = '{}' if !str || str.size == 0
+			@offer_instances = JSON.parse(str )
+		end
+		@offer_instances
+	end
+	def offer_instances=(hash)
+		@offer_instances = hash
+	end
+
 	# каждый вызов метода создает новое рандомное значение, автозаписывемое в базу
 	def get_roll()
 		debug = roll = self.roll.to_i
@@ -53,11 +65,13 @@ class User < ActiveRecord::Base
 	def save_structures
 		self['level_instances'] = JSON.fast_generate(@level_instances) 	if @level_instances
 		self['rewards'] = JSON.fast_generate(@rewards) 			if @rewards
+		self['offer_instances'] = JSON.fast_generate(@offer_instances) if @offer_instances
 	end
 
 	def clear_structures
 		@rewards = nil
 		@level_instances = nil
+		@offer_instances = nil
 	end
 
 	def reload(options = nil)
@@ -83,18 +97,42 @@ class User < ActiveRecord::Base
 		end
 	end
 
+	# добавляет оффер только если нет такого же
+	def add_offer_instance(offer)
+		if(self.offer_instances[offer.id])
+			raise LogicError, "Offer id #{offer.id} already created"
+		else
+			self.offer_instances[offer.id] = {}#'x' => offer.x,     # временно пишем пустые объекты,
+											   #'y' => offer.y,     # т.к. id оффера однозначно сигнализиурет
+											   #'n' => offer.level} # всю информацию о нем
+			self.offers += 1
+		end
+	end
+
 	# спецально для выдачи инфы о друге, только важнейшая информация, не включающая сериализованные поля "level_instances", "rewards"
 	def to_short_json
 		hash = {};
-		self.attributes.each{|k,v| hash[k] = v.to_s if k.to_s != 'level_instances' && k.to_s != 'rewards'}
+		hash['level'] = self.level
+		hash['score'] = self.score
+		hash['uid'] = self.uid
 		hash
 	end
 
 	# полная инеформация о пользователе
 	def to_json
 		hash = self.to_short_json
-		hash['level_instances'] = self.level_instances
-		hash['rewards'] = self.rewards
+		hash['day_counter'] = self.day_counter
+		hash['friends_invited'] = self.friends_invited
+		hash['money'] = self.money
+		hash['postings'] = self.postings
+
+		hash['level_instances'] = @level_instances ? @level_instances : self['level_instances'] # если структуры уже созданы (заранее), то отдаем их
+		hash['rewards'] = @rewards ? @rewards : self['rewards']
+		hash['offer_instances'] = @offer_instances ? @offer_instances : self['offer_instances']
+
+		hash['offers'] = self.offers
+		hash['roll'] = self.roll
+		hash['tutorial'] = self.tutorial
 		hash
 	end
 

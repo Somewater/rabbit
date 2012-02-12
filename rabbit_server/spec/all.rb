@@ -368,15 +368,15 @@ class AllSpec
 
 			it "Ответ на запрос содержит информацию по пользователю" do
 				response = request({'net' => @user.net,'uid' => @user.uid})
-				response['user']['id'].should_not be_nil
+				#response['user']['id'].should_not be_nil
 				response['user']['uid'].should_not be_nil
-				response['user']['net'].should_not be_nil
+				#response['user']['net'].should_not be_nil
 				response['user']['score'].should_not be_nil
 				response['user']['money'].should_not be_nil
 				response['user']['level'].should_not be_nil
 				response['user']['roll'].should_not be_nil
-				response['user']['created_at'].should_not be_nil
-				response['user']['updated_at'].should_not be_nil
+				#response['user']['created_at'].should_not be_nil
+				#response['user']['updated_at'].should_not be_nil
 				response['user']['friends_invited'].should_not be_nil
 				response['user']['postings'].should_not be_nil
 				response['user']['day_counter'].should_not be_nil
@@ -391,7 +391,7 @@ class AllSpec
 			it "Обнуляется счетчик day_counter, если пользователь просрочил заход" do
 				day_counter = request({'net' => @user.net,'uid' => @user.uid})['user']['day_counter']
 				Application.instance_variable_set('@time', Time.new + 2.day)
-				request({'net' => @user.net,'uid' => @user.uid})['user']['day_counter'].should == '0'
+				request({'net' => @user.net,'uid' => @user.uid})['user']['day_counter'].to_i.should == 0
 			end
 
 			it "Не обнуляет счетчик, если пользователь зашел еще раз в течение того же дня" do
@@ -406,7 +406,7 @@ class AllSpec
 				Application.instance_variable_set('@time', @user.updated_at + 1.day)
 				response = request({'net' => @user.net,'uid' => @user.uid})
 				response['user']['rewards'].to_a.index{|k,v| k .to_s == '333'}.should_not be_nil
-				response['user']['day_counter'].should == '0'
+				response['user']['day_counter'].should == 0
 			end
 
 			it "Увеличивается счетчик friends_invited у пригласителя" do
@@ -686,9 +686,91 @@ class AllSpec
 				@user.tutorial = 5
 				@user.save
 
+				#lambda{
+					response = request({'net' => @user.net,'uid' => @user.uid, 'json' => {'tutorial' => 2}})
+					response['status'].should =~ /Tutorial must only increment/
+				#}.should raise_error(LogicError, /Tutorial must only increment/)
+			end
+		end
+
+		describe OfferController do
+			before :each do
+				@user = get_uniq_user
+				@user.offers = 0
+				@user['offer_instances'] = nil
+				@user.save
+
+				# есть только офферы на втором уровне, с координатами 1,1 и 2,2
+				@off1 = Offer.new(1,1,2)
+				@off2 = Offer.new(2,2,2)
+				OfferManager.instance.instance_variable_set('@offers_by_id', {@off1.id => @off1, @off2.id => @off2})
+			end
+
+			def request(hash)
+				execute_secure_request(hash, OfferController)
+			end
+
+		    it "Если хотя бы 1 оффер зачислен, ошибка не генерируется" do
+				response = request({'net' => @user.net,'uid' => @user.uid, 'json' => {
+						'offers' => [OfferManager.params_to_id(1, 1, 2), OfferManager.params_to_id(1, 1, 20), OfferManager.params_to_id(100, 100, 2)]}})
+				@user.reload
+				@user.offers.should == 1
+				response['offers_added'].size.should == 1
+			end
+
+			it "Выдается список зачисленных офферах" do
+				response = request({'net' => @user.net,'uid' => @user.uid, 'json' => {
+						'offers' => [OfferManager.params_to_id(1, 1, 2), OfferManager.params_to_id(2, 2, 2)]}})
+				@user.reload
+				@user.offers.should == 2
+				response['offers_added'].size.should == 2
+				response['offers_added'].each{|off|
+					off.class.should == String
+					(off =~ /^1\d{9}$/).should == 0
+				}
+			end
+
+			it "Если ни один оффер не применен, генерируется ошибка" do
 				lambda{
-					request({'net' => @user.net,'uid' => @user.uid, 'json' => {'tutorial' => 2}})
-				}.should raise_error(LogicError, /Tutorial must only increment/)
+					request({'net' => @user.net,'uid' => @user.uid, 'json' => {
+						'offers' => [OfferManager.params_to_id(10, 10, 2), OfferManager.params_to_id(2, 2, 20)]}})
+				}.should raise_error(LogicError, /All offers not approved/)
+			end
+
+			it "функция user@add_offer_instance работает правильно" do
+				@user.add_offer_instance(@off1)
+				lambda{
+					@user.add_offer_instance(@off1) # 2 раза добавляем один и тот же оффер
+				}.should raise_error(LogicError, /Offer id \d+ already created/)
+				@user.offer_instances.keys.size.should == 1 # проверяем корректность работы функции add_offer_instance
+				@user.offers.should == 1
+				@user.save
+
+				@user.add_offer_instance(@off2)
+				@user.offer_instances.keys.size.should == 2
+				@user.offers.should == 2
+			end
+
+			it "Нельзя получить один оффер дважды" do
+				@user.add_offer_instance(@off1)
+				@user.save
+
+				response = request({'net' => @user.net,'uid' => @user.uid, 'json' => {
+					'offers' => [OfferManager.params_to_id(1, 1, 2), OfferManager.params_to_id(2, 2, 2)]}})
+
+				@user.reload
+				@user.offers.should == 2
+				@user.offer_instances.keys.size.should == 2
+				response['offers_added'].size.should == 1
+			end
+
+			it "Нельзя получить несуществующий оффер" do
+				response = request({'net' => @user.net,'uid' => @user.uid, 'json' => {
+					'offers' => [OfferManager.params_to_id(1, 1, 2), OfferManager.params_to_id(2, 30, 2)]}})
+				@user.reload
+				@user.offers.should == 1
+				@user.offer_instances.keys.size.should == 1
+				response['offers_added'].size.should == 1
 			end
 		end
 	end

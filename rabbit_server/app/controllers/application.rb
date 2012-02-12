@@ -85,9 +85,12 @@ class Application
 					PostingController.new(request).call
 				when 'tutorial/inc'
 					TutorialController.new(request).call
+				when 'offer/add'
+					OfferController.new(request).call
 
 				when "levels.xml"
-					LevelsAdminController.generate_xml_file(request['release'])
+					LevelXmlGenerator.generate(request['release'])
+					#LevelsAdminController.generate_xml_file(request['release'])
 				when "config.json"
 					[200,{"Content-Type" => "text/plain; charset=UTF-8"},Conf.to_json]
 				# ADMIN AREA

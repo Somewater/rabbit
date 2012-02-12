@@ -7,6 +7,7 @@ package com.somewater.rabbit.application {
 	import com.somewater.rabbit.storage.GameUser;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
+	import com.somewater.rabbit.storage.OfferDef;
 	import com.somewater.rabbit.storage.RewardInstanceDef;
 	import com.somewater.rabbit.storage.UserProfile;
 	import com.somewater.social.SocialUser;
@@ -129,6 +130,16 @@ package com.somewater.rabbit.application {
 				handler.call('tutorial/inc', {'tutorial':newValue});
 		}
 
+		public function addOffer(offer:OfferDef):void {
+			handler.call('offer/add', {'offers':[offer.id]}, function(response:Object):void{
+				// сервер успешно принял оффер
+				Config.stat(Stat.OFFER_HARVESTED);
+			}, function(response:Object):void{
+				// сервер не принял оффер
+				UserProfile.instance.removeOfferInstanceById(offer.id);
+			}, null, {'secure': true});
+		}
+
 
 		//////////////////////////////////
 		//                              //
@@ -150,8 +161,7 @@ package com.somewater.rabbit.application {
 			}
 
 			gameUser.clearLevelInstances();
-			if(json['level_instances'] == null)json['level_instances'] = [];
-			if(json['level_instances'] is String && json['level_instances'].length > 0) json['level_instances'] = handler.fromJson(json['level_instances']);
+			json['level_instances'] = toJsonSafety(json['level_instances'])
 			for(id in json['level_instances'])
 			{
 				var li:LevelInstanceDef = gameUser.getLevelInsanceByNumber(parseInt(id));
@@ -167,11 +177,14 @@ package com.somewater.rabbit.application {
 			}
 
 			gameUser.clearRewards();
-			if(json['rewards'] == null)json['rewards'] = [];
-			if(json['rewards'] is String && json['rewards'].length > 0) json['rewards'] = handler.fromJson(json['rewards']);
+			json['rewards'] = toJsonSafety(json['rewards'])
 			for(id in json['rewards'])
 				gameUser.addRewardInstance(jsonToRewardInstance(json['rewards'][id],
 						gameUser.getRewardInstanceById(parseInt(id)) || new RewardInstanceDef(RewardManager.instance.getById(parseInt(id)))))
+
+			gameUser.clearOfferInstances();
+			for(id in toJsonSafety(json['offer_instances']))
+				gameUser.addOfferInstance(OfferManager.instance.getOfferById(parseInt(id)));
 
 			if(json['roll'])
 				gameUser.setRoll(json['roll']);
@@ -247,6 +260,18 @@ package com.somewater.rabbit.application {
 				if(arr2Ids.indexOf(arr1Ids[i]) == -1)
 					return false;
 			return true;
+		}
+
+		/**
+		 * Десериализует любую информацию в объект
+		 */
+		private function toJsonSafety(data:*):Object
+		{
+			if(data == null)
+				data = [];
+			else if(data is String && data.length > 0)
+				data = handler.fromJson(data);
+			return data;
 		}
 	}
 }

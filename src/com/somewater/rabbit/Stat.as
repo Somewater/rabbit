@@ -28,5 +28,7 @@ package com.somewater.rabbit {
 		public static const EXCEPTION_CATCHED:String = 'exception_catched';// отловлена ошибка в процессе игры (ведущая к перезагрузке уровня)
 
 		public static const NEW_USER_REGISTERED:String = 'new_user_registered';// юзер впервые внесн в БД (новый игрок)
+
+		public static const OFFER_HARVESTED:String = 'offer_harvested';// юзер собрал оффер (уникальный, который ранее не собирал)
 	}
 }
