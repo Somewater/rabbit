@@ -185,6 +185,16 @@ namespace :srv do
 		end
 		puts "=== Notify #{notify.enabled ? 'completed' : 'paused'} at #{Time.new} ==="
 	end
+
+	desc "Server fixes"
+	task :fix, [:name] => :environment do |task, args|
+		case args[:name].to_sym
+			when :offers_db_fix
+				OffersDbStringErrorFix::execute()
+			else
+				puts "Undefined fix name"
+		end
+	end
 end
 
 
