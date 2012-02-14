@@ -28,7 +28,7 @@ package {
 	import flash.utils.getDefinitionByName;
 
 
-	[SWF(width="810", height="800", backgroundColor="#FFFFFF", frameRate="30")]
+	[SWF(width="810", height="950", backgroundColor="#FFFFFF", frameRate="30")]
 	public class VkRabbitLoader extends SocialRabbitLoader{
 
 		private var _clickozavr:Clickozavr;
@@ -116,6 +116,14 @@ package {
 					new LoaderContext(true, ApplicationDomain.currentDomain, SecurityDomain.currentDomain))*/
 
 			super.onNetInitializeComplete();
+
+			var livecardAdLoader:Loader = new Loader();
+			livecardAdLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, function(event:Event):void{
+				var banner:DisplayObject = LoaderInfo(event.target).content;
+				banner.y = 800;
+				Config.loader.adLayer.addChild(banner);
+			})
+			livecardAdLoader.load(new URLRequest(swfs['LivecardAd'].url))
 		}
 
 		private function onAdAppComplete(event:Event):void {
@@ -207,6 +215,7 @@ package {
 
 			// only for vk
 			swfs['PostingPopup'] = {'url':'http://cs10433.vk.com/u245894/fd9993c28d5577.zip'}
+			swfs['LivecardAd'] = {'url':'http://cs10862.vk.com/u245894/d850ff2e21a080.zip'}
 		}
 
 		override public function get net():int { return 2; }
