@@ -4,6 +4,9 @@ package com.somewater.rabbit.components {
 	import com.somewater.rabbit.iso.IsoMover;
 	import com.somewater.rabbit.iso.IsoRenderer;
 	import com.somewater.rabbit.managers.LevelConditionsManager;
+	import com.somewater.rabbit.storage.PowerupInfo;
+
+	import flash.events.Event;
 
 	import flash.filters.BitmapFilter;
 	import flash.filters.GlowFilter;
@@ -12,6 +15,8 @@ package com.somewater.rabbit.components {
 	 * Собирает паверапы и контролирует их использование
 	 */
 	public class PowerupControllerComponent extends HarvesterComponent{
+
+		public static var POWERUPS_CHANGED:String = 'powerupsChanged';
 
 		private const PROTECTION:BitmapFilter = new GlowFilter(0xFFFFFF, 1, 5, 5, 10);
 		private const SPEED_UP:BitmapFilter = new GlowFilter(0x0000FF, 1, 2, 2, 5);
@@ -25,7 +30,7 @@ package com.somewater.rabbit.components {
 		 * Массив временных паверапов
 		 * array of PowerupInfo
 		 */
-		private var temporaryPowerups:Array = [];
+		public var temporaryPowerups:Array = [];
 
 		public function PowerupControllerComponent() {
 			harvestType = new ObjectType('powerups');
@@ -58,7 +63,7 @@ package com.somewater.rabbit.components {
 				levelConditionsRef = LevelConditionsManager.instance;
 
 			var i:int = 0;
-			var filterDeleted:Boolean = false;
+			var powerupDeleted:Boolean = false;
 			while(i < temporaryPowerups.length)
 			{
 				var info:PowerupInfo = temporaryPowerups[i];
@@ -75,7 +80,7 @@ package com.somewater.rabbit.components {
 						isoMoverRef.speed -= data.speedAdd;
 
 					temporaryPowerups.splice(i, 1);
-					filterDeleted = true;
+					powerupDeleted = true;
 				}
 				else
 				{
@@ -84,7 +89,7 @@ package com.somewater.rabbit.components {
 				}
 			}
 
-			if(filterDeleted)
+			if(powerupDeleted)
 				refreshActorPowerups();
 		}
 
@@ -140,7 +145,7 @@ package com.somewater.rabbit.components {
 			registerForTicks = temporaryPowerups.length > 0;
 		}
 
-		private function pushToTemporaryPowerups(data:DataComponent):void
+		private function pushToTemporaryPowerups(data:PowerupDataComponent):void
 		{
 			var info:PowerupInfo = new PowerupInfo();
 			info.data = data;
@@ -153,23 +158,7 @@ package com.somewater.rabbit.components {
 		 */
 		private function refreshActorPowerups():void
 		{
-			var currentFilters:Array = [];
-			for each(var info:PowerupInfo in temporaryPowerups)
-			{
-				if(info.data.speedAdd && currentFilters.indexOf(SPEED_UP) == -1)
-					currentFilters.push(SPEED_UP);
-				if(info.data.protection && currentFilters.indexOf(PROTECTION) == -1)
-					currentFilters.push(PROTECTION);
-			}
-			rendererRef.displayObject.filters = currentFilters;
+			owner.eventDispatcher.dispatchEvent(new Event(POWERUPS_CHANGED));
 		}
 	}
-}
-
-import com.somewater.rabbit.components.DataComponent;
-
-class PowerupInfo
-{
-	public var data:DataComponent;
-	public var timeRemain:Number;
 }

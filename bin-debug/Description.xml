@@ -22,6 +22,10 @@
 		<component type="com.somewater.rabbit.components.PowerupControllerComponent" name="PowerupController">
 			<sense>false</sense>
 		</component>
+		<component type="com.somewater.rabbit.components.PowerupPanelRendererComponent" name="PowerupRender">
+		</component>
+		<component name="Render" type="com.somewater.rabbit.components.ProxyIsoRenderer">
+		</component>
 	</entity>
 	
 	

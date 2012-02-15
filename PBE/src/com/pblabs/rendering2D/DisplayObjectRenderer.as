@@ -647,7 +647,7 @@ package com.pblabs.rendering2D
         
         protected function updateProperties():void
         {
-            if(!owner)
+            /*if(!owner)
                 return;
             
             // Sync our zIndex.
@@ -734,7 +734,7 @@ package com.pblabs.rendering2D
                 
                 _lastLayerIndex = _layerIndex;
                 _layerIndexDirty = false;
-            }
+            }*/
         }
         
         /**

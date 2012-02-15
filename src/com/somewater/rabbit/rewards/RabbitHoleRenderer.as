@@ -35,7 +35,7 @@ package com.somewater.rabbit.rewards {
 			holeTitle.text = Config.game.level is IUserLevel ? IUserLevel(Config.game.level).gameUser.socialUser.firstName
 					: (Config.loader.getUser().firstName && Config.loader.getUser().firstName.length ? Config.loader.getUser().firstName :
 									(Config.loader.getUser().lastName ? Config.loader.getUser().lastName : ''));
-			clip.addChild(holeTitle);
+			_clip.addChild(holeTitle);
 		}
 	}
 }

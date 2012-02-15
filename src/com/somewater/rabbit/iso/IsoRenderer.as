@@ -87,6 +87,8 @@ package com.somewater.rabbit.iso
 		 */
 		public var correctX:Number = 0;
 		public var correctY:Number = 0;
+
+		public var _clip:MovieClip;
 		
 		public function set direction(value:int):void
 		{
@@ -209,15 +211,16 @@ package com.somewater.rabbit.iso
 				if(i == 0)
 					state = labels[i].name
 			}
-			
+
+			_clip = value;
 			displayObject = value;
 			_clipDirty = true;
 		}
 		
-		public function get clip():MovieClip
+		/*public function get clip():MovieClip
 		{
 			return _displayObject as MovieClip;
-		}
+		}*/
 		
 		
 		
@@ -256,7 +259,7 @@ package com.somewater.rabbit.iso
 			if(_clipDirty)
 			{
 				// проинициировать все свойства, т.к. кип компонента был заменен (или впервые добавлен)
-				onClipAdded(clip);
+				onClipAdded(_clip);
 				_clipDirty = false;
 			}
 
@@ -303,8 +306,8 @@ package com.somewater.rabbit.iso
 		
 		public function updareStateAndDirection():void
 		{
-			_displayObject.removeEventListener("frameConstructed", onFrameConstructed);
-			_displayObject.addEventListener("frameConstructed", onFrameConstructed);
+			_clip.removeEventListener("frameConstructed", onFrameConstructed);
+			_clip.addEventListener("frameConstructed", onFrameConstructed);
 			
 			directionClip = null;
 			_currentState = null;
@@ -326,7 +329,7 @@ package com.somewater.rabbit.iso
 			// KLUDGE: -1 т.к.  __direction >= 1 (таков принцип вычисления), 
 			// а frameIndex уже содержит начальный кадр (frameIndex>=1)
 			
-			clip.gotoAndStop(frameIndex);
+			_clip.gotoAndStop(frameIndex);
 			function onFrameConstructed(e:Event):void
 			{
 				e.currentTarget.removeEventListener(e.type, arguments.callee);

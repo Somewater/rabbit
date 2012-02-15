@@ -1,4 +1,7 @@
 package com.somewater.rabbit.components {
+	import com.somewater.rabbit.iso.IsoRenderer;
+
+	import flash.display.DisplayObject;
 
 	/**
 	 * Приклеплен к конкретному паверапу и описывает свойства паверапа
@@ -25,8 +28,27 @@ package com.somewater.rabbit.components {
 		 */
 		public var timeAdd:int = 0;
 
+		/**
+		 * Имя ассета иконки паверапа
+		 */
+		public var icon:String;
+
 		public function PowerupDataComponent() {
 			_health = 0;// по умолчанию это свойство конфига нулевое
+		}
+
+		public function get slug():String
+		{
+			if(icon == null)
+				icon = (owner.lookupComponentByName('Render') as IsoRenderer).slug;
+			return icon;
+		}
+
+		override protected function onAdd():void {
+			super.onAdd();
+
+			// инициализация параметров
+			this.slug;
 		}
 	}
 }

@@ -14,6 +14,8 @@ package com.somewater.rabbit.managers
 	import com.somewater.rabbit.components.ObviousHunterComponent;
 	import com.somewater.rabbit.components.PowerupControllerComponent;
 	import com.somewater.rabbit.components.PowerupDataComponent;
+	import com.somewater.rabbit.components.PowerupPanelRendererComponent;
+	import com.somewater.rabbit.components.ProxyIsoRenderer;
 	import com.somewater.rabbit.creature.CrowHarvesterComponent;
 	import com.somewater.rabbit.creature.HeroIsoMover;
 	import com.somewater.rabbit.creature.OfferControllerComponent;
@@ -181,6 +183,8 @@ package com.somewater.rabbit.managers
 			PBE.registerType(PowerupControllerComponent);
 			PBE.registerType(PowerupDataComponent);
 			PBE.registerType(OfferControllerComponent);
+			PBE.registerType(PowerupPanelRendererComponent);
+			PBE.registerType(ProxyIsoRenderer);
 
 			RandomizeUtil.initialize();				
 		}

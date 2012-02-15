@@ -3,6 +3,7 @@ package com.somewater.rabbit.components
 	import com.somewater.rabbit.SoundTrack;
 	import com.somewater.rabbit.Sounds;
 	import com.somewater.rabbit.storage.Config;
+	import com.somewater.rabbit.util.AnimationHelper;
 
 	/**
 	 * Хранение различных констант, присущих игроку
@@ -59,7 +60,10 @@ package com.somewater.rabbit.components
 			if(value != _health)
 			{
 				if(_health > value)
+				{
 					Config.application.play(Sounds.DAMAGE, SoundTrack.GAME_DAMAGE);
+					AnimationHelper.instance.blink((owner.lookupComponentByName('Render') as ProxyIsoRenderer)._clip, 0, 1);
+				}
 				_health = value;
 				if(_health <= 0 && _owner)
 				{
