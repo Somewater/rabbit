@@ -3,9 +3,8 @@ package com.somewater.rabbit.storage
 	import com.somewater.social.SocialUser;
 	import com.somewater.storage.InfoDef;
 
-	public class GameUser extends InfoDef
-	{
-		public var socialUser:SocialUser;
+	public class GameUser extends InfoDef implements IGameUser {
+		protected var _socialUser:SocialUser;
 		
 		protected var _score:int;
 		protected var _levelInstances:Array = [];
@@ -13,6 +12,7 @@ package com.somewater.rabbit.storage
 		protected var _offerInstances:Array = [];
 		protected var _postings:int;
 		protected var _friendsInvited:int;
+		protected var _customize:Array = [];
 		private var _levelNumber:int;
 		
 		public function GameUser(data:Object = null)
@@ -21,15 +21,14 @@ package com.somewater.rabbit.storage
 			super(data)
 		}
 
-		public function itsMe():Boolean
-		{
+		public function itsMe():Boolean {
 			return false;
 		}
-		
+
 		override public function set data(value:Object):void
 		{
 			if(value is SocialUser)
-				this.socialUser = value as SocialUser;
+				this._socialUser = value as SocialUser;
 			else if(value)
 			{
 				if(value.hasOwnProperty('level'))
@@ -38,6 +37,11 @@ package com.somewater.rabbit.storage
 					this._friendsInvited = value['friends_invited'];
 				super.data = value;
 			}
+		}
+
+		public function get socialUser():SocialUser
+		{
+			return _socialUser;
 		}
 
 		/**
@@ -113,8 +117,7 @@ package com.somewater.rabbit.storage
 			delete(_offerInstances[id]);
 		}
 
-		public function get uid():String
-		{
+		public function get uid():String {
 			return socialUser.id;
 		}
 
@@ -160,6 +163,21 @@ package com.somewater.rabbit.storage
 		public function addAppFriend(gameUserFriend:GameUser):void
 		{
 			throw new Error('GameUser not implemented addAppFriend');
+		}
+
+		public function clearCustomize():void
+		{
+			_customize = [];
+		}
+
+		public function getCustomize(type:String):CustomizeDef
+		{
+			return CustomizeDef.byId(_customize[type]);
+		}
+
+		public function setCustomize(customize:CustomizeDef):void
+		{
+			_customize[customize.type] = customize.id;
 		}
 	}
 }

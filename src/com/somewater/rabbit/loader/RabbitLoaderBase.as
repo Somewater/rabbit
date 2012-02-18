@@ -90,7 +90,7 @@ package com.somewater.rabbit.loader
 		 */
 		protected var filePaths:Object = {
 											"Levels":"/levels.xml"
-											,"Config":"/config.json"
+											,"Config":"/config.txt"
 											,"Managers":"Managers.xml"
 											,"Description":"Description.xml"
 											,"Rewards":"Rewards.xml"

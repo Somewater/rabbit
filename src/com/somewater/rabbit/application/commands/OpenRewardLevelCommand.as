@@ -1,8 +1,10 @@
 package com.somewater.rabbit.application.commands {
 	import com.somewater.rabbit.application.AppServerHandler;
 	import com.somewater.rabbit.application.ImaginaryGameUser;
+	import com.somewater.rabbit.application.ServerLogic;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.GameUser;
+	import com.somewater.rabbit.storage.RewardInstanceDef;
 	import com.somewater.rabbit.storage.RewardLevelDef;
 	import com.somewater.storage.Lang;
 
@@ -28,7 +30,22 @@ package com.somewater.rabbit.application.commands {
 			if(gameUser.itsMe())
 			{
 				// отпозиционировать реварды с нулевой позицией
-				Config.application.positionizeRewards(gameUser);
+				var userRewardsWithoutCurrent:Array;
+				var positionRewards:Array = [];
+				for each(var r:RewardInstanceDef in gameUser.rewards)
+					if(r.x == 0 && r.y == 0)
+					{
+						userRewardsWithoutCurrent = gameUser.rewards.slice();
+						if(userRewardsWithoutCurrent.indexOf(r) != -1)
+							userRewardsWithoutCurrent.splice(userRewardsWithoutCurrent.indexOf(r),1)
+						for(var i:int = 0;i<positionRewards.length;i++)
+							if(userRewardsWithoutCurrent.indexOf(positionRewards[i]) == -1)
+								userRewardsWithoutCurrent.push(positionRewards[i]);
+						ServerLogic.positionReward(r, userRewardsWithoutCurrent);
+						positionRewards.push(r);
+					}
+				if(positionRewards.length)
+					AppServerHandler.instance.moveRewards(positionRewards);
 				directlyStart();
 			}
 			else

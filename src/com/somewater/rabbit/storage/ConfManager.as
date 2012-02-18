@@ -52,11 +52,15 @@ package com.somewater.rabbit.storage {
 		}
 
 		private function read_data():void {
-			var hash:Object = Config.loader.serverHandler.fromJson(Config.loader.getData('Config'))
+			var regexp:RegExp = /(\w+)\=(.+)\n\n/g
+			var str:String = Config.loader.getData('Config');
 			data = [];
 			jsonCache = [];
-			for(var k:String in hash)
-				data[k] = hash[k];
+			var match:Object;
+			while((match = regexp.exec(str)) != null)
+			{
+				data[String(match[1])] = String(match[2]);
+			}
 		}
 	}
 }

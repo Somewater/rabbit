@@ -50,6 +50,18 @@ class User < ActiveRecord::Base
 		@offer_instances = hash
 	end
 
+	def customize
+		unless @customize
+			str = self['customize']
+			str = '{}' if !str || str.size == 0
+			@customize = JSON.parse(str )
+		end
+		@customize
+	end
+	def customize=(hash)
+		@customize = (hash || {}) # нельзя присвоить nil, тогда будет невозможно сказать что данные были изменены
+	end
+
 	# каждый вызов метода создает новое рандомное значение, автозаписывемое в базу
 	def get_roll()
 		debug = roll = self.roll.to_i
@@ -66,12 +78,14 @@ class User < ActiveRecord::Base
 		self['level_instances'] = JSON.fast_generate(@level_instances) 	if @level_instances
 		self['rewards'] = JSON.fast_generate(@rewards) 			if @rewards
 		self['offer_instances'] = JSON.fast_generate(@offer_instances) if @offer_instances
+		self['customize'] = JSON.fast_generate(@customize) if @customize
 	end
 
 	def clear_structures
 		@rewards = nil
 		@level_instances = nil
 		@offer_instances = nil
+		@customize = nil
 	end
 
 	def reload(options = nil)
@@ -109,6 +123,14 @@ class User < ActiveRecord::Base
 		end
 	end
 
+	def set_customize(name, id)
+		customize[name.to_s] = id.to_i
+	end
+
+	def get_customize(name)
+		customize[name.to_s] || 0
+	end
+
 	# спецально для выдачи инфы о друге, только важнейшая информация, не включающая сериализованные поля "level_instances", "rewards"
 	def to_short_json
 		hash = {};
@@ -129,6 +151,7 @@ class User < ActiveRecord::Base
 		hash['level_instances'] = @level_instances ? @level_instances : self['level_instances'] # если структуры уже созданы (заранее), то отдаем их
 		hash['rewards'] = @rewards ? @rewards : self['rewards']
 		hash['offer_instances'] = @offer_instances ? @offer_instances : self['offer_instances']
+		hash['customize'] = @customize ? @customize : self['customize']
 
 		hash['offers'] = self.offers
 		hash['roll'] = self.roll

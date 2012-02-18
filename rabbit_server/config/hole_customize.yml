@@ -1,0 +1,36 @@
+###############################
+#
+#	БАЗА ЭЛЕМЕНТОВ ДЛЯ КАСТОМИЗАЦИИ НОРКИ
+#	элементы с ID < 0базовые и не могут быть использованы напрямую
+#   ids = 1xx
+#
+###############################
+customize: &customize
+  id: -100
+  name:
+  slug:
+  cost: 0
+  type: false
+  start: false
+
+#####################
+#
+#	КРЫШИ
+#
+#####################
+roof: &roof
+  <<: *customize
+  type: roof
+  id: -102
+
+default_roof:
+  <<: *roof
+  id: 100
+  slug: reward.DefaultRoof
+  start: true
+
+tile_roof:
+  <<: *roof
+  id: 101
+  slug: reward.TileRoof
+

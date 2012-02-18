@@ -1,5 +1,6 @@
 package com.somewater.rabbit.rewards {
 	import com.somewater.rabbit.IUserLevel;
+	import com.somewater.rabbit.events.CustomizeEvent;
 	import com.somewater.rabbit.iso.IsoRenderer;
 	import com.somewater.rabbit.storage.Config;
 
@@ -10,32 +11,21 @@ package com.somewater.rabbit.rewards {
 	 */
 	public class RabbitHoleRenderer extends IsoRenderer{
 
+		private var holeCustomized:Boolean = false;
+
 		public function RabbitHoleRenderer() {
 		}
 
 		override public function onFrame(elapsed:Number):void {
-			if(_displayObject)
-				super.onFrame(elapsed);
-			else
-			{
-				super.onFrame(elapsed);
-				if(_displayObject)
-				    postprocessDisplayObject();
-			}
-		}
+			super.onFrame(elapsed);
 
-		/**
-		 * Обработать мувик будки
-		 */
-		private function postprocessDisplayObject():void {
-			var holeTitle:TextField = Config.application.createTextField(Config.FONT_SECONDARY, 0x6B450D, 12, true, false, false, false, 'center');
-			holeTitle.width = 70;
-			holeTitle.x = -25;
-			holeTitle.y = -63;
-			holeTitle.text = Config.game.level is IUserLevel ? IUserLevel(Config.game.level).gameUser.socialUser.firstName
-					: (Config.loader.getUser().firstName && Config.loader.getUser().firstName.length ? Config.loader.getUser().firstName :
-									(Config.loader.getUser().lastName ? Config.loader.getUser().lastName : ''));
-			_clip.addChild(holeTitle);
+			if(!holeCustomized && _clip != null)
+			{
+				var event:CustomizeEvent = new CustomizeEvent(_clip, CustomizeEvent.TYPE_HOLE);
+				Config.application.dispatchEvent(event);
+				if(event.applyed)
+					holeCustomized = true;
+			}
 		}
 	}
 }

@@ -12,6 +12,7 @@ package
 	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.application.AboutPage;
 	import com.somewater.rabbit.application.AppServerHandler;
+	import com.somewater.rabbit.application.CustomizeManager;
 	import com.somewater.rabbit.application.GameGUI;
 	import com.somewater.rabbit.application.LevelsPage;
 	import com.somewater.rabbit.application.MainMenuPage;
@@ -35,6 +36,7 @@ package
 	import com.somewater.rabbit.application.windows.TesterInvitationWindow;
 	import com.somewater.rabbit.storage.ConfManager;
 	import com.somewater.rabbit.storage.Config;
+	import com.somewater.rabbit.storage.CustomizeDef;
 	import com.somewater.rabbit.storage.GameUser;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
@@ -168,7 +170,7 @@ package
 			{
 				var loaderHint:TextField = new TextField();
 				loaderHint.autoSize = TextFieldAutoSize.LEFT;
-				loaderHint.text = Config.loader.toString();
+				loaderHint.text = Config.loader.toString() + ' uid=' + Config.loader.getUser().id;
 				loaderHint.x = 0;
 				loaderHint.y = Config.stage.stageHeight - loaderHint.height;
 				Config.stage.addChild(loaderHint);
@@ -289,6 +291,9 @@ package
 				OfferManager.instance.createOffer(offer);
 
 			RewardManager.instance.initialize(Config.loader.getXML('Rewards'))
+
+			for each(var customizeData:Object in ConfManager.instance.getArray(CustomizeDef.CUSTOMIZES))
+				new CustomizeDef(customizeData);
 		}
 
 		public function addLevel(level:LevelDef):void
@@ -488,6 +493,8 @@ package
 						Config.stat(Stat.MY_REWARDS_OPENED)
 					else
 						Config.stat(Stat.FRIEND_REWARDS_OPENED);
+
+					CustomizeManager.instance.customize();
 				}
 
 				gameStartedCompletely = true;
@@ -658,28 +665,6 @@ package
 		private function serverErrorHandler(response:Object):void {
 			if(response.hasOwnProperty('no_callback') && response['no_callback'])
 				this.fatalError(response['error'] ? response['error'] : translate('UNDEFINED_SERVER_ERROR'))
-		}
-
-		public function positionizeRewards(user:GameUser):void {
-			if(user.itsMe())
-			{
-				var userRewardsWithoutCurrent:Array;
-				var positionRewards:Array = [];
-				for each(var r:RewardInstanceDef in user.rewards)
-					if(r.x == 0 && r.y == 0)
-					{
-						userRewardsWithoutCurrent = user.rewards.slice();
-						if(userRewardsWithoutCurrent.indexOf(r) != -1)
-							userRewardsWithoutCurrent.splice(userRewardsWithoutCurrent.indexOf(r),1)
-						for(var i:int = 0;i<positionRewards.length;i++)
-							if(userRewardsWithoutCurrent.indexOf(positionRewards[i]) == -1)
-								userRewardsWithoutCurrent.push(positionRewards[i]);
-						ServerLogic.positionReward(r, userRewardsWithoutCurrent);
-						positionRewards.push(r);
-					}
-				if(positionRewards.length)
-					AppServerHandler.instance.moveRewards(positionRewards);
-			}
 		}
 
 		public function play(soundName:String, track:String, force:Boolean = false):void

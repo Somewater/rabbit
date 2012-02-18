@@ -3,6 +3,7 @@ package com.somewater.rabbit.application {
 	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.application.windows.PendingRewardsWindow;
 	import com.somewater.rabbit.storage.Config;
+	import com.somewater.rabbit.storage.CustomizeDef;
 	import com.somewater.rabbit.storage.GameUser;
 	import com.somewater.rabbit.storage.GameUser;
 	import com.somewater.rabbit.storage.LevelDef;
@@ -190,6 +191,13 @@ package com.somewater.rabbit.application {
 					gameUser.addOfferInstance(offer);
 				else
 					trace('[OFFER] Creation error, offer id=' + id);// если у игрока оффер, которого нет в природе, не возбуждаем исключения
+			}
+
+			gameUser.clearCustomize();
+			for each(id in toJsonSafety(json['customize']))
+			{
+				var customize:CustomizeDef = CustomizeDef.byId(parseInt(id))
+				gameUser.setCustomize(customize);
 			}
 
 			if(json['roll'])

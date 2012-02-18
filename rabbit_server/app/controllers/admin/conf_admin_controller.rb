@@ -36,5 +36,6 @@ class ConfAdminController < AdminController::Base
 	def clear_cache()
 		Conf.clear_cache()
 		ConfManager.instance.clear_cache()
+		ConfigGenerator.clear_cache()
 	end
 end

@@ -35,6 +35,15 @@ class AllSpec
 			user
 		end
 
+		def check_json(data)
+			data = JSON.parse(data) if data.is_a?(String)
+			if(block_given?)
+				yield(data)
+			else
+				data
+			end
+		end
+
 		before :each do
 			@user = User.new({:uid => '1', :level => 2})
 		end
@@ -331,9 +340,10 @@ class AllSpec
 			end
 
 			def request(hash)
-				controller = InitializeController.new(TRequest.new(hash))
-				controller.call
-				controller.instance_variable_get('@response')
+				#controller = InitializeController.new(TRequest.new(hash))
+				#controller.call
+				#controller.instance_variable_get('@response')
+				execute_request(hash, InitializeController)
 			end
 
 			def get_unexistable_uid
@@ -771,6 +781,41 @@ class AllSpec
 				@user.offers.should == 1
 				@user.offer_instances.keys.size.should == 1
 				response['offers_added'].size.should == 1
+			end
+		end
+
+		describe StaticManager do
+			before :each do
+				@user = get_uniq_user
+				@user.customize = nil
+				@user.save
+			end
+
+			it "Пользовательский метод set_customize/get_customize работает верно" do
+				@user.get_customize('roof').should == 0
+				@user.set_customize('roof', 15)
+
+				@user.save
+				@user.reload
+
+				@user.get_customize('roof').should == 15
+			end
+
+			it "Запрос информации о пользователе верно выдает его кастомы" do
+				@user.set_customize('roof', 15)
+				@user.save
+
+				response = execute_request({'net' => @user.net,'uid' => @user.uid}, InitializeController)
+				check_json(response['user']['customize'])['roof'].should == 15
+
+				@user.set_customize('roof', 32)
+				@user.save
+
+				response = execute_request({'net' => @user.net,'uid' => @user.uid, 'json' => {'user' => {'uid' =>  @user.uid}}}, UserInfoController)
+				check_json(response['info']['customize'])['roof'].should == 32
+
+				@user.reload
+				check_json(@user.to_json['customize'])['roof'].should == 32
 			end
 		end
 	end

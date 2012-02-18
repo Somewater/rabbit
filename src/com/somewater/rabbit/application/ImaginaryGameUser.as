@@ -16,7 +16,7 @@ package com.somewater.rabbit.application {
 		private static var _instance:ImaginaryGameUser;
 
 		public function ImaginaryGameUser() {
-			this.socialUser = new SocialUser();
+			this._socialUser = new SocialUser();
 			socialUser.female = UserProfile.instance.socialUser.female;
 			socialUser.firstName = Lang.t('IMAGINARY_FRIEND_FIRST_NAME');
 			socialUser.lastName = Lang.t('IMAGINARY_FRIEND_LAST_NAME');

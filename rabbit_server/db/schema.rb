@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 14) do
+ActiveRecord::Schema.define(:version => 15) do
 
   create_table "admins", :force => true do |t|
     t.string   "login",                           :null => false
@@ -56,6 +56,14 @@ ActiveRecord::Schema.define(:version => 14) do
     t.datetime "updated_at"
   end
 
+  create_table "stats", :force => true do |t|
+    t.string  "name",                 :null => false
+    t.integer "time",                 :null => false
+    t.integer "value", :default => 0
+  end
+
+  add_index "stats", ["name", "time"], :name => "index_stats_on_name_and_time", :unique => true
+
   create_table "stories", :force => true do |t|
     t.integer "number",                         :null => false
     t.string  "name"
@@ -87,6 +95,7 @@ ActiveRecord::Schema.define(:version => 14) do
     t.integer  "tutorial",                                       :default => 0
     t.text     "offer_instances"
     t.integer  "offers",                                         :default => 0
+    t.text     "customize"
   end
 
   add_index "users", ["uid", "net"], :name => "index_users_on_uid_and_net", :unique => true

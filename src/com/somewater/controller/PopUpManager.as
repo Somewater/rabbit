@@ -197,7 +197,7 @@ package com.somewater.controller
 		
 		public static function get numWindows():int
 		{
-			return instance.windowsStorage.length;
+			return instance ? instance.windowsStorage.length : 0;
 		}
 		
 		public static function get activeWindow():Window

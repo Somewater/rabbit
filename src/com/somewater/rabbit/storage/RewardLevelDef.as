@@ -51,7 +51,7 @@ package com.somewater.rabbit.storage
 			return super.additionSwfs.concat({name:"Rewards"});
 		}
 
-		public function get gameUser():GameUser
+		public function get gameUser():IGameUser
 		{
 			return _gameUser;
 		}

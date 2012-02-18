@@ -23,6 +23,7 @@ class UsersAdminController < AdminController::Base
 			@request['user']['rewards'] = JSON.parse(@request['user']['rewards']) if @request['user']['rewards']
 			@request['user']['level_instances'] = JSON.parse(@request['user']['level_instances']) if @request['user']['level_instances']
 			@request['user']['offer_instances'] = JSON.parse(@request['user']['offer_instances']) if @request['user']['offer_instances']
+			@request['user']['customize'] = JSON.parse(@request['user']['customize']) if @request['user']['customize']
 			@user.update_attributes(@request['user'])
 			@user.save
 			template File.read("#{TEMPLATE_ROOT}/admin/users_admin_show.erb")

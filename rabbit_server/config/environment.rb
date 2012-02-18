@@ -53,5 +53,6 @@ RAILS_DEFAULT_LOGGER = Application.logger
 #######################################################
 RewardManager.instance
 OfferManager.instance
+StaticManager.instance
 
 
