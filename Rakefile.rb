@@ -187,10 +187,13 @@ namespace :srv do
 	end
 
 	desc "Server fixes"
-	task :fix, [:name] => :environment do |task, args|
+	task :fix, [:name,:arg1,:arg2] => :environment do |task, args|
 		case args[:name].to_sym
 			when :offers_db_fix
 				OffersDbStringErrorFix::execute()
+			when :prize
+				# arg1 = customize type,  arg = customize id
+				OffersGivePrize::execute(args[:arg1].to_s, args[:arg2].to_i)
 			else
 				puts "Undefined fix name"
 		end

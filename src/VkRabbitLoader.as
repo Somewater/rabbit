@@ -28,7 +28,7 @@ package {
 	import flash.utils.getDefinitionByName;
 
 
-	[SWF(width="810", height="950", backgroundColor="#FFFFFF", frameRate="30")]
+	[SWF(width="810", height="800", backgroundColor="#FFFFFF", frameRate="30")]
 	public class VkRabbitLoader extends SocialRabbitLoader{
 
 		private var _clickozavr:Clickozavr;
@@ -117,13 +117,13 @@ package {
 
 			super.onNetInitializeComplete();
 
-			var livecardAdLoader:Loader = new Loader();
-			livecardAdLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, function(event:Event):void{
-				var banner:DisplayObject = LoaderInfo(event.target).content;
-				banner.y = 800;
-				Config.loader.adLayer.addChild(banner);
-			})
-			livecardAdLoader.load(new URLRequest(swfs['LivecardAd'].url))
+//			var livecardAdLoader:Loader = new Loader();
+//			livecardAdLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, function(event:Event):void{
+//				var banner:DisplayObject = LoaderInfo(event.target).content;
+//				banner.y = 800;
+//				Config.loader.adLayer.addChild(banner);
+//			})
+//			livecardAdLoader.load(new URLRequest(swfs['LivecardAd'].url))
 		}
 
 		private function onAdAppComplete(event:Event):void {
@@ -196,19 +196,19 @@ package {
 		{
 			basePath = 'http://rabbit.asflash.ru/';
 			swfs = {
-						"Game":{priority:-1,preload:true,url:"http://cs10862.vk.com/u245894/528b4640a90198.zip"}
+						"Game":{priority:-1,preload:true,url:"http://cs10996.vk.com/u245894/627e47a212048b.zip"}
 						,
 						"Application":{priority:int.MIN_VALUE,
-							preload:true,url:"http://cs10862.vk.com/u245894/b27dee888a14ab.zip"}
+							preload:true,url:"http://cs10996.vk.com/u245894/c52cdeefe0e7ff.zip"}
 						,"Interface":{preload:true, url:"http://cs10862.vk.com/u245894/10c3f9034b4948.zip"}
-						,"Assets":{preload:true, url:"http://cs10862.vk.com/u245894/2b3dea70f4918f.zip"}
-						,"Rewards":{preload:true, url:"http://cs305914.vkontakte.ru/u245894/484acef2b22ff3.zip"}
+						,"Assets":{preload:true, url:"http://cs10996.vk.com/u245894/fd5c581a95f0f3.zip"}
+						,"Rewards":{preload:true, url:"http://cs10996.vk.com/u245894/9a6bf925cfbca6.zip"}
 						,"Images":{preload:true, url:"http://cs10862.vk.com/u245894/d31aa79aee7c18.zip"}
 						,"MusicMenu":{url:"http://cs301105.vkontakte.ru/u245894/8249c8fc1ffbf9.zip"}
 						,"MusicGame":{url:"http://cs301105.vkontakte.ru/u245894/721ed8935f06d4.zip"}
 						,"Sound":{url:"http://cs5392.vkontakte.ru/u245894/849e0bcdf7ff31.zip"}
-						,"Lang":{priority:100, preload:true, url:"http://cs10862.vk.com/u245894/a6b35974483ceb.zip"}
-						,"XmlPack":{preload:true, url:"http://cs10862.vk.com/u245894/c5f53c04b5c8c2.zip"}
+						,"Lang":{priority:100, preload:true, url:"http://cs10996.vk.com/u245894/87a14e6c1435c1.zip"}
+						,"XmlPack":{preload:true, url:"http://cs10996.vk.com/u245894/2509a13854cd60.zip"}
 
 						,"Font":{priority:100, preload:true, url:"http://cs301105.vkontakte.ru/u245894/e07afb77864e16.zip"}
 					}

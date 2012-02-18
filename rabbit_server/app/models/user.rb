@@ -123,12 +123,12 @@ class User < ActiveRecord::Base
 		end
 	end
 
-	def set_customize(name, id)
-		customize[name.to_s] = id.to_i
+	def set_customize(type, id)
+		customize[type.to_s] = id.to_i
 	end
 
-	def get_customize(name)
-		customize[name.to_s] || 0
+	def get_customize(type)
+		customize[type.to_s] || 0
 	end
 
 	# спецально для выдачи инфы о друге, только важнейшая информация, не включающая сериализованные поля "level_instances", "rewards"

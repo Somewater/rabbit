@@ -42,7 +42,7 @@ class OfferManager
 	private
 	def create_model
 		offers = YAML.load(File.read("#{CONFIG_DIR}/offers.yml"))
-		offers.each do |level, level_offers|
+		(offers || []).each do |level, level_offers|
 			level_offers.each do |offer_hash|
 				offer = Offer.new(offer_hash['x'].to_i, offer_hash['y'].to_i, level.to_i)
 				raise LogicError, "Offer without id: #{offer_hash}" unless offer.id
