@@ -3,7 +3,8 @@ package com.somewater.rabbit.components
 	import com.pblabs.engine.components.DataComponent;
 	import com.pblabs.engine.entity.EntityComponent;
 	import com.pblabs.engine.entity.IEntity;
-	
+	import com.somewater.rabbit.storage.PowerupInfo;
+
 	/**
 	 * Таким компонентом должен обладать любой собираемый объект со сложным поведением при сборе
 	 * Данный компонент содержит информацию: можно ли собирать персонаж, 
@@ -24,7 +25,22 @@ package com.somewater.rabbit.components
 		 */
 		public function harvestable(harvester:IEntity):Boolean
 		{
-			return _harvestable;
+			if(_harvestable)
+				return true;
+			else
+			{
+				// если компонент в общем случае нельзя собрать, всёже разрешаем это сделать собирателю, у которого есть павреап защиты
+				// (кролик под паверапом умеет собирать злых морковок)
+				var powerupController:PowerupControllerComponent = harvester.lookupComponentByType(PowerupControllerComponent) as PowerupControllerComponent;
+				if(powerupController)
+				{
+					for each (var pinfo:PowerupInfo in powerupController.temporaryPowerups)
+						if(pinfo.data.protection)
+							return true;
+				}
+
+				return false;
+			}
 		}
 		
 		public function set harvestableFlag(value:Boolean):void

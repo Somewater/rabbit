@@ -59,7 +59,7 @@ package com.somewater.rabbit.components
 		{
 			if(value != _health)
 			{
-				if(_health > value)
+				if(_health > value && _owner)
 				{
 					Config.application.play(Sounds.DAMAGE, SoundTrack.GAME_DAMAGE);
 					AnimationHelper.instance.blink((owner.lookupComponentByName('Render') as ProxyIsoRenderer)._clip, 0, 1);
