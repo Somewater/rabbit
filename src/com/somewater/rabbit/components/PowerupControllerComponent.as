@@ -1,8 +1,10 @@
 package com.somewater.rabbit.components {
 	import com.pblabs.engine.core.ObjectType;
 	import com.pblabs.engine.entity.IEntity;
+	import com.somewater.rabbit.decor.PopupEffectFactory;
 	import com.somewater.rabbit.iso.IsoMover;
 	import com.somewater.rabbit.iso.IsoRenderer;
+	import com.somewater.rabbit.iso.IsoSpatial;
 	import com.somewater.rabbit.managers.LevelConditionsManager;
 	import com.somewater.rabbit.storage.PowerupInfo;
 
@@ -24,7 +26,10 @@ package com.somewater.rabbit.components {
 		private var isoMoverRef:IsoMover;
 		private var heroDataRef:HeroDataComponent;
 		private var rendererRef:IsoRenderer;
+		private var spatialRef:IsoSpatial;
 		private var levelConditionsRef:LevelConditionsManager;
+
+		private const SHINE_ASSET_SLUG:String = 'rabbit.ShineAnimation';
 
 		/**
 		 * Массив временных паверапов
@@ -46,6 +51,8 @@ package com.somewater.rabbit.components {
 				heroDataRef = owner.lookupComponentByName('Data') as HeroDataComponent;
 			if(rendererRef == null)
 				rendererRef = owner.lookupComponentByName('Render') as IsoRenderer;
+			if(spatialRef == null)
+				spatialRef = owner.lookupComponentByName('Spatial') as IsoSpatial;
 		}
 
 
@@ -111,7 +118,10 @@ package com.somewater.rabbit.components {
 					if(heroDataRef.health == 1)
 						continue;
 					else
+					{
 						heroDataRef.health = Math.min(1, heroDataRef.health + data.health);
+						PopupEffectFactory.createEffect(SHINE_ASSET_SLUG, spatialRef.tile, _owner);
+					}
 				}
 
 				if(data.protection)
@@ -133,6 +143,7 @@ package com.somewater.rabbit.components {
 				if(data.timeAdd)
 				{
 					levelConditionsRef.decrementSpendedTime(data.timeAdd);
+					PopupEffectFactory.createEffect(SHINE_ASSET_SLUG, spatialRef.tile, _owner);
 				}
 
 				if(data.time)

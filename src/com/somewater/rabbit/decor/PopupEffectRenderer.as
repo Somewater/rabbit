@@ -32,7 +32,9 @@ package com.somewater.rabbit.decor {
 				if(slug)
 					clip = Lib.createMC(slug);
 
-				updateProperties();
+				//updateProperties();
+				this.position = owner.getProperty(positionProperty) as Point;
+
                 updateTransform();
 			}
 
@@ -61,7 +63,7 @@ package com.somewater.rabbit.decor {
 			displayObject = value;
 			_clipDirty = true;
 		}
-		
+
 		override public function updateTransform(updateProps:Boolean = false):void
 		{
 			if(!_displayObject)
