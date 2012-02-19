@@ -227,6 +227,11 @@ namespace :gamedesign do
 		all_versions = (args[:all_versions] || '1').to_i > 0
 		Gamedesign::level_stat(all_levels, all_versions, args[:conditions]);
 	end
+
+	desc "Clear statistic about test levels"
+	task :clear_test_stat  => :environment do |task, args|
+		Gamedesign::clear_test_levels_stat()
+	end
 end
 
 desc "Mail.ru"

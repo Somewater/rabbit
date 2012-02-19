@@ -33,7 +33,8 @@ package com.somewater.rabbit.decor {
 					clip = Lib.createMC(slug);
 
 				//updateProperties();
-				this.position = owner.getProperty(positionProperty) as Point;
+				if(owner)
+					this.position = owner.getProperty(positionProperty) as Point;
 
                 updateTransform();
 			}

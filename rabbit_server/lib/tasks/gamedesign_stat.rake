@@ -62,4 +62,23 @@ module Gamedesign
 			puts "\n"
 		end
 	end
+
+	def self.clear_test_levels_stat()
+		test_level = 13
+		User.find(:all, :conditions => "level > #{test_level}").each do |user|
+			level_instances = user.level_instances
+			carrots = 0
+			level_instances.delete_if do |k,v|
+				if k.to_i >= test_level
+					true
+				else
+					carrots += v['c']
+					false
+				end
+			end
+			user.level_instances = level_instances
+			user.score = carrots
+			user.save
+		end
+	end
 end
