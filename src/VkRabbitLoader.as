@@ -208,7 +208,7 @@ package {
 						,"MusicGame":{url:"http://cs301105.vkontakte.ru/u245894/721ed8935f06d4.zip"}
 						,"Sound":{url:"http://cs5392.vkontakte.ru/u245894/849e0bcdf7ff31.zip"}
 						,"Lang":{priority:100, preload:true, url:"http://cs10996.vk.com/u245894/151bd5518b99f7.zip"}
-						,"XmlPack":{preload:true, url:"http://cs10996.vk.com/u245894/e21f062a387433.zip"}
+						,"XmlPack":{preload:true, url:"http://cs10996.vk.com/u245894/2095d2300e96fc.zip"}
 
 						,"Font":{priority:100, preload:true, url:"http://cs301105.vkontakte.ru/u245894/e07afb77864e16.zip"}
 					}
