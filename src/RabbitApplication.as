@@ -196,7 +196,7 @@ package
 					if(Config.gameModuleActive == false && PopUpManager.numWindows == 0)
 					{
 						clearInterval(interv);
-						if(OfferManager.instance.quantity > 0)
+						if(OfferManager.instance.quantity > 0 && UserProfile.instance.offers < OfferManager.instance.prizeQuantity)
 							new OfferDescriptionWindow();
 					}
 				}, 10*1000)

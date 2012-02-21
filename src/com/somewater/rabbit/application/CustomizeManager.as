@@ -59,10 +59,8 @@ package com.somewater.rabbit.application {
 
 		private function customizeHole(user:GameUser, event:CustomizeEvent):void {
 			// добавить крышу, которую заслуживает этот юзер
-			var roof:CustomizeDef = user.getCustomize(CustomizeDef.TYPE_ROOF);
-			if(roof == null) roof =	CustomizeDef.getDefault(CustomizeDef.TYPE_ROOF);
-
-			getHolder('roof').addChild(Lib.createMC(roof.slug));
+			createByCustomize(CustomizeDef.TYPE_ROOF);
+			createByCustomize(CustomizeDef.TYPE_DOOR);
 
 			var holeTitle:TextField = Config.application.createTextField(Config.FONT_SECONDARY, 0x6B450D, 12, true, false, false, false, 'center');
 			holeTitle.width = 70;
@@ -76,6 +74,13 @@ package com.somewater.rabbit.application {
 			function getHolder(name:String):DisplayObjectContainer
 			{
 				return event.clip.getChildByName(name) as DisplayObjectContainer;
+			}
+
+			function createByCustomize(type:String):void
+			{
+				var custom:CustomizeDef = user.getCustomize(type);
+				if(custom == null) custom =	CustomizeDef.getDefault(type);
+				getHolder(type).addChild(Lib.createMC(custom.slug));
 			}
 		}
 	}

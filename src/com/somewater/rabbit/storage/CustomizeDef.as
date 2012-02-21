@@ -6,6 +6,7 @@ package com.somewater.rabbit.storage {
 		public static const CUSTOMIZES:String = 'CUSTOMIZES';
 
 		public static const TYPE_ROOF:String = 'roof';
+		public static const TYPE_DOOR:String = 'door';
 
 		private static var itemsById:Array = [];
 		private static var itemsByName:Array = [];

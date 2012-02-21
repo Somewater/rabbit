@@ -34,3 +34,24 @@ tile_roof:
   id: 101
   slug: reward.TileRoof
 
+#####################
+#
+#	ВОРОТА
+#
+#####################
+door: &door
+  <<: *customize
+  type: door
+  id: -110
+
+default_door:
+  <<: *door
+  id: 110
+  slug: reward.DefaultDoor
+  start: true
+
+wood_roof:
+  <<: *door
+  id: 111
+  slug: reward.WoodDoor
+
