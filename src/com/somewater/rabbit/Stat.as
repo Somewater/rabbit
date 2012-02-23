@@ -30,5 +30,7 @@ package com.somewater.rabbit {
 		public static const NEW_USER_REGISTERED:String = 'new_user_registered';// юзер впервые внесн в БД (новый игрок)
 
 		public static const OFFER_HARVESTED:String = 'offer_harvested';// юзер собрал оффер (уникальный, который ранее не собирал)
+
+		public static const LIVECARD_AD:String = 'livecard_ad';
 	}
 }

@@ -6,6 +6,7 @@ package {
 	import clickozavr.ContainerInfo;
 
 	import com.somewater.net.SWFDecoderWrapper;
+	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.loader.SocialRabbitLoader;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Lib;
@@ -28,7 +29,7 @@ package {
 	import flash.utils.getDefinitionByName;
 
 
-	[SWF(width="810", height="800", backgroundColor="#FFFFFF", frameRate="30")]
+	[SWF(width="810", height="950", backgroundColor="#FFFFFF", frameRate="30")]
 	public class VkRabbitLoader extends SocialRabbitLoader{
 
 		private var _clickozavr:Clickozavr;
@@ -117,13 +118,25 @@ package {
 
 			super.onNetInitializeComplete();
 
-//			var livecardAdLoader:Loader = new Loader();
-//			livecardAdLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, function(event:Event):void{
-//				var banner:DisplayObject = LoaderInfo(event.target).content;
-//				banner.y = 800;
-//				Config.loader.adLayer.addChild(banner);
-//			})
-//			livecardAdLoader.load(new URLRequest(swfs['LivecardAd'].url))
+			var livecardAdLoader:Loader = new Loader();
+			livecardAdLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, function(event:Event):void{
+				var banner:Sprite = LoaderInfo(event.target).content as Sprite;
+				banner.buttonMode =banner.useHandCursor = true;
+				banner.y = 800;
+				banner.addEventListener(MouseEvent.CLICK, onLivecardAdClick);
+				var sh:Sprite = new Sprite();
+				sh.graphics.beginFill(0,0)
+				sh.graphics.drawRect(0,0,810,150);
+				banner.addChild(sh)
+				Config.loader.addChild(banner);
+			})
+			livecardAdLoader.load(new URLRequest(swfs['LivecardAd'].url), new LoaderContext(true, ApplicationDomain.currentDomain, SecurityDomain.currentDomain))
+		}
+
+		private function onLivecardAdClick(event:MouseEvent):void {
+			trace('Livecards click');
+			navigateToURL(new URLRequest('http://vk.com/app1860789'), '_blank');
+			Config.stat(Stat.LIVECARD_AD);
 		}
 
 		private function onAdAppComplete(event:Event):void {
@@ -196,26 +209,26 @@ package {
 		{
 			basePath = 'http://rabbit.asflash.ru/';
 			swfs = {
-						"Game":{priority:-1,preload:true,url:"http://cs10996.vk.com/u245894/524a920f70f907.zip"}
+						"Game":{priority:-1,preload:true,url:"http://cs10996.vk.com/u245894/05784e22d3182a.zip"}
 						,
 						"Application":{priority:int.MIN_VALUE,
-							preload:true,url:"http://cs10996.vk.com/u245894/0a392ec2b244cf.zip"}
-						,"Interface":{preload:true, url:"http://cs10862.vk.com/u245894/10c3f9034b4948.zip"}
-						,"Assets":{preload:true, url:"http://cs10996.vk.com/u245894/30b1ee583695d2.zip"}
-						,"Rewards":{preload:true, url:"http://cs10996.vk.com/u245894/9a6bf925cfbca6.zip"}
-						,"Images":{preload:true, url:"http://cs10862.vk.com/u245894/d31aa79aee7c18.zip"}
+							preload:true,url:"http://cs10996.vk.com/u245894/46f13bb9a87e7e.zip"}
+						,"Interface":{preload:true, url:"http://cs10996.vk.com/u245894/2b740c5e2c2ee2.zip"}
+						,"Assets":{preload:true, url:"http://cs10996.vk.com/u245894/e3ee5d11bf910f.zip"}
+						,"Rewards":{preload:true, url:"http://cs10996.vk.com/u245894/8568cc3ac63907.zip"}
+						,"Images":{preload:true, url:"http://cs10996.vk.com/u245894/ee02826502401a.zip"}
 						,"MusicMenu":{url:"http://cs301105.vkontakte.ru/u245894/8249c8fc1ffbf9.zip"}
 						,"MusicGame":{url:"http://cs301105.vkontakte.ru/u245894/721ed8935f06d4.zip"}
 						,"Sound":{url:"http://cs5392.vkontakte.ru/u245894/849e0bcdf7ff31.zip"}
-						,"Lang":{priority:100, preload:true, url:"http://cs10996.vk.com/u245894/151bd5518b99f7.zip"}
-						,"XmlPack":{preload:true, url:"http://cs10996.vk.com/u245894/2095d2300e96fc.zip"}
+						,"Lang":{priority:100, preload:true, url:"http://cs10996.vk.com/u245894/d077d5de2bd2a7.zip"}
+						,"XmlPack":{preload:true, url:"http://cs10996.vk.com/u245894/6db62207e127dc.zip"}
 
 						,"Font":{priority:100, preload:true, url:"http://cs301105.vkontakte.ru/u245894/e07afb77864e16.zip"}
 					}
 
 			// only for vk
 			swfs['PostingPopup'] = {'url':'http://cs10433.vk.com/u245894/fd9993c28d5577.zip'}
-			swfs['LivecardAd'] = {'url':'http://cs10862.vk.com/u245894/d850ff2e21a080.zip'}
+			swfs['LivecardAd'] = {'url':'http://cs11130.vk.com/u245894/9ad55940de39f8.zip'}
 		}
 
 		override public function get net():int { return 2; }
