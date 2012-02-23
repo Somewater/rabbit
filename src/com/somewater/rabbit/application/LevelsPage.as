@@ -5,6 +5,7 @@ package com.somewater.rabbit.application
 	import com.somewater.rabbit.Sounds;
 	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.application.buttons.StoriesSwitcher;
+	import com.somewater.rabbit.application.tutorial.TutorialManager;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
@@ -53,9 +54,15 @@ package com.somewater.rabbit.application
 				addChild(friendBar);
 			}
 
+			storiesSwitcher = new StoriesSwitcher(UserProfile.instance);
+			storiesSwitcher.addEventListener(StoriesSwitcher.ON_STORY_CHANGED, onStoryChanged);
+			storiesSwitcher.x = (Config.WIDTH - (6 * 116)) * 0.5 + 70;
+			storiesSwitcher.y = 20;
+			addChild(storiesSwitcher);
+
 			iconsHolder = new Sprite();
-			iconsHolder.x = (Config.WIDTH - (6 * 116)) * 0.5 + 70;
-			iconsHolder.y = 20;
+			iconsHolder.x = storiesSwitcher.x;
+			iconsHolder.y = storiesSwitcher.y + storiesSwitcher.height + 10;
 			addChild(iconsHolder);
 
 			globalScoreHolder = new Sprite();
@@ -98,12 +105,6 @@ package com.somewater.rabbit.application
 				globalScoreCarrot.visible = false;
 			}
 
-			storiesSwitcher = new StoriesSwitcher(UserProfile.instance);
-			storiesSwitcher.addEventListener(StoriesSwitcher.ON_STORY_CHANGED, onStoryChanged);
-			storiesSwitcher.x = iconsHolder.x;
-			storiesSwitcher.y = iconsHolder.y + ICONS_OFFSET_Y * 2 + 45;
-			addChild(storiesSwitcher);
-
 			// HARDCODE START
 			storiesSwitcher.visible = (Config.memory['testers'] && (Config.memory['testers'] as Array).indexOf(Config.loader.getUser().id) != -1);
 			// HARDCODE END
@@ -124,8 +125,6 @@ package com.somewater.rabbit.application
 			var levels:Array = Config.application.levels;
 			var story:StoryDef = storiesSwitcher.selectedStory;
 
-			if(logo.visible)
-				logo.visible = globalScoreHolder.y < Config.WIDTH * 0.5 &&(friendBar == null || (friendBar.x + FriendBar.WIDTH + 10 < logo.x));
 			levelIcons = [];
 			while(iconsHolder.numChildren)
 			{
@@ -161,16 +160,22 @@ package com.somewater.rabbit.application
 				i++;
 			}
 
-			if(friendBar == null || 40 + (Math.ceil(levelIcons.length / 5)) * 90 + 50 < friendBar.y)
+			var maxIconYCoord:Number = iconsHolder.y + Math.ceil(levelIcons.length / 5) * ICONS_OFFSET_Y
+			if(friendBar == null ||  maxIconYCoord + 10 < friendBar.y  )
 			{
 				leftButton.x = iconsHolder.x;
-				leftButton.y = storiesSwitcher.y + storiesSwitcher.height + 20;//40 + (Math.ceil(levelIcons.length / 5)) * 90;
+				leftButton.y = maxIconYCoord + 10;
 			}
 			else
 			{
 				leftButton.x = iconsHolder.x - leftButton.width - 10;
 				leftButton.y = 20;
 			}
+
+			logo.visible = !TutorialManager.instance.active
+					&& globalScoreHolder.y < Config.WIDTH * 0.5
+					&&(friendBar == null || (friendBar.x + FriendBar.WIDTH + 10 < logo.x))
+					&& maxIconYCoord < logo.y;
 		}
 		
 		override public function clear():void

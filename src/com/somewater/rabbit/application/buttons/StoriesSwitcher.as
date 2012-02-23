@@ -84,7 +84,7 @@ package com.somewater.rabbit.application.buttons {
 		}
 
 		override public function get height():Number {
-			return 150;
+			return 115;
 		}
 
 		override public function get width():Number {
@@ -93,6 +93,7 @@ package com.somewater.rabbit.application.buttons {
 	}
 }
 
+import com.gskinner.geom.ColorMatrix;
 import com.somewater.control.IClear;
 import com.somewater.display.HintedSprite;
 import com.somewater.display.Photo;
@@ -109,6 +110,7 @@ import flash.display.Shape;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
+import flash.filters.ColorMatrixFilter;
 
 class StoryItem extends HintedSprite implements IClear
 {
@@ -125,6 +127,8 @@ class StoryItem extends HintedSprite implements IClear
 	private var imageHolder:Photo;
 	private var lock:DisplayObject;
 	private var imageBorder:Shape;
+
+	private var colormatrixFilter:ColorMatrix = new ColorMatrix([]);
 
 	public function StoryItem(story:StoryDef)
 	{
@@ -173,6 +177,11 @@ class StoryItem extends HintedSprite implements IClear
 		this.selected = false;
 
 		this.hint = story.description;
+
+		addEventListener(MouseEvent.ROLL_OVER, onOver);
+		addEventListener(MouseEvent.ROLL_OUT, onUp);
+		addEventListener(MouseEvent.MOUSE_DOWN, onDown);
+		addEventListener(MouseEvent.MOUSE_UP, onOver);
 	}
 
 	private function onClick(event:MouseEvent):void {
@@ -208,6 +217,8 @@ class StoryItem extends HintedSprite implements IClear
 			imageBorder.graphics.beginFill(0x677D0B, 0.6);
 		imageBorder.graphics.lineStyle(_selected && _enabled ? 4 : 2, _selected && _enabled ? 0xFF8A1B : 0x96B80C);
 		imageBorder.graphics.drawRoundRectComplex(0, 25, WIDTH, this.height - 25, 10, 10, 10, 10);
+
+		onUp(null);
 	}
 
 	public function clear():void {
@@ -215,6 +226,36 @@ class StoryItem extends HintedSprite implements IClear
 		imageHolder.clear();
 		story = null;
 		this.hint = null;
+
+		removeEventListener(MouseEvent.ROLL_OVER, onOver);
+		removeEventListener(MouseEvent.ROLL_OUT, onUp);
+		removeEventListener(MouseEvent.MOUSE_DOWN, onDown);
+		removeEventListener(MouseEvent.MOUSE_UP, onOver);
+	}
+
+	private function onUp(event:MouseEvent):void {
+		if(_enabled)
+			imageHolder.filters = [];
+	}
+
+	private function onDown(event:MouseEvent):void {
+		if(_enabled)
+		{
+			colormatrixFilter = new ColorMatrix([]);
+			colormatrixFilter.adjustBrightness(-30);
+			colormatrixFilter.adjustSaturation(-30);
+			imageHolder.filters = [new ColorMatrixFilter(colormatrixFilter.toArray())];
+		}
+	}
+
+	private function onOver(event:MouseEvent):void {
+		if(_enabled)
+		{
+			colormatrixFilter = new ColorMatrix([]);
+			colormatrixFilter.adjustBrightness(20);
+			colormatrixFilter.adjustSaturation(5);
+			imageHolder.filters = [new ColorMatrixFilter(colormatrixFilter.toArray())];
+		}
 	}
 
 	override public function get height():Number {
