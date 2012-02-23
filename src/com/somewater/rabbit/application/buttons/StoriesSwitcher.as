@@ -1,6 +1,8 @@
 package com.somewater.rabbit.application.buttons {
 	import com.somewater.control.IClear;
 	import com.somewater.control.IClear;
+	import com.somewater.control.Scroller;
+	import com.somewater.rabbit.application.RScroller;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.GameUser;
 	import com.somewater.rabbit.storage.StoryDef;
@@ -19,6 +21,8 @@ package com.somewater.rabbit.application.buttons {
 		private var _position:int = 0;
 		private var _selectedStory:StoryDef;
 
+		private var scroller:RScroller = new RScroller();
+
 		public function StoriesSwitcher(user:GameUser) {
 
 			var stories:Array = StoryDef.all();
@@ -33,19 +37,27 @@ package com.somewater.rabbit.application.buttons {
 				}
 			}
 
+			var contentHolder:Sprite = new Sprite();
+
 			for (var i:int = 0; i < stories.length; i++)
 			{
 				var story:StoryDef = stories[i];
 				var item:StoryItem = new StoryItem(story);
 				items.push(item);
-				item.x = 0;
-				item.y = i * 50;
-				addChild(item);
+				item.x = i * (StoryItem.WIDTH + 16);
+				item.y = 0;
+				contentHolder.addChild(item);
 
 				item.enabled = story.start_level <= user.levelNumber && story.enabled;
 				item.selected = story.number == _selectedStory.number;
 				item.addEventListener(StoryItem.STORY_ITEM_CLICKED, onItemClicked)
 			}
+
+			scroller = new RScroller();
+			scroller.orientation = Scroller.HORIZONTAL;
+			scroller.setSize(this.width, this.height);
+			scroller.content = contentHolder;
+			addChild(scroller);
 		}
 
 		private function onItemClicked(event:Event):void {
@@ -70,43 +82,97 @@ package com.somewater.rabbit.application.buttons {
 		{
 			return _selectedStory;
 		}
+
+		override public function get height():Number {
+			return 150;
+		}
+
+		override public function get width():Number {
+			return 116 * 5;
+		}
 	}
 }
 
 import com.somewater.control.IClear;
+import com.somewater.display.HintedSprite;
+import com.somewater.display.Photo;
+import com.somewater.rabbit.storage.Lib;
 import com.somewater.rabbit.storage.StoryDef;
+import com.somewater.storage.Lang;
 import com.somewater.text.EmbededTextField;
+
+import flash.display.DisplayObject;
+import flash.display.MovieClip;
+
+import flash.display.Shape;
 
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
 
-class StoryItem extends Sprite implements IClear
+class StoryItem extends HintedSprite implements IClear
 {
+	public static const WIDTH:int = 100;
+
 	public static const STORY_ITEM_CLICKED:String = 'storyItemCLicked';
 
 	private var _enabled:Boolean = true;
-	private var textField:EmbededTextField;
+	private var topField:EmbededTextField;
+	private var nameField:EmbededTextField;
 	public var story:StoryDef;
 	private var _selected:Boolean = false;
+
+	private var imageHolder:Photo;
+	private var lock:DisplayObject;
+	private var imageBorder:Shape;
 
 	public function StoryItem(story:StoryDef)
 	{
 		this.story = story;
 
-		textField = new EmbededTextField(null, 0xFFFFFF, 12, false, true);
-		textField.width = 100;
-		textField.mouseEnabled = false;
-		addChild(textField);
+		topField = new EmbededTextField(null, 0x6F771A, 12, false, false, false, false, 'center');
+		topField.width = this.width;
+		topField.mouseEnabled = false;
+		addChild(topField);
+		topField.htmlText = Lang.t('VEGETABLE_GARDEN', {number: (story.number + 1)});
 
-		graphics.beginFill(0);
-		graphics.drawRect(0,0,100,40);
 
-		textField.text = story.name;
+		var image:MovieClip = Lib.createMC('interface.StoryImages');
+		image.gotoAndStop(story.number + 1);
+		imageHolder = new Photo(null, 0, 300 ,300);
+		imageHolder.animatedShowing = false;
+		imageHolder.source = image;
+		imageHolder.y = 25;
+		addChild(imageHolder);
+
+		var imageMask:Shape = new Shape();
+		imageMask.graphics.beginFill(0xFF0000);
+		imageMask.graphics.drawRoundRectComplex(0, 25, WIDTH, this.height - 25, 10,10,10,10);
+		addChild(imageMask);
+		imageHolder.mask = imageMask;
+
+		imageBorder = new Shape();
+		addChild(imageBorder);
+
+		nameField = new EmbededTextField(null, 0xFFFFFF, 12, false, true, false, false, 'center');
+		nameField.text = story.name.toUpperCase();
+		nameField.x = 0;
+		nameField.width = WIDTH;
+		nameField.y = 25 + (WIDTH - 25 - nameField.textHeight) * 0.5;
+		addChild(nameField);
+		nameField.mouseEnabled = false;
+
+		lock = Lib.createMC('interface.Lock');
+		lock.scaleX = lock.scaleY = 0.7;
+		lock.x = WIDTH - lock.width - 5;
+		lock.y = 25 + 5;
+		addChild(lock);
 
 		addEventListener(MouseEvent.CLICK, onClick);
 		_selected = true;
 		this.selected = false;
+
+		this.hint = story.description;
 	}
 
 	private function onClick(event:MouseEvent):void {
@@ -133,11 +199,29 @@ class StoryItem extends Sprite implements IClear
 	private function refresh():void
 	{
 		this.buttonMode = this.useHandCursor = _enabled;
-		textField.color = _enabled ? (_selected ? 0xFF8877 : 0xFFFFFF) : 0x333333;
+		topField.color = _selected ? 0xFF8A1B : 0x6F771A;
+		nameField.color = _enabled ? 0xFFFFFF : 0xAFBF29;
+		lock.visible = !_enabled;
+
+		imageBorder.graphics.clear();
+		if(!_enabled)
+			imageBorder.graphics.beginFill(0x677D0B, 0.6);
+		imageBorder.graphics.lineStyle(_selected && _enabled ? 4 : 2, _selected && _enabled ? 0xFF8A1B : 0x96B80C);
+		imageBorder.graphics.drawRoundRectComplex(0, 25, WIDTH, this.height - 25, 10, 10, 10, 10);
 	}
 
 	public function clear():void {
 		removeEventListener(MouseEvent.CLICK, onClick)
+		imageHolder.clear();
 		story = null;
+		this.hint = null;
+	}
+
+	override public function get height():Number {
+		return 100;
+	}
+
+	override public function get width():Number {
+		return WIDTH;
 	}
 }

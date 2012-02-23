@@ -79,6 +79,7 @@ AUTHOR_NORDWULF=Александр Лисенков;музыка, звуки;htt
 ERROR_LOCKED_HINT=Уровень заблокирован. Сначала пройди предыдущий уровень
 BACK_TO_MAIN_MENU=Назад в главное меню
 GLOBAL_SCORE_COUNTER_HINT=Всего собрано морковок\n/\nМаксимальное количество
+VEGETABLE_GARDEN=огород <font size='14'>{number}</font>
 ###################
 #
 #	WINDOWS

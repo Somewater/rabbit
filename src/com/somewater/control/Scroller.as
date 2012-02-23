@@ -12,6 +12,10 @@ package com.somewater.control{
 	 */
 	public class Scroller extends Sprite implements IClear
 	{
+		public static const HORIZONTAL:String = 'horizontal';
+
+		public static const VERTICAL:String = 'vertical';
+
 		public var scrollSpeed:Number = 0.05;
 
 		/**
@@ -32,6 +36,8 @@ package com.somewater.control{
 		 * Высота кнопок
 		 */
 		public var buttonsHeight:Number = 20;
+
+		public var orientation:String = VERTICAL;
 		
 		
 		public function Scroller() 
@@ -160,32 +166,35 @@ package com.somewater.control{
 		{
 			// создаем заглушки для визуальных частей, которые не заданы напрямую
 			createDefaultAssets();
+
+			var vertical:Boolean = orientation == VERTICAL;
 			
 			addChildAt(_background, 0);
 			_background.width = _width - scrollWidth;
 			_background.height = _height;
 			
 			addChildAt(_scrollLine, 1);
-			_scrollLine.width = scrollWidth;
-			_scrollLine.height = _height - 2 * buttonsHeight;
-			_scrollLine.x = _width - scrollWidth;
-			_scrollLine.y = buttonsHeight;
+			_scrollLine.width = vertical ? scrollWidth : _width - 2 * buttonsHeight;
+			_scrollLine.height = vertical ? _height - 2 * buttonsHeight : scrollWidth;
+			_scrollLine.x = vertical ? _width - scrollWidth : buttonsHeight;
+			_scrollLine.y = vertical ? buttonsHeight : _height - scrollWidth;
 			
 			addChild(_startButton);
 			_startButton.width = scrollWidth;
 			_startButton.height = buttonsHeight;
-			_startButton.x = _width - scrollWidth;
+			_startButton.x = vertical ? _width - scrollWidth : 0;
+			_startButton.y = vertical ? 0 : _height - scrollWidth;
 			
 			addChild(_endButton);
 			_endButton.width = scrollWidth;
 			_endButton.height = buttonsHeight;
-			_endButton.x = _width - scrollWidth;
-			_endButton.y = _height - buttonsHeight;
+			_endButton.x = vertical ? _width - scrollWidth : _width - buttonsHeight;
+			_endButton.y = vertical ? _height - buttonsHeight : _height - scrollWidth;
 			
 			addChild(thumb);
-			setThumbSize(scrollWidth, _thumbHeight);
-			thumb.x = _width - scrollWidth;
-			thumb.y = buttonsHeight;
+			setThumbSize(vertical ? scrollWidth : _thumbHeight, vertical ? _thumbHeight : scrollWidth);
+			thumb.x = vertical ? _width - scrollWidth : buttonsHeight;
+			thumb.y = vertical ? buttonsHeight : _height - scrollWidth;
 			
 			if (_content)
 			{
@@ -194,7 +203,7 @@ package com.somewater.control{
 				
 				contentMask.graphics.clear();
 				contentMask.graphics.beginFill(0);
-				contentMask.graphics.drawRect(0, 0, _width - scrollWidth, _height);
+				contentMask.graphics.drawRect(0, 0, vertical ? _width - scrollWidth : _width, vertical ? _height : _height - scrollWidth);
 			}
 			
 			createListeners();
@@ -249,7 +258,12 @@ package com.somewater.control{
 			
 			// пересчет размера ползунка
 			var maxThumbSize:Number = _height - buttonsHeight * 2;
-			setThumbSize(_thumb.width, Math.min(maxThumbSize, maxThumbSize * (_height / _content.height)));
+			maxThumbSize = Math.min(maxThumbSize, maxThumbSize * (orientation == VERTICAL ? _height / _content.height : _width / _content.width))
+
+			if(orientation == VERTICAL)
+				setThumbSize(_thumb.width, maxThumbSize);
+			else
+				setThumbSize(maxThumbSize, _thumb.height);
 			
 			updatePosition();
 		}
@@ -324,8 +338,11 @@ package com.somewater.control{
 				// если пользователь свел курсор с флешки, оборвать режим прокрутки
 				stage.addEventListener(MouseEvent.ROLL_OUT, onThumbMouseUp);
 				
-				Sprite(_thumb).startDrag(false, new Rectangle(_width - scrollWidth, 
-																buttonsHeight, 0, _height - 2 * buttonsHeight - _thumbHeight));
+				Sprite(_thumb).startDrag(false, orientation == VERTICAL ?
+						new Rectangle(_width - scrollWidth, buttonsHeight, 0, _height - 2 * buttonsHeight - _thumbHeight)
+						:
+						new Rectangle(buttonsHeight, _height - scrollWidth, _width - 2 * buttonsHeight - _thumbHeight, 0)
+						);
 			}
 		}
 		
@@ -344,7 +361,10 @@ package com.somewater.control{
 		
 		private function onThumbMove(e:Event):void
 		{
-			_position = (_thumb.y - buttonsHeight)/ (_height - buttonsHeight * 2 - _thumbHeight);
+			if(orientation == VERTICAL)
+				_position = (_thumb.y - buttonsHeight)/ (_height - buttonsHeight * 2 - _thumbHeight);
+			else
+				_position = (_thumb.x - buttonsHeight)/ (_width - buttonsHeight * 2 - _thumbHeight);
 			updatePosition(false);
 		}
 		
@@ -378,14 +398,38 @@ package com.somewater.control{
 
 			// ползунок виден только при наличии контента внутри контрола, и если контент по высоте больше контрола
 			// т.е. нуждается в прокрутке
-			_thumb.visible = _content != null && _content.height > _height;
+			if(_content != null && (orientation == VERTICAL ? _content.height > _height : _content.width > _width))
+			{
+				// нужно показать контролы, контент не влизает
+				_startButton.visible = _endButton.visible = _scrollLine.visible = _thumb.visible = true;
+				content.mask = contentMask;
+				contentMask.visible = true;
+			}
+			else
+			{
+				// контент влезает или его нет
+				_startButton.visible = _endButton.visible = _scrollLine.visible = _thumb.visible = false;
+				if(content)
+					content.mask = null;
+				contentMask.visible = false;
+			}
 				
 			if (_content)
 			{
-				if(_content.height > _height)
-					_content.y = - (_content.height - _height) * _position;
+				if(orientation == VERTICAL)
+				{
+					if(_content.height > _height)
+						_content.y = - (_content.height - _height) * _position;
+					else
+						_content.y = 0;
+				}
 				else
-					_content.y = 0;
+				{
+					if(_content.width > _width)
+						_content.x = - (_content.width - _width) * _position;
+					else
+						_content.x = 0;
+				}
 			}
 		}
 		
@@ -415,7 +459,7 @@ package com.somewater.control{
 				}
 			}
 			
-			_thumbHeight = h;
+			_thumbHeight = orientation == VERTICAL ? h : w;
 		}
 		
 		

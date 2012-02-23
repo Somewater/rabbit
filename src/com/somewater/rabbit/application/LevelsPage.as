@@ -26,8 +26,9 @@ package com.somewater.rabbit.application
 	public class LevelsPage extends PageBase
 	{
 		private const MAX_LEVEL_ICONS:int = 20;
-		private const HIDE_LOGO_ICON:int = 14;
-		
+		private const ICONS_OFFSET_X:int = 116;
+		private const ICONS_OFFSET_Y:int = 90;
+
 		private var friendBar:FriendBar;
 		private var levelIcons:Array = [];
 		private var leftButton:DisplayObject;
@@ -99,6 +100,8 @@ package com.somewater.rabbit.application
 
 			storiesSwitcher = new StoriesSwitcher(UserProfile.instance);
 			storiesSwitcher.addEventListener(StoriesSwitcher.ON_STORY_CHANGED, onStoryChanged);
+			storiesSwitcher.x = iconsHolder.x;
+			storiesSwitcher.y = iconsHolder.y + ICONS_OFFSET_Y * 2 + 45;
 			addChild(storiesSwitcher);
 
 			// HARDCODE START
@@ -150,8 +153,8 @@ package com.somewater.rabbit.application
 				icon = new LevelIcon();
 				icon.data = level;
 				icon.addEventListener(MouseEvent.CLICK, onLevelClick);
-				icon.x = (i % 5) * 116;
-				icon.y = int(i / 5) * 90;
+				icon.x = (i % 5) * ICONS_OFFSET_X;
+				icon.y = int(i / 5) * ICONS_OFFSET_Y;
 				if((i % 5) > 2 && icon.y + icon.height + 10 > logo.y) logo.visible = false;
 				levelIcons.push(icon);
 				iconsHolder.addChild(icon);
@@ -161,7 +164,7 @@ package com.somewater.rabbit.application
 			if(friendBar == null || 40 + (Math.ceil(levelIcons.length / 5)) * 90 + 50 < friendBar.y)
 			{
 				leftButton.x = iconsHolder.x;
-				leftButton.y = 40 + (Math.ceil(levelIcons.length / 5)) * 90;
+				leftButton.y = storiesSwitcher.y + storiesSwitcher.height + 20;//40 + (Math.ceil(levelIcons.length / 5)) * 90;
 			}
 			else
 			{
