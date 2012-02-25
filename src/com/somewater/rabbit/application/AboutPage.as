@@ -39,7 +39,7 @@ package com.somewater.rabbit.application
 			addChild(authorsTitle);
 
 			var keys:Array = ['AUTHOR_ASFLASH','AUTHOR_SKINSIN','AUTHOR_NORDWULF'];
-			var gds:Array = String(Lang.t('GAME_DESIGNERS') || '').split(',');
+			var gds:Array = String(Lang.t('GAME_DESIGNERS') || '').split('|');
 			var testers:Array = String(Lang.t('GAME_TESTERS') || '').split(',');
 
 			var nextY:int;

@@ -89,12 +89,16 @@ package com.somewater.rabbit.application
 
 			var sumScore:int = 0;
 			var maxScores:int = 0;
+			var sumStars:int = 0;
+			var maxStars:int = 0;
 			for each(var levelInst:LevelInstanceDef in UserProfile.instance.levelInstances)
 			{
 				sumScore += levelInst.carrotHarvested;
 				maxScores += XmlController.instance.calculateCarrots(levelInst.levelDef);
+				sumStars += levelInst.stars;
+				maxStars += 3;
 			}
-			globalScoreCounterTF.text = intToFourChar(sumScore) + " / " + intToFourChar(maxScores);
+			globalScoreCounterTF.text = intToFormatStr(sumStars) + " / " + intToFormatStr(maxStars);
 			
 			Hint.bind(globalScoreCarrot, Lang.t("GLOBAL_SCORE_COUNTER_HINT"));
 			Hint.bind(globalScoreCounterTF, Lang.t("GLOBAL_SCORE_COUNTER_HINT"));
@@ -201,10 +205,10 @@ package com.somewater.rabbit.application
 			Config.application.startPage("main_menu");
 		}
 
-		private function intToFourChar(value:int):String
+		private function intToFormatStr(value:int, format:int = 3):String
 		{
 			var result:String = value.toString();
-			while(result.length < 4)
+			while(result.length < format)
 				result = '0' + result;
 			return result;
 		}

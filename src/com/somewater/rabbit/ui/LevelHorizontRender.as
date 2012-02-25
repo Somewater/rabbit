@@ -55,7 +55,7 @@ package com.somewater.rabbit.ui {
 		// 0..
 		private function get config():Object
 		{
-			return configByStory[Config.game.level.story.number];
+			return configByStory[Math.min(configByStory.length - 1, Config.game.level.story ? Config.game.level.story.number : int.MAX_VALUE)];
 		}
 	}
 }

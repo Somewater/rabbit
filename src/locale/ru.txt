@@ -72,7 +72,7 @@ AUTHOR_ASFLASH=Павел Найденов;разработчик игры;http:
 AUTHOR_SKINSIN=Екатерина Богданова;идея, дизайн, анимация;http://skinsin.ru
 AUTHOR_NORDWULF=Александр Лисенков;музыка, звуки;http://free-lance.ru/users/Nord_Wulf
 GAME_DESIGN_TITLE=гейм-дизайн:
-GAME_DESIGNERS=Сергей Степной;vk.com/id59408173;Уровни 13-25,Павел Найденов;asflash.ru,Екатерина Богданова;skinsin.ru
+GAME_DESIGNERS=Сергей Степной;vk.com/id59408173;Уровни 13-25|Павел Найденов;asflash.ru;Уровни 1, 3, 5, 6, 8, 10-12|Екатерина Богданова;skinsin.ru;Уровни 2, 4, 7, 9
 GAME_TESTERS_TITLE=тестировщики:
 GAME_TESTERS=Аркадий Клюкин;vk.com/id96381901,Аркадий Клюкин;vk.com/id96381901,Аркадий Клюкин;vk.com/id96381901,Аркадий Клюкин;vk.com/id96381901,Аркадий Клюкин;vk.com/id96381901,Аркадий Клюкин;vk.com/id96381901,Аркадий Клюкин;vk.com/id96381901,Аркадий Клюкин;vk.com/id96381901,Аркадий Клюкин;vk.com/id96381901,Аркадий Клюкин;vk.com/id96381901
 ###################
