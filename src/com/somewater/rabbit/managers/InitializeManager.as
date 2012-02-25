@@ -58,6 +58,7 @@ package com.somewater.rabbit.managers
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.ui.HorizontRender;
+	import com.somewater.rabbit.ui.LevelHorizontRender;
 	import com.somewater.rabbit.ui.RewardHorizontRender;
 	import com.somewater.rabbit.util.RandomizeUtil;
 	
@@ -185,6 +186,7 @@ package com.somewater.rabbit.managers
 			PBE.registerType(OfferControllerComponent);
 			PBE.registerType(PowerupPanelRendererComponent);
 			PBE.registerType(ProxyIsoRenderer);
+			PBE.registerType(LevelHorizontRender);
 
 			RandomizeUtil.initialize();				
 		}

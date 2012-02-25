@@ -82,7 +82,8 @@ package com.somewater.rabbit.components
 			var helixX:int;
 			var helixY:int;
 			
-			super.onFrame(deltaTime);
+			if (_transformDirty)
+                updateTransform();
 			
 			if(wrongShellType)
 				return;
@@ -122,7 +123,7 @@ package com.somewater.rabbit.components
 				{
 					case 1: helixX += 30; helixY -= 15; 	break
 					case 2: helixX -= 25; helixY -= 15; break;
-					case 3: helixY -= 17; break;т
+					case 3: helixY -= 17; break;
 					case 4: helixY -= 40; break;
 				}
 
@@ -131,8 +132,21 @@ package com.somewater.rabbit.components
 				
 				if(dx * dx + dy * dy > 0)
 				{
-					oldMethod(helixX, helixY);;					//calculatePoints(helixX, helixY);					//renderPoints(helixX, helixY);
-					//					if(helixY > 0 && bringToFront == false)//					{//						shellDisplayObjectRef.setChildIndex(drawingLayer, shellDisplayObjectRef.numChildren - 1);//						bringToFront = true;//					}//						//					if(helixY < 0 && bringToFront)//					{//						shellDisplayObjectRef.setChildIndex(drawingLayer, 0);//						bringToFront = false;//					}
+					oldMethod(helixX, helixY);
+					//calculatePoints(helixX, helixY);
+					//renderPoints(helixX, helixY);
+					
+//					if(helixY > 0 && bringToFront == false)
+//					{
+//						shellDisplayObjectRef.setChildIndex(drawingLayer, shellDisplayObjectRef.numChildren - 1);
+//						bringToFront = true;
+//					}
+//						
+//					if(helixY < 0 && bringToFront)
+//					{
+//						shellDisplayObjectRef.setChildIndex(drawingLayer, 0);
+//						bringToFront = false;
+//					}
 					
 					lastCalculatedHelixX = helixX;
 					lastCalculatedHelixY = helixY;

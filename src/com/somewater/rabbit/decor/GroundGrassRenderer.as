@@ -5,31 +5,51 @@ package com.somewater.rabbit.decor {
 
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
+	import flash.display.FrameLabel;
 
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.geom.Point;
 
 	/**
 	 * Рендерит траву (т.е. простой игровой объект, не меняющий положение, не анимированный)
 	 */
 	public class GroundGrassRenderer extends DisplayObjectRenderer{
 
+		public var grassType:String;
+
 		private var libraryMovie:MovieClip;
 
 		public function GroundGrassRenderer() {
 			super();
-			registerForUpdates = false;
 		}
 
-		override protected function onAdd():void {
-
+		override public function onFrame(elapsed:Number):void {
 			libraryMovie = Lib.createMC('rabbit.BackgroundGrass');
 			libraryMovie.addEventListener('frameConstructed', onFrameConstructed);
-			libraryMovie.gotoAndStop(int(libraryMovie.totalFrames * Math.random()) + 1);
-			super.onAdd();
-		}
+			libraryMovie.scenes;
 
+			var startFrame:int = 1;
+			var endFrame:int = libraryMovie.totalFrames;
+
+			var checkEndFrame:Boolean = false;
+			if(grassType)
+				for each(var fl:FrameLabel in libraryMovie.currentLabels)
+				{
+					if(checkEndFrame)
+						endFrame = fl.frame - 1;
+					else if(fl.name == grassType)
+					{
+						startFrame = fl.frame;
+						checkEndFrame = true;
+					}
+				}
+
+			libraryMovie.gotoAndStop(int((endFrame - startFrame + 1) * Math.random()) + startFrame);
+
+			registerForUpdates = false;
+		}
 
 		override protected function onRemove():void {
 			if(libraryMovie)
@@ -56,18 +76,9 @@ package com.somewater.rabbit.decor {
 			libraryMovie = null;
 			this.displayObject = grass;
 
-			 updateProperties();
-             updateTransform();
+			if(owner)
+				this.position = owner.getProperty(positionProperty) as Point;
+            updateTransform();
 		}
-	}
-}
-
-import flash.display.Sprite;
-
-class Sp extends Sprite
-{
-
-	override public function set x(value:Number):void {
-		super.x = value;
 	}
 }

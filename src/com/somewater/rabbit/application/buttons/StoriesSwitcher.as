@@ -127,6 +127,7 @@ class StoryItem extends HintedSprite implements IClear
 	private var imageHolder:Photo;
 	private var lock:DisplayObject;
 	private var imageBorder:Shape;
+	private var arrow:DisplayObject;
 
 	private var colormatrixFilter:ColorMatrix = new ColorMatrix([]);
 
@@ -172,6 +173,11 @@ class StoryItem extends HintedSprite implements IClear
 		lock.y = 25 + 5;
 		addChild(lock);
 
+		arrow = Lib.createMC('interface.LiteFatArrow');
+		arrow.x = WIDTH * 0.5;
+		arrow.y = 2;
+		addChild(arrow);
+
 		addEventListener(MouseEvent.CLICK, onClick);
 		_selected = true;
 		this.selected = false;
@@ -211,6 +217,7 @@ class StoryItem extends HintedSprite implements IClear
 		topField.color = _selected ? 0xFF8A1B : 0x6F771A;
 		nameField.color = _enabled ? 0xFFFFFF : 0xAFBF29;
 		lock.visible = !_enabled;
+		arrow.visible = _selected;
 
 		imageBorder.graphics.clear();
 		if(!_enabled)

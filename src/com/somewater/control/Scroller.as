@@ -21,8 +21,8 @@ package com.somewater.control{
 		/**
 		 * Размеры видимой части компонента (в т.ч. полоса прокрутки)
 		 */
-		private var _width:Number = 100;
-		private var _height:Number = 100;
+		protected var _width:Number = 100;
+		protected var _height:Number = 100;
 		
 		private var contentMask:Shape;
 		
@@ -192,9 +192,10 @@ package com.somewater.control{
 			_endButton.y = vertical ? _height - buttonsHeight : _height - scrollWidth;
 			
 			addChild(thumb);
-			setThumbSize(vertical ? scrollWidth : _thumbHeight, vertical ? _thumbHeight : scrollWidth);
+			setThumbSize();
 			thumb.x = vertical ? _width - scrollWidth : buttonsHeight;
 			thumb.y = vertical ? buttonsHeight : _height - scrollWidth;
+			_thumbHeight = orientation == VERTICAL ? thumb.height : thumb.width;
 			
 			if (_content)
 			{
@@ -261,9 +262,9 @@ package com.somewater.control{
 			maxThumbSize = Math.min(maxThumbSize, maxThumbSize * (orientation == VERTICAL ? _height / _content.height : _width / _content.width))
 
 			if(orientation == VERTICAL)
-				setThumbSize(_thumb.width, maxThumbSize);
+				setThumbSize();
 			else
-				setThumbSize(maxThumbSize, _thumb.height);
+				setThumbSize();
 			
 			updatePosition();
 		}
@@ -294,8 +295,8 @@ package com.somewater.control{
 			_thumb.removeEventListener(MouseEvent.MOUSE_UP, onThumbMouseUp);
 			_thumb.addEventListener(MouseEvent.MOUSE_UP, onThumbMouseUp);
 
-			_thumb.removeEventListener(MouseEvent.ROLL_OUT, onThumbMouseUp);
-			_thumb.addEventListener(MouseEvent.ROLL_OUT, onThumbMouseUp);
+			//_thumb.removeEventListener(MouseEvent.ROLL_OUT, onThumbMouseUp);
+			//_thumb.addEventListener(MouseEvent.ROLL_OUT, onThumbMouseUp);
 
 				
 			// пальчики
@@ -337,6 +338,7 @@ package com.somewater.control{
 				
 				// если пользователь свел курсор с флешки, оборвать режим прокрутки
 				stage.addEventListener(MouseEvent.ROLL_OUT, onThumbMouseUp);
+				stage.addEventListener(MouseEvent.MOUSE_UP, onThumbMouseUp);
 				
 				Sprite(_thumb).startDrag(false, orientation == VERTICAL ?
 						new Rectangle(_width - scrollWidth, buttonsHeight, 0, _height - 2 * buttonsHeight - _thumbHeight)
@@ -353,6 +355,7 @@ package com.somewater.control{
 			{
 				stage.removeEventListener(MouseEvent.MOUSE_MOVE, onThumbMove);
 				stage.removeEventListener(MouseEvent.ROLL_OUT, onThumbMouseUp);
+				stage.removeEventListener(MouseEvent.MOUSE_UP, onThumbMouseUp);
 			}
 			
 			Sprite(_thumb).stopDrag();
@@ -440,8 +443,14 @@ package com.somewater.control{
 		 * @param	w
 		 * @param	h
 		 */
-		private function setThumbSize(w:Number, h:Number):void
+		protected function setThumbSize():void
 		{
+			var contentSize:Number = content ? (orientation == VERTICAL ? content.height : content.width) : _height;
+			var calcsize:Number = Math.min(1, orientation == VERTICAL ? _height / contentSize : _width / contentSize);
+			calcsize = Math.max(buttonsHeight, calcsize * ((orientation == VERTICAL ? _height : _width) - 2 * buttonsHeight))
+			var w:Number = orientation == VERTICAL ? scrollWidth : calcsize;
+			var h:Number = orientation == VERTICAL ? calcsize : scrollWidth;
+
 			if (!(_thumb is DisplayObjectContainer) || DisplayObjectContainer(_thumb).numChildren == 0)
 			{
 				_thumb.width = w;
@@ -483,6 +492,7 @@ package com.somewater.control{
 			{
 				stage.removeEventListener(MouseEvent.MOUSE_MOVE, onThumbMove);
 				stage.removeEventListener(MouseEvent.ROLL_OUT, onThumbMouseUp);
+				stage.removeEventListener(MouseEvent.MOUSE_UP, onThumbMouseUp);
 			}
 
 			removeEventListener(MouseEvent.MOUSE_WHEEL, onWheel);

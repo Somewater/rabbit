@@ -10,7 +10,7 @@
 
 	-->
 	<entity name="Horizont">
-		<component name="Render" type="com.somewater.rabbit.ui.HorizontRender">
+		<component name="Render" type="com.somewater.rabbit.ui.LevelHorizontRender">
 			<layerIndex>0</layerIndex>
 		</component>	
 	</entity>

@@ -13,6 +13,9 @@ package com.somewater.rabbit.decor {
 	 * Управляет граундом игры
 	 */
 	public class BackgroundRenderer extends DisplayObjectRenderer{
+
+		private const storyIndexToGrass:Array = ['grass', 'flowers'];
+
 		public function BackgroundRenderer() {
 			super();
 			registerForUpdates = false;
@@ -28,6 +31,7 @@ package com.somewater.rabbit.decor {
 			for (var i:int = 0; i < int(levelSquare * 0.05); i++) {
 				var grass:IEntity = PBE.templateManager.instantiateEntity('GroundGrassTemplate');
 				grass.owningGroup = this.owner.owningGroup;
+				(grass.lookupComponentByType(DisplayObjectRenderer) as GroundGrassRenderer).grassType = storyIndexToGrass[Config.game.level.story.number];
 				grass.setProperty(new PropertyReference('@Spatial.position'),
 						new Point(int(Math.random() * levelWidth * Config.TILE_WIDTH), Math.random() * levelHeight * Config.TILE_HEIGHT))
 			}

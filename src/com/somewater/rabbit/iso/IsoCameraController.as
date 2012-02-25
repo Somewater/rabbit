@@ -23,7 +23,7 @@ package com.somewater.rabbit.iso
 		/**
 		 * Какова sensivity при перетаскивании мышкой 
 		 */
-		public var MOVE_MULTI:int = 1;
+		public var MOVE_MULTI:int = 3;
 		
 		/**
 		 * Сколько тайлов должно остаться объекту слежки до края,
@@ -167,9 +167,10 @@ package com.somewater.rabbit.iso
 		
 		public function onTick(deltaTime:Number):void
 		{
-			if(tweeningFlag && tween)
+			if(tweeningFlag)
 			{
-				onTween();
+				if(tween)
+					onTween();
 				return;
 			}
 			

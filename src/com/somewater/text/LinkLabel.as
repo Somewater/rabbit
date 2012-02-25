@@ -24,12 +24,13 @@ package com.somewater.text
 		
 		public function clear():void{
 			removeAllListeners();
+			hint = null;
 		}
 		
 		public function set linked(flag:Boolean):void{
 			if (flag == _linked) return;
-			underline = _linked = flag;
-			if (flag){				
+			mouseEnabled = underline = _linked = flag;
+			if (flag){
 				addEventListener(MouseEvent.MOUSE_OVER,headerLabelMouseOverEvent,false,0,true);
 				addEventListener(MouseEvent.MOUSE_OUT,headerLabelMouseOutEvent,false,0,true);
 				addEventListener(MouseEvent.CLICK,headerLabelMouseClick,false,0,true);

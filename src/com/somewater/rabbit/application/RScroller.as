@@ -22,6 +22,15 @@ package com.somewater.rabbit.application {
 			back.graphics.drawRect(0,0,100,100);
 			background = back;
 		}
+
+		override public function draw():void {
+			super.draw();
+
+			if(content)
+			{
+				scrollSpeed = Math.max(0.05, orientation == VERTICAL ? _height / content.height : _width / content.width);
+			}
+		}
 	}
 }
 

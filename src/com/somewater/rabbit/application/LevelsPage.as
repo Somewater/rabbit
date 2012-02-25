@@ -133,16 +133,6 @@ package com.somewater.rabbit.application
 				icon.removeEventListener(MouseEvent.CLICK, onLevelClick);
 			}
 
-			// TODO: START
-			if(story.number == 1)
-			{
-				var buf:Array = levels.slice();
-				levels = [];
-				while(buf.length)
-					levels.push(buf.splice(int(Math.random() * buf.length), 1)[0])
-			}
-			// TODO: END
-
 			var i:int = 0;
 			for each(var level:LevelDef in levels)
 			{
@@ -175,7 +165,7 @@ package com.somewater.rabbit.application
 			logo.visible = !TutorialManager.instance.active
 					&& globalScoreHolder.y < Config.WIDTH * 0.5
 					&&(friendBar == null || (friendBar.x + FriendBar.WIDTH + 10 < logo.x))
-					&& maxIconYCoord < logo.y;
+					&& levelIcons.length < 15;
 		}
 		
 		override public function clear():void

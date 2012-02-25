@@ -8,7 +8,9 @@ package com.somewater.rabbit.ui
 	import com.somewater.rabbit.managers.InitializeManager;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Lib;
-	
+
+	import flash.display.DisplayObject;
+
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
@@ -76,17 +78,22 @@ package com.somewater.rabbit.ui
 		
 		private function onResize(e:Event):void
 		{
-			onReset();
+			clearHill();
+			recreateHill();
 		}
 		
 		
 		override protected function onAdd():void
 		{
+			clearHill();
+
 			displayObject = mainHolder;
 			registerForUpdates = false;
 			PBE.lookupEntity("SceneDB").eventDispatcher.addEventListener(IsoSpatialManager.EVENT_SCENE_RESIZE, onResize);
 			IsoCameraController.getInstance().addCallback(onSceneMove);
 			InitializeManager.bindRestartLevel(onLevelRestarted);
+
+			recreateHill();
 		}
 		
 		
@@ -103,16 +110,6 @@ package com.somewater.rabbit.ui
 		private function onLevelRestarted():void {
 			// снова делаем светлый горизонт
 			darkness = 0;
-		}
-		
-		
-		/**
-		 * Переустанавливает длину забора и горизонта (и прочие эл-ты) согласно изменениям
-		 */
-		override protected function onReset():void
-		{
-			clearHill();
-			recreateHill();
 		}
 
 		private function clearHill():void
@@ -219,31 +216,6 @@ package com.somewater.rabbit.ui
 			checkAndCreateHill(shift_x);
 		}
 		
-		protected function createHillDisplayObject():DisplayObject
-		{
-			var hill:DisplayObjectContainer = Lib.createMC("rabbit.Hill");
-			var randomTreesAll:int;
-			var randomTrees:int = randomTreesAll = Math.random() * 4 + 3;
-			var lastTreePos:int = 100;
-			while(randomTrees >= 0)
-			{
-				var tree:DisplayObject = Lib.createMC("rabbit.HillTree_" + (Math.random() > 0.5?"0":"1"));
-				hill.addChild(tree);
-				tree.y = -25 * Math.random() - 10;
-				lastTreePos = lastTreePos + Math.random() * (HILL_WIDTH / (1 + randomTreesAll) * 0.75);
-				if(randomTrees == 0 || lastTreePos + 100 > HILL_WIDTH)
-				{
-					tree.x = HILL_WIDTH;
-					break;
-				}
-				else
-					tree.x = lastTreePos;
-				lastTreePos += (HILL_WIDTH / (1 + randomTreesAll) * 0.25);
-				randomTrees--;
-			}
-			return hill
-		}
-
 		protected function checkAndCreateBarriers(shift_x:int):void
 		{
 			var barrier:DisplayObject;
@@ -260,7 +232,7 @@ package com.somewater.rabbit.ui
 					if(!barrier)
 					{
 
-						barrier = Lib.createMC("rabbit.Barrier");
+						barrier = createBarrierDisplayObject()
 						barrierHolder.addChild(barrier);
 						barriers.push(barrier);
 					}
@@ -281,7 +253,7 @@ package com.somewater.rabbit.ui
 				else
 				{
 					// создать новую заборину
-					barrier = Lib.createMC("rabbit.Barrier");
+					barrier = createBarrierDisplayObject();
 					barrierHolder.addChild(barrier);
 				}
 				barrier.x = minBarrierPos + barriers.length * BARRIER_WIDTH;
@@ -333,6 +305,73 @@ package com.somewater.rabbit.ui
 				hill.x = minHillPos + hills.length * HILL_WIDTH;
 				hills.push(hill);
 				maxHillPos = minHillPos + hills.length * HILL_WIDTH;
+			}
+		}
+
+
+		protected function createHillDisplayObject():DisplayObject
+		{
+			var hill:DisplayObjectContainer = Lib.createMC("rabbit.Hill");
+			createRareTrees(hill);
+			return hill
+		}
+
+		protected function createBarrierDisplayObject():DisplayObject
+		{
+			var barrier:DisplayObjectContainer = Lib.createMC("rabbit.Barrier");
+			return barrier;
+		}
+
+		protected function createHillTreeDisplayObject():DisplayObject
+		{
+			var tree:DisplayObject = Lib.createMC("rabbit.HillTree_" + (Math.random() > 0.5?"0":"1"));
+			return tree;
+		}
+
+
+		///
+
+		protected function createRareTrees(hill:DisplayObjectContainer):void
+		{
+			var randomTreesAll:int;
+			var randomTrees:int = randomTreesAll = Math.random() * 4 + 3;
+			var lastTreePos:int = 100;
+			while(randomTrees >= 0)
+			{
+				var tree:DisplayObject = createHillTreeDisplayObject();
+				hill.addChild(tree);
+				tree.y = -25 * Math.random() - 10;
+				lastTreePos = lastTreePos + Math.random() * (HILL_WIDTH / (1 + randomTreesAll) * 0.75);
+				if(randomTrees == 0 || lastTreePos + 100 > HILL_WIDTH)
+				{
+					tree.x = HILL_WIDTH;
+					break;
+				}
+				else
+					tree.x = lastTreePos;
+				lastTreePos += (HILL_WIDTH / (1 + randomTreesAll) * 0.25);
+				randomTrees--;
+			}
+		}
+
+		protected function createCompactTrees(hill:DisplayObjectContainer):void
+		{
+			var randomTreesAll:int;
+			var randomTrees:int = 15;
+			var lastTreePos:int = 10;
+			while(randomTrees >= 0)
+			{
+				var tree:DisplayObject = createHillTreeDisplayObject();
+				hill.addChild(tree);
+				tree.x = lastTreePos;
+				tree.y = -30 * Math.random() - 15;
+				lastTreePos = lastTreePos + tree.width * 0.5 * (1.2 + Math.random() * 0.6);
+				if(randomTrees == 0 || lastTreePos > HILL_WIDTH)
+				{
+					tree.x = HILL_WIDTH;
+					break;
+				}
+				randomTrees--;
 			}
 		}
 	}
