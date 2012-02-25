@@ -109,10 +109,6 @@ package com.somewater.rabbit.application
 				globalScoreCarrot.visible = false;
 			}
 
-			// HARDCODE START
-			storiesSwitcher.visible = (Config.memory['testers'] && (Config.memory['testers'] as Array).indexOf(Config.loader.getUser().id) != -1);
-			// HARDCODE END
-			
 			Config.stat(Stat.LEVELS_PAGE_OPENED);
 
 			leftButton = Lib.createMC("interface.LeftButton");
