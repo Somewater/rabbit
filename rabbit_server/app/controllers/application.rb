@@ -87,6 +87,8 @@ class Application
 					TutorialController.new(request).call
 				when 'offer/add'
 					OfferController.new(request).call
+				when 'top/index'
+					TopController.new(request).call
 
 				when "levels.xml"
 					LevelXmlGenerator.generate(request['release'])

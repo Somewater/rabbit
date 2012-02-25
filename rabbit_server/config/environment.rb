@@ -11,6 +11,7 @@ SERVER_ROOT = "#{ROOT}/rabbit_server"
 TEMPLATE_ROOT = "#{SERVER_ROOT}/app/views"
 CONFIG_DIR = "#{SERVER_ROOT}/config"
 PUBLIC_DIR = "#{ROOT}/bin-debug"
+TMP_DIR = "#{ROOT}/tmp"
 DB_CONF = YAML.load(File.read("#{CONFIG_DIR}/database.yml"))
 CONFIG  = YAML.load(File.read("#{CONFIG_DIR}/config.yml"))
 if(defined?(ENV['APP_ENV']) && ENV['APP_ENV'] =~ /(production|development|test)/)
@@ -54,5 +55,6 @@ RAILS_DEFAULT_LOGGER = Application.logger
 RewardManager.instance
 OfferManager.instance
 StaticManager.instance
+TopManager.instance
 
 

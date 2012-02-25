@@ -239,7 +239,7 @@ package com.somewater.rabbit.application
 		{
 			if(value != _carrot)
 			{
-				carrotTF.text = value + "/" + carrotMax;
+				carrotTF.text = value + (carrotMax < 100 ? " / " : "/") + carrotMax;
 				_carrot = value;
 
 				if(value >= carrotMin && carrotGUISwitched == 0)

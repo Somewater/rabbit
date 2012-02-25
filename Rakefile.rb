@@ -198,6 +198,16 @@ namespace :srv do
 				puts "Undefined fix name"
 		end
 	end
+
+	desc "Recalculate TOP"
+	task :top_cache => :environment do
+		TopManager.instance.write_files()
+	end
+
+	desc "Cron hourly job"
+	task :hourly => :environment do
+		TopManager.instance.write_files()
+	end
 end
 
 
