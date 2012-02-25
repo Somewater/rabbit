@@ -8,7 +8,7 @@ package com.somewater.rabbit.application.tutorial {
 
 	public class HighlightArrow extends Sprite implements IClear{
 
-		private var arrow:MovieClip;
+		public var arrow:MovieClip;
 
 		public function HighlightArrow() {
 			arrow = Lib.createMC('tutorial.TutorialArrow')

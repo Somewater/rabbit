@@ -12,7 +12,7 @@ package com.somewater.rabbit.application.tutorial {
 
 		private var rabbitActor:MovieClip;
 		private var shadow:Sprite;
-		private var cloud:TutorialMessageCloud;
+		public var cloud:TutorialMessageCloud;
 		private var onAcceptArgiment:Function;
 
 		public function GuiCloud(msg:String, x:int,  y:int, onAccept:Function = null, image:* = null, toLeft:Boolean = false) {

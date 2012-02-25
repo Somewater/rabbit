@@ -34,7 +34,7 @@ package com.somewater.rabbit.application.tutorial {
 		private var textField:EmbededTextField;
 		private var photo:Photo;
 		private var photoBorder:DisplayObjectContainer;
-		private var buttonNext:OrangeButton;
+		public var buttonNext:OrangeButton;
 
 		public function TutorialMessageCloud(message:String, onAccept:Function = null, image:* = null, toLeft:Boolean = false) {
 			this.message = message;

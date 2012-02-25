@@ -250,7 +250,7 @@ package com.somewater.rabbit.application.tutorial {
 			onMessageShowedActiveWindow = this.activePageOrWindow();
 		}
 
-		internal function highlightGui(gui:DisplayObject, on:Boolean = true):void
+		internal function highlightGui(gui:DisplayObject, on:Boolean = true):HighlightArrow
 		{
 			var arrow:HighlightArrow
 
@@ -283,6 +283,8 @@ package com.somewater.rabbit.application.tutorial {
 					highlightedObjects.splice(highlightedObjects.indexOf(gui), 1);
 				}
 			}
+
+			return arrow;
 		}
 
 		public function clearHighlights():void

@@ -202,6 +202,10 @@ package com.somewater.rabbit.managers
 				{
 					gameGuiRef.timeEnd = conditionsRef["time"] * 0.001;
 					gameGuiRef.carrotMax = conditionsRef["carrotMax"];
+					gameGuiRef.carrotMiddle = conditionsRef["carrotMiddle"];
+					gameGuiRef.carrotMin = conditionsRef["carrotMin"];
+					gameGuiRef.carrot = heroDataRef?heroDataRef.carrot:0;
+					gameGuiRef.init();
 				}
 				else
 					gameGuiRef = null;

@@ -193,7 +193,7 @@ package
 				friendInviteTimer.start();
 
 				var interv:uint = setInterval(function():void{
-					if(Config.gameModuleActive == false && PopUpManager.numWindows == 0)
+					if(canShowOfferWindow)
 					{
 						clearInterval(interv);
 						if(OfferManager.instance.quantity > 0 && UserProfile.instance.offers < OfferManager.instance.prizeQuantity)
@@ -265,27 +265,9 @@ package
 			if(_levels.length == 0)// вносим один пустой уровень
 				addLevel(XmlController.instance.getNewLevel());
 
-			// TODO: START
-			Config.memory['testers'] = ((Config.memory['testers'] || []) as Array).concat(ConfManager.instance.getArray('testers'));
-			if((Config.memory['testers'] && (Config.memory['testers'] as Array).indexOf(Config.loader.getUser().id) != -1))
-			{
 			var stories:XMLList = data.stories;
 			for each (var story:XML in stories.*)
 				new StoryDef(story);
-			}
-			else
-			{
-				new StoryDef(<story id="0">
-								<number>0</number>
-								<name>Тестовая история!</name>
-								<description>Это тестовая история</description>
-								<image/>
-								<start_level>1</start_level>
-								<end_level>12</end_level>
-								<enabled>true</enabled>
-							</story>);
-			}
-			// TODO: END
 
 			var offers:XMLList = data.offers;
 			for each(var offer:XML in offers.*)
@@ -789,15 +771,15 @@ package
 		 * Пришло время проверить возможность показать окно-приглашалку друзей и показать её
 		 */
 		private function onFriendInviteTimer(event:TimerEvent):void {
-			if(Config.gameModuleActive == false && PopUpManager.numWindows == 0)
+			if(canShowOfferWindow)
 			{
-				// TODO: START
+				/*
 				if(UserProfile.instance.levelNumber > 8)
 				{
 					new TesterInvitationWindow();
 				}
 				else
-				// TODO: END
+				*/
 				// если включен какой-то интерфейс приложения, а не сама игра (уровень, полянка и т.д.) и нет окон
 				new InviteFriendsWindow();
 			}
@@ -807,6 +789,16 @@ package
 		public function get gameGUI():DisplayObject
 		{
 			return _gameGUI;
+		}
+
+		/**
+		 * Все условия для того чтобы показать офферное окно
+		 */
+		public function get canShowOfferWindow():Boolean
+		{
+			return Config.gameModuleActive == false
+					&& PopUpManager.numWindows == 0
+					&& !TutorialManager.instance.active;
 		}
 	}
 }

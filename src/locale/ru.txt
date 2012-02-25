@@ -29,7 +29,9 @@ ERROR_CLIENT_EXCEPTION=Во время игры произошла ошибка 
 #
 #####################
 GAME_INTERFACE_HEALTH_BAR=Здоровье кролика {persent}%
-GAME_INTERFACE_SCORES=На уровне осталось {number} морковок
+GAME_INTERFACE_SCORES=На уровне осталось {number} морковок\nСобрано {harvested} из {all}
+GAME_INTERFACE_SCORES_RATING=За прохождение уровня будет начислено {carrot} морковок
+GAME_INTERFACE_SCORES_RATING_UNCOMPL=Собери как минимум {need} морковок, чтобы закончить уровень
 GAME_INTERFACE_TIME=Осталось {seconds} секунд до конца уровня
 ###################
 #
@@ -181,11 +183,11 @@ POSTING_PLAY_BUTTON=Играть
 #
 #####################
 TUTORIAL_NEXT_BTN_LABEL=Далее
-TUTORIAL_I_AM_RABBIT=Привет, я кроль. Помоги мне собрать морковку!
+TUTORIAL_I_AM_RABBIT=Привет, я Кроль. Помоги мне собрать морковку!
 TUTORIAL_CLICK_ON_START_BTN=Щелкни на кнопку "{button_label}"
 TUTORIAL_USE_CURSOR_KEYS=Используй\nкнопки-стрелки, чтобы управлять кроликом
 TUTORIAL_MOVE_TO_CARROT=Подведи кролика к морковкам, чтобы их собрать
-TUTORIAL_CARROT_INDICATOR_HINT=Индикатор морковок показывает, сколько морковок еще не собрано
+TUTORIAL_CARROT_INDICATOR_HINT=Индикатор морковок показывает, сколько морковок собрано и сколько осталось собрать
 TUTORIAL_HEDGEHOG_ATTENTION=Не наступай на ежа, он может уколоть!
 TUTORIAL_HEALTH_INDICATOR_HINT=Это индикатор жизни, он не должен дойти до нуля!
 TUTORIAL_TIME_COUNTER_HINT=Это счетчик времени. Собери морковки до того, как выйдет время

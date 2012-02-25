@@ -6,13 +6,18 @@ package com.somewater.rabbit.application.tutorial {
 	import com.somewater.rabbit.storage.UserProfile;
 	import com.somewater.storage.Lang;
 
+	import flash.display.DisplayObject;
+
 	public class TutorialStep1 extends TutorialStepBase{
+
+		private var age:int = 0;
 
 		public function TutorialStep1() {
 		}
 
 		override public function execute():void {
 			TutorialManager.instance.guiMessage('TUTORIAL_I_AM_RABBIT', Config.WIDTH - 100, Config.HEIGHT - 100, onIAmRabbitAccepted, null, true);
+			age = 0;
 
 			if(TutorialManager.instance.mainMenuPage)
 			{
@@ -20,6 +25,24 @@ package com.somewater.rabbit.application.tutorial {
 				TutorialManager.instance.mainMenuPage.startGameButton.enabled = true;
 			}
  		}
+
+
+		override public function tick():void {
+			age++;
+			if(age == 10)// 2 секунда (200 мс х 10 = 2000)
+			{
+				// указать стрелкой на кнопку "Далее"
+				try
+				{
+					var btnNext:DisplayObject = GuiCloud(TutorialManager.instance.messages[0]).cloud.buttonNext;
+					var arrow:HighlightArrow = TutorialManager.instance.highlightGui(btnNext);
+					arrow.rotation = -90;
+					arrow.arrow.y -= btnNext.width * 0.5;
+				}catch(err:Error){
+					trace(err.getStackTrace());
+				}
+			}
+		}
 
 		private function onIAmRabbitAccepted():void {
 			TutorialManager.instance.clearMessages();

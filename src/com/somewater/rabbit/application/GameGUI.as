@@ -13,6 +13,7 @@ package com.somewater.rabbit.application
 	import flash.display.DisplayObject;
 
 	import flash.display.Graphics;
+	import flash.display.MovieClip;
 	import flash.display.Shape;
 	import flash.display.SimpleButton;
 	import flash.display.Sprite;
@@ -29,12 +30,17 @@ package com.somewater.rabbit.application
 		private var timeTF:EmbededTextField;
 		private var carrotTF:EmbededTextField;
 		private var minutesArrowShelf:Shape;
-		private var carrotMask:Shape;
 		private var offerStat:OfferStatPanel;
 
 		private var healthHintArea:Sprite;
 		private var timeHintArea:Sprite;
 		private var scoreHintArea:Sprite;
+
+		public var carrotMax:int;
+		public var carrotMiddle:int;
+		public var carrotMin:int;
+
+		private var carrotGUISwitched:int = 0;
 		
 		public function GameGUI()
 		{
@@ -59,7 +65,11 @@ package com.somewater.rabbit.application
 			minutesArrowCircle.mask = minutesArrowShelf;
 			minutesArrowCircle.graphics.beginFill(0xFFFFFF, 0.47);
 			minutesArrowCircle.graphics.drawCircle(0, 0, 15);
-			
+
+			(statPanel.getChildByName('carrot0') as MovieClip).gotoAndStop(1);
+			(statPanel.getChildByName('carrot1') as MovieClip).gotoAndStop(1);
+			(statPanel.getChildByName('carrot2') as MovieClip).gotoAndStop(1);
+
 			timeTF = new EmbededTextField(Config.FONT_SECONDARY, 0xFFFFFF, 16, true);
 			timeTF.width = 55;
 			timeTF.x = 139;
@@ -68,22 +78,10 @@ package com.somewater.rabbit.application
 			
 			carrotTF = new EmbededTextField(Config.FONT_SECONDARY, 0xFFFFFF, 16, true);
 			carrotTF.width = 35;
-			carrotTF.x = 222;
+			carrotTF.x = 260;
 			carrotTF.y = 15;
 			statPanel.addChild(carrotTF);
 
-			carrotMask = new Shape();
-			carrotMask.x = statPanel.getChildByName('carrotGround').x - 10;
-			carrotMask.y = statPanel.getChildByName('carrotGround').y + statPanel.getChildByName('carrotGround').height;
-			statPanel.getChildByName('carrotGround').mask = carrotMask;
-			statPanel.addChild(carrotMask);
-			carrotMask.graphics.beginFill(0);
-			carrotMask.graphics.drawRect(0,
-					-statPanel.getChildByName('carrotGround').height,
-					statPanel.getChildByName('carrotGround').width + 20,
-					statPanel.getChildByName('carrotGround').height);
-			carrotMask.scaleY = 0;
-			
 			life = 0;
 			time = 0;
 			carrot = 0;
@@ -94,6 +92,8 @@ package com.somewater.rabbit.application
 			statPanel.getChildByName('timeHintArea').alpha = 0;
 			Hint.bind(statPanel.getChildByName('healthHintArea'), healthHint);
 			statPanel.getChildByName('healthHintArea').alpha = 0;
+			Hint.bind(statPanel.getChildByName('scoreRatingHintArea'), scoreRatingHint);
+			statPanel.getChildByName('scoreRatingHintArea').alpha = 0;
 
 			offerStat = new OfferStatPanel(OfferStatPanel.GAME_MODE);
 			offerStat.x = statPanel.x - 10 - offerStat.width;
@@ -101,6 +101,18 @@ package com.somewater.rabbit.application
 			addChild(offerStat);
 
 
+		}
+
+		public function init():void
+		{
+			carrotGUISwitched = 0;
+			(statPanel.getChildByName('carrot0') as MovieClip).gotoAndStop(1);
+			(statPanel.getChildByName('carrot1') as MovieClip).gotoAndStop(1);
+			(statPanel.getChildByName('carrot2') as MovieClip).gotoAndStop(1);
+
+			var tmpCarrot:int = _carrot;
+			_carrot = -1;
+			carrot = tmpCarrot;
 		}
 
 
@@ -119,7 +131,15 @@ package com.somewater.rabbit.application
 
 		private function scoreHint():String
 		{
-			return Lang.t('GAME_INTERFACE_SCORES', {number: (_carrotMax - _carrot)});
+			return Lang.t('GAME_INTERFACE_SCORES', {number: (carrotMax - _carrot), harvested: _carrot, all: carrotMax});
+		}
+
+		private function scoreRatingHint():String
+		{
+			if(carrotGUISwitched > 0)
+				return Lang.t('GAME_INTERFACE_SCORES_RATING', {carrot: carrotGUISwitched});
+			else
+				return Lang.t('GAME_INTERFACE_SCORES_RATING_UNCOMPL', {need: (carrotMin - _carrot)});
 		}
 		
 		public function clear():void
@@ -130,6 +150,7 @@ package com.somewater.rabbit.application
 			Hint.removeHint(statPanel.getChildByName('scoreHintArea'));
 			Hint.removeHint(statPanel.getChildByName('timeHintArea'));
 			Hint.removeHint(statPanel.getChildByName('healthHintArea'));
+			Hint.removeHint(statPanel.getChildByName('scoreRatingHintArea'));
 		}
 		
 		private function onPlayPauseClick(e:Event):void
@@ -159,17 +180,6 @@ package com.somewater.rabbit.application
 			time = _time;	
 		}
 		public var _timeEnd:int = 60;
-
-		/**
-		 * Сколько максимально длится раунд, секунды
-		 */
-		public function set carrotMax(value:int):void
-		{
-			_carrotMax = value;
-			_carrot = -1;
-			carrot = _carrot
-		}
-		public var _carrotMax:int = 1;
 
 		/**
 		 * Сколько длится текущий раунд
@@ -229,12 +239,24 @@ package com.somewater.rabbit.application
 		{
 			if(value != _carrot)
 			{
-				carrotTF.text = (_carrotMax - value).toString();
-				carrotMask.scaleY = Math.min(1, value / _carrotMax);
-				_carrot = value
+				carrotTF.text = value + "/" + carrotMax;
+				_carrot = value;
+
+				if(value >= carrotMin && carrotGUISwitched == 0)
+					switchNextGUICarrot();
+				if(value >= carrotMiddle && carrotGUISwitched == 1)
+					switchNextGUICarrot();
+				if(value >= carrotMax && carrotGUISwitched == 2)
+					switchNextGUICarrot();
 			}
 		}
 		private var _carrot:int;
+
+		private function switchNextGUICarrot():void
+		{
+			(statPanel.getChildByName('carrot' + carrotGUISwitched) as MovieClip).gotoAndStop(2);
+			carrotGUISwitched++;
+		}
 
 		public static function secondsToFormattedTime(seconds:int):String
 		{
