@@ -23,6 +23,7 @@ package
 	import com.somewater.rabbit.application.RewardLevelGUI;
 	import com.somewater.rabbit.application.RewardManager;
 	import com.somewater.rabbit.application.ServerLogic;
+	import com.somewater.rabbit.application.TopPage;
 	import com.somewater.rabbit.application.WindowBackground;
 	import com.somewater.rabbit.application.tutorial.TutorialManager;
 	import com.somewater.rabbit.application.windows.InviteFriendsWindow;
@@ -84,6 +85,8 @@ package
 										"main_menu":MainMenuPage
 										,
 										"levels":LevelsPage
+										,
+										"top":TopPage
 										,
 										"about":AboutPage
 									}

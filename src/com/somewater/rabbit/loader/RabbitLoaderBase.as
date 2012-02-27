@@ -678,6 +678,11 @@ package com.somewater.rabbit.loader
 		{
 			return false;	
 		}
+
+		public function get hasUsersApi():Boolean
+		{
+			return false;
+		}
 		
 		public function get hasFriendsApi():Boolean
 		{

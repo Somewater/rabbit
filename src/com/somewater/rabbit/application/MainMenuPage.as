@@ -32,6 +32,22 @@ package com.somewater.rabbit.application
 						"ABOUT_GAME"
 					  ];
 
+			CONFIG::debug
+			{
+				buttons.splice(3, 0, "USERS_TOP")
+			}
+
+			if(Config.loader.hasFriendsApi)
+			{
+				friendBar = new FriendBar();
+				friendBar.x = 35;
+				friendBar.y = Config.HEIGHT -  FriendBar.HEIGHT - 40;
+				addChild(friendBar);
+			}
+
+			// +2 к количеству кнопок, т.к. учитываются контролы аудио (примерно как 2 кнопки по высоте)
+			var buttonsY:int = ((friendBar ? friendBar.y : Config.HEIGHT) - ((buttons.length + 2) * 55)) * 0.5;
+
 			var b:OrangeButton;
 			for(var i:int = 0;i<buttons.length;i++)
 			{
@@ -41,7 +57,7 @@ package com.somewater.rabbit.application
 				b.addEventListener(MouseEvent.CLICK, onSomeButtonClick);
 				b.setSize(180, 32);
 				b.x = (Config.WIDTH - b.width) * 0.5;
-				b.y = 115 + 55 * i;
+				b.y = buttonsY + 55 * i;
 				addChild(b);
 			}
 			audioControls = new AudioControls();
@@ -49,14 +65,6 @@ package com.somewater.rabbit.application
 			audioControls.y = b.y + 55;
 			addChild(audioControls);
 			
-			if(Config.loader.hasFriendsApi)
-			{
-				friendBar = new FriendBar();
-				friendBar.x = 35;
-				friendBar.y = Config.HEIGHT -  FriendBar.HEIGHT - 40;
-				addChild(friendBar);
-			}
-
 			if(logo.visible)
 				logo.visible = (friendBar == null || friendBar.x + FriendBar.WIDTH + 10 < logo.x) && logo.x + logo.width < Config.WIDTH;
 
@@ -101,6 +109,9 @@ package com.somewater.rabbit.application
 						break;
 				case Lang.t("MY_ACHIEVEMENTS"):
 						new OpenRewardLevelCommand(UserProfile.instance).execute();
+						break;
+				case Lang.t("USERS_TOP"):
+						Config.application.startPage("top");
 						break;
 				case Lang.t("ABOUT_GAME"):
 						Config.application.startPage("about");

@@ -141,6 +141,14 @@ package com.somewater.rabbit.application {
 			}, null, {'secure': true});
 		}
 
+		public function topIndex(onComplete:Function = null, onError:Function = null):void
+		{
+			handler.call('top/index', null, function(data:Object):void{
+				TopManager.instance.read(data);
+				onComplete && onComplete(data);
+			}, onError);
+		}
+
 
 		//////////////////////////////////
 		//                              //

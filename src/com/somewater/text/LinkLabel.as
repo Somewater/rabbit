@@ -7,7 +7,7 @@ package com.somewater.text
 	
 	[Event(name="linkClick",type="com.somewater.text.LinkLabel")]
 	
-	final public class LinkLabel extends EmbededTextField implements IClear
+	public class LinkLabel extends EmbededTextField implements IClear
 	{
 		public static const LINK_CLICK:String = "linkClick";
 		

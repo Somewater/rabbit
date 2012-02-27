@@ -42,6 +42,8 @@ package com.somewater.rabbit.loader{
 
 		override public function get hasUserApi():Boolean { return true; }
 
+		override public function get hasUsersApi():Boolean { return true; }
+
 		override public function get hasFriendsApi():Boolean { return true; }
 
 		override public function getFriends():Array

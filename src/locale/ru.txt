@@ -23,6 +23,7 @@ ERROR_SERVER_LOGIC_DESYNCRONIZE_LEVEL=Сервер по какой-то прич
 UNDEFINED_SERVER_ERROR=Неизвестная ошибка
 ERROR_POSTING=Не удалось опубликовать сообщение
 ERROR_CLIENT_EXCEPTION=Во время игры произошла ошибка {error}
+ERROR_GET_TOP_INDEX=Не удалось получить информацию по ТОП-у
 ###################
 #
 #	GAME INTERFACE
@@ -64,6 +65,14 @@ INVITE_BUTTON_TEXT=ХОЧУ ИГРАТЬ
 I_AM_RABBIT=Я{male:| милый} кролик!
 FRIEND_BUTTON_HINT=Посети полянку друга
 INVITE_BUTTON_HINT=Пригласи друзей
+USERS_TOP=ТОП ИГРОКОВ
+###################
+#
+#	TOP PAGE
+#
+#####################
+TOP_PAGE_TITLE=ТОП ИГРОКОВ
+TOP_TYPE_STARS=по морковкам
 ###################
 #
 #	ABOUT PAGE

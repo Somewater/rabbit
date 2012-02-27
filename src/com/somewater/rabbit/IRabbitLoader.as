@@ -99,6 +99,8 @@ package com.somewater.rabbit
 		function get net():int
 
 		function get hasUserApi():Boolean
+
+		function get hasUsersApi():Boolean
 		
 		function get hasFriendsApi():Boolean
 			

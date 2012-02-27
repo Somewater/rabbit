@@ -24,9 +24,9 @@ class TopManager
 	end
 
 	def get_tops(net, top_name)
-		return [] unless @tops[net.to_s]
-		return [] unless @tops[net.to_s][top_name.to_s]
-		@tops[net.to_s][top_name.to_s]
+		return [] unless @tops[net.to_i]
+		return [] unless @tops[net.to_i][top_name.to_sym]
+		@tops[net.to_i][top_name.to_sym]
 	end
 
 	# пересчитать всё и записать в файлы

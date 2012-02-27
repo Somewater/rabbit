@@ -12,7 +12,7 @@ class TopController < BaseController
 			TopManager::TOP_NAMES.each do |top_name|
 				top = TopManager.instance.get_tops(@params['net'], top_name)
 				top_data = ""
-				top.each{|t| top_data << t['uid'] << ';' << t['value'] << ';' }
+				top.each{|t| top_data << t[:uid].to_s << ';' << t[:value].to_s << ';' }
 				@@cache[top_name] = top_data # todo: при необходимости ужать данные (value -> v, uid -> u)
 			end
 		end

@@ -7,7 +7,13 @@ package com.somewater.rabbit.application {
 	import flash.display.Sprite;
 
 	public class RScroller extends Scroller{
+
+		public static const SCROLL_WIDTH:int = 20;
+
 		public function RScroller() {
+
+			scrollWidth = SCROLL_WIDTH;
+
 			startButton = new ScrollButton(true);
 			endButton = new ScrollButton(false);
 			thumb = new Thumb();
