@@ -239,8 +239,10 @@ namespace :gamedesign do
 	end
 
 	desc "Clear statistic about test levels"
-	task :clear_test_stat  => :environment do |task, args|
-		Gamedesign::clear_test_levels_stat()
+	task :clear_test_stat, [:test_level]  => :environment do |task, args|
+		test_level = args[:test_level].to_i
+		raise "Wrong level #{test_level}" if test_level.to_i <= 1
+		Gamedesign::clear_test_levels_stat(test_level)
 	end
 end
 

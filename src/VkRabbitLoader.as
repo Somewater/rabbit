@@ -29,7 +29,7 @@ package {
 	import flash.utils.getDefinitionByName;
 
 
-	[SWF(width="810", height="950", backgroundColor="#FFFFFF", frameRate="30")]
+	[SWF(width="810", height="800", backgroundColor="#FFFFFF", frameRate="30")]
 	public class VkRabbitLoader extends SocialRabbitLoader{
 
 		private var _clickozavr:Clickozavr;
@@ -118,7 +118,7 @@ package {
 
 			super.onNetInitializeComplete();
 
-			var livecardAdLoader:Loader = new Loader();
+			/*var livecardAdLoader:Loader = new Loader();
 			livecardAdLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, function(event:Event):void{
 				var banner:Sprite = LoaderInfo(event.target).content as Sprite;
 				banner.buttonMode =banner.useHandCursor = true;
@@ -131,6 +131,7 @@ package {
 				Config.loader.addChild(banner);
 			})
 			livecardAdLoader.load(new URLRequest(swfs['LivecardAd'].url), new LoaderContext(true, ApplicationDomain.currentDomain, SecurityDomain.currentDomain))
+			*/
 		}
 
 		private function onLivecardAdClick(event:MouseEvent):void {
@@ -221,7 +222,7 @@ package {
 						,"MusicGame":{url:"http://cs301105.vkontakte.ru/u245894/721ed8935f06d4.zip"}
 						,"Sound":{url:"http://cs5392.vkontakte.ru/u245894/849e0bcdf7ff31.zip"}
 						,"Lang":{priority:100, preload:true, url:"http://cs10996.vk.com/u245894/d077d5de2bd2a7.zip"}
-						,"XmlPack":{preload:true, url:"http://cs10996.vk.com/u245894/6db62207e127dc.zip"}
+						,"XmlPack":{preload:true, url:"http://cs11398.vk.com/u245894/16c1b01efba9f2.zip"}
 
 						,"Font":{priority:100, preload:true, url:"http://cs301105.vkontakte.ru/u245894/e07afb77864e16.zip"}
 					}

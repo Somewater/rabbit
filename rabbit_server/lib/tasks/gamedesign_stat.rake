@@ -63,22 +63,34 @@ module Gamedesign
 		end
 	end
 
-	def self.clear_test_levels_stat()
-		test_level = 13
+	def self.clear_test_levels_stat(test_level)
+		users_affected = 0
 		User.find(:all, :conditions => "level > #{test_level}").each do |user|
 			level_instances = user.level_instances
 			carrots = 0
+			level = 0
 			level_instances.delete_if do |k,v|
 				if k.to_i >= test_level
 					true
 				else
 					carrots += v['c']
+					level = k.to_i if k.to_i > level
 					false
 				end
 			end
 			user.level_instances = level_instances
+
+			rewards = user.rewards
+			rewards.delete_if do |k,v|
+				v['n'].to_i >= test_level
+			end
+			user.rewards = rewards
+
+			user.level = level
 			user.score = carrots
 			user.save
+			users_affected += 1
 		end
+		puts "Completed. #{users_affected} users affected"
 	end
 end

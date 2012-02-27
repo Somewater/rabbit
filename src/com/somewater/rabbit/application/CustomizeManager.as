@@ -64,12 +64,12 @@ package com.somewater.rabbit.application {
 
 			var holeTitle:TextField = Config.application.createTextField(Config.FONT_SECONDARY, 0x6B450D, 12, true, false, false, false, 'center');
 			holeTitle.width = 70;
-			holeTitle.x = -27;
-			holeTitle.y = -63;
 			holeTitle.text = Config.game.level is IUserLevel ? IUserLevel(Config.game.level).gameUser.socialUser.firstName
 					: (Config.loader.getUser().firstName && Config.loader.getUser().firstName.length ? Config.loader.getUser().firstName :
 									(Config.loader.getUser().lastName ? Config.loader.getUser().lastName : ''));
-			event.clip.addChild(holeTitle);
+			holeTitle.x = -holeTitle.width * 0.5;
+			holeTitle.y = -holeTitle.textHeight * 0.5;
+			event.clip.title.marker.addChild(holeTitle);
 
 			function getHolder(name:String):DisplayObjectContainer
 			{
