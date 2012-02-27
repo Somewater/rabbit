@@ -98,7 +98,7 @@ package com.somewater.rabbit.application
 				sumStars += levelInst.stars;
 				maxStars += 3;
 			}
-			globalScoreCounterTF.text = intToFormatStr(sumStars) + " / " + intToFormatStr(maxStars);
+			globalScoreCounterTF.text = intToFormatStr(sumScore) + " / " + intToFormatStr(maxScores);
 			
 			Hint.bind(globalScoreCarrot, Lang.t("GLOBAL_SCORE_COUNTER_HINT"));
 			Hint.bind(globalScoreCounterTF, Lang.t("GLOBAL_SCORE_COUNTER_HINT"));
