@@ -210,25 +210,25 @@ package {
 		{
 			basePath = 'http://rabbit.asflash.ru/';
 			swfs = {
-						"Game":{priority:-1,preload:true,url:"http://cs11398.vk.com/u245894/3e1660e68e13b6.zip"}
+						"Game":{priority:-1,preload:true,url:"http://cs5231.userapi.com/u245894/cc29521bfbc09e.zip"}
 						,
 						"Application":{priority:int.MIN_VALUE,
-							preload:true,url:"http://cs11398.vk.com/u245894/fffe73876ad298.zip"}
-						,"Interface":{preload:true, url:"http://cs11398.vk.com/u245894/e2562db1d3db13.zip"}
-						,"Assets":{preload:true, url:"http://cs11398.vk.com/u245894/27202c03a7b93c.zip"}
-						,"Rewards":{preload:true, url:"http://cs11398.vk.com/u245894/173919ae02aa47.zip"}
-						,"Images":{preload:true, url:"http://cs11398.vk.com/u245894/5f236841b65fe6.zip"}
-						,"MusicMenu":{url:"http://cs301105.vkontakte.ru/u245894/8249c8fc1ffbf9.zip"}
-						,"MusicGame":{url:"http://cs301105.vkontakte.ru/u245894/721ed8935f06d4.zip"}
-						,"Sound":{url:"http://cs5392.vkontakte.ru/u245894/849e0bcdf7ff31.zip"}
-						,"Lang":{priority:100, preload:true, url:"http://cs11398.vk.com/u245894/d87d09172d8425.zip"}
-						,"XmlPack":{preload:true, url:"http://cs11398.vk.com/u245894/d87c7122a73d76.zip"}
+							preload:true,url:"http://cs5231.userapi.com/u245894/666b5436f593d8.zip"}
+						,"Interface":{preload:true, url:"http://cs5231.userapi.com/u245894/4c10012fb38415.zip"}
+						,"Assets":{preload:true, url:"http://cs5231.userapi.com/u245894/7a50bb5b0cb242.zip"}
+						,"Rewards":{preload:true, url:"http://cs5231.userapi.com/u245894/ee90c767c0227a.zip"}
+						,"Images":{preload:true, url:"http://cs5231.userapi.com/u245894/88977e34b7443b.zip"}
+						,"MusicMenu":{url:"http://cs5231.userapi.com/u245894/9f85f9d027e598.zip"}
+						,"MusicGame":{url:"http://cs5231.userapi.com/u245894/16c9f64377d623.zip"}
+						,"Sound":{url:"http://cs5231.userapi.com/u245894/af59e6c026863d.zip"}
+						,"Lang":{priority:100, preload:true, url:"http://cs5231.userapi.com/u245894/8d356f475f59ca.zip"}
+						,"XmlPack":{preload:true, url:"http://cs5231.userapi.com/u245894/84441ca73195e5.zip"}
 
-						,"Font":{priority:100, preload:true, url:"http://cs301105.vkontakte.ru/u245894/e07afb77864e16.zip"}
+						,"Font":{priority:100, preload:true, url:"http://cs5231.userapi.com/u245894/fe712dd002e7c1.zip"}
 					}
 
 			// only for vk
-			swfs['PostingPopup'] = {'url':'http://cs10433.vk.com/u245894/fd9993c28d5577.zip'}
+			swfs['PostingPopup'] = {'url':'http://cs5231.userapi.com/u245894/5731f86c081b93.zip'}
 			swfs['LivecardAd'] = {'url':'http://cs11130.vk.com/u245894/9ad55940de39f8.zip'}
 		}
 
