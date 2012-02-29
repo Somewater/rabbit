@@ -37,6 +37,7 @@ package com.somewater.rabbit.application {
 					var user:TopUser = new TopUser();
 					user.uid = topData[i];
 					user.value = topData[i + 1];
+					top.push(user);
 				}
 				topsByType[topType] = top;
 			}
@@ -49,7 +50,7 @@ package com.somewater.rabbit.application {
 		 */
 		public function getUsersByTopType(topType:String):Array
 		{
-			return topsByType[topType.toUpperCase()] || [];
+			return topsByType[topType] || [];
 		}
 	}
 }

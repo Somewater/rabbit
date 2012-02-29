@@ -82,7 +82,10 @@ package com.somewater.rabbit.application {
 			scroller = new RScroller();
 			scroller.x = selectorButtonsHolder.x;
 			scroller.y = selectorButtonsHolder.y + selectorButtonsHolder.height + 10;
-			scroller.setSize(TABLE_WIDTH, Config.HEIGHT - scroller.y - 30);
+			scroller.setSize(TABLE_WIDTH + scroller.scrollWidth, Config.HEIGHT - scroller.y - 30);
+			addChild(scroller)
+
+			tableHolder = new Sprite();
 
 			if(TopManager.instance.dataLoaded)
 				selectButtonIndex = 0;
@@ -118,6 +121,8 @@ package com.somewater.rabbit.application {
 			}
 
 			clearRows();
+
+			scroller.clear();
 		}
 
 		private function clearRows():void
