@@ -51,7 +51,7 @@ class BaseController
 
 	def authorization params
 		if DEVELOPMENT
-			@api = EmbedApi.new(params)
+			@api = EmbedApi.new()
 			params['uid'] && params['key']
 		else
 			net = params['net'] ? params['net'].to_s.to_sym : nil

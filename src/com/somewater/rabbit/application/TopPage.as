@@ -1,5 +1,6 @@
 package com.somewater.rabbit.application {
 	import com.somewater.controller.PopUpManager;
+	import com.somewater.display.CorrectSizeDefinerSprite;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.rabbit.storage.TopUser;
@@ -19,7 +20,7 @@ package com.somewater.rabbit.application {
 
 		private var selectorButtonsHolder:Sprite;
 		private var selectorButtons:Array = [];
-		private var tableHolder:Sprite;
+		private var tableHolder:CorrectSizeDefinerSprite;
 		private var scroller:RScroller;
 		private var rows:Array = [];
 
@@ -32,12 +33,12 @@ package com.somewater.rabbit.application {
 			var title:EmbededTextField = new EmbededTextField(null, 0xDB661B, 20, false, false, false, false, 'center');
 			title.text = Lang.t('TOP_PAGE_TITLE');
 			title.width = Config.WIDTH;
-			title.y =  16;
+			title.y =  30;
 			addChild(title);
 
 			selectorButtonsHolder = new Sprite();
 			selectorButtonsHolder.x = (Config.WIDTH - TABLE_WIDTH) * 0.5;
-			selectorButtonsHolder.y = title.y + title.height + 10;
+			selectorButtonsHolder.y = title.y + 50;
 			addChild(selectorButtonsHolder);
 
 			var topTypes:Array = [TopManager.TYPE_STARS];
@@ -83,9 +84,10 @@ package com.somewater.rabbit.application {
 			scroller.x = selectorButtonsHolder.x;
 			scroller.y = selectorButtonsHolder.y + selectorButtonsHolder.height + 10;
 			scroller.setSize(TABLE_WIDTH + scroller.scrollWidth, Config.HEIGHT - scroller.y - 30);
+			scroller.scrollSpeed = Row.HEIGHT * 6;
 			addChild(scroller)
 
-			tableHolder = new Sprite();
+			tableHolder = new CorrectSizeDefinerSprite(0, 1);
 
 			if(TopManager.instance.dataLoaded)
 				selectButtonIndex = 0;
@@ -146,7 +148,8 @@ package com.somewater.rabbit.application {
 		{
 			var btn:TopSelectorBtn;
 			var selectedTopType:String;
-			for (var i:int = 0; i < selectorButtons.length; i++) {
+			var i:int;
+			for (i = 0; i < selectorButtons.length; i++) {
 				btn = selectorButtons[i];
 				btn.selected = i == index;
 				if(i == index)
@@ -157,15 +160,18 @@ package com.somewater.rabbit.application {
 			clearRows();
 			var nextY:int;
 			var uidsToApi:Array = [];
+			i = 0;
 			for each(var user:TopUser in TopManager.instance.getUsersByTopType(selectedTopType))
 			{
-				var row:Row = new Row(user);
+				var row:Row = new Row(user, i + 1);
 				row.y = nextY;
+				row.color = i % 2 == 0 ? 0xF7F7F7 : 0;
 				nextY += row.height;
 				tableHolder.addChild(row);
 				rows.push(row);
 
 				uidsToApi.push(user.uid);
+				i++;
 			}
 
 			scroller.content = tableHolder;
@@ -208,8 +214,12 @@ import com.somewater.text.EmbededTextField;
 import com.somewater.text.LinkLabel;
 
 import flash.display.DisplayObject;
+import flash.display.Shape;
 
 import flash.display.Sprite;
+import flash.events.Event;
+import flash.events.MouseEvent;
+import flash.text.TextFieldAutoSize;
 
 class TopSelectorBtn extends LinkLabel
 {
@@ -243,6 +253,8 @@ class TopSelectorBtn extends LinkLabel
 
 class Row extends Sprite implements IClear
 {
+	public static const HEIGHT:int = 63;
+
 	public var uid:String;
 
 	private var user:TopUser;
@@ -251,62 +263,131 @@ class Row extends Sprite implements IClear
 	private var photo:Photo;
 	private var nameTF:EmbededTextField;
 	private var valueTF:EmbededTextField;
+	private var counterTF:EmbededTextField;
 
-	public function Row(user:TopUser)
+	private var _selected:Boolean = false;
+	private var _color:int;
+
+	public function Row(user:TopUser, count:int)
 	{
 		this.user = user;
 
-		graphics.lineStyle(1, 0x89B93A);
-		graphics.moveTo(0,0);
-		graphics.lineTo(0, width);
+		const DIVISION:Number = 0.7;// в каком соотношении делятся стобцы
+
+		var topLine:Shape = new Shape();
+		topLine.graphics.lineStyle(1, 0x89B93A);
+		topLine.graphics.moveTo(0,0);
+		topLine.graphics.lineTo(width, 0);
+		addChild(topLine)
 
 		var line:DisplayObject = TopPage.getLine();
-		line.height = this.height;
 		addChild(line);
 
 		line = TopPage.getLine();
-		line.height = this.height;
-		line.x = 300;
+		line.x = 40;
 		addChild(line);
 
 		line = TopPage.getLine();
-		line.height = this.height;
-		line.x = 460;
+		line.x = this.width * DIVISION;
+		addChild(line);
+
+		line = TopPage.getLine();
+		line.x = this.width;
 		addChild(line);
 
 		photoSprite = Lib.createMC('interface.TopUserPhoto');
 		photo = new Photo();
 		photo.photoMask = photoSprite.getChildByName('photoMask');
-		photoSprite.x = 27;
+		photoSprite.x = 60;
 		photoSprite.y = (height - photoSprite.height) * 0.5
+		addChild(photoSprite);
 
-		nameTF = new EmbededTextField(Config.FONT_SECONDARY, 0x124D18, 16, true, true)
-		nameTF.x = 120;
+		counterTF = new EmbededTextField(Config.FONT_SECONDARY, 0x124D18, 21, false, false, false, false, 'right');
+		counterTF.width = 30;
+		counterTF.x = 30;
+		counterTF.y = 19;
+		counterTF.text = count.toString();
+		addChild(counterTF);
+
+		if(Config.loader.hasNavigateToHomepage)
+		{
+			nameTF = new LinkLabel(Config.FONT_SECONDARY, 0x31B1E8, 16, true);
+			nameTF.addEventListener(LinkLabel.LINK_CLICK, onLinkClick);
+		}
+		else
+		{
+			nameTF = new EmbededTextField(Config.FONT_SECONDARY, 0x124D18, 16, true);
+		}
+		nameTF.multiline = true;
+		nameTF.autoSize = TextFieldAutoSize.LEFT
+		nameTF.x = 150;
 		nameTF.y = 14;
+		nameTF.text = '---\n---'
 		addChild(nameTF);
 
 		valueTF = new EmbededTextField(Config.FONT_SECONDARY, 0x124D18, 21, true, false, false, false, 'center');
-		valueTF.width = 110;
-		valueTF.x = 330;
+		valueTF.width = this.width * (1 - DIVISION);
+		valueTF.x = this.width * DIVISION;
 		valueTF.y = 19;
 		addChild(valueTF);
 
-		valueTF.text = user.value.toString();
+		valueTF.text = int(user.value).toString();
+
+		addEventListener(MouseEvent.ROLL_OVER, onOver);
+		addEventListener(MouseEvent.ROLL_OUT, onOut);
+	}
+
+	private function onLinkClick(event:Event):void {
+		Config.loader.navigateToHomePage(user.uid);
+	}
+
+	private function onOut(event:MouseEvent):void {
+		selected = false;
+	}
+
+	private function onOver(event:MouseEvent):void {
+		selected = true;
+
+	}
+
+	public function set color(value:int):void
+	{
+		_color = value;
+		refreshGround();
+	}
+
+	public function set selected(value:Boolean):void
+	{
+		if(_selected != value)
+		{
+			_selected = value;
+			refreshGround();
+		}
+	}
+
+	private function refreshGround():void
+	{
+		graphics.clear();
+		graphics.beginFill(_selected ? 0x78D0FE : _color, _color || _selected ? 0.2 : 0);
+		graphics.drawRect(0,0,this.width, this.height);
 	}
 
 	public function clear():void
 	{
 		user = null;
+		removeEventListener(MouseEvent.ROLL_OVER, onOver);
+		removeEventListener(MouseEvent.ROLL_OUT, onOut);
+		nameTF.removeEventListener(LinkLabel.LINK_CLICK, onLinkClick);
 	}
 
 
 	override public function get width():Number {
-		return TopPage.TABLE_WIDTH - RScroller.SCROLL_WIDTH;
+		return TopPage.TABLE_WIDTH;
 	}
 
 
 	override public function get height():Number {
-		return 63;
+		return HEIGHT;
 	}
 
 	public function setData(user:SocialUser):void {

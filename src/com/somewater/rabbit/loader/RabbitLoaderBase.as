@@ -785,5 +785,13 @@ package com.somewater.rabbit.loader
 		public function set (key:String, data:Object):void {
 			LocalDb.instance.set(key, data);
 		}
+
+		public function get hasNavigateToHomepage():Boolean {
+			return false;
+		}
+
+		public function navigateToHomePage(userId:String):void {
+			throw new Error('Not implemented');
+		}
 	}
 }

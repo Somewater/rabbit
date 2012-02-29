@@ -103,6 +103,10 @@ package com.somewater.rabbit
 		function get hasUsersApi():Boolean
 		
 		function get hasFriendsApi():Boolean
+
+		function get hasNavigateToHomepage():Boolean
+
+		function navigateToHomePage(userId:String):void
 			
 		function getFriends():Array
 			

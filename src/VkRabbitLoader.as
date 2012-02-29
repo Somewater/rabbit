@@ -243,5 +243,13 @@ package {
 			else
 				return super.referer;
 		}
+
+		override public function get hasNavigateToHomepage():Boolean {
+			return true
+		}
+
+		override public function navigateToHomePage(userId:String):void {
+			navigateToURL(new URLRequest("http://" + flashVars['domain'] + '/id' + userId), '_blank');
+		}
 	}
 }

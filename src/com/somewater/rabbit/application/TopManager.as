@@ -31,7 +31,10 @@ package com.somewater.rabbit.application {
 			topsByType = [];
 			for(var topType:String in data)
 			{
-				var topData:Array = String(data[topType]).split(';');
+				var topStr:String = data[topType];
+				if(topStr.charAt(topStr.length - 1) == ';')
+					topStr = topStr.substr(0, topStr.length - 1);
+				var topData:Array = topStr.split(';');
 				var top:Array = [];
 				for (var i:int = 0; i < topData.length; i+=2) {
 					var user:TopUser = new TopUser();
@@ -39,6 +42,8 @@ package com.somewater.rabbit.application {
 					user.value = topData[i + 1];
 					top.push(user);
 				}
+				top.sortOn('value', Array.NUMERIC | Array.DESCENDING);
+				if(top.length > 50)top.length = 50
 				topsByType[topType] = top;
 			}
 		}
