@@ -18,9 +18,6 @@ package {
 	[SWF(width="720", height="650", backgroundColor="#FFFFFF", frameRate="30")]
 	public class MailruRabbitLoader extends SocialRabbitLoader{
 
-		private var _clickozavr:Clickozavr;
-		private var adLayer:Sprite;
-
 		public function MailruRabbitLoader() {
 			Config.WIDTH = 720;
 			Config.HEIGHT = 650;
@@ -38,7 +35,7 @@ package {
 			SWFDecoderWrapper.load(arrow, function(_arr:DisplayObject):void{
 				arrow = _arr;
 				arrow.createSocial();
-				onArrowComplete('529d006c41825455c4addca3a69046a6');
+				onArrowComplete('becfd349650fa25aabc2ae6752210d4e');
 			}, function(...args):void{
 				trace('ERROR ARROW PARSING ' + args);
 			})
@@ -47,30 +44,30 @@ package {
 		{
 			basePath = 'http://rabbit.asflash.ru/';
 			swfs = {
-						"Game":{priority:-1,preload:true,url:"http://cdn9.appsmail.ru/hosting/649836/RabbitGame.swf"}
+						"Game":{priority:-1,preload:true,url:"http://cdn9.appsmail.ru/hosting/665967/RabbitGame.swf"}
 						,
 						"Application":{priority:int.MIN_VALUE,
-							preload:true,url:"http://cdn0.appsmail.ru/hosting/649836/RabbitApplication.swf"}
-						,"Interface":{preload:true, url:"http://cdn6.appsmail.ru/hosting/649836/interface.swf"}
-						,"Assets":{preload:true, url:"http://cdn6.appsmail.ru/hosting/649836/rabbit_asset.swf"}
-						,"Rewards":{preload:true, url:"http://cdn9.appsmail.ru/hosting/649836/rabbit_reward.swf"}
-						,"Images":{preload:true, url:"http://cdn1.appsmail.ru/hosting/649836/rabbit_images.swf"}
-						,"MusicMenu":{url:"http://cdn2.appsmail.ru/hosting/649836/music_menu.swf"}
-						,"MusicGame":{url:"http://cdn5.appsmail.ru/hosting/649836/music_game.swf"}
-						,"Sound":{url:"http://cdn6.appsmail.ru/hosting/649836/rabbit_sound.swf"}
-						,"Lang":{priority:100, preload:true, url:"http://cdn4.appsmail.ru/hosting/649836/lang_ru.swf"}
-						,"XmlPack":{preload:true, url:"http://cdn8.appsmail.ru/hosting/649836/xml_pack.swf"}
+							preload:true,url:"http://cdn0.appsmail.ru/hosting/665967/RabbitApplication.swf"}
+						,"Interface":{preload:true, url:"http://cdn6.appsmail.ru/hosting/665967/interface.swf"}
+						,"Assets":{preload:true, url:"http://cdn6.appsmail.ru/hosting/665967/rabbit_asset.swf"}
+						,"Rewards":{preload:true, url:"http://cdn9.appsmail.ru/hosting/665967/rabbit_reward.swf"}
+						,"Images":{preload:true, url:"http://cdn1.appsmail.ru/hosting/665967/rabbit_images.swf"}
+						,"MusicMenu":{url:"http://cdn2.appsmail.ru/hosting/665967/music_menu.swf"}
+						,"MusicGame":{url:"http://cdn5.appsmail.ru/hosting/665967/music_game.swf"}
+						,"Sound":{url:"http://cdn6.appsmail.ru/hosting/665967/rabbit_sound.swf"}
+						,"Lang":{priority:100, preload:true, url:"http://cdn4.appsmail.ru/hosting/665967/lang_ru.swf"}
+						,"XmlPack":{preload:true, url:"http://cdn8.appsmail.ru/hosting/665967/xml_pack.swf"}
 
-						,"Font":{priority:100, preload:true, url:"http://cdn9.appsmail.ru/hosting/649836/fonts_ru.swf"}
+						,"Font":{priority:100, preload:true, url:"http://cdn9.appsmail.ru/hosting/665967/fonts_ru.swf"}
 					}
 
 			// only for mail.ru
 			var i:int = 0;
 			for (i = 0; i <= 31;i++)
-				filePaths['level_pass_posting_' + i] = 'http://cdn0.appsmail.ru/hosting/649836/level_' + i + '.jpg';
+				filePaths['level_pass_posting_' + i] = 'http://cdn0.appsmail.ru/hosting/665967/level_' + i + '.jpg';
 			for (i = 0; i <= 79;i++)
-				filePaths['reward_posting_' + i] = 'http://cdn7.appsmail.ru/hosting/649836/reward_' + i + '.jpg';
-			filePaths['friends_invite_posting'] = 'http://cdn7.appsmail.ru/hosting/649836/friends_invite_posting.jpg';
+				filePaths['reward_posting_' + i] = 'http://cdn7.appsmail.ru/hosting/665967/reward_' + i + '.jpg';
+			filePaths['friends_invite_posting'] = 'http://cdn7.appsmail.ru/hosting/665967/friends_invite_posting.jpg';
 		}
 
 		override public function get net():int { return 3; }
