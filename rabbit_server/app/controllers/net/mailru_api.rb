@@ -1,7 +1,7 @@
 class MailryApi < NetApi
 
 	def authorized?(uid, key, params = nil)
-		Digest::MD5.hexdigest(CONFIG["mailru"]["app_id"] + '_' + uid.to_s + '_' + CONFIG["mailru"]["secure_key"]) == key.to_s
+		Digest::MD5.hexdigest(CONFIG["mailru"]["app_id"].to_s + '_' + uid.to_s + '_' + CONFIG["mailru"]["secure_key"]) == key.to_s
 	end
 
 	def self.id
