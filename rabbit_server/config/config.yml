@@ -4,3 +4,11 @@ config:
   database: rabbit
   username: pav
   password: qwerty
+  
+vkontakte:
+  app_id: 2732721
+  secure_key: kJ0AVDo3he9GhGlhkmha
+
+mailru:
+  app_id: 649836
+  secure_key: c0cbe717f8138e1c32d9aea6d6ec2891

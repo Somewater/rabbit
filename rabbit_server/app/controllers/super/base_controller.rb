@@ -8,10 +8,6 @@ class BaseController
 	#	класса
 	#
 	###########
-	@@api_by_id = {}
-	@@api_by_name = {}
-	def self.api_by_name; @@api_by_name end
-	def self.api_by_id; @@api_by_id end
 
 	attr_accessor :api, :params, :response, :json
 
@@ -60,16 +56,9 @@ class BaseController
 		else
 			net = params['net'] ? params['net'].to_s.to_sym : nil
 			raise AuthError, "Empty net identificator #{params}" unless net
-			if self.class.api_by_id[params['net'].to_i]
-				@api = self.class.api_by_id[params['net'].to_i].new(params)
-			elsif self.class.api_by_name[net]
-				@api = self.class.api_by_name[net].new(params)
-			elsif params['net'] =~ /local\:\w+/
-				@api = EmbedApi.new(params)
-			else
-				raise AuthError, 'Undefined net identificator'
-			end
-			true
+			@api = NetApi.by_net(params['net'])
+			raise AuthError, 'Undefined net identificator' unless @api
+			@api.authorized?(params['uid'].to_s, params['key'].to_s)
 		end
 	end
 

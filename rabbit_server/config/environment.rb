@@ -4,6 +4,8 @@ require "rack/timeout"
 require "yaml"
 require 'rexml/document'
 require 'digest/md5'
+require 'logger'
+require 'active_record'
 
 
 # const ROOT must be initialize abowe!
@@ -28,8 +30,6 @@ WIN_OS = RUBY_PLATFORM['mswin'] || RUBY_PLATFORM['mingw'] || RUBY_PLATFORM['cygw
 #			E N V I R O N M E N T
 #
 ##################################
-require 'logger'
-require 'active_record'
 #require "active_record/connection_adapters/postgresql_adapter"
 ActiveRecord::Base.configurations = DB_CONF
 ActiveRecord::Base.establish_connection(

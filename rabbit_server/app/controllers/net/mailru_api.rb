@@ -1,13 +1,18 @@
-class MailryApi < NetApiBase
+class MailryApi < NetApi
 
-	def initialize(params)
-		raise AuthError, "Wrong auth_key" if Digest::MD5.hexdigest('649836' + '_' + params['uid'] + '_' + 'c0cbe717f8138e1c32d9aea6d6ec2891') != params['key']
-		super(params)
+	def authorized?(uid, key, params = nil)
+		Digest::MD5.hexdigest(CONFIG["mailru"]["app_id"] + '_' + uid.to_s + '_' + CONFIG["mailru"]["secure_key"]) == key.to_s
 	end
 
 	def self.id
 		3
 	end
+	
+	def notify(target, text, params = nil)
+		false	
+	end
 
-	BaseController.api_by_name[:mailru] = BaseController.api_by_id[id.to_i] = self
+	def pay(user, value, params = nil)
+		raise UnimplementedError, "Override me"	
+	end
 end
