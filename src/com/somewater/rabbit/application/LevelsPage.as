@@ -119,7 +119,7 @@ package com.somewater.rabbit.application
 			Hint.bind(leftButton, Lang.t("BACK_TO_MAIN_MENU"));
 			addChild(leftButton);
 
-			if(Config.loader.net == 1 && UserProfile.instance.levelNumber > 2)
+			if(Config.loader.net == 2 && UserProfile.instance.levelNumber > 2)
 			{
 				// только для контакта и только для юзеров выше 1-го левела
 				if(Config.loader.get('levelDecrementFix') == null)
@@ -133,7 +133,7 @@ package com.somewater.rabbit.application
 						return true;
 					}).width = 600;
 				}
-			}else if(Config.loader.net == 1)
+			}else if(Config.loader.net == 2)
 				Config.loader.set('levelDecrementFix', true);
 		}
 

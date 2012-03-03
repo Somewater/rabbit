@@ -210,10 +210,10 @@ package {
 		{
 			basePath = 'http://rabbit.asflash.ru/';
 			swfs = {
-						"Game":{priority:-1,preload:true,url:"http://cs5231.userapi.com/u245894/cc29521bfbc09e.zip"}
+						"Game":{priority:-1,preload:true,url:"http://cs5787.vk.com/u245894/fa2d6655950fe8.zip"}
 						,
 						"Application":{priority:int.MIN_VALUE,
-							preload:true,url:"http://cs5231.userapi.com/u245894/666b5436f593d8.zip"}
+							preload:true,url:"http://cs5787.vk.com/u245894/e87a9244493787.zip"}
 						,"Interface":{preload:true, url:"http://cs5231.userapi.com/u245894/4c10012fb38415.zip"}
 						,"Assets":{preload:true, url:"http://cs5231.userapi.com/u245894/7a50bb5b0cb242.zip"}
 						,"Rewards":{preload:true, url:"http://cs5231.userapi.com/u245894/ee90c767c0227a.zip"}
@@ -221,8 +221,8 @@ package {
 						,"MusicMenu":{url:"http://cs5231.userapi.com/u245894/9f85f9d027e598.zip"}
 						,"MusicGame":{url:"http://cs5231.userapi.com/u245894/16c9f64377d623.zip"}
 						,"Sound":{url:"http://cs5231.userapi.com/u245894/af59e6c026863d.zip"}
-						,"Lang":{priority:100, preload:true, url:"http://cs5231.userapi.com/u245894/8d356f475f59ca.zip"}
-						,"XmlPack":{preload:true, url:"http://cs5231.userapi.com/u245894/84441ca73195e5.zip"}
+						,"Lang":{priority:100, preload:true, url:"http://cs5787.vk.com/u245894/7d0b808a1f79c8.zip"}
+						,"XmlPack":{preload:true, url:"http://cs5787.vk.com/u245894/5d0e9a75de74ac.zip"}
 
 						,"Font":{priority:100, preload:true, url:"http://cs5231.userapi.com/u245894/fe712dd002e7c1.zip"}
 					}
