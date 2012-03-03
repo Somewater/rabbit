@@ -98,7 +98,7 @@ package com.somewater.rabbit.application
 				sumStars += levelInst.stars;
 				maxStars += 3;
 			}
-			globalScoreCounterTF.text = intToFormatStr(sumScore) + " / " + intToFormatStr(maxScores);
+			globalScoreCounterTF.text = UserProfile.instance.stars.toString();//intToFormatStr(sumScore) + " / " + intToFormatStr(maxScores);
 			
 			Hint.bind(globalScoreCarrot, Lang.t("GLOBAL_SCORE_COUNTER_HINT"));
 			Hint.bind(globalScoreCounterTF, Lang.t("GLOBAL_SCORE_COUNTER_HINT"));
@@ -118,6 +118,23 @@ package com.somewater.rabbit.application
 			leftButton.addEventListener(MouseEvent.CLICK, onLeftButtonClick);
 			Hint.bind(leftButton, Lang.t("BACK_TO_MAIN_MENU"));
 			addChild(leftButton);
+
+			if(Config.loader.net == 1 && UserProfile.instance.levelNumber > 2)
+			{
+				// только для контакта и только для юзеров выше 1-го левела
+				if(Config.loader.get('levelDecrementFix') == null)
+				{
+					var fixtext:String =
+							'Внимание! В игре изменились правила подсчета морковок, собранных в течение уровня. ' +
+							'Ваши ранее собранные морковки были пересчитаны в соответстви с новыми правилами.\n\n' +
+							'Начисляется 1-3 морковки за любой уровень - это позволит правильнее составить\nТОП лучших игроков!'
+					PopUpManager.message(fixtext,'title',function(lbl:*):Boolean{
+						Config.loader.set('levelDecrementFix', true);
+						return true;
+					}).width = 600;
+				}
+			}else if(Config.loader.net == 1)
+				Config.loader.set('levelDecrementFix', true);
 		}
 
 		private function onStoryChanged(e:Event = null):void {

@@ -24,19 +24,30 @@ package com.somewater.storage {
 
 		public function get (key:String):Object {
 			recreateSharedObject();
-			return so.data[key];
+			return so ? so.data[key] : null;
 		}
 
 		public function set (key:String, data:Object):void {
 			recreateSharedObject();
-			so.data[key] = data;
-			so.flush();
+			if(so)
+			{
+				so.data[key] = data;
+				so.flush();
+			}
 		}
 
 		private function recreateSharedObject():void
 		{
 			if(so == null)
-				so = SharedObject.getLocal('db', '/');
+			{
+				try
+				{
+					so = SharedObject.getLocal('db', '/');
+				}catch(err:Error)
+				{
+					trace("[LOCAL DB] Shared object creation error");
+				}
+			}
 		}
 	}
 }

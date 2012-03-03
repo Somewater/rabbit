@@ -132,11 +132,33 @@ class AllSpec
 			end
 			
 			it "Учитывается предыдущий уровень, результат перезаписывается лучшим" do
-				@user.level_instances = {@level.number.to_s => {'c' => @conditions['carrotMin'], 't' => @conditions['time'], 'v' => 0}}
+				@user.level_instances = {@level.number.to_s => {'c' => @conditions['carrotMin'], 't' => @conditions['time'], 'v' => 0, 's' => 1}}
 				@levelInstance.data = {'timeSpended' => @conditions['time'] - 5, 'carrotHarvested' => @conditions['carrotMin'] + 5}
 				server_logic_process()
 				@user.level_instances[@level.number.to_s]['c'].should == @levelInstance.carrotHarvested
 				@user.level_instances[@level.number.to_s]['t'].should == @levelInstance.timeSpended
+				@user.level_instances[@level.number.to_s]['s'].should > 1
+			end
+
+			it "Начисляются звезды за новый уровень, инкрементируются за лучшее прохождение" do
+				@levelInstance.data = {'timeSpended' => @conditions['time'] - 5, 'carrotHarvested' => @conditions['carrotMin']}
+				server_logic_process()
+				@user.level_instances[@level.number.to_s]['s'].should == 1
+
+				@levelInstance.data = {'carrotHarvested' => @conditions['carrotMiddle']}
+				server_logic_process()
+				@user.level_instances[@level.number.to_s]['s'].should == 2
+
+				@levelInstance.data = {'carrotHarvested' => @conditions['carrotMax']}
+				server_logic_process()
+				@user.level_instances[@level.number.to_s]['s'].should == 3
+			end
+
+			it "Звезды не инкрементируются, если уровень пройден не лучше прошлого раза" do
+				@user.level_instances = {@level.number.to_s => {'c' => @conditions['carrotMin'], 't' => @conditions['time'], 'v' => 0, 's' => 2}}
+				@levelInstance.data = {'timeSpended' => @conditions['time'] - 5, 'carrotHarvested' => @conditions['carrotMiddle']}
+				server_logic_process()
+				@user.level_instances[@level.number.to_s]['s'].should == 2
 			end
 			
 			it "Выдается ревард за скорость" do
@@ -382,6 +404,7 @@ class AllSpec
 				response['user']['uid'].should_not be_nil
 				#response['user']['net'].should_not be_nil
 				response['user']['score'].should_not be_nil
+				response['user']['stars'].should_not be_nil
 				response['user']['money'].should_not be_nil
 				response['user']['level'].should_not be_nil
 				response['user']['roll'].should_not be_nil

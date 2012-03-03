@@ -137,6 +137,7 @@ class User < ActiveRecord::Base
 		hash['level'] = self.level
 		hash['score'] = self.score
 		hash['uid'] = self.uid
+		hash['stars'] = self.stars
 		hash
 	end
 

@@ -69,8 +69,8 @@ package com.somewater.rabbit.application {
 			handler.call('levels/complete', {'levelInstance':levelInstanceToJson(levelInstance, {})},
 				function(response:Object):void{
 					// проверяем user и levelInstance на синхронность с текущими
-					if(response['levelInstance']['succes'] == false ||
-						arrayElementsIdentical(response['levelInstance']['rewards'] || [], levelInstance.rewards) == false)
+					if(response['levelInstance']['succes'] == false /*||
+						arrayElementsIdentical(response['levelInstance']['rewards'] || [], levelInstance.rewards) == false*/)
 					{
 						// произошла рассинхронизация сервера и клиента
 						Config.application.fatalError('ERROR_SERVER_LOGIC_DESYNCRONIZE_LEVEL')

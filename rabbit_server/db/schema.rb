@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 15) do
+ActiveRecord::Schema.define(:version => 16) do
 
   create_table "admins", :force => true do |t|
     t.string   "login",                           :null => false
@@ -96,6 +96,7 @@ ActiveRecord::Schema.define(:version => 15) do
     t.text     "offer_instances"
     t.integer  "offers",                                         :default => 0
     t.text     "customize"
+    t.integer  "stars",                                          :default => 0
   end
 
   add_index "users", ["uid", "net"], :name => "index_users_on_uid_and_net", :unique => true

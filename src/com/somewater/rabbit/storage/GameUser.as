@@ -7,6 +7,7 @@ package com.somewater.rabbit.storage
 		protected var _socialUser:SocialUser;
 		
 		protected var _score:int;
+		protected var _stars:int;
 		protected var _levelInstances:Array = [];
 		protected var _rewards:Array = [];
 		protected var _offerInstances:Array = [];
@@ -70,6 +71,15 @@ package com.somewater.rabbit.storage
 			_score = value;
 		}
 		public function get score():int {return _score;}
+
+		public function set stars(value:int):void
+		{
+			_stars = value;
+		}
+		public function get stars():int
+		{
+			return _stars;
+		}
 
 		/**
 		 * Максимальный numner, который прошел юзер (фактически Левел юзера)

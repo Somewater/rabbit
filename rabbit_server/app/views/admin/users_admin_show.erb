@@ -35,6 +35,10 @@
 			<td><textarea name="user[rewards]" rows="3" cols="100"><%= CGI::escapeHTML(@user.rewards ? @user.rewards.to_json : '') %></textarea></td>
 		</tr>
 		<tr width='100%'>
+			<th>stars</th>
+			<td><input type="text" name="user[stars]" maxlength="10" value="<%= @user.stars %>" size="50"></input></td>
+		</tr>
+		<tr width='100%'>
 			<th>score</th>
 			<td><input type="text" name="user[score]" maxlength="10" value="<%= @user.score %>" size="50"></input></td>
 		</tr>

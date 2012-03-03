@@ -116,6 +116,10 @@ package com.somewater.rabbit.application {
 
 			// CALCULATE STARS
 			levelInstance.stars = levelInstance.carrotHarvested >= levelCarrotMax ? 3 : (levelInstance.carrotHarvested >= levelCarrotMiddle ? 2 : 1)
+			var starsIncrement:int = (lastLevelInstance == null ? levelInstance.stars :
+											Math.max(0, levelInstance.stars - lastLevelInstance.stars))
+			if(starsIncrement > 0)
+				user.stars += starsIncrement;
 
 			user.addLevelInstance(levelInstance);
 

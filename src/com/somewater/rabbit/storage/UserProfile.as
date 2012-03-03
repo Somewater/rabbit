@@ -2,7 +2,7 @@ package com.somewater.rabbit.storage
 {
 	import com.somewater.rabbit.application.tutorial.TutorialManager;
 	import com.somewater.social.SocialUser;
-	
+
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
@@ -239,6 +239,24 @@ package com.somewater.rabbit.storage
 			for each(var of:OfferDef in _offerInstances)
 				i++;
 			return i;
+		}
+
+		override public function get stars():int {
+			var value:int = 0;
+
+			for each(var li:LevelInstanceDef in _levelInstances)
+				value += li.stars;
+
+			return Math.max(value, _stars);
+		}
+
+		override public function set stars(value:int):void
+		{
+			if(_stars != value)
+			{
+				_stars = value;
+				dispatchChange();
+			}
 		}
 	}
 }

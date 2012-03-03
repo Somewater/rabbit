@@ -68,12 +68,14 @@ module Gamedesign
 		User.find(:all, :conditions => "level > #{test_level}").each do |user|
 			level_instances = user.level_instances
 			carrots = 0
+			stars = 0
 			level = 0
 			level_instances.delete_if do |k,v|
 				if k.to_i >= test_level
 					true
 				else
 					carrots += v['c']
+					stars += v['s']
 					level = k.to_i if k.to_i > level
 					false
 				end
@@ -88,6 +90,7 @@ module Gamedesign
 
 			user.level = level
 			user.score = carrots
+			user.stars = stars
 			user.save
 			users_affected += 1
 		end

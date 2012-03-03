@@ -163,7 +163,7 @@ package com.somewater.rabbit.application
 				nameText.text = user.socialUser.name;
 				nameText.y = 15 + (45 - nameText.height) * 0.5
 				starText.text = user.levelNumber.toString();
-				scoreText.text = user.score.toString();
+				scoreText.text = user.stars.toString();
 				setMode(1);
 				hint = Lang.t('FRIEND_BUTTON_HINT');
 			}

@@ -48,4 +48,19 @@ namespace :fixes do
 			end
 		end
 	end
+
+	desc "Recalculate stars field"
+	task :recalculate_stars_field => :environment do
+		users_with_bad_data = []
+		iterate_users do |u|
+			stars = 0
+			u.level_instances.each do |k,v|
+				users_with_bad_data << "NET #{u.net}/UID #{u.uid} lvl=#{k}" unless v['s']
+				stars += v['s'].to_i
+			end
+			u.stars = stars
+			u.save
+		end
+		puts users_with_bad_data.join("\n") if users_with_bad_data.size > 0
+	end
 end
