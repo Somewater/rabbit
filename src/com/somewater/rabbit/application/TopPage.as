@@ -210,12 +210,12 @@ package com.somewater.rabbit.application {
 			}
 		}
 
-		private function onUsersSocialInfoReceived(users:Array):void {
+		private function onUsersSocialInfoReceived(users:*):void {
 			for each(var user:SocialUser in users)
 			{
 				// ищем строку таблицы, готовую принять инфу по юзеру
 				for each(var btn:Row in rows)
-					if(btn.uid == user.id)
+					if(btn.user.uid == user.id)
 					{
 						btn.setData(user);
 						break;
@@ -282,9 +282,7 @@ class Row extends Sprite implements IClear
 {
 	public static const HEIGHT:int = 63;
 
-	public var uid:String;
-
-	private var user:TopUser;
+	public var user:TopUser;
 
 	private var photoSprite:Sprite;
 	private var photo:Photo;
@@ -347,6 +345,7 @@ class Row extends Sprite implements IClear
 		}
 		nameTF.multiline = true;
 		nameTF.autoSize = TextFieldAutoSize.LEFT
+		nameTF.width = this.width * DIVISION - nameTF.x;
 		nameTF.x = 150;
 		nameTF.y = 14;
 		nameTF.text = '---\n---'
@@ -405,6 +404,7 @@ class Row extends Sprite implements IClear
 		removeEventListener(MouseEvent.ROLL_OVER, onOver);
 		removeEventListener(MouseEvent.ROLL_OUT, onOut);
 		nameTF.removeEventListener(LinkLabel.LINK_CLICK, onLinkClick);
+		photo.clear();
 	}
 
 
@@ -419,5 +419,6 @@ class Row extends Sprite implements IClear
 
 	public function setData(user:SocialUser):void {
 		nameTF.text = user.firstName + '\n' + user.lastName;
+		photo.source = user.photoSmall;
 	}
 }

@@ -197,7 +197,7 @@ package {
 
 		private function navigateToGame(...args):void
 		{
-			navigateToURL(new URLRequest("http://" + flashVars['domain'] + '/app' + flashVars['api_id'] + '_' + flashVars['poster_id'] +
+			navigateToURL(new URLRequest("http://" + 'vk.com' + '/app' + flashVars['api_id'] + '_' + flashVars['poster_id'] +
 					'?from_id=' + flashVars['user_id'] + '&loc=' + flashVars['post_id']), '_blank')
 		}
 
@@ -213,15 +213,15 @@ package {
 						"Game":{priority:-1,preload:true,url:"http://cs5787.vk.com/u245894/fa2d6655950fe8.zip"}
 						,
 						"Application":{priority:int.MIN_VALUE,
-							preload:true,url:"http://cs5787.vk.com/u245894/e87a9244493787.zip"}
-						,"Interface":{preload:true, url:"http://cs5231.userapi.com/u245894/4c10012fb38415.zip"}
+							preload:true,url:"http://cs5787.vk.com/u245894/a95934a6c1afc7.zip"}
+						,"Interface":{preload:true, url:"http://cs5787.vk.com/u245894/2d77132014f645.zip"}
 						,"Assets":{preload:true, url:"http://cs5231.userapi.com/u245894/7a50bb5b0cb242.zip"}
 						,"Rewards":{preload:true, url:"http://cs5231.userapi.com/u245894/ee90c767c0227a.zip"}
 						,"Images":{preload:true, url:"http://cs5231.userapi.com/u245894/88977e34b7443b.zip"}
 						,"MusicMenu":{url:"http://cs5231.userapi.com/u245894/9f85f9d027e598.zip"}
 						,"MusicGame":{url:"http://cs5231.userapi.com/u245894/16c9f64377d623.zip"}
 						,"Sound":{url:"http://cs5231.userapi.com/u245894/af59e6c026863d.zip"}
-						,"Lang":{priority:100, preload:true, url:"http://cs5787.vk.com/u245894/7d0b808a1f79c8.zip"}
+						,"Lang":{priority:100, preload:true, url:"http://cs5787.vk.com/u245894/dc4adcd11cebf5.zip"}
 						,"XmlPack":{preload:true, url:"http://cs5787.vk.com/u245894/5d0e9a75de74ac.zip"}
 
 						,"Font":{priority:100, preload:true, url:"http://cs5231.userapi.com/u245894/fe712dd002e7c1.zip"}
@@ -249,7 +249,7 @@ package {
 		}
 
 		override public function navigateToHomePage(userId:String):void {
-			navigateToURL(new URLRequest("http://" + flashVars['domain'] + '/id' + userId), '_blank');
+			navigateToURL(new URLRequest("http://" + 'vk.com' + '/id' + userId), '_blank');
 		}
 	}
 }

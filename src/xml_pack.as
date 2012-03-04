@@ -1,7 +1,7 @@
 package
 {
 	import com.somewater.rabbit.storage.Config;
-	
+
 	import flash.display.Sprite;
 
 	public class xml_pack extends Sprite
