@@ -1,18 +1,23 @@
 package com.somewater.rabbit.application {
 	import com.somewater.controller.PopUpManager;
 	import com.somewater.display.CorrectSizeDefinerSprite;
+	import com.somewater.rabbit.SoundTrack;
+	import com.somewater.rabbit.Sounds;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.rabbit.storage.TopUser;
 	import com.somewater.social.SocialUser;
 	import com.somewater.storage.Lang;
 	import com.somewater.text.EmbededTextField;
+	import com.somewater.text.Hint;
 	import com.somewater.text.LinkLabel;
 
 	import flash.display.DisplayObject;
 
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
+	import flash.text.TextFieldAutoSize;
 
 	public class TopPage extends PageBase{
 
@@ -23,6 +28,7 @@ package com.somewater.rabbit.application {
 		private var tableHolder:CorrectSizeDefinerSprite;
 		private var scroller:RScroller;
 		private var rows:Array = [];
+		private var leftButton:DisplayObject;
 
 		public function TopPage() {
 
@@ -41,8 +47,8 @@ package com.somewater.rabbit.application {
 			selectorButtonsHolder.y = title.y + 50;
 			addChild(selectorButtonsHolder);
 
-			var topTypes:Array = [TopManager.TYPE_STARS];
-			topTypes = topTypes.concat(topTypes,topTypes,topTypes,topTypes,topTypes,topTypes);
+			var topTypes:Array = [TopManager.TYPE_STARS, TopManager.TYPE_LEVEL];
+			var selectorButtonsByCenter:Boolean = topTypes.length < 4;
 
 			var selectorBtnStr:String;
 			var selectorBtn:TopSelectorBtn;
@@ -50,18 +56,25 @@ package com.somewater.rabbit.application {
 			for each(selectorBtnStr in topTypes)
 			{
 				selectorBtn = new TopSelectorBtn();
+				if(selectorButtonsByCenter)
+				{
+					selectorBtn.align = 'center';
+					selectorBtn.autoSize = TextFieldAutoSize.NONE;
+				}
 				selectorBtn.topType = selectorBtnStr;
 				selectorBtn.text = Lang.t('TOP_TYPE_' + selectorBtnStr.toLocaleUpperCase());
 				selectorBtn.addEventListener(LinkLabel.LINK_CLICK, onSelectorBtnClicked);
 				selectorButtons.push(selectorBtn);
 
 				selectorButtonsHolder.addChild(selectorBtn);
+				selectorBtn.width = TABLE_WIDTH / topTypes.length;
 				selectorButtonWidthSum += selectorBtn.width;
 			}
 
 			// а теперь позиционируем кнопки
 			var selectorButtonSpace:Number = (TABLE_WIDTH - selectorButtonWidthSum) / ((topTypes.length - 1) * 2);
 			var nextX:Number = 0;
+			var i:int = 0;
 			for each(selectorBtn in selectorButtons)
 			{
 				selectorBtn.x = nextX;
@@ -69,7 +82,7 @@ package com.somewater.rabbit.application {
 
 				nextX += selectorButtonSpace;
 
-				if(nextX > TABLE_WIDTH)
+				if(++i >= selectorButtons.length)
 					break;
 
 				var line:DisplayObject = getLine();
@@ -82,9 +95,8 @@ package com.somewater.rabbit.application {
 
 			scroller = new RScroller();
 			scroller.x = selectorButtonsHolder.x;
-			scroller.y = selectorButtonsHolder.y + selectorButtonsHolder.height + 10;
-			scroller.setSize(TABLE_WIDTH + scroller.scrollWidth, Config.HEIGHT - scroller.y - 30);
-			scroller.scrollSpeed = Row.HEIGHT * 6;
+			scroller.y = selectorButtonsHolder.y + 20/*text height*/ + 10;
+			scroller.setSize(TABLE_WIDTH + scroller.scrollWidth + 1, int((Config.HEIGHT - scroller.y - 30)/ Row.HEIGHT) * Row.HEIGHT);
 			addChild(scroller)
 
 			tableHolder = new CorrectSizeDefinerSprite(0, 1);
@@ -96,6 +108,13 @@ package com.somewater.rabbit.application {
 				PopUpManager.showSlash();
 				AppServerHandler.instance.topIndex(onTopIndexInfoLoadedComplete, onTopIndexInfoLoadedError);
 			}
+
+			leftButton = Lib.createMC("interface.LeftButton");
+			leftButton.x = 20;
+			leftButton.y = Config.HEIGHT - leftButton.height - 20;
+			leftButton.addEventListener(MouseEvent.CLICK, onLeftButtonClick);
+			Hint.bind(leftButton, Lang.t("BACK_TO_MAIN_MENU"));
+			addChild(leftButton);
 		}
 
 		private function onTopIndexInfoLoadedComplete(data:Object):void {
@@ -125,6 +144,12 @@ package com.somewater.rabbit.application {
 			clearRows();
 
 			scroller.clear();
+			leftButton.removeEventListener(MouseEvent.CLICK, onLeftButtonClick);
+		}
+
+		private function onLeftButtonClick(event:MouseEvent):void {
+			Config.application.play(Sounds.ALPHA_BUTTON_CLICK, SoundTrack.INTERFACE, true);
+			Config.application.startPage("main_menu");
 		}
 
 		private function clearRows():void
@@ -175,6 +200,8 @@ package com.somewater.rabbit.application {
 			}
 
 			scroller.content = tableHolder;
+			scroller.position = 0;
+			scroller.scrollSpeed = Row.HEIGHT / tableHolder.height;
 
 			// запрос к апи соц. сети
 			if(Config.loader.hasUsersApi)

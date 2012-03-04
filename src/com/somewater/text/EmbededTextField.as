@@ -69,8 +69,7 @@ package com.somewater.text
 			this.selectable = mouseEnabled = selectable;
 			this.multiline = multiline;
 			embedFonts = true;
-			this.align = autoSize = align;
-			if(align == "center") autoSize = TextFieldAutoSize.NONE
+			this.align = align;
 			antiAliasType = (format.font.indexOf("pt_st") == -1)?AntiAliasType.ADVANCED:AntiAliasType.NORMAL;
 			type = input?TextFieldType.INPUT: TextFieldType.DYNAMIC;
 			text = " ";
@@ -173,6 +172,7 @@ package com.somewater.text
 		}
 		
 		public function set align(value:String):void{
+			autoSize = value == "center" ? TextFieldAutoSize.NONE : value;
 			setAbstractFormatField("align",value);
 		}
 		

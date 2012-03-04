@@ -16,6 +16,8 @@ package com.somewater.rabbit.application
 		public static const WIDTH:int = 510;
 		public static const HEIGHT:int = 120;
 		public static const ITEMS:int = 4;
+
+		private static var lastCommonPosition:int = 0;
 		
 		private var ground:DisplayObject;
 		private var leftArrow:SimpleButton;
@@ -72,7 +74,7 @@ package com.somewater.rabbit.application
 				addChild(friendIcon);
 				friendIcons.push(friendIcon);
 			}
-			position = 0;
+			position = lastCommonPosition;
 		}
 		
 		public function clear():void
@@ -92,7 +94,7 @@ package com.somewater.rabbit.application
 			value = Math.max(0, Math.min(friends.length - ITEMS, value));
 			if(value != _position)
 			{
-				_position = value;
+				lastCommonPosition = _position = value;
 				for(var i:int = 0;i<ITEMS;i++)
 				{
 					var friendIcon:FriendIcon = friendIcons[i];

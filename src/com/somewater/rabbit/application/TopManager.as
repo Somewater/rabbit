@@ -4,6 +4,7 @@ package com.somewater.rabbit.application {
 	public class TopManager {
 
 		public static const TYPE_STARS:String = 'stars';
+		public static const TYPE_LEVEL:String = 'level';
 
 		private static var _instance:TopManager;
 

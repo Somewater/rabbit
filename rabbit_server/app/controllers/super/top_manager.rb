@@ -1,6 +1,6 @@
 class TopManager
 
-	TOP_NAMES = [:stars]
+	TOP_NAMES = [:stars, :level]
 
 	@@instance = nil
 
@@ -81,9 +81,9 @@ module TopsChecker
 
 		case top_name.to_sym
 			when :stars
-				value = user.level_instances.inject(0.0){|sum, lvl|
-					sum + lvl.last['s'].to_f
-				}
+				value = user.stars.to_f + 0.01 * user.level
+			when :level
+				value = user.level.to_f + 0.01 * user.stars
 			else
 				raise FormatError, "Undefined top name: #{top_name}"
 		end
