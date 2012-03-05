@@ -5,6 +5,7 @@ package com.somewater.rabbit.application
 	import com.somewater.rabbit.application.commands.StartNextLevelCommand;
 	import com.somewater.rabbit.application.tutorial.TutorialManager;
 	import com.somewater.rabbit.storage.Config;
+	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.rabbit.storage.RewardLevelDef;
@@ -33,7 +34,7 @@ package com.somewater.rabbit.application
 						"ABOUT_GAME"
 					  ];
 
-			if(UserProfile.instance.levelNumber > 1 && !TutorialManager.instance.active)// т.е. человек прошел туториал
+			if(!Config.memory['hideTop'] && UserProfile.instance.levelNumber > 1 && !TutorialManager.instance.active)// т.е. человек прошел туториал
 			{
 				buttons.splice(buttons.indexOf('ABOUT_GAME'), 0, "USERS_TOP");// ставим пеерд "Об игре"
 			}

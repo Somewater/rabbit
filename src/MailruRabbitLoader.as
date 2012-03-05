@@ -6,6 +6,7 @@ package {
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.social.SocialUser;
+	import com.somewater.text.EmbededTextField;
 
 	import flash.display.DisplayObject;
 	import flash.display.LoaderInfo;
@@ -14,13 +15,15 @@ package {
 	import flash.events.MouseEvent;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
+	import flash.text.TextField;
 
-	[SWF(width="720", height="650", backgroundColor="#FFFFFF", frameRate="30")]
+	[SWF(width="720", height="680", backgroundColor="#FFFFFF", frameRate="30")]
 	public class MailruRabbitLoader extends SocialRabbitLoader{
 
 		public function MailruRabbitLoader() {
 			Config.WIDTH = 720;
 			Config.HEIGHT = 650;
+			Config.memory['hideTop'] = true;
 		}
 
 		override protected function createLayers():void {
@@ -44,19 +47,19 @@ package {
 		{
 			basePath = 'http://rabbit.asflash.ru/';
 			swfs = {
-						"Game":{priority:-1,preload:true,url:"http://cdn9.appsmail.ru/hosting/666052/RabbitGame.swf"}
+						"Game":{priority:-1,preload:true,url:"http://cdn9.appsmail.ru/hosting/666052/RabbitGame.swf?cb=1"}
 						,
 						"Application":{priority:int.MIN_VALUE,
-							preload:true,url:"http://cdn0.appsmail.ru/hosting/666052/RabbitApplication.swf"}
-						,"Interface":{preload:true, url:"http://cdn6.appsmail.ru/hosting/666052/interface.swf"}
-						,"Assets":{preload:true, url:"http://cdn6.appsmail.ru/hosting/666052/rabbit_asset.swf"}
-						,"Rewards":{preload:true, url:"http://cdn9.appsmail.ru/hosting/666052/rabbit_reward.swf"}
-						,"Images":{preload:true, url:"http://cdn1.appsmail.ru/hosting/666052/rabbit_images.swf"}
+							preload:true,url:"http://cdn0.appsmail.ru/hosting/666052/RabbitApplication.swf?cb=1"}
+						,"Interface":{preload:true, url:"http://cdn6.appsmail.ru/hosting/666052/interface.swf?cb=1"}
+						,"Assets":{preload:true, url:"http://cdn6.appsmail.ru/hosting/666052/rabbit_asset.swf?cb=1"}
+						,"Rewards":{preload:true, url:"http://cdn9.appsmail.ru/hosting/666052/rabbit_reward.swf?cb=1"}
+						,"Images":{preload:true, url:"http://cdn1.appsmail.ru/hosting/666052/rabbit_images.swf?cb=1"}
 						,"MusicMenu":{url:"http://cdn2.appsmail.ru/hosting/666052/music_menu.swf"}
 						,"MusicGame":{url:"http://cdn5.appsmail.ru/hosting/666052/music_game.swf"}
 						,"Sound":{url:"http://cdn6.appsmail.ru/hosting/666052/rabbit_sound.swf"}
-						,"Lang":{priority:100, preload:true, url:"http://cdn4.appsmail.ru/hosting/666052/lang_ru.swf"}
-						,"XmlPack":{preload:true, url:"http://cdn8.appsmail.ru/hosting/666052/xml_pack.swf"}
+						,"Lang":{priority:100, preload:true, url:"http://cdn4.appsmail.ru/hosting/666052/lang_ru.swf?cb=1"}
+						,"XmlPack":{preload:true, url:"http://cdn8.appsmail.ru/hosting/666052/xml_pack.swf?cb=1"}
 
 						,"Font":{priority:100, preload:true, url:"http://cdn9.appsmail.ru/hosting/666052/fonts_ru.swf"}
 					}
@@ -92,6 +95,26 @@ package {
 					data += (data.length ? ';' : '') + key + ':' + dataObj[key]
 			}
 			arrow.posting(user, title, message, image, imageUrl, data, onComplete, onError, additionParams);
+		}
+
+
+		override public function clear():void {
+			super.clear();
+
+			adLayer.graphics.beginFill(0xFFFFFF);
+			adLayer.graphics.drawRect(0,650,720, 30);
+			var grouplink:EmbededTextField = new EmbededTextField(Config.FONT_SECONDARY, 0x31B1E8, 12, true);
+			grouplink.mouseEnabled = true;
+			grouplink.underline = true;
+			grouplink.htmlText = '<a href="event:">Официальная группа игры "Кроль"</a>';
+			grouplink.addEventListener(MouseEvent.CLICK, onGrouplInkClicked);
+			grouplink.x = (Config.WIDTH - grouplink.width) * 0.5;
+			grouplink.y = 660;
+			adLayer.addChild(grouplink);
+		}
+
+		private function onGrouplInkClicked(event:MouseEvent):void {
+			navigateToURL(new URLRequest('http://my.mail.ru/community/krolgame/'), '_blank');
 		}
 	}
 }

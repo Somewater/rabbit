@@ -28,6 +28,7 @@ package com.somewater.rabbit.storage
 
 		/**
 		 * Для нетипизированных данных
+		 * hideTop
 		 */
 		public static var memory:Object = {};
 		
