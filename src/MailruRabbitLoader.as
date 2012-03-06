@@ -24,6 +24,7 @@ package {
 			Config.WIDTH = 720;
 			Config.HEIGHT = 650;
 			Config.memory['hideTop'] = true;
+			Config.memory['autoPostLevelPass'] = true;
 		}
 
 		override protected function createLayers():void {
@@ -50,7 +51,7 @@ package {
 						"Game":{priority:-1,preload:true,url:"http://cdn9.appsmail.ru/hosting/666052/RabbitGame.swf?cb=1"}
 						,
 						"Application":{priority:int.MIN_VALUE,
-							preload:true,url:"http://cdn0.appsmail.ru/hosting/666052/RabbitApplication.swf?cb=1"}
+							preload:true,url:"http://cdn0.appsmail.ru/hosting/666052/RabbitApplication.swf?cb=2"}
 						,"Interface":{preload:true, url:"http://cdn6.appsmail.ru/hosting/666052/interface.swf?cb=1"}
 						,"Assets":{preload:true, url:"http://cdn6.appsmail.ru/hosting/666052/rabbit_asset.swf?cb=1"}
 						,"Rewards":{preload:true, url:"http://cdn9.appsmail.ru/hosting/666052/rabbit_reward.swf?cb=1"}

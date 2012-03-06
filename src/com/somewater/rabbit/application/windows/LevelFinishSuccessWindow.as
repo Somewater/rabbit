@@ -71,15 +71,25 @@ package com.somewater.rabbit.application.windows {
 				var space:Number = (width -100 - okButton.width - postingButton.width) / 3;
 				okButton.x = 50 + space;
 				postingButton.x = 50 + space * 2 + okButton.width;
+
+				if(Config.memory['autoPostLevelPass'])
+				{
+					executePosting();
+				}
 			}
 		}
 
 		private function onPostingClicked(e:MouseEvent):void
 		{
+			executePosting();
+			close();
+		}
+
+		private function executePosting():void
+		{
 			new MessagePostClose(levelInstance, PostingLevelSuccessCommand, function(data:LevelInstanceDef):void{
 				new StartNextLevelCommand(data.levelDef).execute();
 			});
-			close();
 		}
 
 		override protected function onCloseBtnClick(e:MouseEvent):void {
