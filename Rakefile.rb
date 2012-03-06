@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 ROOT = File.dirname( File.expand_path( __FILE__ ) )
 WIN_OS = RUBY_PLATFORM['mswin'] || RUBY_PLATFORM['mingw'] || RUBY_PLATFORM['cygwin']
 $:.unshift("#{ROOT}/lib/tasks")
@@ -261,5 +263,11 @@ namespace :mailru do
 		}
 		File.delete("#{ROOT}/tmp/mailrupack.zip") rescue nil
 		puts %x[zip -j #{ROOT}/tmp/mailrupack.zip #{ROOT}/tmp/mailrupack/*]
+	end
+
+	desc "Test mailru notify"
+	task :notify, [:text] => :environment do |task, args|
+		uids = User.find(:all, :conditions => "net=3").map{|u| u.uid}
+		NetApi.by_net(3).notify(uids, args[:text])
 	end
 end

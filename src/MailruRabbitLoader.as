@@ -23,7 +23,6 @@ package {
 		public function MailruRabbitLoader() {
 			Config.WIDTH = 720;
 			Config.HEIGHT = 650;
-			Config.memory['hideTop'] = true;
 			Config.memory['autoPostLevelPass'] = true;
 		}
 

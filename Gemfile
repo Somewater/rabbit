@@ -8,6 +8,7 @@ gem 'activesupport', '3.0.9'
 gem 'rspec', :require => "spec"
 gem 'harleytt-ansitags', '>= 0.1.5'
 gem 'vkontakte'
+gem 'httparty'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'

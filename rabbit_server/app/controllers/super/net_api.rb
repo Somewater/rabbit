@@ -64,4 +64,21 @@ class NetApi
 		net = 1 if (net.to_s =~ /local\:\w+/)
 		@@by_net[net.to_i]
 	end
+
+	# для всех вариантов аргумента выдает массив стрингов id-шников
+	def self.arg_to_ids(arg)
+		if arg.is_a?(Array)
+			if(arg.first.is_a?(User))
+				arg.map{|u| u.uid }
+			else
+				arg.map{|a| a.to_s }
+			end
+		else
+			if arg.is_a?(User)
+				[arg.uid]
+			else
+				[arg.to_s]
+			end
+		end
+	end
 end
