@@ -268,6 +268,9 @@ namespace :mailru do
 	desc "Test mailru notify"
 	task :notify, [:text] => :environment do |task, args|
 		uids = User.find(:all, :conditions => "net=3").map{|u| u.uid}
-		NetApi.by_net(3).notify(uids, args[:text])
+		(0..uids.size).step(100) do |iterator|
+			p "ITERATOR #{iterator}"
+			NetApi.by_net(3).notify(uids.slice(iterator, 100), args[:text])
+		end
 	end
 end
