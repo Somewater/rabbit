@@ -1,5 +1,6 @@
 package
 {
+	import com.google.analytics.GATracker;
 	import com.greensock.TweenMax;
 	import com.somewater.control.IClear;
 	import com.somewater.controller.PopUpManager;
@@ -127,6 +128,8 @@ package
 		 * Игра стартовала, загрузила все необходимые ей ассеты и уже было открыто окно SwitchWindow (если это не награды)
 		 */
 		public var gameStartedCompletely:Boolean = false;
+
+		protected var gaTracker:GATracker;
 		
 		public function RabbitApplication()
 		{
@@ -192,21 +195,10 @@ package
 
 			loadAudioSettings();
 
-			if(Config.loader.hasFriendsApi)
-			{
-				friendInviteTimer = new Timer(3*60*1000);
-				friendInviteTimer.addEventListener(TimerEvent.TIMER, onFriendInviteTimer);
-				friendInviteTimer.start();
-
-				var interv:uint = setInterval(function():void{
-					if(canShowOfferWindow)
-					{
-						clearInterval(interv);
-						if(OfferManager.instance.quantity > 0 && UserProfile.instance.offers < OfferManager.instance.prizeQuantity)
-							new OfferDescriptionWindow();
-					}
-				}, 10*1000)
-			}
+			gaTracker = new GATracker(Config.loader as DisplayObject, 'UA-29834261-1', 'AS3', false);
+			gaTracker.trackPageview('Loaded_' + Config.loader.net);
+			while(Config.pendingStats.length)
+				stat(Config.pendingStats.shift());
 		}
 
 		
@@ -344,6 +336,22 @@ package
 			Config.stat(Stat.APP_STARTED);
 
 			dispatchEvent(new Event("applicationInited"))
+
+			if(Config.loader.hasFriendsApi)
+			{
+				friendInviteTimer = new Timer(3*60*1000);
+				friendInviteTimer.addEventListener(TimerEvent.TIMER, onFriendInviteTimer);
+				friendInviteTimer.start();
+
+				var interv:uint = setInterval(function():void{
+					if(canShowOfferWindow)
+					{
+						clearInterval(interv);
+						if(OfferManager.instance.quantity > 0 && UserProfile.instance.offers < OfferManager.instance.prizeQuantity)
+							new OfferDescriptionWindow();
+					}
+				}, 10*1000)
+			}
 		}
 		
 		private function onInitResponseError(error:Object):void
@@ -804,7 +812,7 @@ package
 		{
 			return Config.gameModuleActive == false
 					&& PopUpManager.numWindows == 0
-					&& !TutorialManager.instance.active;
+					&& !TutorialManager.active;
 		}
 
 		/**
@@ -820,6 +828,13 @@ package
 				gameUsersByUid[data.id] = user;
 			}
 			return user;
+		}
+
+		public function stat(name:String):void {
+			if(gaTracker)
+				gaTracker.trackEvent('ClientStat_' + Config.loader.net, name);
+			else
+				Config.pendingStats.push(name);
 		}
 	}
 }

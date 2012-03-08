@@ -54,7 +54,7 @@ namespace :flash do
 -source-path+=PBE/src \
 -source-path+=soc \
 -library-path+=src/assets/swc/library.swc \
--library-path+=lib/binding.swc \
+-library-path+=lib \
 -library-path+=rprotect/RProtector.swc \
 -library-path+=soc/Social.swc"
 

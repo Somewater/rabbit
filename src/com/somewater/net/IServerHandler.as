@@ -15,7 +15,5 @@ package com.somewater.net {
 		function toJson(object:Object):String
 
 		function fromJson(json:String):Object
-
-		function stat(name:String):void
 	}
 }

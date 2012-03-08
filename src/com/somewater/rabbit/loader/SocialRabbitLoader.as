@@ -1,4 +1,5 @@
 package com.somewater.rabbit.loader{
+	import com.google.analytics.GATracker;
 	import com.somewater.net.ServerHandler;
 	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.storage.Config;

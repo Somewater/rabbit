@@ -34,7 +34,7 @@ package com.somewater.rabbit.application
 						"ABOUT_GAME"
 					  ];
 
-			if(!Config.memory['hideTop'] && UserProfile.instance.levelNumber > 1 && !TutorialManager.instance.active)// т.е. человек прошел туториал
+			if(!Config.memory['hideTop'] && UserProfile.instance.levelNumber > 1 && !TutorialManager.active)// т.е. человек прошел туториал
 			{
 				buttons.splice(buttons.indexOf('ABOUT_GAME'), 0, "USERS_TOP");// ставим пеерд "Об игре"
 			}

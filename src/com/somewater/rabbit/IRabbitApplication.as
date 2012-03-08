@@ -63,5 +63,7 @@ package com.somewater.rabbit
 		function play(soundName:String, track:String, force:Boolean = false):void
 
 		function get gameGUI():DisplayObject
+
+		function stat(name:String):void
 	}
 }

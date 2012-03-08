@@ -162,7 +162,7 @@ package com.somewater.rabbit.application
 				leftButton.y = 20;
 			}
 
-			logo.visible = !TutorialManager.instance.active
+			logo.visible = !TutorialManager.active
 					&& globalScoreHolder.y < Config.WIDTH * 0.5
 					&&(friendBar == null || (friendBar.x + FriendBar.WIDTH + 10 < logo.x))
 					&& levelIcons.length < 15;

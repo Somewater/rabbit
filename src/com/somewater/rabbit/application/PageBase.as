@@ -56,7 +56,7 @@ package com.somewater.rabbit.application
 
 			Hint.bind(logo, Lang.t('I_AM_RABBIT'))
 
-			logo.visible = !TutorialManager.instance.active;
+			logo.visible = !TutorialManager.active;
 		}
 		
 		protected function getButton(label:String, parent:DisplayObjectContainer, 

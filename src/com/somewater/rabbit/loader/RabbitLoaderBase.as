@@ -1,6 +1,6 @@
 package com.somewater.rabbit.loader
 {
-	
+
 	import com.somewater.net.IServerHandler;
 	import com.somewater.net.SWFDecoderWrapper;
 	import com.somewater.net.UrlQueueLoader;
@@ -121,7 +121,7 @@ package com.somewater.rabbit.loader
 		
 		[Embed(source="./../../../../assets/swc/preloader.swf", symbol="preloader.Preloader")]
 		private var PRELOADER_CLASS:Class;
-		
+
 		public function RabbitLoaderBase()
 		{		
 			preloader = new PRELOADER_CLASS();
@@ -217,7 +217,7 @@ package com.somewater.rabbit.loader
 			{
 				DESKTOP_MODE = (loaderInfo.url == null || loaderInfo.url.indexOf("file:///") == 0) && TEST_MODE;
 			}
-			
+
 			netInitialize();
 		}
 		

@@ -87,10 +87,13 @@ package com.somewater.rabbit.storage
 			})
 		}
 
+		public static var pendingStats:Array = [];
 		public static function stat(name:String):void
 		{
-			if(loader && loader.serverHandler)
-				loader.serverHandler.stat(name);
+			if(application)
+				application.stat(name);
+			else
+				pendingStats.push(name);
 		}
 
 		public static function get isAdmin():Boolean

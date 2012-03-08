@@ -414,8 +414,8 @@ package com.somewater.rabbit.application.tutorial {
 				return target
 		}
 
-		public function get active():Boolean {
-			return currentStep != null || UserProfile.instance.tutorial < STEPS.length;
+		public static function get active():Boolean {
+			return instance && instance.currentStep != null || UserProfile.instance.tutorial < instance.STEPS.length;
 		}
 	}
 }
