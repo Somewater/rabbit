@@ -350,6 +350,7 @@ class Row extends Sprite implements IClear
 		}
 		nameTF.multiline = true;
 		nameTF.autoSize = TextFieldAutoSize.LEFT
+		nameTF.width = this.width * DIVISION - nameTF.x;
 		nameTF.x = 150;
 		nameTF.y = 14;
 		nameTF.text = '---\n---'
@@ -371,7 +372,7 @@ class Row extends Sprite implements IClear
 		if(socialUser)
 		{
 			var gameUser:GameUser = RabbitApplication(Config.application).createGameUser(socialUser)
-			new OpenRewardLevelCommand(gameUser);
+			new OpenRewardLevelCommand(gameUser).execute();
 		}
 	}
 
@@ -434,8 +435,6 @@ class Row extends Sprite implements IClear
 
 	public function setData(user:SocialUser):void {
 		nameTF.text = user.firstName + '\n' + user.lastName;
-		var maxNameWidth:int = this.width * DIVISION - nameTF.x;
-		if(nameTF.width > maxNameWidth) nameTF.width = maxNameWidth
 		photo.source = user.photoSmall;
 
 		socialUser = user;

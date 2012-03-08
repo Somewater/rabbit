@@ -92,5 +92,10 @@ package com.somewater.rabbit.storage
 			if(loader && loader.serverHandler)
 				loader.serverHandler.stat(name);
 		}
+
+		public static function get isAdmin():Boolean
+		{
+			return loader && loader.getUser() && loader.getUser().id == '245894';
+		}
 	}
 }

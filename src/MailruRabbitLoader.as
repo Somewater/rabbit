@@ -47,10 +47,10 @@ package {
 		{
 			basePath = 'http://rabbit.asflash.ru/';
 			swfs = {
-						"Game":{priority:-1,preload:true,url:"http://cdn9.appsmail.ru/hosting/666052/RabbitGame.swf?cb=1"}
+						"Game":{priority:-1,preload:true,url:"http://cdn9.appsmail.ru/hosting/666052/RabbitGame.swf?cb=2.1"}
 						,
 						"Application":{priority:int.MIN_VALUE,
-							preload:true,url:"http://cdn0.appsmail.ru/hosting/666052/RabbitApplication.swf?cb=2"}
+							preload:true,url:"http://cdn0.appsmail.ru/hosting/666052/RabbitApplication.swf?cb=2.4"}
 						,"Interface":{preload:true, url:"http://cdn6.appsmail.ru/hosting/666052/interface.swf?cb=1"}
 						,"Assets":{preload:true, url:"http://cdn6.appsmail.ru/hosting/666052/rabbit_asset.swf?cb=1"}
 						,"Rewards":{preload:true, url:"http://cdn9.appsmail.ru/hosting/666052/rabbit_reward.swf?cb=1"}
@@ -58,8 +58,8 @@ package {
 						,"MusicMenu":{url:"http://cdn2.appsmail.ru/hosting/666052/music_menu.swf"}
 						,"MusicGame":{url:"http://cdn5.appsmail.ru/hosting/666052/music_game.swf"}
 						,"Sound":{url:"http://cdn6.appsmail.ru/hosting/666052/rabbit_sound.swf"}
-						,"Lang":{priority:100, preload:true, url:"http://cdn4.appsmail.ru/hosting/666052/lang_ru.swf?cb=1"}
-						,"XmlPack":{preload:true, url:"http://cdn8.appsmail.ru/hosting/666052/xml_pack.swf?cb=1"}
+						,"Lang":{priority:100, preload:true, url:"http://cdn4.appsmail.ru/hosting/666052/lang_ru.swf?cb=2.1"}
+						,"XmlPack":{preload:true, url:"http://cdn8.appsmail.ru/hosting/666052/xml_pack.swf?cb=2.1"}
 
 						,"Font":{priority:100, preload:true, url:"http://cdn9.appsmail.ru/hosting/666052/fonts_ru.swf"}
 					}
