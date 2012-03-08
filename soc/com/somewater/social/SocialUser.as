@@ -31,6 +31,8 @@ package com.somewater.social
 		public var countryCode:int;
 		
 		public var locale:String = "en";
+
+		public var homepage:String;// адрес странички юзера
 		
 		internal var _sex : uint;
 		public function get sex():String{

@@ -190,6 +190,7 @@ package com.somewater.social
 			socialUser.firstName = info["first_name"];
 			socialUser.lastName = info["last_name"];
 			socialUser.nickName = info["nickname"];
+			socialUser.homepage = 'http://vk.com/id' + socialUser.id;
 			socialUser.male = info["sex"]!=1;
 			socialUser.city = info['city']?info['city']:'';		
 			socialUser.country = info['country']?info['country']:'';

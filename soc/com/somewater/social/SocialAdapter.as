@@ -338,7 +338,11 @@ package com.somewater.social
 		public function getUserById(id:String):SocialUser{
 			if (users[id])
 				return users[id];
-			return friends[id];
+			if(friends[id]);
+				return friends[id];
+			if(user_id == id)
+				return user;
+			return null;
 		}
 		public function getFriends():Array {return friends;}
 		public function getAppFriends():Array {return appFriends;}

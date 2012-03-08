@@ -53,8 +53,8 @@ package com.somewater.rabbit.application {
 					var gameUsersFriends:Array = [];
 					for each(var friendJson:Object in response['friends'])
 					{
-						var gameUserFriend:GameUser = jsonToGameUser(friendJson, new GameUser());
-						gameUserFriend.data = appFriendsById[friendJson['uid']];
+						var gameUserFriend:GameUser = jsonToGameUser(friendJson,
+								RabbitApplication(Config.application).createGameUser(appFriendsById[friendJson['uid']] as SocialUser));
 						gameUsersFriends.push(gameUserFriend);
 						gameUser.addAppFriend(gameUserFriend);
 

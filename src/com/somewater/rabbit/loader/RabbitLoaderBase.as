@@ -793,5 +793,10 @@ package com.somewater.rabbit.loader
 		public function navigateToHomePage(userId:String):void {
 			throw new Error('Not implemented');
 		}
+
+		public function getCachedUser(uid:String):SocialUser
+		{
+			return null;
+		}
 	}
 }

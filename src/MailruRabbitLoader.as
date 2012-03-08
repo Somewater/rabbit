@@ -116,5 +116,9 @@ package {
 		private function onGrouplInkClicked(event:MouseEvent):void {
 			navigateToURL(new URLRequest('http://my.mail.ru/community/krolgame/'), '_blank');
 		}
+
+		override public function get hasNavigateToHomepage():Boolean {
+			return true;
+		}
 	}
 }

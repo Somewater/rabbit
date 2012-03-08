@@ -187,5 +187,10 @@ package com.somewater.arrow
 		public function posting(user:SocialUser = null, title:String = null, message:String = null, image:* = null, imageUrl:String = null, data:String = null, onComplete:Function = null, onError:Function = null, additionParams:Object = null):void {
 			social.wallPost(user, title, message, image, imageUrl, data, onComplete, onError, additionParams);
 		}
+
+		public function getCachedUser(uid:String):SocialUser
+		{
+			return social.getUserById(uid);
+		}
 	}
 }

@@ -74,6 +74,7 @@ USERS_TOP=ТОП ИГРОКОВ
 TOP_PAGE_TITLE=ТОП ИГРОКОВ
 TOP_TYPE_STARS=по морковкам
 TOP_TYPE_LEVEL=по уровню
+TOP_USER_BUTTON_HINT=Посети полянку игрока
 ###################
 #
 #	ABOUT PAGE

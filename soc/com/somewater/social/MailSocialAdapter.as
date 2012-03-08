@@ -109,6 +109,7 @@ package com.somewater.social
 			socialUser.firstName = info["first_name"];
 			socialUser.lastName = info["last_name"];
 			socialUser.male = (info["sex"] != 1);
+			socialUser.homepage = info['link'];
 			if( !info["pic_medium"] ) info["pic_medium"] = info["pic"];
 			if( !info["pic_big"] ) info["pic_big"] = info["pic_medium"];
 			socialUser.photos = [info["pic"], info["pic_medium"], info["pic_big"]];

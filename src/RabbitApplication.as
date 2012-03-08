@@ -48,6 +48,7 @@ package
 	import com.somewater.rabbit.storage.StoryDef;
 	import com.somewater.rabbit.storage.UserProfile;
 	import com.somewater.rabbit.xml.XmlController;
+	import com.somewater.social.SocialUser;
 	import com.somewater.storage.Lang;
 	import com.somewater.text.EmbededTextField;
 	import com.somewater.text.Hint;
@@ -119,6 +120,8 @@ package
 		private var soundLibraryLoaded:Boolean = false;
 
 		private var friendInviteTimer:Timer;
+
+		private var gameUsersByUid:Array = [];
 
 		/**
 		 * Игра стартовала, загрузила все необходимые ей ассеты и уже было открыто окно SwitchWindow (если это не награды)
@@ -802,6 +805,21 @@ package
 			return Config.gameModuleActive == false
 					&& PopUpManager.numWindows == 0
 					&& !TutorialManager.instance.active;
+		}
+
+		/**
+		 * Обеспечивает уникальность кажого объеата GameUser (не создается дважды)
+		 */
+		public function createGameUser(data:SocialUser):GameUser
+		{
+			var user:GameUser = gameUsersByUid[data.id];
+			if(user == null)
+			{
+				user = new GameUser();
+				user.data = data;
+				gameUsersByUid[data.id] = user;
+			}
+			return user;
 		}
 	}
 }

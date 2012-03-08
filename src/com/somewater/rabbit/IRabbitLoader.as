@@ -107,6 +107,8 @@ package com.somewater.rabbit
 		function get hasNavigateToHomepage():Boolean
 
 		function navigateToHomePage(userId:String):void
+
+		function getCachedUser(uid:String):SocialUser
 			
 		function getFriends():Array
 			

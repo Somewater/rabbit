@@ -4,6 +4,9 @@ package com.somewater.rabbit.loader{
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.social.SocialUser;
 
+	import flash.net.URLRequest;
+	import flash.net.navigateToURL;
+
 	/**
 	 * Базовый лоадер для создания социал адаптеров
 	 */
@@ -88,6 +91,19 @@ package com.somewater.rabbit.loader{
 
 		override public function posting(user:SocialUser = null, title:String = null, message:String = null, image:* = null, imageUrl:String = null, data:String = null, onComplete:Function = null, onError:Function = null, additionParams:Object = null):void {
 			arrow.posting(user, title, message, image, imageUrl, data, onComplete, onError, additionParams);
+		}
+
+		override public function getCachedUser(uid:String):SocialUser {
+			return arrow.getCachedUser(uid);
+		}
+
+		override public function navigateToHomePage(userId:String):void {
+			if(hasNavigateToHomepage)
+			{
+				var u:SocialUser = getCachedUser(userId);
+				if(u && u.homepage)
+					navigateToURL(new URLRequest(u.homepage), '_blank');
+			}
 		}
 	}
 }

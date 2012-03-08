@@ -233,11 +233,15 @@ import com.somewater.control.IClear;
 import com.somewater.display.Photo;
 import com.somewater.rabbit.application.RScroller;
 import com.somewater.rabbit.application.TopPage;
+import com.somewater.rabbit.application.commands.OpenRewardLevelCommand;
 import com.somewater.rabbit.storage.Config;
+import com.somewater.rabbit.storage.GameUser;
 import com.somewater.rabbit.storage.Lib;
 import com.somewater.rabbit.storage.TopUser;
 import com.somewater.social.SocialUser;
+import com.somewater.storage.Lang;
 import com.somewater.text.EmbededTextField;
+import com.somewater.text.Hint;
 import com.somewater.text.LinkLabel;
 
 import flash.display.DisplayObject;
@@ -281,8 +285,10 @@ class TopSelectorBtn extends LinkLabel
 class Row extends Sprite implements IClear
 {
 	public static const HEIGHT:int = 63;
+	public static const DIVISION:Number = 0.7;// в каком соотношении делятся стобцы
 
 	public var user:TopUser;
+	private var socialUser:SocialUser;
 
 	private var photoSprite:Sprite;
 	private var photo:Photo;
@@ -296,8 +302,6 @@ class Row extends Sprite implements IClear
 	public function Row(user:TopUser, count:int)
 	{
 		this.user = user;
-
-		const DIVISION:Number = 0.7;// в каком соотношении делятся стобцы
 
 		var topLine:Shape = new Shape();
 		topLine.graphics.lineStyle(1, 0x89B93A);
@@ -326,6 +330,7 @@ class Row extends Sprite implements IClear
 		photoSprite.x = 60;
 		photoSprite.y = (height - photoSprite.height) * 0.5
 		addChild(photoSprite);
+		photoSprite.addEventListener(MouseEvent.CLICK, onPhotoCkicked);
 
 		counterTF = new EmbededTextField(Config.FONT_SECONDARY, 0x124D18, 21, false, false, false, false, 'right');
 		counterTF.width = 30;
@@ -345,7 +350,6 @@ class Row extends Sprite implements IClear
 		}
 		nameTF.multiline = true;
 		nameTF.autoSize = TextFieldAutoSize.LEFT
-		nameTF.width = this.width * DIVISION - nameTF.x;
 		nameTF.x = 150;
 		nameTF.y = 14;
 		nameTF.text = '---\n---'
@@ -361,6 +365,14 @@ class Row extends Sprite implements IClear
 
 		addEventListener(MouseEvent.ROLL_OVER, onOver);
 		addEventListener(MouseEvent.ROLL_OUT, onOut);
+	}
+
+	private function onPhotoCkicked(event:MouseEvent):void {
+		if(socialUser)
+		{
+			var gameUser:GameUser = RabbitApplication(Config.application).createGameUser(socialUser)
+			new OpenRewardLevelCommand(gameUser);
+		}
 	}
 
 	private function onLinkClick(event:Event):void {
@@ -401,10 +413,13 @@ class Row extends Sprite implements IClear
 	public function clear():void
 	{
 		user = null;
+		socialUser = null;
 		removeEventListener(MouseEvent.ROLL_OVER, onOver);
 		removeEventListener(MouseEvent.ROLL_OUT, onOut);
 		nameTF.removeEventListener(LinkLabel.LINK_CLICK, onLinkClick);
 		photo.clear();
+		Hint.removeHint(photoSprite);
+		photoSprite.removeEventListener(MouseEvent.CLICK, onPhotoCkicked);
 	}
 
 
@@ -419,6 +434,12 @@ class Row extends Sprite implements IClear
 
 	public function setData(user:SocialUser):void {
 		nameTF.text = user.firstName + '\n' + user.lastName;
+		var maxNameWidth:int = this.width * DIVISION - nameTF.x;
+		if(nameTF.width > maxNameWidth) nameTF.width = maxNameWidth
 		photo.source = user.photoSmall;
+
+		socialUser = user;
+		photoSprite.useHandCursor = photoSprite.buttonMode = true;
+		Hint.bind(photoSprite, Lang.t('TOP_USER_BUTTON_HINT'));
 	}
 }

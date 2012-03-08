@@ -1,8 +1,7 @@
 package
 {
-	import com.somewater.rabbit.storage.Config;
-
 	import flash.display.Sprite;
+	import flash.utils.getDefinitionByName;
 
 	public class xml_pack extends Sprite
 	{
@@ -21,6 +20,8 @@ package
 		
 		public function xml_pack()
 		{
+			// внимание, при рефакторинге методов Config, возможна неработоспособность (без compile time ошибок)
+			var Config:Class = getDefinitionByName('com.somewater.rabbit.storage.Config') as Class;
 			Config.loader.setData('Description', new Description());
 			Config.loader.setData('Levels', new Levels());
 			Config.loader.setData('Managers', new Managers());
