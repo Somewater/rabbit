@@ -120,5 +120,9 @@ package {
 		override public function get hasNavigateToHomepage():Boolean {
 			return true;
 		}
+
+		override public function get hasPaymentApi():Boolean {
+			return false;
+		}
 	}
 }

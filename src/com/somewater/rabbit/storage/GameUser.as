@@ -182,7 +182,7 @@ package com.somewater.rabbit.storage
 
 		public function getCustomize(type:String):CustomizeDef
 		{
-			return CustomizeDef.byId(_customize[type]);
+			return ItemDef.byId(_customize[type]) as CustomizeDef;
 		}
 
 		public function setCustomize(customize:CustomizeDef):void

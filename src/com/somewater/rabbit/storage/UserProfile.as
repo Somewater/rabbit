@@ -25,6 +25,8 @@ package com.somewater.rabbit.storage
 		private var roll:uint;
 
 		private var _tutorial:int = -1;
+
+		private var _items:Array = [];
 		
 		
 		public function UserProfile(data:Object)
@@ -257,6 +259,37 @@ package com.somewater.rabbit.storage
 				_stars = value;
 				dispatchChange();
 			}
+		}
+
+		public function get items():Array
+		{
+			return _items
+		}
+
+		public function clearItems():void
+		{
+			_items = [];
+		}
+
+		public function hasItem(id:int):Boolean
+		{
+			return int(_items[id]) > 0;
+		}
+
+		public function addItem(id:int, quantity:uint = 1):void
+		{
+			_items[id] = int(_items[id]) + quantity;
+			dispatchChange();
+		}
+
+		public function deleteItem(id:int, quantity:uint = 1):void
+		{
+			if(int(_items[id]) < quantity)
+				throw new Error('Cant allocate ' + quantity + ' items id=' + id);
+			_items[id] = int(_items[id]) - quantity;
+			if(_items[id] == 0)
+				delete(_items[id]);
+			dispatchChange();
 		}
 	}
 }

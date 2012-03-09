@@ -24,6 +24,7 @@ class UsersAdminController < AdminController::Base
 			@request['user']['level_instances'] = JSON.parse(@request['user']['level_instances']) if @request['user']['level_instances']
 			@request['user']['offer_instances'] = JSON.parse(@request['user']['offer_instances']) if @request['user']['offer_instances']
 			@request['user']['customize'] = JSON.parse(@request['user']['customize']) if @request['user']['customize']
+			@request['user']['items'] = @request['user']['items'].split(',').inject({}){|m,a| a = a.split(':'); m[a.first.to_i] = a.last.to_i; m} if @request['user']['items']
 			@user.update_attributes(@request['user'])
 			@user.save
 			template File.read("#{TEMPLATE_ROOT}/admin/users_admin_show.erb")

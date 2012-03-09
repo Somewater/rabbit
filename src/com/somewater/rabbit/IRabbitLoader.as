@@ -106,6 +106,8 @@ package com.somewater.rabbit
 
 		function get hasNavigateToHomepage():Boolean
 
+		function get hasPaymentApi():Boolean
+
 		function navigateToHomePage(userId:String):void
 
 		function getCachedUser(uid:String):SocialUser
@@ -131,6 +133,11 @@ package com.somewater.rabbit
 						 onComplete:Function = null, onError:Function = null, additionParams:Object = null):void
 
 		function get referer():String
+
+		/**
+		 * Для вкомпиливания особой конфигурации соц. сети в лоадер (например, цены)
+		 */
+		function get customHash():Object
 
 	}
 }

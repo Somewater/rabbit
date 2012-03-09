@@ -83,6 +83,10 @@
 			<td><textarea name="user[customize]" rows="3" cols="100"><%= CGI::escapeHTML(@user.customize ? @user.customize.to_json : '') %></textarea></td>
 		</tr>
 		<tr width='100%'>
+			<th>items</th>
+			<td><textarea name="user[items]" rows="3" cols="100"><%= @user.items.map{|k,v|"#{k}:#{v}"}.join(',') %></textarea></td>
+		</tr>
+		<tr width='100%'>
 			<th>created_at</th>
 			<td><input type="text" name="user[created_at]" maxlength="50" value="<%= @user.created_at %>" size="50"></input></td>
 		</tr>

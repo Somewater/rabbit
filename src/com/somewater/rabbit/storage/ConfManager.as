@@ -6,6 +6,8 @@ package com.somewater.rabbit.storage {
 	 */
 	public class ConfManager implements ILocalDb{
 
+		public static const ITEMS_KEY:String = 'ITEMS';
+
 		protected static var _instance:ConfManager;
 
 		private var data:Array;

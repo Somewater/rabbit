@@ -1,0 +1,41 @@
+###############################
+#
+#	ПАВЕРАПЫ
+#   ids = 2xx
+#
+###############################
+powerup: &powerup
+  <<: *default_item
+  id: -200
+  class: PowerupDef
+  #имя темплейта паверапа из Description.xml
+  template:
+
+#####################
+#
+#	ПАВЕРАПЫ
+#
+#####################
+powerup_health: &powerup_health
+  <<: *powerup
+  id: 200
+  template: PowerupHealth
+  cost: 5
+
+powerup_protection: &powerup_protection
+  <<: *powerup
+  id: 201
+  template: PowerupProtection
+  cost: 50
+
+powerup_speed: &powerup_speed
+  <<: *powerup
+  id: 202
+  template: PowerupSpeed
+  cost: 6
+
+powerup_time: &powerup_time
+  <<: *powerup
+  id: 203
+  template: PowerupTime
+  cost: 8

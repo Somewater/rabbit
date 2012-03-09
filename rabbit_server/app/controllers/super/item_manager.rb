@@ -1,6 +1,4 @@
-class StaticManager
-
-	CUSTOMIZES = 'CUSTOMIZES'
+class ItemManager
 
 	@@instance = nil
 
@@ -10,7 +8,7 @@ class StaticManager
 
 	def self.instance
 		unless @@instance
-			@@instance = StaticManager.new
+			@@instance = ItemManager.new
 		end
 		@@instance
 	end
@@ -37,7 +35,7 @@ class StaticManager
 		@items_by_id = {}
 
 		#todo: другие файлы конфигов тоже парсить тут
-		yaml = YAML.load(File.read("#{CONFIG_DIR}/hole_customize.yml"))
+		yaml = YAML.load(File.read("#{CONFIG_DIR}/items.yml").each_line.to_a.map{|line| filename = /\#include\s+(\S+)\s*/.match(line)[1]; File.read("#{CONFIG_DIR}/#{filename}") }.join("\r\n"))
 		yaml.each do |name, value|
 			id = value['id'].to_i
 			if(id > 0)

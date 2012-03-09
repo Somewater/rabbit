@@ -40,9 +40,12 @@ package
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.CustomizeDef;
 	import com.somewater.rabbit.storage.GameUser;
+	import com.somewater.rabbit.storage.ItemDef;
+	import com.somewater.rabbit.storage.ItemDef;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
 	import com.somewater.rabbit.storage.Lib;
+	import com.somewater.rabbit.storage.PowerupDef;
 	import com.somewater.rabbit.storage.RewardDef;
 	import com.somewater.rabbit.storage.RewardInstanceDef;
 	import com.somewater.rabbit.storage.RewardLevelDef;
@@ -272,8 +275,12 @@ package
 
 			RewardManager.instance.initialize(Config.loader.getXML('Rewards'))
 
-			for each(var customizeData:Object in ConfManager.instance.getArray(CustomizeDef.CUSTOMIZES))
-				new CustomizeDef(customizeData);
+			var itemClassesHash:Object = {'CustomizeDef':CustomizeDef, 'ItemDef':ItemDef, 'PowerupDef':PowerupDef}
+			for each(var customizeData:Object in ConfManager.instance.getArray(ConfManager.ITEMS_KEY))
+			{
+				var cl:Class = itemClassesHash[customizeData['class']]
+				var item:ItemDef = new cl(customizeData);
+			}
 		}
 
 		public function addLevel(level:LevelDef):void

@@ -62,6 +62,24 @@ class User < ActiveRecord::Base
 		@customize = (hash || {}) # нельзя присвоить nil, тогда будет невозможно сказать что данные были изменены
 	end
 
+	def items
+		unless @items
+			str = self['items']
+			@items = {}
+			if str
+				str.split(',').each do |pair|
+					pair = pair.split(':')
+					@items[pair.first.to_i] = pair.last.to_i
+				end
+			end
+		end
+		@items
+	end
+	def items=(hash)
+		@items = (hash || {}) # нельзя присвоить nil, тогда будет невозможно сказать что данные были изменены
+	end
+
+
 	# каждый вызов метода создает новое рандомное значение, автозаписывемое в базу
 	def get_roll()
 		debug = roll = self.roll.to_i
@@ -79,6 +97,7 @@ class User < ActiveRecord::Base
 		self['rewards'] = JSON.fast_generate(@rewards) 			if @rewards
 		self['offer_instances'] = JSON.fast_generate(@offer_instances) if @offer_instances
 		self['customize'] = JSON.fast_generate(@customize) if @customize
+		self['items'] = @items.map{|k,v|"#{k.to_i}:#{v.to_i}"}.join(',') if @items
 	end
 
 	def clear_structures
@@ -86,6 +105,7 @@ class User < ActiveRecord::Base
 		@level_instances = nil
 		@offer_instances = nil
 		@customize = nil
+		@items = nil
 	end
 
 	def reload(options = nil)
@@ -157,6 +177,7 @@ class User < ActiveRecord::Base
 		hash['offers'] = self.offers
 		hash['roll'] = self.roll
 		hash['tutorial'] = self.tutorial
+		hash['items'] = @items ? @items.map{|k,v|"#{k}:#{v}"}.join(',') : self['items']
 		hash
 	end
 
@@ -171,6 +192,23 @@ class User < ActiveRecord::Base
 		else
 			# более быстрый способ - изменить несериализвоанную строку
 			self['rewards'] = self['rewards'].gsub(/,"flag":\d+/,'')
+		end
+	end
+
+	def add_item(id, quantity = 1)
+		items[id.to_i] = (items[id.to_i] || 0) + quantity.to_i
+	end
+
+	def delete_item(id, quantity = 1)
+		raise LogicError, "Wrong delete quantity" unless quantity > 0
+
+		q = self.items[id.to_i].to_i
+		raise LogicError, "Cant allocate #{quantity} items id=#{id}" if q < quantity
+
+		if(q == quantity)
+			self.items.delete(id.to_i)
+		else
+			self.items[id.to_i] = q - quantity
 		end
 	end
 end

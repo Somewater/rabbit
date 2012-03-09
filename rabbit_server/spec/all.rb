@@ -337,6 +337,21 @@ class AllSpec
 
 				100.times{ |i| user.get_roll() == array[i]}
 			end
+
+			it "Метод начисления item работает правильно" do
+				quntity = @user.items[123].to_i
+				@user.add_item(123, 5)
+				@user.items[123].should == (5 + quntity)
+				@user.add_item(123)
+				@user.items[123].should == (5 + quntity + 1)
+			end
+
+			it "Нельзя отнять больше item, чем есть у юзера" do
+				@user.items[123] = 5
+				lambda{
+					@user.delete_item(123, 6)
+				}.should raise_error(LogicError, /Cant allocate \d+ items id=\d+/)
+			end
 		end
 
 		describe InitializeController do
@@ -807,7 +822,7 @@ class AllSpec
 			end
 		end
 
-		describe StaticManager do
+		describe ItemManager do
 			before :each do
 				@user = get_uniq_user
 				@user.customize = nil

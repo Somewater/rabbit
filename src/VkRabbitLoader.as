@@ -38,6 +38,8 @@ package {
 		//private var livecardsAd:Class;
 
 		public function VkRabbitLoader() {
+			super();
+			Config.memory['autoPostLevelPass'] = true;
 		}
 
 		override protected function createLayers():void {
@@ -250,6 +252,16 @@ package {
 
 		override public function navigateToHomePage(userId:String):void {
 			navigateToURL(new URLRequest("http://" + 'vk.com' + '/id' + userId), '_blank');
+		}
+
+		override public function get hasPaymentApi():Boolean {
+			return true;
+		}
+
+		override public function get customHash():Object {
+			var h:Object = super.customHash;
+			h['GAME_TESTERS']="Olesya Kazimirova;vk.com/olesya.kazimirova,Савелий Ташлыков;http://vk.com/id116118631,Лилия Беляева;vk.com/id139801679,Аркадий Клюкин;vk.com/id96381901,Ruslana Ruslana;vk.com/id78387355,Флора Шарыпова;vk.com/id132072432,София Попова;vk.com/id136765327,Дмитрий Новиков;vk.com/id150662339"
+			return h;
 		}
 	}
 }

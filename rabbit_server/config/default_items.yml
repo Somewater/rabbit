@@ -1,0 +1,6 @@
+default_item: &default_item
+  id: -1
+  class: ItemDef
+  name:
+  slug:
+  cost: 0

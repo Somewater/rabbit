@@ -688,6 +688,11 @@ package com.somewater.rabbit.loader
 		{
 			return false;	
 		}
+
+		public function get hasPaymentApi():Boolean
+		{
+			return false;
+		}
 		
 		public function getFriends():Array
 		{
@@ -797,6 +802,11 @@ package com.somewater.rabbit.loader
 		public function getCachedUser(uid:String):SocialUser
 		{
 			return null;
+		}
+
+		public function get customHash():Object
+		{
+			return {};
 		}
 	}
 }

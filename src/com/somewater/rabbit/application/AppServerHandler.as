@@ -6,6 +6,7 @@ package com.somewater.rabbit.application {
 	import com.somewater.rabbit.storage.CustomizeDef;
 	import com.somewater.rabbit.storage.GameUser;
 	import com.somewater.rabbit.storage.GameUser;
+	import com.somewater.rabbit.storage.ItemDef;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
 	import com.somewater.rabbit.storage.OfferDef;
@@ -204,13 +205,23 @@ package com.somewater.rabbit.application {
 			gameUser.clearCustomize();
 			for each(id in toJsonSafety(json['customize']))
 			{
-				var customize:CustomizeDef = CustomizeDef.byId(parseInt(id))
+				var customize:CustomizeDef = ItemDef.byId(parseInt(id)) as CustomizeDef;
 				gameUser.setCustomize(customize);
 			}
 
 			if(json['roll'])
 				gameUser.setRoll(json['roll']);
 			gameUser.data = json;
+
+			if(gameUser is UserProfile)
+			{
+				// речь о текущем юзере игры
+				UserProfile.instance.clearItems();
+				var itemsArr:Array = String(json['items'] || '').split(',');
+				for each(var pair:String in itemsArr)
+					if(pair.length)
+						UserProfile.instance.addItem(pair.split(':')[0], pair.split(':')[1]);
+			}
 
 			return gameUser;
 		}

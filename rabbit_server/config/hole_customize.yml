@@ -6,10 +6,9 @@
 #
 ###############################
 customize: &customize
+  <<: *default_item
   id: -100
-  name:
-  slug:
-  cost: 0
+  class: CustomizeDef
   type: false
   start: false
 

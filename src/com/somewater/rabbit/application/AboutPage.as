@@ -5,6 +5,7 @@ package com.somewater.rabbit.application
 	import com.somewater.rabbit.Sounds;
 	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.storage.Config;
+	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.storage.Lang;
 	import com.somewater.text.EmbededTextField;
@@ -32,6 +33,9 @@ package com.somewater.rabbit.application
 		{
 			super();
 
+			var holder:Sprite = new Sprite();
+			addChild(holder);
+
 			var authorsTitle:EmbededTextField = new EmbededTextField(null, 0xDB661B, 21);
 			authorsTitle.text = Lang.t('AUTHORS');
 			authorsTitle.x = (Config.WIDTH - authorsTitle.textWidth) * 0.5;
@@ -40,7 +44,7 @@ package com.somewater.rabbit.application
 
 			var keys:Array = ['AUTHOR_ASFLASH','AUTHOR_SKINSIN','AUTHOR_NORDWULF'];
 			var gds:Array = String(Lang.t('GAME_DESIGNERS') || '').split('|');
-			var testers:Array = String(Lang.t('GAME_TESTERS') || '').split(',');
+			var testers:Array = String(Config.loader.customHash['GAME_TESTERS'] || '').split(',');if(testers.length == 1 && testers[0] == '') testers = [];
 
 			var nextY:int;
 			var maxWidth:int;
@@ -61,7 +65,7 @@ package com.somewater.rabbit.application
 					item.x = (Config.WIDTH - 300) * 0.5;
 					item.y = 95 + i * 150;
 				}
-				addChild(item);
+				holder.addChild(item);
 				items.push(item);
 			}
 			
@@ -87,7 +91,7 @@ package com.somewater.rabbit.application
 				gameDesignersTitle.text = Lang.t('GAME_DESIGN_TITLE');
 				gameDesignersTitle.x = DisplayObject(items[items.length - 1]).x;
 				gameDesignersTitle.y = DisplayObject(items[items.length - 1]).y + DisplayObject(items[items.length - 1]).height;
-				addChild(gameDesignersTitle);
+				holder.addChild(gameDesignersTitle);
 
 				var gdsHolder:Sprite = new Sprite();
 
@@ -120,7 +124,7 @@ package com.somewater.rabbit.application
 				gdsScroller.x = gameDesignersTitle.x;
 				gdsScroller.y = gameDesignersTitle.y + gameDesignersTitle.height + 5;
 				gdsScroller.setSize(Math.max(220, maxWidth), Config.HEIGHT - gdsScroller.y - 20 - leftButton.height - 10);
-				addChild(gdsScroller);
+				holder.addChild(gdsScroller);
 			}
 
 
@@ -165,6 +169,8 @@ package com.somewater.rabbit.application
 				testersScroller.setSize(Math.max(170, maxWidth), Config.HEIGHT - testersScroller.y - 20);
 				addChild(testersScroller);
 			}
+			else
+				holder.x = (Config.WIDTH - AuthorItem.WIDTH - (logo.visible ? Config.WIDTH - logo.x : 0)) * 0.5;
 
 
 			Config.stat(Stat.ABOUT_PAGE_OPENED);
@@ -225,6 +231,8 @@ import flash.net.navigateToURL;
 
 class AuthorItem extends Sprite implements IClear
 {
+	public static const WIDTH:int = 300;
+
 	private var titleTF:EmbededTextField;
 	private var jobTF:EmbededTextField;
 	private var homepageTF:EmbededTextField;
@@ -286,7 +294,7 @@ class AuthorItem extends Sprite implements IClear
 	}
 
 	override public function get width():Number {
-		return 300;
+		return WIDTH;
 	}
 
 	override public function get height():Number {

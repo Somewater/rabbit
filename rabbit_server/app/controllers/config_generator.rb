@@ -1,6 +1,8 @@
 # генерация статического конфига (в текстовом вформатеиде)
 module ConfigGenerator
 
+	ITEMS_KEY = 'ITEMS'
+
 	@@txt_cache = nil
 
 	def self.generate
@@ -13,11 +15,11 @@ module ConfigGenerator
 			end
 
 			# прочитать конфигурацию статических файлов
-			customizer = []
-			StaticManager.instance.each do |v|
-				customizer << v
+			items = []
+			ItemManager.instance.each do |v|
+				items << v
 			end
-			@@txt_cache << "#{StaticManager::CUSTOMIZES}=#{JSON.fast_generate(customizer)}\n\n"
+			@@txt_cache << "#{ITEMS_KEY}=#{JSON.fast_generate(items)}\n\n"
 		end
 		@@txt_cache
 	end
