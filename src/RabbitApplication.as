@@ -196,7 +196,6 @@ package
 			loadAudioSettings();
 
 			gaTracker = new GATracker(Config.loader as DisplayObject, 'UA-29834261-1', 'AS3', false);
-			gaTracker.trackPageview('Loaded_' + Config.loader.net);
 			while(Config.pendingStats.length)
 				stat(Config.pendingStats.shift());
 		}
@@ -832,7 +831,10 @@ package
 
 		public function stat(name:String):void {
 			if(gaTracker)
+			{
 				gaTracker.trackEvent('ClientStat_' + Config.loader.net, name);
+				gaTracker.trackPageview(name);
+			}
 			else
 				Config.pendingStats.push(name);
 		}

@@ -210,10 +210,10 @@ package {
 		{
 			basePath = 'http://rabbit.asflash.ru/';
 			swfs = {
-						"Game":{priority:-1,preload:true,url:"http://cs9764.vk.com/u245894/3c39f1309c62c1.zip"}
+						"Game":{priority:-1,preload:true,url:"http://cs9764.vk.com/u245894/95cc184d8a5ea0.zip"}
 						,
 						"Application":{priority:int.MIN_VALUE,
-							preload:true,url:"http://cs9764.vk.com/u245894/fb74a08eb0fc03.zip"}
+							preload:true,url:"http://cs9764.vk.com/u245894/543d35db509e2e.zip"}
 						,"Interface":{preload:true, url:"http://cs5787.vk.com/u245894/81362caa13c0d4.zip"}
 						,"Assets":{preload:true, url:"http://cs5787.vk.com/u245894/d10eaab890c1f4.zip"}
 						,"Rewards":{preload:true, url:"http://cs5787.vk.com/u245894/a218197c4d66f7.zip"}
