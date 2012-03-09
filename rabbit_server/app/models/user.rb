@@ -211,4 +211,9 @@ class User < ActiveRecord::Base
 			self.items[id.to_i] = q - quantity
 		end
 	end
+
+	# получить ссылку на инстанс NetApi, согласно соц. сети юзера
+	def api
+		NetApi.by_net(self.net)
+	end
 end

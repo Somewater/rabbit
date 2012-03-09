@@ -9,6 +9,10 @@ class MailryApi < NetApi
 	def self.id
 		3
 	end
+
+	def name
+		:mailru
+	end
 	
 	def notify(target, text, params = nil)
 		get('notifications.send', {:uids => NetApi.arg_to_ids(target).join(','), :text => text})

@@ -147,7 +147,7 @@ package com.somewater.rabbit.application {
 			handler.call('top/index', null, function(data:Object):void{
 				TopManager.instance.read(data);
 				onComplete && onComplete(data);
-			}, onError);
+			}, onError, null, setServerUnsecureFlag());
 		}
 
 
@@ -306,11 +306,20 @@ package com.somewater.rabbit.application {
 				data = handler.fromJson(data);
 			return data;
 		}
+
+		private function setServerUnsecureFlag(params:Object = null):Object
+		{
+			if(params == null)
+				params = {};
+			params['server_unsecure'] = true;
+			return params;
+		}
 	}
 }
 
 import com.somewater.net.IServerHandler;
 import com.somewater.net.ServerHandler;
+import com.somewater.rabbit.storage.Config;
 
 import flash.events.TimerEvent;
 import flash.utils.Timer;
@@ -330,6 +339,10 @@ class ServerReceiver implements IServerHandler
 	private var sendedRequestQueue:Array;
 	private var importantMethods:Array;
 
+	private var uid:String;
+	private var net:int;
+	private var secure:Function;
+
 	public function ServerReceiver(handler:IServerHandler, importantMethods:Array)
 	{
 		this.handler = handler;
@@ -338,6 +351,10 @@ class ServerReceiver implements IServerHandler
 		sendedRequestQueue = [];
 		timer = new Timer(1000);
 		timer.addEventListener(TimerEvent.TIMER, onTimer);
+
+		this.uid = Config.loader.getUser().id;
+		this.net = Config.loader.net;
+		this.secure = Config.loader.secure;
 	}
 
 	private function onTimer(event:TimerEvent):void {
@@ -386,7 +403,26 @@ class ServerReceiver implements IServerHandler
 		if (params['_request_counter'] == null)
 			params['_request_counter'] = requestCounter++;
 
-		handler.call(method,data, onComplete, function(response:Object):void{
+		handler.call(method,data, function(response:Object):void{
+			// проверить ответ сервера на валидность (не подделан ли он злостным хакером)
+			if(params['server_unsecure'] == null)
+			{
+				// тестим
+				var responseStr:String = response['_response'];
+				var secureTagIndex:int = responseStr.indexOf('<secure>');
+				var serverSecure:String = responseStr.substr(secureTagIndex + 8);// 8 - длина стринги "<secure>"
+				if(serverSecure != handler.encrypt(secure(245894 * 0.01, uid, net.toString(), responseStr.substring(0, secureTagIndex))))
+				{
+					CONFIG::debug
+					{
+						throw new Error('Hack error')
+					}
+					response = {};
+				}
+			}
+			if(onComplete != null)
+				onComplete(response);
+		}, function(response:Object):void{
 			if(importantMethods.indexOf(method) != -1 || (response && response.hasOwnProperty('error') && response['error'] == 'E_IO'))
 			{
 				var request:Request = findRequest(params['_request_counter'])
@@ -431,6 +467,10 @@ class ServerReceiver implements IServerHandler
 			if(Request(sendedRequestQueue[i]).request_counter == request_counter)
 				return sendedRequestQueue.splice(i, 1)[0];
 		return null;
+	}
+
+	public function encrypt(str:String):String {
+		return handler.encrypt(str);
 	}
 }
 

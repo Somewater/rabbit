@@ -6,6 +6,12 @@ class BaseUserController < BaseController
 		raise AuthError, 'User not found' unless @user
 	end
 
+	# подпись ответа сервера
+	def call
+		str = super
+		str + '<secure>' + RequestSecurity.secure(245894, @params['uid'], @params['net'], str)
+	end
+
 	def save_data()
 		# save user
 		save(@user)

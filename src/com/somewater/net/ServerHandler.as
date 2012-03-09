@@ -104,6 +104,7 @@ package com.somewater.net
 						}
 						else
 						{
+							responseObject['_response'] = response
 							fireCallbacks(true, onComplete, responseObject);
 						}
 					}
@@ -156,7 +157,7 @@ package com.somewater.net
 			{
 				str += jsonString.charAt(i);
 			}*/
-			return MD5.encrypt(Config.loader.secure(secureRoll * 0.01, uid, net.toString(), jsonString));
+			return encrypt(Config.loader.secure(secureRoll * 0.01, uid, net.toString(), jsonString));
 		}
 
 		protected function getPing():int
@@ -210,6 +211,10 @@ package com.somewater.net
 			var handlers:Array = success ? _globalHandlersSuccess : _globalHandlersError;
 			for(var i:int = 0;i<handlers.length;i++)
 				handlers[i](response);
+		}
+
+		public function encrypt(str:String):String {
+			return MD5.encrypt(str);
 		}
 	}
 }

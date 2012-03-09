@@ -7,6 +7,10 @@ class VkApi < NetApi
 	def self.id
 		2
 	end
+
+	def name
+		:vkontakte
+	end
 	
 	def notify(target, text, params = nil)
 		# todo target => user_uids (массив id-шников)
@@ -15,16 +19,27 @@ class VkApi < NetApi
 				response = secure_vk.secure.sendNotification({:uids => user_uids.join(','), :message => text})
 				# todo: проверить success, выдать id-шники получателей
 			rescue Vkontakte::App::VkException
-				logger.error("Error when notify\n#{user_uids} => #{$!}")
+				logger.error("[ERROR] [NOTIFY]\n#{user_uids} => #{$!}")
 				false
 			rescue
-				logger.fatal("Fatal when notify\n#{user_uids} => #{$!}")
+				logger.fatal("[FATAL] [NOTIFY]\n#{user_uids} => #{$!}")
 				false
 			end	
 	end
 
 	def pay(user, value, params = nil)
-		raise UnimplementedError, "Override me"	
+		user = user.uid if user.is_a?(User)
+		begin
+			response = secure_vk.secure.sendNotification({:uid => user, :votes => value}) || '{"error":IO}'
+			response = JSON.parse(response) || {:error => 'JSON parsing'}
+			response['response'].to_i == (value * 100).to_i ? nil : response
+		rescue Vkontakte::App::VkException
+			logger.error("[ERROR] [PAY]\n#{user},#{value} => #{$!}")
+			$!
+		rescue
+			logger.fatal("[FATAL] [PAY]\n#{user},#{value} => #{$!}")
+			$!
+		end
 	end
 	
 	private

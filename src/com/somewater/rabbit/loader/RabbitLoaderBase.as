@@ -123,7 +123,11 @@ package com.somewater.rabbit.loader
 		private var PRELOADER_CLASS:Class;
 
 		public function RabbitLoaderBase()
-		{		
+		{
+			super();
+
+			filePaths['Config'] = "/config.txt?net=" + this.net;
+
 			preloader = new PRELOADER_CLASS();
 			for(var i:int = 0; i < 10; i++)
 				preloader.bar["carrot" + i].stop();

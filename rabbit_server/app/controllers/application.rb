@@ -93,10 +93,8 @@ class Application
 				when "levels.xml"
 					LevelXmlGenerator.generate(request['release'])
 					#LevelsAdminController.generate_xml_file(request['release'])
-				when "config.json"
-					[200,{"Content-Type" => "text/plain; charset=UTF-8"},Conf.to_json]
 				when "config.txt"
-					[200,{"Content-Type" => "text/plain; charset=UTF-8"},ConfigGenerator.generate]
+					[200,{"Content-Type" => "text/plain; charset=UTF-8"},ConfigGenerator.generate(request['net'].to_i)]
 				# ADMIN AREA
 				when /^admin/
 					AdminController.new.call request

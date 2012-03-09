@@ -17,6 +17,11 @@ class NetApi
 		self.class.id
 	end
 
+	# имя net api (совпадает с именем NetApi в конфигурационных файлах)
+	def name
+		nil
+	end
+
 	def can_allocate_uid
 		false # нельзя сервером назначать uid, т.к. они должны предоставляться соц сетью
 	end

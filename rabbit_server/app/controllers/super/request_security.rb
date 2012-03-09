@@ -17,6 +17,11 @@ module RequestSecurity
 	end
 
 	def secure_digest()
-		Digest::MD5.hexdigest("lorem #{@params['json'].reverse} ipsum #{@params['uid']} #{@params['net']} #{secure_roll().to_i}")
+		#Digest::MD5.hexdigest("lorem #{@params['json'].reverse} ipsum #{@params['uid']} #{@params['net']} #{secure_roll().to_i}")
+		self.class.secure(secure_roll(), @params['uid'], @params['net'], @params['json'])
+	end
+
+	def self.secure(roll, uid, net, json)
+		Digest::MD5.hexdigest("lorem #{json.reverse} ipsum #{uid} #{net} #{roll.to_i}")
 	end
 end

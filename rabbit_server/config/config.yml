@@ -8,7 +8,9 @@ config:
 vkontakte:
   app_id: 2732721
   secure_key: kJ0AVDo3he9GhGlhkmha
+  netmoney_to_money: {1 : 10, 3 : 35, 5 : 60, 10 : 140, 50 : 850}
 
 mailru:
   app_id: 666052
   secure_key: 5913a8ff0e9374362dd4dc87605c5e55
+  netmoney_to_money: {}
