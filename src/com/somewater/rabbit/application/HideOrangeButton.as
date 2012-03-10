@@ -18,7 +18,7 @@ package com.somewater.rabbit.application
 		}
 
 		override protected function createGround(type:String):Sprite {
-			return Lib.createMC("interface.GreenButton_" + type);
+			return Lib.createMC("interface.ShadowOrangeButton_" + type);
 		}
 	}
 }
