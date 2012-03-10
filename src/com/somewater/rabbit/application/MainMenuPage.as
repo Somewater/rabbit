@@ -1,9 +1,11 @@
 package com.somewater.rabbit.application
 {
 	import com.somewater.controller.PopUpManager;
+	import com.somewater.rabbit.application.buttons.GreenButton;
 	import com.somewater.rabbit.application.commands.OpenRewardLevelCommand;
 	import com.somewater.rabbit.application.commands.StartNextLevelCommand;
 	import com.somewater.rabbit.application.tutorial.TutorialManager;
+	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
@@ -39,6 +41,12 @@ package com.somewater.rabbit.application
 				buttons.splice(buttons.indexOf('ABOUT_GAME'), 0, "USERS_TOP");// ставим пеерд "Об игре"
 			}
 
+			// если соц сть поддерживает биллинг, выставляем кнопку "Магазин"
+			if(Config.isAdmin && (Config.loader.hasPaymentApi || CONFIG::debug))
+			{
+				buttons.splice(buttons.indexOf('MY_ACHIEVEMENTS'), 0, "SHOP_MENU_BTN");// ставим пеерд "Ми нарады"
+			}
+
 			if(Config.loader.hasFriendsApi)
 			{
 				friendBar = new FriendBar();
@@ -53,7 +61,7 @@ package com.somewater.rabbit.application
 			var b:OrangeButton;
 			for(var i:int = 0;i<buttons.length;i++)
 			{
-				b = new OrangeButton();
+				b = buttons[i] == 'SHOP_MENU_BTN' ? new GreenButton() : new OrangeButton();
 				b.label = Lang.t(buttons[i]);
 				buttons[i] = b;
 				b.addEventListener(MouseEvent.CLICK, onSomeButtonClick);
@@ -108,6 +116,9 @@ package com.somewater.rabbit.application
 						break;
 				case Lang.t("LEVEL_SELECTION"):
 						Config.application.startPage("levels");
+						break;
+				case Lang.t("SHOP_MENU_BTN"):
+						Config.application.startPage('shop');
 						break;
 				case Lang.t("MY_ACHIEVEMENTS"):
 						new OpenRewardLevelCommand(UserProfile.instance).execute();

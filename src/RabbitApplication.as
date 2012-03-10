@@ -26,6 +26,7 @@ package
 	import com.somewater.rabbit.application.ServerLogic;
 	import com.somewater.rabbit.application.TopPage;
 	import com.somewater.rabbit.application.WindowBackground;
+	import com.somewater.rabbit.application.shop.ShopPage;
 	import com.somewater.rabbit.application.tutorial.TutorialManager;
 	import com.somewater.rabbit.application.windows.InviteFriendsWindow;
 	import com.somewater.rabbit.application.windows.LevelFinishFailWindow;
@@ -94,6 +95,8 @@ package
 										"top":TopPage
 										,
 										"about":AboutPage
+										,
+										"shop":ShopPage
 									}
 		private const LEVELS_GUI:Object = {
 												'Level':GameGUI,

@@ -150,6 +150,20 @@ package com.somewater.rabbit.application {
 			}, onError, null, setServerUnsecureFlag());
 		}
 
+		public function buyMoney(money:int, netmoney:int, onComplete:Function, onError:Function):void {
+			handler.call('money/buy', {money: money, netmoney: netmoney}, function(response:Object):void{
+				if(response && response['success'])
+				{
+					// выдать бабла
+					UserProfile.instance.money = response['user_money'];
+					if(onComplete != null)
+						onComplete(response);
+				}
+				else if(onError != null)
+					onError(response);
+			}, onError);
+		}
+
 
 		//////////////////////////////////
 		//                              //

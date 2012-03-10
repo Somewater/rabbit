@@ -258,10 +258,15 @@ package {
 			return true;
 		}
 
+		private var _customHash:Object
 		override public function get customHash():Object {
-			var h:Object = super.customHash;
-			h['GAME_TESTERS']="Olesya Kazimirova;vk.com/olesya.kazimirova,Савелий Ташлыков;http://vk.com/id116118631,Лилия Беляева;vk.com/id139801679,Аркадий Клюкин;vk.com/id96381901,Ruslana Ruslana;vk.com/id78387355,Флора Шарыпова;vk.com/id132072432,София Попова;vk.com/id136765327,Дмитрий Новиков;vk.com/id150662339"
-			return h;
+			if(_customHash == null)
+			{
+				_customHash = super.customHash;
+				_customHash['GAME_TESTERS']="Olesya Kazimirova;vk.com/olesya.kazimirova,Савелий Ташлыков;http://vk.com/id116118631,Лилия Беляева;vk.com/id139801679,Аркадий Клюкин;vk.com/id96381901,Ruslana Ruslana;vk.com/id78387355,Флора Шарыпова;vk.com/id132072432,София Попова;vk.com/id136765327,Дмитрий Новиков;vk.com/id150662339"
+				_customHash['NET_MONEY'] = function(quntity:int):String{return 'голосов'};
+			}
+			return _customHash;
 		}
 	}
 }
