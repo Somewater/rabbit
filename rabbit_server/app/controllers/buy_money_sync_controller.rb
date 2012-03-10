@@ -4,7 +4,7 @@ class BuyMoneySyncController < BaseUserController
 	def process
 		money_quantity = @json['money'].to_i
 		netmoney_quantity = @json['netmoney'].to_i
-		netmoney_to_money = CONFIG[@user.api.name.to_s]
+		netmoney_to_money = CONFIG[@user.api.name.to_s]["netmoney_to_money"]
 		raise AuthError, "Current net unsupport billing" unless netmoney_to_money
 		raise LogicError, "Unsupported price" if netmoney_to_money[netmoney_quantity] != money_quantity
 
