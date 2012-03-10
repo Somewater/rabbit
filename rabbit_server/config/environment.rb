@@ -6,6 +6,7 @@ require 'rexml/document'
 require 'digest/md5'
 require 'logger'
 require 'active_record'
+require "vkontakte"
 
 
 # const ROOT must be initialize abowe!

@@ -19,10 +19,10 @@ class VkApi < NetApi
 				response = secure_vk.secure.sendNotification({:uids => user_uids.join(','), :message => text})
 				# todo: проверить success, выдать id-шники получателей
 			rescue Vkontakte::App::VkException
-				logger.error("[ERROR] [NOTIFY]\n#{user_uids} => #{$!}")
+				Application.logger.error("[ERROR] [NOTIFY]\n#{user_uids} => #{$!} #{$!.backtrace}")
 				false
 			rescue
-				logger.fatal("[FATAL] [NOTIFY]\n#{user_uids} => #{$!}")
+				Application.logger.fatal("[FATAL] [NOTIFY]\n#{user_uids} => #{$!} #{$!.backtrace}")
 				false
 			end	
 	end
@@ -30,14 +30,14 @@ class VkApi < NetApi
 	def pay(user, value, params = nil)
 		user = user.uid if user.is_a?(User)
 		begin
-			response = secure_vk.secure.sendNotification({:uid => user, :votes => value}) || '{"error":IO}'
-			response = JSON.parse(response) || {:error => 'JSON parsing'}
-			response['response'].to_i == (value * 100).to_i ? nil : response
+			response = secure_vk.secure.withdrawVotes({:uid => user, :votes => (value.to_i * 100)}) || '{"error":IO}'
+			response = response || {:error => 'JSON parsing'}
+			response['response'].to_i == (value.to_i * 100) ? nil : response
 		rescue Vkontakte::App::VkException
-			logger.error("[ERROR] [PAY]\n#{user},#{value} => #{$!}")
+			Application.logger.error("[ERROR] [PAY]\n#{user},#{value} => #{$!} #{$!.backtrace}")
 			$!
 		rescue
-			logger.fatal("[FATAL] [PAY]\n#{user},#{value} => #{$!}")
+			Application.logger.fatal("[FATAL] [PAY]\n#{user},#{value} => #{$!} #{$!.backtrace}")
 			$!
 		end
 	end

@@ -14,9 +14,9 @@ class BuyMoneySyncController < BaseUserController
 		pay_result = @user.api.pay(@user, netmoney_quantity)
 		unless(pay_result) # pay не выдал ошибку
 			Application.logger.warn("Payment ##{payment_unique_id} success")
-			user.money += money_quantity
-			user.save
-			@response['user_money'] = user.money
+			@user.money += money_quantity
+			@user.save
+			@response['user_money'] = @user.money
 			@response['success'] = true
 		else
 			Application.logger.warn("Payment ##{payment_unique_id} error: #{pay_result.to_s}")
