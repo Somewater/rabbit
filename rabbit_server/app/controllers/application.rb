@@ -89,6 +89,8 @@ class Application
 					OfferController.new(request).call
 				when 'top/index'
 					TopController.new(request).call
+				when 'money/buy'
+					BuyMoneySyncController.new(request).call
 
 				when "levels.xml"
 					LevelXmlGenerator.generate(request['release'])
