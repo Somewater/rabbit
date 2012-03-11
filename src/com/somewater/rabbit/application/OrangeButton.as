@@ -18,7 +18,7 @@ package com.somewater.rabbit.application
 	public class OrangeButton extends OrangeGround
 	{
 
-		private var textField:EmbededTextField;
+		public var textField:EmbededTextField;
 		private const defaultHeight:int = 32;
 		private var _enabled:Boolean = true;
 		

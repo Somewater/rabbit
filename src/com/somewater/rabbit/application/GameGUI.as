@@ -31,6 +31,7 @@ package com.somewater.rabbit.application
 		private var carrotTF:EmbededTextField;
 		private var minutesArrowShelf:Shape;
 		private var offerStat:OfferStatPanel;
+		private var powerupPanel:PowerupsGameGUI;
 
 		private var healthHintArea:Sprite;
 		private var timeHintArea:Sprite;
@@ -95,12 +96,18 @@ package com.somewater.rabbit.application
 			Hint.bind(statPanel.getChildByName('scoreRatingHintArea'), scoreRatingHint);
 			statPanel.getChildByName('scoreRatingHintArea').alpha = 0;
 
-			offerStat = new OfferStatPanel(OfferStatPanel.GAME_MODE);
-			offerStat.x = statPanel.x - 10 - offerStat.width;
-			offerStat.y = statPanel.y;
-			addChild(offerStat);
+			if(OfferManager.instance.quantity)
+			{
+				offerStat = new OfferStatPanel(OfferStatPanel.GAME_MODE);
+				offerStat.x = statPanel.x - 10 - offerStat.width;
+				offerStat.y = statPanel.y;
+				addChild(offerStat);
+			}
 
-
+			powerupPanel = new PowerupsGameGUI();
+			powerupPanel.x = (offerStat ? offerStat.x : statPanel.x) - 10 - PowerupsGameGUI.WIDTH;
+			powerupPanel.y = statPanel.y;
+			addChild(powerupPanel);
 		}
 
 		public function init():void
@@ -145,7 +152,12 @@ package com.somewater.rabbit.application
 		public function clear():void
 		{
 			playPauseButton.removeEventListener(MouseEvent.CLICK, onPlayPauseClick);
-			offerStat.clear();
+			if(offerStat)
+				offerStat.clear();
+			if(powerupPanel)
+			{
+				powerupPanel.clear();
+			}
 
 			Hint.removeHint(statPanel.getChildByName('scoreHintArea'));
 			Hint.removeHint(statPanel.getChildByName('timeHintArea'));

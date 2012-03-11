@@ -91,6 +91,10 @@ class Application
 					TopController.new(request).call
 				when 'money/buy'
 					BuyMoneySyncController.new(request).call
+				when 'items/purchase'
+					BuyUserItemController.new(request).call
+				when 'items/use'
+					UseItemController.new(request).call
 
 				when "levels.xml"
 					LevelXmlGenerator.generate(request['release'])

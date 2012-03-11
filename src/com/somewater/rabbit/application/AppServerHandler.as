@@ -67,7 +67,10 @@ package com.somewater.rabbit.application {
 
 		public function onLevelPassed(user:GameUser, levelInstance:LevelInstanceDef, onComplete:Function = null, onError:Function = null):void
 		{
-			handler.call('levels/complete', {'levelInstance':levelInstanceToJson(levelInstance, {})},
+			var itemsStr:String = '';
+			for(var id:String in UserProfile.instance.items)
+				itemsStr += (itemsStr.length ? ',' : '') + id + ':' + UserProfile.instance.items[int(id)];
+			handler.call('levels/complete', {'levelInstance':levelInstanceToJson(levelInstance, {}), items: itemsStr},
 				function(response:Object):void{
 					// проверяем user и levelInstance на синхронность с текущими
 					if(response['levelInstance']['succes'] == false /*||
@@ -162,6 +165,48 @@ package com.somewater.rabbit.application {
 				else if(onError != null)
 					onError(response);
 			}, onError);
+		}
+
+		public function purchaseItems(itemIdsToQuantity:Array, onComplete:Function, onError:Function):void
+		{
+			// todo: для покупки декора использовать другую ф-ю!!!
+			var purchaseStr:String = '';
+			for(var id:String in itemIdsToQuantity)
+			{
+				purchaseStr += (purchaseStr.length ? ',' : '') +  id + ':' + itemIdsToQuantity[id]
+			}
+			if(purchaseStr.length == 0)
+				throw new Error('Cant`t buy empty items set');
+			handler.call('items/purchase', {purchase: purchaseStr}, function(response:Object):void{
+				// сервер всё продал, как надо
+				if(response && response['success'])
+				{
+					response['user'] = jsonToGameUser(response['user'], UserProfile.instance);
+					if(onComplete != null)
+						onComplete(response);
+				}
+				else if(onError != null)
+					onError(response);
+			}, onError);
+		}
+
+
+		/**
+		 * Послать на сервер запрос списания указанного айтема
+		 */
+		public function useItem(itemId:int, onComplete:Function = null, onError:Function = null):void
+		{
+			handler.call('items/use', {item_id: itemId}, function(response:Object):void{
+				if(response['success'])
+				{
+					UserProfile.instance.items[itemId] = int(response['quantity'])
+					UserProfile.instance.dispatchChange();
+					if(onComplete != null)
+						onComplete(response);
+				}
+				else if(onError != null)
+					onError(response);
+			}, onError)
 		}
 
 

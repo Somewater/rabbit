@@ -15,10 +15,11 @@ class BuyUserItemController < BaseUserController
 		raise LogicError, "Not enough money to purchase" if total_price > @user.money
 
 		@user.money -= total_price
-		purchase do |pair|
+		purchase.each do |pair|
 			@user.add_item(pair.first.to_i, pair.last.to_i)
 		end
 
+		@response['success'] = 1
 		@response['user'] = @user.to_json
 	end
 

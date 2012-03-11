@@ -35,6 +35,12 @@ package com.somewater.rabbit.storage
 		public var currentTimeSpended:uint;
 		public var currentCarrotHarvested:uint;
 		public var currentStars:uint;
+
+		/**
+		 * Потраченные в процессе прохождения паверапы
+		 * (хэш, ключи - имена темплейтов, значения - сколько потрачено)
+		 */
+		public var spendedPowerups:Array;
 		
 		public function LevelInstanceDef(data:Object=null)
 		{

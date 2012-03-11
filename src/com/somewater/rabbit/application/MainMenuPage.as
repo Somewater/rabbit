@@ -42,7 +42,7 @@ package com.somewater.rabbit.application
 			}
 
 			// если соц сть поддерживает биллинг, выставляем кнопку "Магазин"
-			if(Config.isAdmin && (Config.loader.hasPaymentApi || CONFIG::debug))
+			if(Config.isAdmin || Config.loader.hasPaymentApi || CONFIG::debug)
 			{
 				buttons.splice(buttons.indexOf('MY_ACHIEVEMENTS'), 0, "SHOP_MENU_BTN");// ставим пеерд "Ми нарады"
 			}

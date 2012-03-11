@@ -3,7 +3,9 @@ package com.somewater.rabbit.application.shop {
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.rabbit.storage.UserProfile;
+	import com.somewater.storage.Lang;
 	import com.somewater.text.EmbededTextField;
+	import com.somewater.text.Hint;
 
 	import flash.display.DisplayObject;
 	import flash.display.SimpleButton;
@@ -21,13 +23,15 @@ package com.somewater.rabbit.application.shop {
 
 		private var quantityTF:EmbededTextField;
 		private var plus:SimpleButton;
+		private var ground:DisplayObject
 
 		public function MyMoneyBag() {
 
-			var ground:DisplayObject = Lib.createMC('interface.OpaqueBackground');
+			ground = Lib.createMC('interface.OpaqueBackground');
 			ground.width = WIDTH;
 			ground.height = HEIGHT;
-			addChild(ground)
+			addChild(ground);
+			Hint.bind(ground, hintMoney);
 
 			var icon:DisplayObject = Lib.createMC('interface.MoneyIcon');
 			icon.scaleX = icon.scaleY = 38/icon.height;
@@ -36,7 +40,8 @@ package com.somewater.rabbit.application.shop {
 			addChild(icon);
 
 			quantityTF = new EmbededTextField(Config.FONT_SECONDARY, 0xFFFFFF, 25, true);
-			quantityTF.x = icon.x + icon.width;
+			quantityTF.x = icon.x + icon.width + 5;
+			quantityTF.y = 7;
 			addChild(quantityTF);
 
 			plus = Lib.createMC('interface.GreenPlus');
@@ -44,6 +49,7 @@ package com.somewater.rabbit.application.shop {
 			plus.y = (HEIGHT - plus.height) * 0.5;
 			addChild(plus);
 			plus.addEventListener(MouseEvent.CLICK, onPlusClicked);
+			Hint.bind(plus, Lang.t('SHOP_ADD_MONEY_HINT'))
 
 			UserProfile.bind(onUserDataChanged)
 		}
@@ -55,6 +61,12 @@ package com.somewater.rabbit.application.shop {
 		public function clear():void {
 			plus.removeEventListener(MouseEvent.CLICK, onPlusClicked);
 			UserProfile.unbind(onUserDataChanged);
+			Hint.removeHint(ground);
+			Hint.removeHint(plus);
+		}
+
+		private function hintMoney():String{
+			return Lang.t('SHOP_MONEY_PANEL_HINT', {quantity: UserProfile.instance.money})
 		}
 
 		private function onPlusClicked(event:MouseEvent):void {

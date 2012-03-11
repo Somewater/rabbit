@@ -13,6 +13,7 @@ package com.somewater.display
 	import flash.display.DisplayObject;
 	import flash.display.SimpleButton;
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
 	import flash.text.Font;
@@ -24,6 +25,8 @@ package com.somewater.display
 	 */
 	public class Window extends Sprite implements IClear
 	{
+		public static const EVENT_CLOSE:String = 'eventClose';
+
 		private const WIDTH:int = 400;
 		private const HEIGHT:int = 150;
 		
@@ -44,7 +47,7 @@ package com.somewater.display
 		protected var ground:Sprite;
 		
 		public var closeFunc:Function;
-		
+
 		public function Window(text:String = null, title:String = null ,closeFunc:Function = null,_buttons:Array = null)
 		{
 			super();
@@ -290,6 +293,7 @@ package com.somewater.display
 		public function close():void{
 			clear();
 			PopUpManager.removePopUp(this);
+			dispatchEvent(new Event(Window.EVENT_CLOSE));
 		}
 		
 		private var _width:int;

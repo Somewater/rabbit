@@ -234,3 +234,27 @@ BUY_MONEY_WINDOW_TITLE=ПОКУПКА КРУГЛИКОВ
 BUY_MONET_QUANTITY=получить <font size="20">{quantity}</font>
 BUY_MONEY_COST=за {cost} {net_money}
 BUY_MONEY_SUCCESS_MESSAGE=Баланс успешно пополнен на {quantity} кругликов!
+NEED_MONEY_MESSAGE=Для совершения покупки тебе не хватает {quantity} кругликов
+SHOP_TAB_POWERUPS=энергетики
+SHOP_BASKET_MESSAGE_BUY=я покупаю:
+SHOP_BASKET_BTN_BUY=КУПИТЬ ЗА {quantity}
+SHOP_TRANSACTION_SUCCESS_MSG=Покупка совершена успешно!
+SHOP_TRANSACTION_ERROR_MSG=Не удалось совершить покупку. Техническое описание ошибки: {error}
+SHOP_MONEY_PANEL_HINT=У тебя {quantity} кругликов
+SHOP_ADD_MONEY_HINT=Купить кругликов
+MY_POWERUPS_PANEL=Мои энергетики
+POWERUP_GAME_GUI_BTN_HINT=Энергетики
+SHOP_WINDOW_GOTO_GAME_BTN=НАЗАД В ИГРУ
+###################
+#
+#	ITEM NAMES & DESCRIPTIONS
+#
+#####################
+ITEM_NAME_POWERUP_HEALTH=Жизнь
+ITEM_DESC_POWERUP_HEALTH=Кроль восстанавливает 50% своей жизни
+ITEM_NAME_POWERUP_PROTECTION=Защита
+ITEM_DESC_POWERUP_PROTECTION=Кроля 10 секунд никто не может укусить. Кроль может собирать даже злые морковки
+ITEM_NAME_POWERUP_SPEED=Ускорение
+ITEM_DESC_POWERUP_SPEED=Кроль на 10 секунд получает способность передвигаться в 2 раза быстрее. Нельзя применить более двух ускорений одновременно
+ITEM_NAME_POWERUP_TIME=Дополнительное время
+ITEM_DESC_POWERUP_TIME=Кроль получает еще 10 секунд до окончания уровня

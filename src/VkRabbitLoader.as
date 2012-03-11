@@ -264,7 +264,14 @@ package {
 			{
 				_customHash = super.customHash;
 				_customHash['GAME_TESTERS']="Olesya Kazimirova;vk.com/olesya.kazimirova,Савелий Ташлыков;http://vk.com/id116118631,Лилия Беляева;vk.com/id139801679,Аркадий Клюкин;vk.com/id96381901,Ruslana Ruslana;vk.com/id78387355,Флора Шарыпова;vk.com/id132072432,София Попова;vk.com/id136765327,Дмитрий Новиков;vk.com/id150662339"
-				_customHash['NET_MONEY'] = function(quntity:int):String{return 'голосов'};
+				_customHash['NET_MONEY'] = function(quntity:int):String{
+					if(quntity == 1)
+						return 'голос';
+					else if(quntity < 5)
+						return 'голоса';
+					else
+						return 'голосов';
+				};
 			}
 			return _customHash;
 		}

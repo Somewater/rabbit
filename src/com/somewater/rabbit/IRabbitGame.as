@@ -50,5 +50,7 @@ package com.somewater.rabbit
 		function get tutorialModule():IGameTutorialModule
 
 		function createOffer(x:int,  y:int):void
+
+		function usePowerup(templateName:String):void
 	}
 }

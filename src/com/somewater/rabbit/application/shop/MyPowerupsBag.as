@@ -4,6 +4,8 @@ package com.somewater.rabbit.application.shop {
 	import com.somewater.rabbit.storage.PowerupDef;
 	import com.somewater.rabbit.storage.UserProfile;
 
+	import flash.display.DisplayObject;
+
 	import flash.display.Sprite;
 	import flash.events.Event;
 
@@ -24,9 +26,12 @@ package com.somewater.rabbit.application.shop {
 
 		public var padding:int
 
-		public function MyPowerupsBag(padding:int = 5) {
+		private var highlightPowerupButtons:Boolean;
+
+		public function MyPowerupsBag(padding:int = 5, highlightPowerupButtons:Boolean = false) {
 
 			this.padding = padding;
+			this.highlightPowerupButtons = highlightPowerupButtons;
 
 			UserProfile.bind(onUserDataChanged);
 		}
@@ -34,18 +39,23 @@ package com.somewater.rabbit.application.shop {
 		private function onUserDataChanged():void {
 			clearIcons();
 			var nextX:int = 0;
-			for(var id:String in UserProfile.instance.items)
+			var powerupDefs:Array = ItemDef.byClass(PowerupDef);
+			powerupDefs.sortOn('cost', Array.NUMERIC);
+			for each(var powerup:PowerupDef in powerupDefs)
 			{
-				var powerupDef:PowerupDef = ItemDef.byId(int(id)) as PowerupDef;
-				if(powerupDef)
+				var icon:ItemIcon = new ItemIcon(powerup);
+				icon.quantity = int(UserProfile.instance.items[powerup.id]);
+				icon.addEventListener(MouseEvent.CLICK, onIconClicked);
+				if(highlightPowerupButtons)
 				{
-					var icon:PowerupIcon = new PowerupIcon(powerupDef, UserProfile.instance.items[id]);
-					icon.addEventListener(MouseEvent.CLICK, onIconClicked);
-					addChild(icon)
-					icon.x = nextX;
-					nextX += ITEM_WIDTH + padding;
-					icons.push(icon);
+					icon.addEventListener(MouseEvent.ROLL_OVER, onIconOver);
+					icon.addEventListener(MouseEvent.ROLL_OUT, onIconOut);
+					icon.buttonMode = icon.useHandCursor = true;
 				}
+				addChild(icon)
+				icon.x = nextX;
+				nextX += padding + icon.width;
+				icons.push(icon);
 			}
 			dispatchEvent(new Event(Event.CHANGE));
 		}
@@ -58,72 +68,41 @@ package com.somewater.rabbit.application.shop {
 
 		private function clearIcons():void
 		{
-			for each(var icon:PowerupIcon in icons)
+			for each(var icon:ItemIcon in icons)
 			{
 				icon.removeEventListener(MouseEvent.CLICK, onIconClicked);
+				if(highlightPowerupButtons)
+				{
+					icon.removeEventListener(MouseEvent.ROLL_OVER, onIconOver);
+					icon.removeEventListener(MouseEvent.ROLL_OUT, onIconOut);
+				}
 				icon.clear();
 				this.removeChild(icon);
 			}
 			icons = [];
 		}
 
+		private function onIconOut(event:MouseEvent):void {
+			var icon:ItemIcon = event.currentTarget as ItemIcon;
+			icon.background = false;
+		}
+
+		private function onIconOver(event:MouseEvent):void {
+			var icon:ItemIcon = event.currentTarget as ItemIcon;
+			icon.background = true;
+		}
+
 		private function onIconClicked(event:MouseEvent):void {
-			var icon:PowerupIcon = event.currentTarget as PowerupIcon;
-			dispatchEvent(new PowerupEvent(icon.powerup));
+			var icon:ItemIcon = event.currentTarget as ItemIcon;
+			dispatchEvent(new PowerupEvent(icon.item as PowerupDef));
 		}
 
 		override public function get width():Number {
-			return icons.length * ITEM_WIDTH + Math.max(0, icons.length - 1) * padding;
+			return icons.length ? DisplayObject(icons[icons.length - 1]).x + DisplayObject(icons[icons.length - 1]).width : 0;
 		}
 
 		override public function get height():Number {
 			return HEIGHT;
 		}
-	}
-}
-
-import com.somewater.control.IClear;
-import com.somewater.rabbit.application.shop.MyPowerupsBag;
-import com.somewater.rabbit.storage.Config;
-import com.somewater.rabbit.storage.Lib;
-import com.somewater.rabbit.storage.PowerupDef;
-import com.somewater.text.EmbededTextField;
-import com.somewater.utils.MovieClipHelper;
-
-import flash.display.MovieClip;
-
-import flash.display.Sprite;
-import flash.geom.Rectangle;
-
-class PowerupIcon extends Sprite implements IClear
-{
-	public var powerup:PowerupDef;
-
-	private var image:MovieClip;
-	private var quantityTF:EmbededTextField;
-
-	public function PowerupIcon(powerup:PowerupDef, quantity:int)
-	{
-		this.powerup = powerup;
-
-		const imageScale:Number = 0.5;
-
-		image = Lib.createMC(powerup.slug);
-		image.scaleX = image.scaleY = imageScale;
-		MovieClipHelper.stopAll(image);
-		addChild(image);
-
-		var bounds:Rectangle = image.getBounds(image);
-		image.x = -bounds.x * imageScale;
-		image.y = -bounds.y * imageScale;
-
-		quantityTF = new EmbededTextField(Config.FONT_SECONDARY, 0xFFFFFF, 16, true, false, false, false, 'right');
-		quantityTF.x = MyPowerupsBag.ITEM_WIDTH;
-		addChild(quantityTF);
-
-		quantityTF.text = quantity.toString();
-	}
-
-	public function clear():void {
 	}
 }

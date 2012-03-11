@@ -12,6 +12,7 @@ package
 	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.application.commands.RestartLevelCommand;
 	import com.somewater.rabbit.components.GenocideComponent;
+	import com.somewater.rabbit.components.PowerupControllerComponent;
 	import com.somewater.rabbit.components.RandomActComponent;
 	import com.somewater.rabbit.debug.ConsoleUtils;
 	import com.somewater.rabbit.debug.CreateTool;
@@ -303,6 +304,17 @@ package
 			var offer:IEntity = PBE.templateManager.instantiateEntity('OfferTemplate');
 			offer.owningGroup = PBE.lookup(InitializeManager.lastLevelGroup) as PBGroup;
 			offer.setProperty(new PropertyReference('@Spatial.position'), new Point(x,  y))
+		}
+
+		public function usePowerup(templateName:String):void {
+			// найдем ссылку на Hero
+			var hero:IEntity = PBE.lookupEntity('Hero');
+			if(hero)
+			{
+				(hero.lookupComponentByType(PowerupControllerComponent) as PowerupControllerComponent).applyPowerup(templateName);
+			}
+			else if(CONFIG::debug)
+				throw new Error('Hero not founded')
 		}
 	}
 }

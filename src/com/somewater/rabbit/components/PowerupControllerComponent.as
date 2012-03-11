@@ -1,4 +1,5 @@
 package com.somewater.rabbit.components {
+	import com.pblabs.engine.PBE;
 	import com.pblabs.engine.core.ObjectType;
 	import com.pblabs.engine.entity.IEntity;
 	import com.somewater.rabbit.decor.PopupEffectFactory;
@@ -154,6 +155,12 @@ package com.somewater.rabbit.components {
 
 			refreshActorPowerups();
 			registerForTicks = temporaryPowerups.length > 0;
+		}
+
+		public function applyPowerup(powerupTemplateName:String):void
+		{
+			applyHarvest([PBE.templateManager.instantiateEntity(powerupTemplateName)]);
+			levelConditionsRef.powerupTemplateNameToQuantity[powerupTemplateName] = int(levelConditionsRef.powerupTemplateNameToQuantity[powerupTemplateName]) + 1;
 		}
 
 		private function pushToTemporaryPowerups(data:PowerupDataComponent):void

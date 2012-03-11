@@ -24,6 +24,16 @@ package com.somewater.rabbit.storage {
 			itemsByName[this.name] = this;
 		}
 
+		public function getTitle():String
+		{
+			return Config.application.translate('ITEM_NAME_' + this.name.toUpperCase());
+		}
+
+		public function getDescription():String
+		{
+			return Config.application.translate('ITEM_DESC_' + this.name.toUpperCase());
+		}
+
 		public static function byId(id:int):ItemDef
 		{
 			return itemsById[id];

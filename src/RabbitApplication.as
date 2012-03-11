@@ -821,7 +821,8 @@ package
 		{
 			return Config.gameModuleActive == false
 					&& PopUpManager.numWindows == 0
-					&& !TutorialManager.active;
+					&& !TutorialManager.active
+					&& !(currentPage is ShopPage)// в магазине никого не беспокоим, пусть тратят деньги
 		}
 
 		/**

@@ -15,7 +15,7 @@ package com.somewater.rabbit.application.shop {
 
 		private var buyMoneyButtons:Array = [];
 
-		public function BuyMoneyWindow() {
+		public function BuyMoneyWindow(need:int = 0) {
 			super(null, null, null, []);
 			setSize(WIDTH, HEIGHT);
 
@@ -25,6 +25,17 @@ package com.somewater.rabbit.application.shop {
 			buyTitle.y = 18;
 			addChild(buyTitle);
 
+			var needMoneyText:EmbededTextField
+			if(need)
+			{
+				needMoneyText = new EmbededTextField(null, 0xDB661B, 12, true, true, false, false, 'center');
+				needMoneyText.width = this.width * 0.8;
+				needMoneyText.text = Lang.t('NEED_MONEY_MESSAGE', {quantity: need})
+				needMoneyText.x = (this.width - needMoneyText.width) * 0.5;
+				needMoneyText.y = buyTitle.y + buyTitle.textHeight + 10;
+				addChild(needMoneyText);
+			}
+
 			var rules:Object = ConfManager.instance.get('NETMONEY_TO_MONEY');
 			CONFIG::debug
 			{
@@ -32,22 +43,31 @@ package com.somewater.rabbit.application.shop {
 			}
 			var count:int;
 			var key:String;
-			for(key in rules)
-				count++;
-
-			var nextY:int = buyTitle.y + buyTitle.textHeight + 10;
-			var padding:int = BuyMoneyButton.HEIGHT + 10;
+			var sortedRules:Array = [];
 			for(key in rules)
 			{
-				var netmoney:int = int(key);
-				var money:int = int(rules[key]);
-				var button:BuyMoneyButton = new BuyMoneyButton(netmoney, money);
+				count++;
+				sortedRules.push({money: int(rules[key]), netmoney: int(key)});
+			}
+			sortedRules.sortOn('money', Array.NUMERIC);
+
+			var nextY:int = needMoneyText ? needMoneyText.y + needMoneyText.textHeight + 20 : buyTitle.y + buyTitle.textHeight + 20;
+			var padding:int = BuyMoneyButton.HEIGHT + 10;
+			var i:int = 0;
+			for each(var data:Object in sortedRules)
+			{
+				var button:BuyMoneyButton = new BuyMoneyButton(data.netmoney, data.money);
 				button.x = (WIDTH - BuyMoneyButton.WIDTH) * 0.5;
 				button.y = nextY;
 				nextY += padding;
 				button.addEventListener(MouseEvent.CLICK, onClick);
 				addChild(button);
 				buyMoneyButtons.push(button);
+
+				// кнопка кликабельна, если это просто окно (без need), если кнопка окупит всё или это последняя доступная кнопка (остальные заблочены)
+				button.enabled = need == 0 || need <= data.money || i == sortedRules.length - 1;
+
+				i++;
 			}
 
 			open();
@@ -65,6 +85,7 @@ package com.somewater.rabbit.application.shop {
 
 		private function onClick(event:MouseEvent):void {
 			var btn:BuyMoneyButton = event.currentTarget as BuyMoneyButton;
+			if(!btn.enabled) return;
 			Config.loader.pay(btn.netmoney, function(...args):void{
 				// success
 				Config.application.showSlash(0);
@@ -114,14 +135,15 @@ class BuyMoneyButton extends GreenButton
 
 		var getTxt:EmbededTextField = new EmbededTextField(null, 0xFFFFFF, 14, true, false, false, false, 'right');
 		getTxt.x = icon.x - 20;
+		getTxt.y = 1;
 		addChild(getTxt);
 
 		var fromTxt:EmbededTextField = new EmbededTextField(null, 0xFFFFFF, 14);
 		fromTxt.x = icon.x + icon.width + 20;
+		fromTxt.y = 5;
 		addChild(fromTxt);
 
 		getTxt.htmlText = Lang.t('BUY_MONET_QUANTITY', {quantity: money});
-		getTxt.y = (HEIGHT - getTxt.textHeight) * 0.5;
 
 
 		var netMoneyName:String = Lang.t('NET_MONEY');
@@ -131,6 +153,5 @@ class BuyMoneyButton extends GreenButton
 		}catch(err:Error){}
 
 		fromTxt.text = Lang.t('BUY_MONEY_COST', {cost: netmoney, net_money: netMoneyName})
-		fromTxt.y = (HEIGHT - fromTxt.textHeight) * 0.5;
 	}
 }

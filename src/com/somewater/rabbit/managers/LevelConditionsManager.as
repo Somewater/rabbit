@@ -49,6 +49,11 @@ package com.somewater.rabbit.managers
 		private var horizontRef:HorizontRender;
 
 		private var gameGuiRef:Object;
+
+		/**
+		 * Запоминает использованные в процессе прохождения уровня покупные паверапы
+		 */
+		public var powerupTemplateNameToQuantity:Array = [];
 		
 		
 		public function LevelConditionsManager()
@@ -97,6 +102,8 @@ package com.somewater.rabbit.managers
 			completeConditions = [];
 			completeConditions["time"] = true; // в том смысле, что НЕ(время закончилось)
 			completeConditions["carrotMax"] = true;
+
+			powerupTemplateNameToQuantity = [];
 		}
 			
 		
@@ -272,6 +279,7 @@ package com.somewater.rabbit.managers
 
 			PBE.processManager.schedule(flag == LevelInstanceDef.LEVEL_FATAL_TIME ? 0 : 1500, this, function():void{
 
+				event.spendedPowerups = powerupTemplateNameToQuantity;
 				// если кролика за delay убили, отменяем выигрыш
 				if(!(HeroDataComponent.instance && HeroDataComponent.instance.health > 0) && event.success)
 				{
