@@ -54,3 +54,23 @@ wood_roof:
   id: 111
   slug: reward.WoodDoor
 
+#####################
+#
+#	ТАБЛИЧИК
+#
+#####################
+title: &title
+  <<: *customize
+  type: title
+  id: -120
+
+default_title:
+  <<: *title
+  id: 120
+  slug: reward.DefaultTitle
+  start: true
+
+zinc_title:
+  <<: *title
+  id: 121
+  slug: reward.ZincTitle

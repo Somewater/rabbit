@@ -10,7 +10,10 @@ package com.somewater.rabbit.application {
 
 	import flash.display.DisplayObjectContainer;
 
+	import flash.display.DisplayObjectContainer;
+
 	import flash.text.TextField;
+	import flash.text.TextFormat;
 
 	/**
 	 * Отвечает за кастомизацию будки согласно покупок гейм-юзера
@@ -61,26 +64,38 @@ package com.somewater.rabbit.application {
 			// добавить крышу, которую заслуживает этот юзер
 			createByCustomize(CustomizeDef.TYPE_ROOF);
 			createByCustomize(CustomizeDef.TYPE_DOOR);
+			var titleClip:DisplayObjectContainer = createByCustomize(CustomizeDef.TYPE_TITLE);
 
-			var holeTitle:TextField = Config.application.createTextField(Config.FONT_SECONDARY, 0x6B450D, 12, true, false, false, false, 'center');
-			holeTitle.width = 70;
+			var titleClipTextField:TextField = titleClip.getChildByName('textField') as TextField;
+
+			var holeTitle:TextField = Config.application.createTextField(null,null,12,false,false,false,false, titleClipTextField.defaultTextFormat.align);
+			holeTitle.width = titleClipTextField.width;
+			holeTitle.height = titleClipTextField.height;
+			holeTitle.defaultTextFormat = titleClipTextField.defaultTextFormat;
+			holeTitle.embedFonts = true;
 			holeTitle.text = Config.game.level is IUserLevel ? IUserLevel(Config.game.level).gameUser.socialUser.firstName
 					: (Config.loader.getUser().firstName && Config.loader.getUser().firstName.length ? Config.loader.getUser().firstName :
 									(Config.loader.getUser().lastName ? Config.loader.getUser().lastName : ''));
-			holeTitle.x = -holeTitle.width * 0.5;
-			holeTitle.y = -holeTitle.textHeight * 0.5;
-			event.clip.title.marker.addChild(holeTitle);
+			var tf:TextFormat = titleClipTextField.getTextFormat();
+			holeTitle.setTextFormat(tf);
+			holeTitle.selectable = false;
+			holeTitle.x = titleClipTextField.x;
+			holeTitle.y = titleClipTextField.y;
+			titleClip.addChildAt(holeTitle, titleClip.getChildIndex(titleClipTextField));
+			titleClipTextField.parent.removeChild(titleClipTextField);
 
 			function getHolder(name:String):DisplayObjectContainer
 			{
 				return event.clip.getChildByName(name) as DisplayObjectContainer;
 			}
 
-			function createByCustomize(type:String):void
+			function createByCustomize(type:String):DisplayObjectContainer
 			{
 				var custom:CustomizeDef = user.getCustomize(type);
 				if(custom == null) custom =	CustomizeDef.getDefault(type);
-				getHolder(type).addChild(Lib.createMC(custom.slug));
+				var customClip:DisplayObjectContainer = Lib.createMC(custom.slug)
+				getHolder(type).addChild(customClip);
+				return customClip;
 			}
 		}
 	}

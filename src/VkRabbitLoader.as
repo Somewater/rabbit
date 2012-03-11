@@ -255,7 +255,7 @@ package {
 		}
 
 		override public function get hasPaymentApi():Boolean {
-			return true;
+			return false;
 		}
 
 		private var _customHash:Object

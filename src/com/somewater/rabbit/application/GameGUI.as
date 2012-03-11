@@ -104,10 +104,13 @@ package com.somewater.rabbit.application
 				addChild(offerStat);
 			}
 
-			powerupPanel = new PowerupsGameGUI();
-			powerupPanel.x = (offerStat ? offerStat.x : statPanel.x) - 10 - PowerupsGameGUI.WIDTH;
-			powerupPanel.y = statPanel.y;
-			addChild(powerupPanel);
+			if(Config.loader.hasPaymentApi)
+			{
+				powerupPanel = new PowerupsGameGUI();
+				powerupPanel.x = (offerStat ? offerStat.x : statPanel.x) - 10 - PowerupsGameGUI.WIDTH;
+				powerupPanel.y = statPanel.y;
+				addChild(powerupPanel);
+			}
 		}
 
 		public function init():void
