@@ -194,7 +194,7 @@ namespace :srv do
 			when :offers_db_fix
 				OffersDbStringErrorFix::execute()
 			when :prize
-				# arg1 = customize type,  arg = customize id
+				# arg1 = customize type,  arg = customize id  (rake srv:fix[prize,door,111])
 				OffersGivePrize::execute(args[:arg1].to_s, args[:arg2].to_i)
 			else
 				puts "Undefined fix name"

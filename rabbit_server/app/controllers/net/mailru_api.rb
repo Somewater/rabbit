@@ -15,8 +15,15 @@ class MailryApi < NetApi
 	end
 	
 	def notify(target, text, params = nil)
-		get('notifications.send', {:uids => NetApi.arg_to_ids(target).join(','), :text => text})
-		true
+		begin
+			user_uids = NetApi.arg_to_ids(target)
+			response = nil
+			response = get('notifications.send', {:uids => user_uids.join(','), :text => text})
+			response.to_a
+		rescue
+			Application.logger.error("[ERROR] [NOTIFY]\n#{user_uids} => #{$!} #{$!.backtrace}")
+			false
+		end
 	end
 
 	def pay(user, value, params = nil)
@@ -31,7 +38,6 @@ class MailryApi < NetApi
 					   :secure => 1})
 		params_str = params.sort.map{|a| "#{a.first}=#{a.last}"}.join
 		params[:sig] = Digest::MD5.hexdigest(params_str + CONFIG["mailru"]["secure_key"])
-		p params
-		puts HTTParty.get('http://www.appsmail.ru/platform/api', :query => params)
+		HTTParty.get('http://www.appsmail.ru/platform/api', :query => params)
 	end
 end

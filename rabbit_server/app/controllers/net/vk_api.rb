@@ -13,18 +13,18 @@ class VkApi < NetApi
 	end
 	
 	def notify(target, text, params = nil)
-		# todo target => user_uids (массив id-шников)
 		begin
-				response = nil
-				response = secure_vk.secure.sendNotification({:uids => user_uids.join(','), :message => text})
-				# todo: проверить success, выдать id-шники получателей
-			rescue Vkontakte::App::VkException
-				Application.logger.error("[ERROR] [NOTIFY]\n#{user_uids} => #{$!} #{$!.backtrace}")
-				false
-			rescue
-				Application.logger.fatal("[FATAL] [NOTIFY]\n#{user_uids} => #{$!} #{$!.backtrace}")
-				false
-			end	
+			response = nil
+			user_uids = NetApi.arg_to_ids(target)
+			response = secure_vk.secure.sendNotification({:uids => user_uids.join(','), :message => text})
+			response['response'].split(',')
+		rescue Vkontakte::App::VkException
+			Application.logger.error("[ERROR] [NOTIFY]\n#{user_uids} => #{$!} #{$!.backtrace}")
+			false
+		rescue
+			Application.logger.fatal("[FATAL] [NOTIFY]\n#{user_uids} => #{$!} #{$!.backtrace}")
+			false
+		end
 	end
 
 	def pay(user, value, params = nil)
