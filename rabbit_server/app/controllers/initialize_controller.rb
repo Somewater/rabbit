@@ -46,8 +46,9 @@ class InitializeController < BaseUserController
 		# необходимые поля для создания: :uid, :net (, :first_name, :last_name)
 		@json['user']['uid'] = @params['uid'] # не даем возможности использовать разные значнеия uid,net в @params и @params['user']
 		@json['user']['net'] = @params['net']
-		@user = User.find_by_uid(@params['uid'], @params['net'])
+		#@user = User.find_by_uid(@params['uid'], @params['net'])
 		@user = User.new(@json['user'])
+		@user.attributes = CONFIG['init_user']
 		# добавляем в ответ информацию о созданном пользователе
 		@response['user'] = {'uid' => @user.uid, 'new' => true}
 	end

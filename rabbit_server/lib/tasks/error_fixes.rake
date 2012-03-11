@@ -31,17 +31,6 @@ namespace :fixes do
 		puts "User rewards fixed: #{reward_counter}. Users fixed: #{user_counter}"
 	end
 
-	desc "Give initialize money value"
-	task :initialize_money, [:quantity]  => :environment do  |task, args|
-		quantity = args[:quantity].to_i
-		raise "Wrong money quantity" unless quantity > 0
-		puts "Give #{quantity} money to all"
-		iterate_users do |u|
-			u.money = quantity
-			u.save
-		end
-	end
-
 	def iterate_users(&block)
 		users_count = User.count()
 		iterator = 0
@@ -73,5 +62,13 @@ namespace :fixes do
 			u.save
 		end
 		puts users_with_bad_data.join("\n") if users_with_bad_data.size > 0
+	end
+
+	desc "Give innitial attributes to every user"
+	task :give_initial_stuff => :environment do
+		iterate_users do |u|
+			u.attributes = CONFIG['init_user']
+			u.save
+		end
 	end
 end

@@ -4,6 +4,10 @@ config:
   database: rabbit
   username: pav
   password: qwerty
+
+init_user:
+  money: 20
+  items: {200 : 2, 202 : 1, 203 : 1}
   
 vkontakte:
   app_id: 2732721

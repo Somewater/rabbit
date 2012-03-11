@@ -141,13 +141,21 @@ package com.somewater.rabbit.application
 		// для тьюториала
 		public function get rewardButton():OrangeButton
 		{
-			return buttons[2];
+			for each(var b:OrangeButton in buttons)
+				if(b.label == Lang.t('MY_ACHIEVEMENTS'))
+					return b;
+			disableButtons(false);
+			return null;
 		}
 
 		// для тьюториала
 		public function get levelsButton():OrangeButton
 		{
-			return buttons[1];
+			for each(var b:OrangeButton in buttons)
+				if(b.label == Lang.t('LEVEL_SELECTION'))
+					return b;
+			disableButtons(false);
+			return null;
 		}
 
 		// для тьюториала
