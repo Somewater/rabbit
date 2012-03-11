@@ -8,20 +8,25 @@ class BuyMoneySyncController < BaseUserController
 		raise AuthError, "Current net unsupport billing" unless netmoney_to_money
 		raise LogicError, "Unsupported price" if netmoney_to_money[netmoney_quantity] != money_quantity
 
-		payment_unique_id = "#{Time.new.to_i}-#{@user.uid}-#{@user.net}"
-		Application.logger.warn("Pay ##{payment_unique_id} started: uid=#{@user.uid}, net=#{@user.net}, #{netmoney_quantity}=>#{money_quantity}")
+		transaction = Transaction.create_from(@user, money_quantity, netmoney_quantity)
+		transaction.save
 
+		Application.logger.warn("Pay ##{transaction.id} started: uid=#{@user.uid}, net=#{@user.net}, #{netmoney_quantity}=>#{money_quantity}")
 		pay_result = @user.api.pay(@user, netmoney_quantity)
+		transaction << 'exec'
 		unless(pay_result) # pay не выдал ошибку
-			Application.logger.warn("Payment ##{payment_unique_id} success")
+			Application.logger.warn("Payment ##{transaction.id} success")
 			@user.money += money_quantity
 			@user.save
 			@response['user_money'] = @user.money
 			@response['success'] = true
+			transaction << 'success'
 		else
-			Application.logger.warn("Payment ##{payment_unique_id} error: #{pay_result.to_s}")
+			Application.logger.warn("Payment ##{transaction.id} error: #{pay_result.to_s}")
 			@response['error'] = pay_result.to_s
+			transaction << 'error'
 		end
+		transaction.save
 	end
 
 end
