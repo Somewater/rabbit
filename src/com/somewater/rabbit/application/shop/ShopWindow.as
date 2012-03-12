@@ -27,9 +27,6 @@ package com.somewater.rabbit.application.shop {
 
 			open();
 
-			if(Config.gameModuleActive)
-				Config.game.pause();
-
 			okButtonRef = buttons[0];
 			okButtonRef.y = this.height -okButtonRef.height - 10;
 		}

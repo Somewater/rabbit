@@ -12,6 +12,7 @@ package
 	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.application.commands.RestartLevelCommand;
 	import com.somewater.rabbit.components.GenocideComponent;
+	import com.somewater.rabbit.components.InputComponent;
 	import com.somewater.rabbit.components.PowerupControllerComponent;
 	import com.somewater.rabbit.components.RandomActComponent;
 	import com.somewater.rabbit.debug.ConsoleUtils;
@@ -224,6 +225,12 @@ package
 				PBE.processManager.stop();
 			Config.application.dispatchPropertyChange("game.pause");
 			Config.application.dispatchPropertyChange("game.switch");
+
+			// "отжать" нажатые кнопки
+			try
+			{
+				(PBE.lookupEntity('Hero').lookupComponentByType(InputComponent) as InputComponent).clearKeys();
+			}catch(err:Error){}
 		}
 		
 		

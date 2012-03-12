@@ -335,5 +335,13 @@ package com.somewater.rabbit.components
 				//keyResult = 0;
 			}
 		}
+
+		/**
+		 * "отжать" нажатые кнопки
+		 */
+		public function clearKeys():void
+		{
+			keyResult = lastKeyResult = 0;
+		}
 	}
 }

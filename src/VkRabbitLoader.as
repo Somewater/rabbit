@@ -215,7 +215,7 @@ package {
 						"Game":{priority:-1,preload:true,url:"http://cs10468.vk.com/u245894/250434f33fd67e.zip"}
 						,
 						"Application":{priority:int.MIN_VALUE,
-							preload:true,url:"http://cs10468.vk.com/u245894/8ae772d4b65117.zip"}
+							preload:true,url:"http://cs10468.vk.com/u245894/3230c145270193.zip"}
 						,"Interface":{preload:true, url:"http://cs10468.vk.com/u245894/72c56ecb3ed208.zip"}
 						,"Assets":{preload:true, url:"http://cs5787.vk.com/u245894/d10eaab890c1f4.zip"}
 						,"Rewards":{preload:true, url:"http://cs10468.vk.com/u245894/406de46667be71.zip"}
@@ -255,7 +255,7 @@ package {
 		}
 
 		override public function get hasPaymentApi():Boolean {
-			return false;
+			return true;
 		}
 
 		private var _customHash:Object

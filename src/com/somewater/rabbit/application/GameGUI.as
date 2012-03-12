@@ -32,6 +32,7 @@ package com.somewater.rabbit.application
 		private var minutesArrowShelf:Shape;
 		private var offerStat:OfferStatPanel;
 		private var powerupPanel:PowerupsGameGUI;
+		private var pauseSplash:DisplayObject;
 
 		private var healthHintArea:Sprite;
 		private var timeHintArea:Sprite;
@@ -104,9 +105,15 @@ package com.somewater.rabbit.application
 				addChild(offerStat);
 			}
 
+			pauseSplash = Lib.createMC('interface.PauseSplash');
+			pauseSplash.x = (Config.WIDTH - pauseSplash.width) * 0.5;
+			pauseSplash.y = (Config.HEIGHT - pauseSplash.height) * 0.5;
+			pauseSplash.visible = false;
+			addChild(pauseSplash);
+
 			if(Config.loader.hasPaymentApi)
 			{
-				powerupPanel = new PowerupsGameGUI();
+				powerupPanel = new PowerupsGameGUI(pauseSplash);
 				powerupPanel.x = (offerStat ? offerStat.x : statPanel.x) - 10 - PowerupsGameGUI.WIDTH;
 				powerupPanel.y = statPanel.y;
 				addChild(powerupPanel);

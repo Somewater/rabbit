@@ -36,8 +36,11 @@ package com.somewater.rabbit.application {
 		private var wishPowerupId:int// id паверапа, который надо купить и применить
 
 		private var autoCloseTimer:Timer;
+		private var pauseSplashRef:DisplayObject;
 
-		public function PowerupsGameGUI() {
+		public function PowerupsGameGUI(pauseSplashRef:DisplayObject) {
+
+			this.pauseSplashRef = pauseSplashRef;
 
 			ground = Lib.createMC('interface.OpaqueBackground');
 			ground.width = WIDTH;
@@ -75,7 +78,7 @@ package com.somewater.rabbit.application {
 		private function setStateAnimated(opened:Boolean):void
 		{
 			if(this.opened == opened) return;
-			this.opened = opened;
+			pauseSplashRef.visible = this.opened = opened;
 			if(opened)
 			{
 				Config.game.pause();
