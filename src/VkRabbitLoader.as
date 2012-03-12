@@ -29,7 +29,7 @@ package {
 	import flash.utils.getDefinitionByName;
 
 
-	[SWF(width="810", height="800", backgroundColor="#FFFFFF", frameRate="30")]
+	[SWF(width="810", height="650", backgroundColor="#FFFFFF", frameRate="30")]
 	public class VkRabbitLoader extends SocialRabbitLoader{
 
 		private var _clickozavr:Clickozavr;
@@ -45,7 +45,7 @@ package {
 		override protected function createLayers():void {
 			super.createLayers();
 
-			_content.y= _popups.y = _tutorial.y = _tooltips.y = _cursors.y = 150;
+			//_content.y= _popups.y = _tutorial.y = _tooltips.y = _cursors.y = 150;
 		}
 
 		override protected function netInitialize():void
@@ -67,14 +67,14 @@ package {
 			//var bannerTape: BannerTape = new BannerTape("3298", "791", Config.WIDTH, 1);
 			//stage.addChild(bannerTape);
 
-			adLayer.graphics.beginFill(0xFFFFFF);
+			/*adLayer.graphics.beginFill(0xFFFFFF);
 			adLayer.graphics.drawRect(0,0,Config.WIDTH, 150);
 			adLayer.graphics.drawRect(0, 150 + Config.HEIGHT, Config.WIDTH, 100)
 
 			_clickozavr = new Clickozavr('637', Config.WIDTH , Config.HEIGHT, adLayer);
 			_clickozavr.addEventListener(ClickozavrEvent.GET_USER_DATA, onClickozavrCanGetUserData);
 			_clickozavr.init([
-			new ContainerInfo(ContainerInfo.WIDE600x150_BAR, (Config.WIDTH - 600) * 0.5, 0)], true);
+			new ContainerInfo(ContainerInfo.WIDE600x150_BAR, (Config.WIDTH - 600) * 0.5, 0)], true);*/
 
 			//var image:DisplayObject = new livecardsAd();// 120 x 800
 			//image.x = 800;
@@ -212,11 +212,11 @@ package {
 		{
 			basePath = 'http://rabbit.asflash.ru/';
 			swfs = {
-						"Game":{priority:-1,preload:true,url:"http://cs10468.vk.com/u245894/250434f33fd67e.zip"}
+						"Game":{priority:-1,preload:true,url:"http://cs10468.vk.com/u245894/0c12134b937663.zip"}
 						,
 						"Application":{priority:int.MIN_VALUE,
-							preload:true,url:"http://cs10468.vk.com/u245894/3230c145270193.zip"}
-						,"Interface":{preload:true, url:"http://cs10468.vk.com/u245894/72c56ecb3ed208.zip"}
+							preload:true,url:"http://cs10468.vk.com/u245894/3e601314caffc2.zip"}
+						,"Interface":{preload:true, url:"http://cs10468.vk.com/u245894/4c7227cb08d39a.zip"}
 						,"Assets":{preload:true, url:"http://cs5787.vk.com/u245894/d10eaab890c1f4.zip"}
 						,"Rewards":{preload:true, url:"http://cs10468.vk.com/u245894/406de46667be71.zip"}
 						,"Images":{preload:true, url:"http://cs5787.vk.com/u245894/528c21185ad41d.zip"}
