@@ -20,8 +20,10 @@ package
 		public function EmbedRabbitLoader()
 		{
 			super();
-
-			addChild(new Stats())
+			CONFIG::debug
+			{
+				addChild(new Stats())
+			}
 		}
 		
 		
