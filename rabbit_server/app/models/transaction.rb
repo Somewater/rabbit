@@ -1,8 +1,6 @@
 # класс для логгирования денежных операций
 class Transaction < ActiveRecord::Base
 
-	establish_connection(DB_CONF['stat']) if(APP_ENV != 'test')
-
 	def last_status
 		s = self.status
 		if(s)
