@@ -27,6 +27,7 @@ class FriendVisitRewardController < BaseUserController
 			@response['success'] = false
 		end
 		@response['money'] = @user.money
+		@response['next_reward_time'] = (DateTime.now.midnight + 1.day).to_i
 
 		self.save(storage)
 	end

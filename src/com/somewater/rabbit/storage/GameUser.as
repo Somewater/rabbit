@@ -15,6 +15,9 @@ package com.somewater.rabbit.storage
 		protected var _friendsInvited:int;
 		protected var _customize:Array = [];
 		private var _levelNumber:int;
+
+		public var visitRewarded:Boolean = true;
+		public var visitRewardTime:Number;// в какой момент можно будет в следующий раз собрать ревард
 		
 		public function GameUser(data:Object = null)
 		{

@@ -45,11 +45,13 @@ package com.somewater.rabbit.application {
 				appFriendsById[SocialUser(appfriendsSocial[s]).id] = appfriendsSocial[s];
 			}
 
+			var startRequestTime:Number = new Date().time;
 			handler.call("init", {"referer":Config.loader.referer, "user":gameUserToJson(gameUser, {}), 'friendIds': appFriendsIds},
 				function(response:Object):void{
 					if(response && response['user'] && response['user']['new'])
 						Config.stat(Stat.NEW_USER_REGISTERED);
 
+					UserProfile.instance.msDelta = response['unixtime'] - (new Date().time + startRequestTime) / 2;
 					response['user'] = jsonToGameUser(response['user'], gameUser);
 					var gameUsersFriends:Array = [];
 					for each(var friendJson:Object in response['friends'])
@@ -122,9 +124,14 @@ package com.somewater.rabbit.application {
 
 		public function refreshUserInfo(gameUser:GameUser, onComplete:Function = null, onError:Function = null):void
 		{
-			handler.call('users/show', {'user': gameUserToJson(gameUser, {})},
+			handler.call('users/show', {'user': gameUserToJson(gameUser, {}), friend: gameUser.socialUser.isFriend},
 					function(response:Object):void{
 						response['info'] = jsonToGameUser(response['info'], gameUser);
+						if(response['friend'])
+						{
+							gameUser.visitRewarded = false;
+							gameUser.visitRewardTime = response['next_reward_time'];
+						}
 						onComplete && onComplete(response);
 					}, onError, null)
 		}
@@ -188,6 +195,23 @@ package com.somewater.rabbit.application {
 				else if(onError != null)
 					onError(response);
 			}, onError);
+		}
+
+		public function friendVisitReward(friend:GameUser, onComplete:Function, onError:Function):void
+		{
+			handler.call('friends/visit', {friend_id: friend.uid}, function(response:Object):void{
+				// success
+				if(response['success'])
+				{
+					UserProfile.instance.money = response['money'];
+					friend.visitRewarded = true;
+					friend.visitRewardTime = response['next_reward_time'] * 1000;
+					if(onComplete != null)
+						onComplete(response);
+				}
+				else if(onError != null)
+					onError(response);
+			}, onError)
 		}
 
 

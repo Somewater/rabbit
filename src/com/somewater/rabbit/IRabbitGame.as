@@ -52,5 +52,7 @@ package com.somewater.rabbit
 		function createOffer(x:int,  y:int):void
 
 		function usePowerup(templateName:String):void
+
+		function createFriendVisitReward():void
 	}
 }

@@ -308,9 +308,7 @@ package
 
 		public function createOffer(x:int, y:int):void {
 			//var entity:IEntity =
-			var offer:IEntity = PBE.templateManager.instantiateEntity('OfferTemplate');
-			offer.owningGroup = PBE.lookup(InitializeManager.lastLevelGroup) as PBGroup;
-			offer.setProperty(new PropertyReference('@Spatial.position'), new Point(x,  y))
+			createEntity('OfferTemplate', x, y);
 		}
 
 		public function usePowerup(templateName:String):void {
@@ -322,6 +320,21 @@ package
 			}
 			else if(CONFIG::debug)
 				throw new Error('Hero not founded')
+		}
+
+		public function createFriendVisitReward():void
+		{
+			// выбрать пустое место, доступное кролику для перемещения, и создать там монетку
+			var position:Point = new Point(2, 0);
+
+			createEntity('MoneyRewardTemplate', x, y);
+		}
+
+		private function createEntity(template:String, x:int, y:int):void
+		{
+			var entity:IEntity = PBE.templateManager.instantiateEntity(template);
+			entity.owningGroup = PBE.lookup(InitializeManager.lastLevelGroup) as PBGroup;
+			entity.setProperty(new PropertyReference('@Spatial.position'), new Point(x,  y))
 		}
 	}
 }

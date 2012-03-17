@@ -27,6 +27,13 @@ package com.somewater.rabbit.storage
 		private var _tutorial:int = -1;
 
 		private var _items:Array = [];
+
+		/**
+		 * Разница между временем на клиенте и сервере, в миллисекундах
+		 * Показывает, на сколько клиент отстает от сервера, т.е.
+		 * clienTime + msDelta = serverTime
+		 */
+		public var msDelta:Number;
 		
 		
 		public function UserProfile(data:Object)
@@ -290,6 +297,15 @@ package com.somewater.rabbit.storage
 			if(_items[id] == 0)
 				delete(_items[id]);
 			dispatchChange();
+		}
+
+		/**
+		 * Возвращает время на сервере (МИЛЛИСЕКУНДЫ), принимая в учет msDelta
+		 * Если во время работы приложения пользователь перевео системное время, настройка собьется
+		 */
+		public function serverUnixTime():Number
+		{
+			return new Date().time + msDelta;
 		}
 	}
 }

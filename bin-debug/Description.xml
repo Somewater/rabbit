@@ -681,4 +681,23 @@
 		<component name="Controller" type="com.somewater.rabbit.creature.OfferControllerComponent">
 		</component>
 	</template>
+
+	<template name="MoneyRewardTemplate" template="IsoBase">
+		<component name="Render">
+			<slug>rabbit.MoneyRewardActor</slug>
+			<frameRate>15</frameRate>
+			<useDirection>1</useDirection>
+			<correctX>-0.99</correctX><correctY>-0.99</correctY>
+		</component>
+		<component name="Spatial">
+			<passMask>1</passMask>
+			<occupyMask>1</occupyMask>
+			<size>
+				<x>1</x>
+				<y>1</y>
+			</size>
+		</component>
+		<component name="Controller" type="com.somewater.rabbit.creature.OfferControllerComponent">
+		</component>
+	</template>
 </things>

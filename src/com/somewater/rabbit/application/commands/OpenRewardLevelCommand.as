@@ -2,11 +2,15 @@ package com.somewater.rabbit.application.commands {
 	import com.somewater.rabbit.application.AppServerHandler;
 	import com.somewater.rabbit.application.ImaginaryGameUser;
 	import com.somewater.rabbit.application.ServerLogic;
+	import com.somewater.rabbit.events.GameModuleEvent;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.GameUser;
 	import com.somewater.rabbit.storage.RewardInstanceDef;
 	import com.somewater.rabbit.storage.RewardLevelDef;
+	import com.somewater.rabbit.storage.UserProfile;
 	import com.somewater.storage.Lang;
+
+	import flash.events.Event;
 
 	import flash.utils.Dictionary;
 
@@ -70,7 +74,22 @@ package com.somewater.rabbit.application.commands {
 
 		private function directlyStart():void
 		{
+			// если "созрела" награда за посещение, устанавливаем ее
+			if(!gameUser.visitRewarded && gameUser.visitRewardTime < UserProfile.instance.serverUnixTime())
+			{
+				Config.application.addEventListener(GameModuleEvent.GAME_MODULE_STARTED_EVENT, createVisitRewardItem);
+			}
+
 			Config.application.startGame(new RewardLevelDef(gameUser));
+		}
+
+		/**
+		 * Создать монетку
+		 */
+		private function createVisitRewardItem(event:Event):void
+		{
+			Config.application.removeEventListener(GameModuleEvent.GAME_MODULE_STARTED_EVENT, createVisitRewardItem);
+			Config.game.createFriendVisitReward();
 		}
 	}
 }

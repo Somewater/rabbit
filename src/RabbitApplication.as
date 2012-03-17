@@ -37,6 +37,7 @@ package
 	import com.somewater.rabbit.application.windows.PauseMenuWindow;
 	import com.somewater.rabbit.application.windows.PendingRewardsWindow;
 	import com.somewater.rabbit.application.windows.TesterInvitationWindow;
+	import com.somewater.rabbit.events.GameModuleEvent;
 	import com.somewater.rabbit.storage.ConfManager;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.CustomizeDef;
@@ -198,6 +199,8 @@ package
 			addPropertyListener('music', onMusicVolumeChanged);
 			addPropertyListener('soundEnabled', onSoundVolumeChanged);
 			addPropertyListener('sound', onSoundVolumeChanged);
+
+			addEventListener(GameModuleEvent.FRIEND_VISIT_REWARD_HARVESTED, onFriendVisitRewardHarvested);
 
 			loadAudioSettings();
 
@@ -504,6 +507,7 @@ package
 				}
 
 				gameStartedCompletely = true;
+				dispatchEvent(new GameModuleEvent(GameModuleEvent.GAME_MODULE_STARTED_EVENT, level));
 			}
 		}
 		private var __gameAlreadyRun:Boolean = false;
@@ -848,6 +852,15 @@ package
 			}
 			else
 				Config.pendingStats.push(name);
+		}
+
+		private function onFriendVisitRewardHarvested(event:GameModuleEvent):void
+		{
+			// послать на сервер запрос насчет реварда и выдать ревард юзеру (выдается в AppServerHandler)
+			AppServerHandler.instance.friendVisitReward((event.level as RewardLevelDef).gameUser as GameUser, null, function(response:Object):void{
+				// error
+				message(Lang.t('ERROR_FRIEND_VISIT_REWARD'));
+			})
 		}
 	}
 }
