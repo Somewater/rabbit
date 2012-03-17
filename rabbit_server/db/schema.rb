@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20) do
+ActiveRecord::Schema.define(:version => 21) do
 
   create_table "admins", :force => true do |t|
     t.string   "login",                           :null => false
@@ -39,6 +39,23 @@ ActiveRecord::Schema.define(:version => 20) do
   end
 
   add_index "friend_storages", ["uid", "net"], :name => "index_friend_storages_on_uid_and_net", :unique => true
+
+  create_table "lang_locales", :force => true do |t|
+    t.string "key",    :null => false
+    t.string "locale", :null => false
+    t.text   "value"
+    t.string "author"
+  end
+
+  add_index "lang_locales", ["key", "locale"], :name => "index_lang_locales_on_key_and_locale", :unique => true
+
+  create_table "langs", :force => true do |t|
+    t.string "key",     :null => false
+    t.string "part"
+    t.string "comment"
+  end
+
+  add_index "langs", ["key"], :name => "index_langs_on_key", :unique => true
 
   create_table "levels", :force => true do |t|
     t.string   "description"
@@ -113,6 +130,7 @@ ActiveRecord::Schema.define(:version => 20) do
     t.text     "customize"
     t.integer  "stars",                                          :default => 0
     t.string   "items"
+    t.string   "locale"
   end
 
   add_index "users", ["uid", "net"], :name => "index_users_on_uid_and_net", :unique => true

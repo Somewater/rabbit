@@ -1,3 +1,8 @@
+###################
+#
+#	COMMON
+#
+#####################
 ERROR=ОШИБКА
 ALERT=ВНИМАНИЕ
 OK=OK
@@ -133,37 +138,37 @@ INVITE_WINDOW_BUTTON_POSTING=РАССКАЗАТЬ ОБ ИГРЕ
 #
 #####################
 REWARD_NAME_ID_=Кроличья нора
-# TYPE FAST TIME
+# REWARDS FAST TIME
 REWARD_NAME_ID_10=Цветочные часы
 REWARD_NAME_ID_11=Солнечные часы
 REWARD_NAME_ID_12=Водяные часы
 REWARD_NAME_ID_13=Песочные часы
 REWARD_NAME_ID_14=Огненные часы
-# TYPE ALL CARROT
+# REWARDS ALL CARROT
 REWARD_NAME_ID_20=Малина
 REWARD_NAME_ID_21=Фиалка
 REWARD_NAME_ID_22=Земляника
 REWARD_NAME_ID_23=Ромашка
 REWARD_NAME_ID_24=Колокольчики
-# TYPE CARROT PACK
+# REWARDS CARROT PACK
 REWARD_NAME_ID_30=Корзина морковок
 REWARD_NAME_ID_31=Ведерко морковок
 REWARD_NAME_ID_32=Мешок морковок
 REWARD_NAME_ID_33=Тележка морковок
-# TYPE FAMILIAR
+# REWARDS FAMILIAR
 REWARD_NAME_ID_40=Пирог
 REWARD_NAME_ID_41=Банка варенья
 REWARD_NAME_ID_42=Мед
-# TYPE POSTING
+# REWARDS POSTING
 REWARD_NAME_ID_50=Бандероль
 REWARD_NAME_ID_51=Почтовый ящик
 REWARD_NAME_ID_52=Почтовый голубь
-# TYPE REFERER
+# REWARDS REFERER
 REWARD_NAME_ID_60=Бабочка
 REWARD_NAME_ID_61=Лягушка
 REWARD_NAME_ID_62=Утенок
 REWARD_NAME_ID_63=Кабанчик
-# TYPE CONSOLING
+# REWARDS CONSOLING
 REWARD_NAME_ID_70=Чучело
 REWARD_NAME_ID_71=Стог
 REWARD_NAME_ID_72=Кувшин
@@ -213,7 +218,7 @@ TUTORIAL_CLICK_ON_BACK_ARROW_TO_MENU=Нажми на стрелку, чтобы 
 TUTORIAL_CLICK_TO_LEVELS_BTN=Нажми на кнопку "{button_label}", чтобы увидеть уровни игры
 TUTORIAL_LEVELS_DESC=Все уровни разбиты на отдельные огороды с морковкой. Пройди уровни первого огорода и получи доступ к следующему
 TUTORIAL_CLICK_ON_FRIEND=Нажми на портрет кролика, чтобы посмотреть на его полянку с наградами
-#TUTORIAL_FRIEND_BONUS_DESC=Каждый день заходя к другу, ты можешь собрать 1 морковку
+#!TUTORIAL_FRIEND_BONUS_DESC=Каждый день заходя к другу, ты можешь собрать 1 морковку
 TUTORIAL_FRIEND_BONUS_DESC=Ты можешь заходить в гости к друзьям и смотреть, какие награды есть у них
 TUTORIAL_TITRE=Поздравляю, теперь ты умный кролик и самостоятельно можешь собирать морковку!
 ###################
@@ -247,7 +252,7 @@ POWERUP_GAME_GUI_BTN_HINT=Энергетики
 SHOP_WINDOW_GOTO_GAME_BTN=НАЗАД В ИГРУ
 ###################
 #
-#	ITEM NAMES & DESCRIPTIONS
+#	ITEMS
 #
 #####################
 ITEM_NAME_POWERUP_HEALTH=Жизнь

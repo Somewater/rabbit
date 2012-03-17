@@ -43,6 +43,8 @@ class AdminController
 				StatAdminController.new(@request, admin_user).call
 			when /config/
 				ConfAdminController.new(@request, admin_user).call
+			when /lang/
+				LangAdminController.new(@request, admin_user).call
 			else
 				IndexAdminController.new(@request, admin_user).call
 		end
@@ -65,7 +67,7 @@ class AdminController
 		# хелпер, оборачивает результат в <html>
 		def html args = nil
 			args = {} unless args
-			"<html><head><title>#{args[:title]}</title></head><body>#{yield}</body></html>"
+			"<html><head><title>#{args[:title]}</title>#{(args[:javascript] ? javascripts() : nil)}</head><body>#{yield}</body></html>"
 		end
 
 		# хелпер для создания тегов
@@ -92,6 +94,19 @@ class AdminController
 		protected
 		def check_permissions()
 			raise UnimplementedError, "Function must overriden"
+		end
+
+		def javascripts()
+			<<-HEREDOC
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script type="text/javascript">
+function send(path, data, callback)
+{
+  $.post(path, data, callback);
+}
+
+</script>
+HEREDOC
 		end
 	end
 

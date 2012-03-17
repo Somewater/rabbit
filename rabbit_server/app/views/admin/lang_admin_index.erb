@@ -1,0 +1,78 @@
+<h1><a href='<%= LANG_PATH %>'>LANG ALL</a></h1>
+<% @parts.each_with_index do |part, index|; @selected = @part && part == @part %>
+	<div <%= (@selected ? "style='border:1px solid blue;'" : nil) %>>
+		<a href="<%= LANG_PATH %>?part=<%= part %>"><%= part %></a>
+	</div>
+<% end %>
+<table width='100%' border='1'>
+	<col width="200" />
+	<col width="100%" />
+	<tr>
+		<th>key</th>
+		<th>values</th>
+	</tr>
+	<% @langs.each do |lang|; @lang = lang %>
+			<tr>
+				<td>
+					<table>
+						<form method="post" action="<%= LANG_PATH %>?edit=<%= @lang.id%>&type=lang&part=<%= @part %>#<%= @lang.key %>">
+							<tr>
+								<td>
+									<a name="<%= @lang.key %>"></a>
+									<a name="id<%= @lang.id %>"></a>
+								</td>
+							</tr>
+							<tr><td colspan="2">ID <%= @lang.id %></tr></td>
+							<tr>
+								<td colspan="2" align="center">
+									<div style="word-wrap: break-word; width: 100%; max-width: 350; border:1px solid #0058db;">
+										<h3>
+											<%= @lang.key %>
+										</h3>
+									<div>
+								</td>
+							</tr>
+							<tr><td>part:</td><td><input type="text" name="lang[part]" maxlength="50" value="<%= @lang.part %>" size="30"></input></tr></td>
+							<tr><td>comment:</td><td><input type="text" name="lang[comment]" maxlength="250" value="<%= @lang.comment %>" size="30"></input></tr></td>
+							<tr><td colspan="2"><input type="submit" value="Save"></input></tr></td>
+						</form>
+					</table>
+				</td>
+				<td valign="top" height="100%">
+					<table>
+						<tr>
+							<% @lang.locales.each do |locale_key, locale|; @locale = locale %>
+								<td align="center">
+									<b>
+										<%= @locale.locale %>
+									</b>
+									<small>
+										&nbsp;&nbsp;(ID <%= @locale.id %>, author <%= @locale.author %>)
+									</small>
+								</td>
+							<% end %>
+						</tr>
+						<tr>
+							<% @lang.locales.each do |locale_key, locale|; @locale = locale; txtAreaId = 'ltx' + @locale.id.to_s;  btnUpdId = 'bt' + @locale.id.to_s;  %>
+								<td>
+									<form method="post" action="<%= LANG_PATH %>?edit=<%= @locale.id%>&type=locale&part=<%= @part %>#<%= @lang.key %>">
+										<div <%= (@locale.value && @locale.value.size > 0 ? nil : "style='border:1px solid red;'") %>>
+											<textarea name="locale[value]" onkeydown="document.getElementById('<%= btnUpdId %>').style.visibility = 'visible';"
+													  rows="8" cols="50" id="<%= txtAreaId %>"><%= CGI::escapeHTML(@locale.value || '') %></textarea>
+										</div>
+										<!--input type="submit" value="Update <%= @locale.locale %>"></input-->
+										<button type="button" id="<%= btnUpdId %>" style="visibility: hidden;"
+												onclick="send('<%= LANG_PATH %>?edit=<%= @locale.id%>&type=locale&part=<%= @part %>#<%= @lang.key %>',
+													{locale:{value:document.getElementById('<%= txtAreaId %>').value}, no_content: true}, function(data){
+														document.getElementById('<%= btnUpdId %>').style.visibility = 'hidden';
+													});">
+													Update <%= @locale.locale %></button>
+									</form>
+								</td>
+							<% end %>
+						</tr>
+					</table>
+				</td>
+			</tr>
+	<% end %>
+</table>
