@@ -19,6 +19,7 @@ class AllSpec
 			lambda{
 				controller = controller_class.new()
 				controller.start(request)
+				raise "You dont include module RequestSecurity"
 			}.should raise_error(AuthError, /Unsecured request/)
 			request.params['secure'] = controller.secure_digest()
 
@@ -33,6 +34,11 @@ class AllSpec
 				user = User.new({:uid => uid.to_s, :net => '1'})
 			end
 			user
+		end
+
+		def get_unexistable_uid
+			user_max_id = (User.maximum(:id) || 0) + 1
+			"1-#{user_max_id}"
 		end
 
 		def check_json(data)
@@ -381,11 +387,6 @@ class AllSpec
 				#controller.call
 				#controller.instance_variable_get('@response')
 				execute_request(hash, InitializeController)
-			end
-
-			def get_unexistable_uid
-				user_max_id = (User.maximum(:id) || 0) + 1
-				"1-#{user_max_id}"
 			end
 
 			def get_other_user
@@ -854,6 +855,82 @@ class AllSpec
 
 				@user.reload
 				check_json(@user.to_json['customize'])['roof'].should == 32
+			end
+		end
+
+		describe FriendVisitRewardController do
+			before :each do
+				@user = get_uniq_user
+				@user.save
+
+				@friend = get_uniq_user()
+				@storage = FriendStorage.find_by_user(@friend) || FriendStorage.create_from(@friend)
+				@storage.rewarded = []
+				@storage.friends = []
+				@storage.save
+			end
+
+			def request(friend_id)
+				execute_secure_request({'net' => @user.net,'uid' => @user.uid, 'json' => {'friend_id' => friend_id}}, FriendVisitRewardController)
+			end
+
+			it "Заслуженный ревард выдается" do
+				@storage.friends = @storage.friends << @user.uid
+				@storage.save
+
+				inited_money = @user.money
+				response = request(@friend.uid)
+				response['success'].should be_true
+
+				@user.reload
+				@user.money.should == (inited_money + PUBLIC_CONFIG['VISIT_REWARD_MONEY'].to_i)
+			end
+
+			it "Ревард выдается каждый день, единожды" do
+				@storage.friends = @storage.friends << @user.uid
+				@storage.save
+
+				inited_money = @user.money
+				request(@friend.uid)
+
+				@user.reload
+				@user.money.should == (inited_money + PUBLIC_CONFIG['VISIT_REWARD_MONEY'].to_i)
+
+				time = Application.time.dup
+				Application.instance_variable_set('@time', time + 1.day)
+				request(@friend.uid)
+
+				@user.reload
+				@user.money.should == (inited_money + PUBLIC_CONFIG['VISIT_REWARD_MONEY'].to_i * 2)
+
+				Application.instance_variable_set('@time', time + 2.day)
+				request(@friend.uid)
+
+				@user.reload
+				@user.money.should == (inited_money + PUBLIC_CONFIG['VISIT_REWARD_MONEY'].to_i * 3)
+			end
+
+			it "Нельзя получить ревард с несуществующего пользвателя" do
+				lambda{
+					request(get_unexistable_uid)
+				}.should raise_error(LogicError, /User #.+ not friend for #.+/)
+			end
+
+			it "Нельзя получить ревард не с друга" do
+				lambda{
+					request(get_unexistable_uid)
+				}.should raise_error(LogicError, /User #.+ not friend for #.+/)
+			end
+
+			it "Нельзя получить ревард более одного раза за день" do
+				@storage.friends = @storage.friends << @user.uid
+				@storage.save
+
+				response = request(@friend.uid)
+				response['success'].should be_true
+
+				response = request(@friend.uid)
+				response['success'].should be_false
 			end
 		end
 	end

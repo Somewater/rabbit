@@ -23,6 +23,9 @@ module ConfigGenerator
 				items << v
 			end
 			@@txt_cache << "#{ITEMS_KEY}=#{JSON.fast_generate(items)}\n\n"
+			PUBLIC_CONFIG.each do |k,v|
+				@@txt_cache << "#{k}=#{v}\n\n"
+			end
 		end
 		@@net_txt_cache[net] = generate_net_config(net) unless @@net_txt_cache[net]
 		@@txt_cache + @@net_txt_cache[net]

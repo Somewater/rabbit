@@ -2,6 +2,7 @@ class InitializeController < BaseUserController
 
 	def authorized
 		@response['rewards'] = [] # сюда по ходу проверок будем вписывать ревары, выданные оффлайн или за заход в игру
+		@response['unixtime'] = Application.time.to_i # секунды, unixtime
 
 		if @params['uid'] && @params['uid'].to_s.size > 0 && @params['uid'].to_s != 'null' && @params['uid'].to_s != '0'
 			# базовая реализация поиска юзера

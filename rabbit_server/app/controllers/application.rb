@@ -95,6 +95,10 @@ class Application
 					BuyUserItemController.new(request).call
 				when 'items/use'
 					UseItemController.new(request).call
+				when 'friends/update'
+					UpdateFriendStorageController.new(request).call
+				when 'friends/visit'
+					FriendVisitRewardController.new(request).call
 
 				when "levels.xml"
 					LevelXmlGenerator.generate(request['release'])

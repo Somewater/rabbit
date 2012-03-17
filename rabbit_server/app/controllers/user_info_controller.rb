@@ -6,5 +6,10 @@ class UserInfoController < BaseUserController
 		raise LogicError, "User uid #{@json['user']['uid']} not found" unless @personage
 
 		@response['info'] = @personage.to_json
+
+		if(@json['friend'])
+			storage = FriendStorage.find_by_user(@personage)
+			@response['friend'] = !!(storage && storage.include?(@user))
+		end
 	end
 end

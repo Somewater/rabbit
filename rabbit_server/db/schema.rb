@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 19) do
+ActiveRecord::Schema.define(:version => 20) do
 
   create_table "admins", :force => true do |t|
     t.string   "login",                           :null => false
@@ -29,6 +29,16 @@ ActiveRecord::Schema.define(:version => 19) do
   end
 
   add_index "confs", ["name"], :name => "index_confs_on_name", :unique => true
+
+  create_table "friend_storages", :force => true do |t|
+    t.string  "uid",      :null => false
+    t.integer "net",      :null => false
+    t.text    "friends"
+    t.integer "last_day"
+    t.text    "rewarded"
+  end
+
+  add_index "friend_storages", ["uid", "net"], :name => "index_friend_storages_on_uid_and_net", :unique => true
 
   create_table "levels", :force => true do |t|
     t.string   "description"

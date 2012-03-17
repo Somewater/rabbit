@@ -17,6 +17,7 @@ PUBLIC_DIR = "#{ROOT}/bin-debug"
 TMP_DIR = "#{ROOT}/tmp"
 DB_CONF = YAML.load(File.read("#{CONFIG_DIR}/database.yml"))
 CONFIG  = YAML.load(File.read("#{CONFIG_DIR}/config.yml"))
+PUBLIC_CONFIG = YAML.load(File.read("#{CONFIG_DIR}/public_config.yml"))
 if(defined?(ENV['APP_ENV']) && ENV['APP_ENV'] =~ /(production|development|test)/)
 	RAILS_ENV = APP_ENV = ENV['APP_ENV']
 else
