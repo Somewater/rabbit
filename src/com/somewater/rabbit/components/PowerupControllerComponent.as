@@ -157,10 +157,10 @@ package com.somewater.rabbit.components {
 			registerForTicks = temporaryPowerups.length > 0;
 		}
 
-		public function applyPowerup(powerupTemplateName:String):void
+		public function applyPowerup(powerup:IEntity, powerupTemplate:String):void
 		{
-			applyHarvest([PBE.templateManager.instantiateEntity(powerupTemplateName)]);
-			levelConditionsRef.powerupTemplateNameToQuantity[powerupTemplateName] = int(levelConditionsRef.powerupTemplateNameToQuantity[powerupTemplateName]) + 1;
+			applyHarvest([powerup]);
+			levelConditionsRef.powerupTemplateNameToQuantity[powerupTemplate] = int(levelConditionsRef.powerupTemplateNameToQuantity[powerupTemplate]) + 1;
 		}
 
 		private function pushToTemporaryPowerups(data:PowerupDataComponent):void

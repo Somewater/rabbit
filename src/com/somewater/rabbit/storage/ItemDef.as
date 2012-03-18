@@ -10,6 +10,7 @@ package com.somewater.rabbit.storage {
 		public var id:int;
 		public var slug:String;
 		public var cost:int;// цена в кругликах
+		public var shop_photo:String;
 
 		public function ItemDef(data:Object) {
 			super(data);

@@ -64,12 +64,21 @@ package com.somewater.rabbit.application.commands {
 						Config.application.hideSplash();
 						gameUserRewardsCache[gameUser] = true;
 						directlyStart();
+						if(response['needInviteFriendInGame'])
+						{
+							Config.callLater(showInviteFriendInGameWin, null, 30);
+						}
 					},function(error:Object):void{
 						Config.application.hideSplash();
 						Config.application.message(Lang.t('UNDEFINED_SERVER_ERROR'));
 					})
 				}
 			}
+		}
+
+		private function showInviteFriendInGameWin():void {
+			if(Config.gameModuleActive)
+				Config.application.message(Lang.t('INVITE_APPFRIEND_IN_GAME'))
 		}
 
 		private function directlyStart():void

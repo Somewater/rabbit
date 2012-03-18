@@ -60,6 +60,7 @@ package com.somewater.rabbit.application.tutorial {
 	 * ////	           ////	"нажми стрелку, чтобы вернуться в главное меню"
 	 * 13) заключительное слово
 	 * 		"Поздравляю, теперь ты умный кролик и самостоятельно можешь собирать морковку"
+	 * 14) объяснения про энергетики, когда юзер включит любой уровень
 	 */
 	public class TutorialManager implements IClear{
 
@@ -86,6 +87,7 @@ package com.somewater.rabbit.application.tutorial {
 										,TutorialStep11
 										,TutorialStep12
 										,TutorialStep13
+										,TutorialStep14
 									 ];
 
 		private var tickTimer:Timer;

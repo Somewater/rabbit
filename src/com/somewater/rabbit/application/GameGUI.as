@@ -31,7 +31,7 @@ package com.somewater.rabbit.application
 		private var carrotTF:EmbededTextField;
 		private var minutesArrowShelf:Shape;
 		private var offerStat:OfferStatPanel;
-		private var powerupPanel:PowerupsGameGUI;
+		public var powerupPanel:PowerupsGameGUI;
 		private var pauseSplash:DisplayObject;
 
 		private var healthHintArea:Sprite;
@@ -307,6 +307,12 @@ package com.somewater.rabbit.application
 		public function get pauseButton():DisplayObject
 		{
 			return playPauseButton;
+		}
+
+		// для тьюториала
+		public function get powerupIndicator():DisplayObject
+		{
+			return powerupPanel.getOpenBtn();
 		}
 	}
 }

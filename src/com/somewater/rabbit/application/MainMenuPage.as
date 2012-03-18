@@ -41,7 +41,8 @@ package com.somewater.rabbit.application
 				buttons.splice(buttons.indexOf('ABOUT_GAME'), 0, "USERS_TOP");// ставим пеерд "Об игре"
 			}
 
-			buttons.splice(buttons.indexOf('MY_ACHIEVEMENTS'), 0, "SHOP_MENU_BTN");// ставим пеерд "Ми нарады"
+			if(!Config.memory['hideShop'])
+				buttons.splice(buttons.indexOf('MY_ACHIEVEMENTS'), 0, "SHOP_MENU_BTN");// ставим пеерд "Ми нарады"
 
 			if(Config.loader.hasFriendsApi)
 			{

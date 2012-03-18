@@ -104,5 +104,10 @@ package com.somewater.rabbit.application.shop {
 		override public function get height():Number {
 			return HEIGHT;
 		}
+
+		public function getPowerupIcon(index:int = 0):ItemIcon
+		{
+			return icons[index];
+		}
 	}
 }

@@ -27,7 +27,7 @@ package com.somewater.rabbit.application {
 		public static const WIDTH:int = 48;
 		public static const HEIGHT:int = 48;
 
-		private var myPowerups:MyPowerupsBag;
+		public var myPowerups:MyPowerupsBag;
 		private var ground:DisplayObject;
 		private var btnHolder:DisplayObject;
 
@@ -176,6 +176,16 @@ package com.somewater.rabbit.application {
 			{
 				setStateAnimated(false);
 			}
+		}
+
+		public function getOpenBtn():DisplayObject
+		{
+			return btnHolder;
+		}
+
+		public function isOpened():Boolean
+		{
+			return opened;
 		}
 	}
 }

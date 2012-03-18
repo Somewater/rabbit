@@ -20,6 +20,7 @@ package
 	import com.somewater.rabbit.debug.EditorModule;
 	import com.somewater.rabbit.events.ExceptionEvent;
 	import com.somewater.rabbit.iso.IsoCameraController;
+	import com.somewater.rabbit.iso.IsoSpatial;
 	import com.somewater.rabbit.iso.scene.IsoSpatialManager;
 	import com.somewater.rabbit.iso.scene.SceneView;
 	import com.somewater.rabbit.managers.GameTutorialModule;
@@ -316,7 +317,8 @@ package
 			var hero:IEntity = PBE.lookupEntity('Hero');
 			if(hero)
 			{
-				(hero.lookupComponentByType(PowerupControllerComponent) as PowerupControllerComponent).applyPowerup(templateName);
+				var heroPos:Point = (hero.lookupComponentByType(IsoSpatial) as IsoSpatial).tile;
+				(hero.lookupComponentByType(PowerupControllerComponent) as PowerupControllerComponent).applyPowerup(createEntity(templateName, heroPos.x, heroPos.y), templateName);
 			}
 			else if(CONFIG::debug)
 				throw new Error('Hero not founded')
@@ -330,11 +332,12 @@ package
 			createEntity('MoneyRewardTemplate', position.x, position.y);
 		}
 
-		private function createEntity(template:String, x:int, y:int):void
+		private function createEntity(template:String, x:int, y:int):IEntity
 		{
 			var entity:IEntity = PBE.templateManager.instantiateEntity(template);
 			entity.owningGroup = PBE.lookup(InitializeManager.lastLevelGroup) as PBGroup;
 			entity.setProperty(new PropertyReference('@Spatial.position'), new Point(x,  y))
+			return entity;
 		}
 	}
 }

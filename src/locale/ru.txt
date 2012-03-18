@@ -51,6 +51,7 @@ LEVEL_FATAL_LIFE=Кролик устал... смертельно!
 LEVEL_FATAL_CARROT=Ты проворонил{male:|а} морковку!
 LEVEL_SUCCESS_FINISH=Уровень пройден!
 LEVEL_POSTING_EXPLANATION=Опубликуй новость о прохождении уровня и получи награду!
+INVITE_APPFRIEND_IN_GAME=Твой друг давно не заходил в игру. Попроси его зайти в игру и ты сможешь собирать круглики на его поляне!
 ###################
 #
 #	PAUSE MENU WINDOW
@@ -128,7 +129,7 @@ PENDING_REWARDS_WINDOW_TEXT_MANY=Ты получил{male:|а} новые наг
 PENDING_REWARDS_WINDOW_TEXT_SINGLE=Ты получил{male:|а} новую награду!
 PENDING_REWARDS_WINDOW_TEXT_ONLY_REFERER=Ты пригласил{male:|а} друга и получил{male:|а} награду. Приглашай друзей и получай новые награды!
 PENDING_REWARDS_WINDOW_TEXT_ONLY_FAMILIAR=Ты заходил{male:|а} в игру несколько дней подряд и получил{male:|а} награду!
-INVITE_WINDOW_TITLE=Приглашай друзей - получай награды!
+INVITE_WINDOW_TITLE=Приглашай друзей и собирай круглики у них на полянках!
 INVITE_WINDOW_INVITED=Приглашено:
 INVITE_WINDOW_FOR_REVARD_INVITE=для получения награды\nосталось пригласить:
 INVITE_WINDOW_BUTTON_INVITE=ПРИГЛАСИТЬ ДРУЗЕЙ
@@ -222,6 +223,7 @@ TUTORIAL_CLICK_ON_FRIEND=Нажми на портрет кролика, чтоб
 #!TUTORIAL_FRIEND_BONUS_DESC=Каждый день заходя к другу, ты можешь собрать 1 морковку
 TUTORIAL_FRIEND_BONUS_DESC=Ты можешь заходить в гости к друзьям и смотреть, какие награды есть у них
 TUTORIAL_TITRE=Поздравляю, теперь ты умный кролик и самостоятельно можешь собирать морковку!
+TUTORIAL_POWERUPS_MSG=Используй энергетики в трудных обстоятельствах
 ###################
 #
 #	OFFERS

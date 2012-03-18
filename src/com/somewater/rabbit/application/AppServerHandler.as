@@ -124,7 +124,8 @@ package com.somewater.rabbit.application {
 
 		public function refreshUserInfo(gameUser:GameUser, onComplete:Function = null, onError:Function = null):void
 		{
-			handler.call('users/show', {'user': gameUserToJson(gameUser, {}), friend: gameUser.socialUser.isFriend},
+			var isFriend:Boolean = gameUser.socialUser.isFriend;
+			handler.call('users/show', {'user': gameUserToJson(gameUser, {}), friend: isFriend},
 					function(response:Object):void{
 						response['info'] = jsonToGameUser(response['info'], gameUser);
 						if(response['friend'])
@@ -132,6 +133,8 @@ package com.somewater.rabbit.application {
 							gameUser.visitRewarded = false;
 							gameUser.visitRewardTime = response['next_reward_time'];
 						}
+						if(isFriend && !response['friend'])// друг давненько не заходил
+							response['needInviteFriendInGame'] = true;
 						onComplete && onComplete(response);
 					}, onError, null)
 		}

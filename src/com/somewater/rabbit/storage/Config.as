@@ -29,6 +29,7 @@ package com.somewater.rabbit.storage
 		/**
 		 * Для нетипизированных данных
 		 * hideTop
+		 * hideShop
 		 * autoPostLevelPass - автоматически стартовать постинг пройденного уровня
 		 */
 		public static var memory:Object = {};
