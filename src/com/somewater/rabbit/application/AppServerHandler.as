@@ -211,7 +211,7 @@ package com.somewater.rabbit.application {
 				}
 				else if(onError != null)
 					onError(response);
-			}, onError)
+			}, onError, null, {secure: true})
 		}
 
 
@@ -231,6 +231,18 @@ package com.somewater.rabbit.application {
 				else if(onError != null)
 					onError(response);
 			}, onError)
+		}
+
+		/**
+		 *
+		 * @param friends array of SocialUser
+		 */
+		public function sendFriendsStorage(friends:Array):void
+		{
+			var friendsIds:Array = [];
+			for each(var f:SocialUser in friends)
+				friendsIds.push(f.id);
+			handler.call('friends/update',{friends: friendsIds});
 		}
 
 

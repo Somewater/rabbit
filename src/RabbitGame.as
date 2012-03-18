@@ -325,9 +325,9 @@ package
 		public function createFriendVisitReward():void
 		{
 			// выбрать пустое место, доступное кролику для перемещения, и создать там монетку
-			var position:Point = new Point(2, 0);
+			var position:Point = new Point(0, 2);
 
-			createEntity('MoneyRewardTemplate', x, y);
+			createEntity('MoneyRewardTemplate', position.x, position.y);
 		}
 
 		private function createEntity(template:String, x:int, y:int):void

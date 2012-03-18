@@ -41,11 +41,7 @@ package com.somewater.rabbit.application
 				buttons.splice(buttons.indexOf('ABOUT_GAME'), 0, "USERS_TOP");// ставим пеерд "Об игре"
 			}
 
-			// если соц сть поддерживает биллинг, выставляем кнопку "Магазин"
-			if(Config.isAdmin || Config.loader.hasPaymentApi || CONFIG::debug)
-			{
-				buttons.splice(buttons.indexOf('MY_ACHIEVEMENTS'), 0, "SHOP_MENU_BTN");// ставим пеерд "Ми нарады"
-			}
+			buttons.splice(buttons.indexOf('MY_ACHIEVEMENTS'), 0, "SHOP_MENU_BTN");// ставим пеерд "Ми нарады"
 
 			if(Config.loader.hasFriendsApi)
 			{

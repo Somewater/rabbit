@@ -111,13 +111,10 @@ package com.somewater.rabbit.application
 			pauseSplash.visible = false;
 			addChild(pauseSplash);
 
-			if(Config.loader.hasPaymentApi)
-			{
-				powerupPanel = new PowerupsGameGUI(pauseSplash);
-				powerupPanel.x = (offerStat ? offerStat.x : statPanel.x) - 10 - PowerupsGameGUI.WIDTH;
-				powerupPanel.y = statPanel.y;
-				addChild(powerupPanel);
-			}
+			powerupPanel = new PowerupsGameGUI(pauseSplash);
+			powerupPanel.x = (offerStat ? offerStat.x : statPanel.x) - 10 - PowerupsGameGUI.WIDTH;
+			powerupPanel.y = statPanel.y;
+			addChild(powerupPanel);
 		}
 
 		public function init():void

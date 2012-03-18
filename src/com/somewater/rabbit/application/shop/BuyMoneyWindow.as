@@ -37,18 +37,15 @@ package com.somewater.rabbit.application.shop {
 			}
 
 			var rules:Object = ConfManager.instance.get('NETMONEY_TO_MONEY');
-			CONFIG::debug
-			{
-				rules = {1 : 10, 3 : 35, 5 : 60, 10 : 140, 50 : 850}
-			}
 			var count:int;
 			var key:String;
 			var sortedRules:Array = [];
-			for(key in rules)
-			{
-				count++;
-				sortedRules.push({money: int(rules[key]), netmoney: int(key)});
-			}
+			if(Config.loader.hasPaymentApi)
+				for(key in rules)
+				{
+					count++;
+					sortedRules.push({money: int(rules[key]), netmoney: int(key)});
+				}
 			sortedRules.sortOn('money', Array.NUMERIC);
 
 			var nextY:int = needMoneyText ? needMoneyText.y + needMoneyText.textHeight + 20 : buyTitle.y + buyTitle.textHeight + 20;
@@ -68,6 +65,18 @@ package com.somewater.rabbit.application.shop {
 				button.enabled = need == 0 || need <= data.money || i == sortedRules.length - 1;
 
 				i++;
+			}
+
+			if(count == 0 || CONFIG::debug)
+			{
+				// если нет воз-ти покупать кругилки
+				var attentionTF:EmbededTextField = new EmbededTextField(null, 0xDB661B, 20, true, true, false, false, 'center');
+				attentionTF.width = this.width * 0.8;
+				attentionTF.height = 200
+				attentionTF.text = Lang.t('CANT_BUY_MONEY_MESSAGE')
+				attentionTF.x = (this.width - attentionTF.width) * 0.5;
+				attentionTF.y = 100;
+				addChild(attentionTF);
 			}
 
 			open();

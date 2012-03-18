@@ -55,6 +55,7 @@ package
 	import com.somewater.rabbit.storage.UserProfile;
 	import com.somewater.rabbit.xml.XmlController;
 	import com.somewater.social.SocialUser;
+	import com.somewater.social.SocialUser;
 	import com.somewater.storage.Lang;
 	import com.somewater.text.EmbededTextField;
 	import com.somewater.text.Hint;
@@ -364,6 +365,14 @@ package
 					}
 				}, 10*1000)
 			}
+
+			var sendFriendsInterv:uint = setInterval(function():void{
+				clearInterval(sendFriendsInterv);
+				var friends:Array = [];
+				for each(var f:SocialUser in Config.loader.getAppFriends())
+					friends.push(f);
+				AppServerHandler.instance.sendFriendsStorage(friends);
+			}, 5000);
 		}
 		
 		private function onInitResponseError(error:Object):void
