@@ -22,7 +22,7 @@
 									<a name="id<%= @lang.id %>"></a>
 								</td>
 							</tr>
-							<tr><td colspan="2">ID <%= @lang.id %></tr></td>
+							<tr><td colspan="2"><a href="<%= LANG_PATH %>#<%= @lang.key %>">ID <%= @lang.id %></a></tr></td>
 							<tr>
 								<td colspan="2" align="center">
 									<div style="word-wrap: break-word; width: 100%; max-width: 350; border:1px solid #0058db;">
@@ -41,19 +41,19 @@
 				<td valign="top" height="100%">
 					<table>
 						<tr>
-							<% @lang.locales.each do |locale_key, locale|; @locale = locale %>
+							<% @lang.locales.each do |locale_key, locale|; @locale = locale; authLblId = 'albl' + @locale.id.to_s; %>
 								<td align="center">
 									<b>
 										<%= @locale.locale %>
 									</b>
 									<small>
-										&nbsp;&nbsp;(ID <%= @locale.id %>, author <%= @locale.author %>)
+										&nbsp;&nbsp;(ID <%= @locale.id %> <span id="<%= authLblId %>"><%= @locale.author %></span>)
 									</small>
 								</td>
 							<% end %>
 						</tr>
 						<tr>
-							<% @lang.locales.each do |locale_key, locale|; @locale = locale; txtAreaId = 'ltx' + @locale.id.to_s;  btnUpdId = 'bt' + @locale.id.to_s;  %>
+							<% @lang.locales.each do |locale_key, locale|; @locale = locale; txtAreaId = 'ltx' + @locale.id.to_s;  btnUpdId = 'bt' + @locale.id.to_s; authLblId = 'albl' + @locale.id.to_s;%>
 								<td>
 									<form method="post" action="<%= LANG_PATH %>?edit=<%= @locale.id%>&type=locale&part=<%= @part %>#<%= @lang.key %>">
 										<div <%= (@locale.value && @locale.value.size > 0 ? nil : "style='border:1px solid red;'") %>>
@@ -65,6 +65,7 @@
 												onclick="send('<%= LANG_PATH %>?edit=<%= @locale.id%>&type=locale&part=<%= @part %>#<%= @lang.key %>',
 													{locale:{value:document.getElementById('<%= txtAreaId %>').value}, no_content: true}, function(data){
 														document.getElementById('<%= btnUpdId %>').style.visibility = 'hidden';
+														document.getElementById('<%= authLblId %>').innerHTML = '<%= @admin_user.user.login %>';
 													});">
 													Update <%= @locale.locale %></button>
 									</form>

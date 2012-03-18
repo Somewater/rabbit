@@ -26,6 +26,11 @@ class LangAdminController < AdminController::Base
 				raise UnimplementedError, "Undefined type"
 			end
 			Lang.clear_cache()
+		elsif(@request['create'])
+			# проверить, что указанный ключ еще не создан
+			# получить список известных ключей
+			# создать пустые значения под ключь (в т.ч. локали) и сохранить
+			Lang.clear_cache()
 		end
 
 		@part = @request['part'] && @request['part'].size > 0 ? @request['part'] : nil
