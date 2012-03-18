@@ -179,7 +179,6 @@ package com.somewater.rabbit.components
 		
 		protected function onKeyUp(e:KeyboardEvent):void
 		{
-			return;
 			if(!PBE.processManager.isTicking) return;// не обрабатываем действия, если игра на паузе
 			
 			var buf:uint = keyResult;
