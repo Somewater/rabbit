@@ -52,32 +52,34 @@
 			}
 		},
 		{
-			"contents": "/*\n * Copyright (c) 2005, The haXe Project Contributors\n * All rights reserved.\n * Redistribution and use in source and binary forms, with or without\n * modification, are permitted provided that the following conditions are met:\n *\n *   - Redistributions of source code must retain the above copyright\n *     notice, this list of conditions and the following disclaimer.\n *   - Redistributions in binary form must reproduce the above copyright\n *     notice, this list of conditions and the following disclaimer in the\n *     documentation and/or other materials provided with the distribution.\n *\n * THIS SOFTWARE IS PROVIDED BY THE HAXE PROJECT CONTRIBUTORS \"AS IS\" AND ANY\n * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\n * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\n * DISCLAIMED. IN NO EVENT SHALL THE HAXE PROJECT CONTRIBUTORS BE LIABLE FOR\n * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\n * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\n * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\n * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT\n * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY\n * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH\n * DAMAGE.\n */\npackage neko.net;\n\nprivate typedef ThreadInfos = {\n	var id : Int;\n	var t : neko.vm.Thread;\n	var p : neko.net.Poll;\n	var socks : Array<neko.net.Socket>;\n}\n\nprivate typedef ClientInfos<Client> = {\n	var client : Client;\n	var sock : neko.net.Socket;\n	var thread : ThreadInfos;\n	var buf : haxe.io.Bytes;\n	var bufpos : Int;\n}\n\nclass ThreadServer<Client,Message> {\n\n	var threads : Array<ThreadInfos>;\n	var sock : neko.net.Socket;\n	var worker : neko.vm.Thread;\n	var timer : neko.vm.Thread;\n	public var listen : Int;\n	public var nthreads : Int;\n	public var connectLag : Float;\n	public var errorOutput : haxe.io.Output;\n	public var initialBufferSize : Int;\n	public var maxBufferSize : Int;\n	public var messageHeaderSize : Int;\n	public var updateTime : Float;\n	public var maxSockPerThread : Int;\n\n	public function new() {\n		threads = new Array();\n		nthreads = if( neko.Sys.systemName() == \"Windows\" ) 150 else 10;\n		messageHeaderSize = 1;\n		listen = 10;\n		connectLag = 0.5;\n		errorOutput = neko.io.File.stderr();\n		initialBufferSize = (1 << 10);\n		maxBufferSize = (1 << 16);\n		maxSockPerThread = 64;\n		updateTime = 1;\n	}\n\n	function runThread(t) {\n		while( true ) {\n			try {\n				loopThread(t);\n			} catch( e : Dynamic ) {\n				logError(e);\n			}\n		}\n	}\n\n	function readClientData( c : ClientInfos<Client> ) {\n		var available = c.buf.length - c.bufpos;\n		if( available == 0 ) {\n			var newsize = c.buf.length * 2;\n			if( newsize > maxBufferSize ) {\n				newsize = maxBufferSize;\n				if( c.buf.length == maxBufferSize )\n					throw \"Max buffer size reached\";\n			}\n			var newbuf = haxe.io.Bytes.alloc(newsize);\n			newbuf.blit(0,c.buf,0,c.bufpos);\n			c.buf = newbuf;\n			available = newsize - c.bufpos;\n		}\n		var bytes = c.sock.input.readBytes(c.buf,c.bufpos,available);\n		var pos = 0;\n		var len = c.bufpos + bytes;\n		while( len >= messageHeaderSize ) {\n			var m = readClientMessage(c.client,c.buf,pos,len);\n			if( m == null )\n				break;\n			pos += m.bytes;\n			len -= m.bytes;\n			work(callback(clientMessage,c.client,m.msg));\n		}\n		if( pos > 0 )\n			c.buf.blit(0,c.buf,pos,len);\n		c.bufpos = len;\n	}\n\n	function loopThread( t : ThreadInfos ) {\n		if( t.socks.length > 0 )\n			for( s in t.p.poll(t.socks,connectLag) ) {\n				var infos : ClientInfos<Client> = s.custom;\n				try {\n					readClientData(infos);\n				} catch( e : Dynamic ) {\n					t.socks.remove(s);\n					if( !Std.is(e,haxe.io.Eof) && !Std.is(e,haxe.io.Error) )\n						logError(e);\n					work(callback(doClientDisconnected,s,infos.client));\n				}\n			}\n		while( true ) {\n			var m : { s : neko.net.Socket, cnx : Bool } = neko.vm.Thread.readMessage(t.socks.length == 0);\n			if( m == null )\n				break;\n			if( m.cnx )\n				t.socks.push(m.s);\n			else if( t.socks.remove(m.s) ) {\n				var infos : ClientInfos<Client> = m.s.custom;\n				work(callback(doClientDisconnected,m.s,infos.client));\n			}\n		}\n	}\n\n	function doClientDisconnected(s,c) {\n		try s.close() catch( e : Dynamic ) {};\n		clientDisconnected(c);\n	}\n\n	function runWorker() {\n		while( true ) {\n			var f = neko.vm.Thread.readMessage(true);\n			try {\n				f();\n			} catch( e : Dynamic ) {\n				logError(e);\n			}\n			try {\n				afterEvent();\n			} catch( e : Dynamic ) {\n				logError(e);\n			}\n		}\n	}\n\n	public function work( f : Void -> Void ) {\n		worker.sendMessage(f);\n	}\n\n	function logError( e : Dynamic ) {\n		var stack = haxe.Stack.exceptionStack();\n		if( neko.vm.Thread.current() == worker )\n			onError(e,stack);\n		else\n			work(callback(onError,e,stack));\n	}\n\n	function addClient( sock : neko.net.Socket ) {\n		var infos : ClientInfos<Client> = {\n			thread : threads[Std.random(nthreads)],\n			client : clientConnected(sock),\n			sock : sock,\n			buf : haxe.io.Bytes.alloc(initialBufferSize),\n			bufpos : 0,\n		};\n		sock.custom = infos;\n		infos.thread.t.sendMessage({ s : sock, cnx : true });\n	}\n\n	function runTimer() {\n		var l = new neko.vm.Lock();\n		while( true ) {\n			l.wait(updateTime);\n			work(update);\n		}\n	}\n\n	function init() {\n		worker = neko.vm.Thread.create(runWorker);\n		timer = neko.vm.Thread.create(runTimer);\n		for( i in 0...nthreads ) {\n			var t = {\n				id : i,\n				t : null,\n				socks : new Array(),\n				p : new neko.net.Poll(maxSockPerThread),\n			};\n			threads.push(t);\n			t.t = neko.vm.Thread.create(callback(runThread,t));\n		}\n	}\n\n	public function addSocket( s : neko.net.Socket ) {\n		s.setBlocking(false);\n		work(callback(addClient,s));\n	}\n\n	public function run( host, port ) {\n		sock = new neko.net.Socket();\n		sock.bind(new neko.net.Host(host),port);\n		sock.listen(listen);\n		init();\n		while( true ) {\n			try {\n				addSocket(sock.accept());\n			} catch( e : Dynamic ) {\n				logError(e);\n			}\n		}\n	}\n\n	public function sendData( s : neko.net.Socket, data : String ) {\n		try {\n			s.write(data);\n		} catch( e : Dynamic ) {\n			stopClient(s);\n		}a\n	}\n\n	public function stopClient( s : neko.net.Socket ) {\n		var infos : ClientInfos<Client> = s.custom;\n		try s.shutdown(true,true) catch( e : Dynamic ) { };\n		infos.thread.t.sendMessage({ s : s, cnx : false });\n	}\n\n	// --- CUSTOMIZABLE API ---\n\n	public dynamic function onError( e : Dynamic, stack ) {\n		var estr = try Std.string(e) catch( e2 : Dynamic ) \"???\" + try \"[\"+Std.string(e2)+\"]\" catch( e : Dynamic ) \"\";\n		errorOutput.writeString( estr + \"\\n\" + haxe.Stack.toString(stack) );\n		errorOutput.flush();\n	}\n\n	public dynamic function clientConnected( s : neko.net.Socket ) : Client {\n		return null;\n	}\n\n	public dynamic function clientDisconnected( c : Client ) {\n	}\n\n	public dynamic function readClientMessage( c : Client, buf : haxe.io.Bytes, pos : Int, len : Int ) : { msg : Message, bytes : Int } {\n		return {\n			msg : null,\n			bytes : len,\n		};\n	}\n\n	public dynamic function clientMessage( c : Client, msg : Message ) {\n	}\n\n	public dynamic function update() {\n	}\n\n	public dynamic function afterEvent() {\n	}\n\n}\n",
-			"file": "/usr/lib/haxe/std/neko/net/ThreadServer.hx",
-			"file_size": 7122,
-			"file_write_time": 1318770095000000,
+			"file": "src/hellespontus/RoomController.hx",
 			"settings":
 			{
-				"buffer_size": 7123,
-				"line_ending": "Unix"
+				"buffer_size": 233,
+				"line_ending": "Windows"
 			}
 		},
 		{
-			"contents": "/*\n * Copyright (c) 2005, The haXe Project Contributors\n * All rights reserved.\n * Redistribution and use in source and binary forms, with or without\n * modification, are permitted provided that the following conditions are met:\n *\n *   - Redistributions of source code must retain the above copyright\n *     notice, this list of conditions and the following disclaimer.\n *   - Redistributions in binary form must reproduce the above copyright\n *     notice, this list of conditions and the following disclaimer in the\n *     documentation and/or other materials provided with the distribution.\n *\n * THIS SOFTWARE IS PROVIDED BY THE HAXE PROJECT CONTRIBUTORS \"AS IS\" AND ANY\n * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\n * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\n * DISCLAIMED. IN NO EVENT SHALL THE HAXE PROJECT CONTRIBUTORS BE LIABLE FOR\n * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\n * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\n * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\n * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT\n * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY\n * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH\n * DAMAGE.\n */\npackage neko.net;\n\nclass ThreadRemotingServer extends ThreadServer<haxe.remoting.SocketConnection,String> {\n\n	var domains : Array<String>;\n	var port : Int;\n\n	public function new( ?domains ) {\n		super();\n		messageHeaderSize = 2;\n		this.domains = domains;\n	}\n\n	public dynamic function initClientApi( cnx : haxe.remoting.SocketConnection, ctx : haxe.remoting.Context ) {\n		throw \"Not implemented\";\n	}\n\n	public dynamic function onXml( cnx : haxe.remoting.SocketConnection, data : String ) {\n		throw \"Unhandled XML data '\"+data+\"'\";\n	}\n\n	public dynamic function makePolicyFile() {\n		var str = \"<cross-domain-policy>\";\n		for( d in domains )\n			str += '<allow-access-from domain=\"'+d+'\" to-ports=\"'+port+'\"/>';\n		str += \"</cross-domain-policy>\";\n		return str;\n	}\n\n	public override function run( host, port ) {\n		this.port = port;\n		super.run(host,port);\n	}\n\n	public override function clientConnected( s : neko.net.Socket ) {\n		var ctx = new haxe.remoting.Context();\n		var cnx = haxe.remoting.SocketConnection.create(s,ctx);\n		var me = this;\n		cnx.setErrorHandler(function(e) {\n			if( !Std.is(e,haxe.io.Eof) && !Std.is(e,haxe.io.Error) )\n				me.logError(e);\n			me.stopClient(s);\n		});\n		initClientApi(cnx,ctx);\n		return cnx;\n	}\n\n	override function readClientMessage( cnx : haxe.remoting.SocketConnection, buf : haxe.io.Bytes, pos : Int, len : Int ) {\n		var msgLen = cnx.getProtocol().messageLength(buf.get(pos),buf.get(pos+1));\n		if( msgLen == null ) {\n			if( buf.get(pos) != 60 )\n				throw \"Invalid remoting message '\"+buf.readString(pos,len)+\"'\";\n			var p = pos;\n			while( p < len ) {\n				if( buf.get(p) == 0 )\n					break;\n				p++;\n			}\n			if( p == len )\n				return null;\n			p -= pos;\n			return {\n				msg : buf.readString(pos,p),\n				bytes : p + 1,\n			};\n		}\n		if( len < msgLen )\n			return null;\n		if( buf.get(pos + msgLen-1) != 0 )\n			throw \"Truncated message\";\n		return {\n			msg : buf.readString(pos+2,msgLen-3),\n			bytes : msgLen,\n		};\n	}\n\n	public override function clientMessage( cnx : haxe.remoting.SocketConnection, msg : String ) {\n		try {\n			if( msg.charCodeAt(0) == 60 ) {\n				if( domains != null && msg == \"<policy-file-request/>\" )\n					cnx.getProtocol().socket.write(makePolicyFile()+\"\\x00\");\n				else\n					onXml(cnx,msg);\n			} else\n				cnx.processMessage(msg);\n		} catch( e : Dynamic ) {\n			if( !Std.is(e,haxe.io.Eof) && !Std.is(e,haxe.io.Error) )\n				logError(e);\n			stopClient(cnx.getProtocol().socket);\n		}\n	}\n\n}\n",
-			"file": "/usr/lib/haxe/std/neko/net/ThreadRemotingServer.hx",
-			"file_size": 3798,
-			"file_write_time": 1318770095000000,
+			"file": "src/hellespontus/SocketClient.hx",
 			"settings":
 			{
-				"buffer_size": 3798,
-				"line_ending": "Unix"
+				"buffer_size": 167,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/hellespontus/SocketMessage.hx",
+			"settings":
+			{
+				"buffer_size": 141,
+				"line_ending": "Windows"
 			}
 		},
 		{
 			"file": "src/hellespontus/SocketServer.hx",
 			"settings":
 			{
-				"buffer_size": 2518,
+				"buffer_size": 2519,
 				"line_ending": "Windows"
 			}
 		}
@@ -127,6 +129,9 @@
 	"file_history":
 	[
 		"/home/pav/lab/rabbit/hellespontus/src/hellespontus/SocketServer.hx",
+		"/usr/lib/haxe/std/neko/net/ThreadRemotingServer.hx",
+		"/usr/lib/haxe/std/neko/net/ThreadServer.hx",
+		"/home/pav/lab/rabbit/hellespontus/src/Hellespontus.hx",
 		"/home/pav/.config/sublime-text-2/Packages/Default/Default (Linux).sublime-keymap",
 		"/home/pav/.config/sublime-text-2/Packages/User/Global.sublime-settings",
 		"/home/pav/.config/sublime-text-2/Packages/User/Distraction Free.sublime-settings",
@@ -189,7 +194,7 @@
 	"groups":
 	[
 		{
-			"selected": 3,
+			"selected": 4,
 			"sheets":
 			[
 				{
@@ -198,6 +203,34 @@
 					"settings":
 					{
 						"buffer_size": 425,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								73,
+								73
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/hellespontus/RoomController.hx",
+					"settings":
+					{
+						"buffer_size": 233,
 						"regions":
 						{
 						},
@@ -221,75 +254,73 @@
 					"type": "text"
 				},
 				{
-					"buffer": 1,
-					"file": "/usr/lib/haxe/std/neko/net/ThreadServer.hx",
-					"settings":
-					{
-						"buffer_size": 7123,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3327,
-								3327
-							]
-						],
-						"settings":
-						{
-							"haxe-build-id": 0,
-							"syntax": "Packages/HaXe/HaXe.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 3143.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
 					"buffer": 2,
-					"file": "/usr/lib/haxe/std/neko/net/ThreadRemotingServer.hx",
+					"file": "src/hellespontus/SocketClient.hx",
 					"settings":
 					{
-						"buffer_size": 3798,
+						"buffer_size": 167,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3415,
-								3415
+								74,
+								74
 							]
 						],
 						"settings":
 						{
 							"haxe-build-id": 0,
-							"syntax": "Packages/HaXe/HaXe.tmLanguage",
-							"translate_tabs_to_spaces": false
+							"syntax": "Packages/HaXe/HaXe.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 1008.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 3,
-					"file": "src/hellespontus/SocketServer.hx",
+					"file": "src/hellespontus/SocketMessage.hx",
 					"settings":
 					{
-						"buffer_size": 2518,
+						"buffer_size": 141,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2285,
-								2285
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "src/hellespontus/SocketServer.hx",
+					"settings":
+					{
+						"buffer_size": 2519,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
 							]
 						],
 						"settings":
@@ -299,7 +330,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1214.0,
+						"translation.y": 192.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

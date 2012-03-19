@@ -33,17 +33,18 @@ class LangAdminController < AdminController::Base
 			Lang.clear_cache()
 		end
 
-		@part = @request['part'] && @request['part'].size > 0 ? @request['part'] : nil
-		@parts = []
-		@langs = []
-		Lang.all_head().each do |key, lang|
-			@langs << lang if @part == nil || lang.part == @part
-			@parts << lang.part if lang.part && lang.part.size > 0 && !@parts.index(lang.part)
-		end
-
 		if(@request['no_content'])
 			'{"success":true}'
 		else
+
+			@part = @request['part'] && @request['part'].size > 0 ? @request['part'] : nil
+			@parts = []
+			@langs = []
+			Lang.all_head().each do |key, lang|
+				@langs << lang if @part == nil || lang.part == @part
+				@parts << lang.part if lang.part && lang.part.size > 0 && !@parts.index(lang.part)
+			end
+
 			html({:title => (@part ? "Part - #{@part}" : nil), :javascript => true}) do
 				template(File.read("#{TEMPLATE_ROOT}/admin/lang_admin_index.erb"))
 			end

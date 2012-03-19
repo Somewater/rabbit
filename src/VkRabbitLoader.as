@@ -39,7 +39,7 @@ package {
 
 		public function VkRabbitLoader() {
 			super();
-			//Config.memory['autoPostLevelPass'] = true;
+			Config.memory['autoPostLevelPass'] = true;
 		}
 
 		override protected function createLayers():void {
