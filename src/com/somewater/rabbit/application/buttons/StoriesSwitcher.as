@@ -48,7 +48,7 @@ package com.somewater.rabbit.application.buttons {
 				item.y = 0;
 				contentHolder.addChild(item);
 
-				item.enabled = story.start_level <= user.levelNumber && story.enabled;
+				item.enabled = story.start_level <= user.levelNumber && story.enabled || Config.memory['portfolioMode'];
 				item.selected = story.number == _selectedStory.number;
 				item.addEventListener(StoryItem.STORY_ITEM_CLICKED, onItemClicked)
 			}

@@ -31,6 +31,7 @@ package com.somewater.rabbit.storage
 		 * hideTop
 		 * hideShop
 		 * autoPostLevelPass - автоматически стартовать постинг пройденного уровня
+		 * portfolioMode - включен режим портфолио, максимально раскрывающий воз-ти игры
 		 */
 		public static var memory:Object = {};
 		

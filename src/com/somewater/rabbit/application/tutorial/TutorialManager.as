@@ -121,6 +121,9 @@ package com.somewater.rabbit.application.tutorial {
 				if(STEPS.indexOf(TutorialStep11) != -1)
 					STEPS.splice(STEPS.indexOf(TutorialStep11), 1);
 			}
+
+			if(Config.memory['portfolioMode'])
+				STEPS = STEPS.slice(0,2);
 		}
 
 		public static function get instance():TutorialManager

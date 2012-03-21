@@ -191,7 +191,7 @@ package com.somewater.rabbit.application
 		private function onLevelClick(e:Event):void
 		{
 			var level:LevelDef = (e.currentTarget as LevelIcon).data;
-			if(UserProfile.instance.canPlayWithLevel(level))
+			if(UserProfile.instance.canPlayWithLevel(level) || Config.memory['portfolioMode'])
 				Config.application.startGame(level);
 		}
 		

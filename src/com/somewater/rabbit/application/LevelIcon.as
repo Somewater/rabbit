@@ -2,6 +2,7 @@ package com.somewater.rabbit.application
 {
 	import com.somewater.control.IClear;
 	import com.somewater.display.HintedSprite;
+	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
 	import com.somewater.rabbit.storage.Lib;
@@ -68,7 +69,7 @@ package com.somewater.rabbit.application
 		
 		private function refresh():void
 		{
-			var locked:Boolean = !UserProfile.instance.canPlayWithLevel(_data);
+			var locked:Boolean = !UserProfile.instance.canPlayWithLevel(_data) && !Config.memory['portfolioMode'];
 			var levelInstance:LevelInstanceDef = locked ? null : UserProfile.instance.getLevelInsanceByNumber(_data.number);
 			lockedGround.visible = locked;
 			levelTF.visible = scoreTF.visible = ground.visible = !locked;

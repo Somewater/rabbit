@@ -24,6 +24,7 @@ package
 			{
 				addChild(new Stats())
 			}
+			Config.memory['portfolioMode'] = true;
 		}
 		
 		

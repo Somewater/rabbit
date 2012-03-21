@@ -75,7 +75,7 @@ package com.somewater.rabbit.application {
 			handler.call('levels/complete', {'levelInstance':levelInstanceToJson(levelInstance, {}), items: itemsStr},
 				function(response:Object):void{
 					// проверяем user и levelInstance на синхронность с текущими
-					if(response['levelInstance']['succes'] == false /*||
+					if(!Config.memory['portfolioMode'] && response['levelInstance']['succes'] == false /*||
 						arrayElementsIdentical(response['levelInstance']['rewards'] || [], levelInstance.rewards) == false*/)
 					{
 						// произошла рассинхронизация сервера и клиента

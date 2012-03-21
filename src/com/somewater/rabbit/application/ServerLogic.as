@@ -48,7 +48,7 @@ package com.somewater.rabbit.application {
 				Config.application.fatalError('ERROR_INVALID_CARROT_HARVEST_VALUE');
 				return null;
 			}
-			if(levelInstance.levelDef.number > user.levelNumber)
+			if(levelInstance.levelDef.number > user.levelNumber && !Config.memory['portfolioMode'])
 			{
 				Config.application.fatalError(Config.application.translate('ERROR_INACCESSIBLE_LEVEL',{'level':levelInstance.levelDef.number}));
 				return null;
