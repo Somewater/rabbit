@@ -503,7 +503,7 @@ class ServerReceiver implements IServerHandler
 
 		handler.call(method,data, function(response:Object):void{
 			// проверить ответ сервера на валидность (не подделан ли он злостным хакером)
-			if(params['server_unsecure'] == null)
+			if(params['server_unsecure'] == null && uid != '0')
 			{
 				// тестим
 				var responseStr:String = response['_response'];
