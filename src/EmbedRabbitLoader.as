@@ -79,7 +79,7 @@ package
 
 		override public function get hasUserApi():Boolean { return true; }
 		
-		override public function get hasFriendsApi():Boolean { return CONFIG::debug; }
+		override public function get hasFriendsApi():Boolean { return CONFIG::debug || Config.memory['portfolioMode']; }
 		
 		override public function getFriends():Array
 		{

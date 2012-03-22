@@ -367,8 +367,8 @@ package com.somewater.rabbit.loader
 		protected function loadNextSwf(event:Object):void
 		{
 			var swfToLoading:Object = _loadSwfsQueue[_loadSwfsQueueIterator];			
-			var url:String = rightFilePath(swfToLoading.url);
-			var name:String = swfToLoading.name;
+			var url:String;
+			var name:String = swfToLoading ? swfToLoading.name : null;
 			
 			if(event)
 			{
