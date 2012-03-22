@@ -245,7 +245,8 @@ package com.somewater.rabbit.application {
 			var friendsIds:Array = [];
 			for each(var f:SocialUser in friends)
 				friendsIds.push(f.id);
-			handler.call('friends/update',{friends: friendsIds});
+			if(friendsIds.length)// если друзей нет, бессмысленно слать запрос
+				handler.call('friends/update',{friends: friendsIds});
 		}
 
 
