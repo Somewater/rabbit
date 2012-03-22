@@ -208,6 +208,13 @@
 		<component name="LeadRender" type="com.somewater.rabbit.components.LeadRendererComponent">
 		</component>
 	</template>
+
+	<!-- SPECIAL TUTORIAL WEAK DOG -->
+	<template name="WeakWatchDog" template="WatchDog">
+		<component name="Attack">
+			<attackRange>0.05</attackRange>
+		</component>
+	</template>
 	
 	<!--
 
