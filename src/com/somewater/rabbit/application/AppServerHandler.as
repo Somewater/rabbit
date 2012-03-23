@@ -3,6 +3,7 @@ package com.somewater.rabbit.application {
 	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.application.windows.PendingRewardsWindow;
 	import com.somewater.rabbit.storage.Config;
+	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.CustomizeDef;
 	import com.somewater.rabbit.storage.GameUser;
 	import com.somewater.rabbit.storage.GameUser;
@@ -37,7 +38,7 @@ package com.somewater.rabbit.application {
 			var appFriends:Array = [];
 			var appFriendsIds:Array = [];
 			var appFriendsById:Array = [];
-			var appfriendsSocial:Array = Config.loader.getAppFriends();
+			var appfriendsSocial:Array = Config.loader.hasFriendsApi ? Config.loader.getAppFriends() : [];
 			for(var s:String in appfriendsSocial)
 			{
 				appFriends.push(appfriendsSocial[s])

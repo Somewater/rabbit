@@ -368,10 +368,13 @@ package
 
 			var sendFriendsInterv:uint = setInterval(function():void{
 				clearInterval(sendFriendsInterv);
-				var friends:Array = [];
-				for each(var f:SocialUser in Config.loader.getAppFriends())
-					friends.push(f);
-				AppServerHandler.instance.sendFriendsStorage(friends);
+				if(Config.loader.hasFriendsApi)
+				{
+					var friends:Array = [];
+					for each(var f:SocialUser in Config.loader.getAppFriends())
+						friends.push(f);
+					AppServerHandler.instance.sendFriendsStorage(friends);
+				}
 			}, 5000);
 		}
 		

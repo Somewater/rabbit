@@ -1,6 +1,7 @@
 package {
 	import com.somewater.rabbit.loader.StandaloneRabbitLoaderBase;
 
+	[SWF(width="810", height="650", backgroundColor="#FFFFFF", frameRate="30")]
 	public class FGLRabbitLoader extends StandaloneRabbitLoaderBase{
 
 		[Embed(source='../bin-debug/RabbitGame.swf', mimeType="application/octet-stream")]
@@ -64,6 +65,10 @@ package {
 		private function startOnNetInitializeCompleteImmediately(...args):void
 		{
 			super.onNetInitializeComplete(args);
+		}
+
+		override public function get net():int {
+			return 1;
 		}
 	}
 }
