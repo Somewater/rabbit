@@ -13,23 +13,25 @@ namespace :standalone do
 	end
 
 	desc "Compile config.txt from asflash.ru"
-	task :compile_config, [:net] => 'flash:configurate_compiler' do |task, args|
+	task :compile_config, [:net, :production_too] => 'flash:configurate_compiler' do |task, args|
 		begin
 			net = args[:net].to_i
 			config_txt = get_site_file('config.txt?net=' + net.to_s, "tmp_config.txt")
 			config_swf_filepath = compile_tmp_file(tmp_config_file(), 'tmp_config_pack')
+			FileUtils.cp(config_swf_filepath, "#{ROOT}/bin-debug/config_pack.swf") if args[:production_too]
 		ensure
 			File.delete(config_txt) rescue nil
 		end
 	end
 
 	desc "Compile language from asflash.ru"
-	task :compile_lang, [:locale] => 'flash:configurate_compiler' do |task, args|
+	task :compile_lang, [:locale, :production_too] => 'flash:configurate_compiler' do |task, args|
 		begin
 			require "yaml"
 			locale = args[:locale] ? args[:locale] : (ENV['LOCALE'] ? ENV['LOCALE'].to_s : YAML.load(File.read("#{ROOT}/rabbit_server/config/public_config.yml"))['DEFAULT_LOCALE'].to_s)
 			lang_txt = get_site_file("lang/#{locale}", "tmp_lang.txt")
 			lang_swf_filepath = compile_tmp_file(tmp_lang_file(), 'tmp_lang_pack')
+			FileUtils.cp(lang_swf_filepath, "#{ROOT}/bin-debug/lang_pack.swf") if args[:production_too]
 		ensure
 			File.delete(lang_txt) rescue nil
 		end

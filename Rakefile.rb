@@ -4,6 +4,7 @@
 # LOCALE - локаль компиляции языкового конфига
 # BASE_PATH - адрес сервера, с которого берется конфиг
 # DEBUG - компиляция в дебаг-може
+# SITELOCK разрешенный для использования игры сайт, формата "asflash.ru"
 
 ROOT = File.dirname( File.expand_path( __FILE__ ) )
 WIN_OS = RUBY_PLATFORM['mswin'] || RUBY_PLATFORM['mingw'] || RUBY_PLATFORM['cygwin']
@@ -79,7 +80,6 @@ namespace :flash do
 	  if(filename)
 		compile_file filename
 	  else
-		compile_file "lang_ru"
 		compile_file "RabbitGame"
 		compile_file "RabbitApplication"
 		compile_file "EmbedRabbitLoader"
@@ -140,7 +140,7 @@ namespace :srv do
 	end
 
 	desc "Update source and restart server"
-	task :update do
+	task :update => 'flash:encode' do
 		`git push`
 		sleep(5) #KLUDGE
 		ssh = Execution.new("ssh root@asflash.ru")
@@ -157,7 +157,7 @@ namespace :srv do
 	end
 
 	desc "Upload swfs"
-	task :upload do
+	task :upload => 'flash:encode' do
 		if WIN_OS
 			WIN_OS_ROOT = '/c/Work/Gamedev/RabbitGame'
 			%x[scp #{WIN_OS_ROOT}/bin-debug/*.swf root@asflash.ru:/srv/www/rabbit.asflash.ru/bin-debug/]
@@ -274,7 +274,7 @@ namespace :mailru do
 	task :zip => ['flash:encode'] do
 		require 'fileutils'
 		puts 'Encoding completed'
-		files = ['lang_ru.swf','RabbitApplication.swf','RabbitGame.swf','xml_pack.swf',\
+		files = ['lang_pack.swf','RabbitApplication.swf','RabbitGame.swf','xml_pack.swf',\
 			'assets/fonts_ru.swf','assets/interface.swf','assets/music_game.swf',\
 			'assets/music_menu.swf','assets/rabbit_asset.swf','assets/rabbit_images.swf',\
 			'assets/rabbit_reward.swf','assets/rabbit_sound.swf']
