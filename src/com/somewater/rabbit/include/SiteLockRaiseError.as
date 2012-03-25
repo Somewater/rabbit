@@ -1,0 +1,1 @@
+		Config.application.fatalError('usage on site "' + Config.prototype['__url'] + '" not licensed');

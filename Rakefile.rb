@@ -37,6 +37,9 @@ end
 #
 ##########################
 namespace :flash do
+
+	desc 'Configurate compiler keys'
+	task :configurate_compiler do
 	MXMLC_COMMON_COMMANDLINE_ARGS="#{ENV['USE_MXMLC'] || `which fcshctl-mxmlc`.size == 0 ? 'mxmlc' : 'fcshctl-mxmlc'} \
 -warnings=false \
 -static-link-runtime-shared-libraries \
@@ -47,6 +50,7 @@ namespace :flash do
 -compiler.debug=#{$debug ? 'true' : 'false'} \
 -use-network=true \
 -define+=CONFIG::debug,#{$debug ? 'true' : 'false'} \
+-define+=CONFIG::sitelock,\"'#{ENV['SITELOCK'] ? Digest::MD5.hexdigest(ENV['SITELOCK'].to_s) : 'flash.display::Sprite'}'\" \
 --keep-as3-metadata+=TypeHint,EditorData,Embed \
 -benchmark=true \
 -optimize=true \
@@ -62,9 +66,10 @@ namespace :flash do
 -target-player=10.0 \
 -compiler.debug=true \
 -optimize"
+	end
 
 	desc "Compile game [modulename]/all"
-	task :compile, :filename do |task, args|
+	task :compile, [:filename] => :configurate_compiler do |task, args|
 	  filename = args[:filename]
 	  if(filename)
 		compile_file filename
@@ -79,7 +84,7 @@ namespace :flash do
 	end
 
 	desc "Compile Level Editor"
-	task :compile_editor do
+	task :compile_editor => :configurate_compiler do
 	  compile_editor_file "RabbitEditor"
 	  puts "=== Compilation success! ==="
 	end
@@ -90,7 +95,7 @@ namespace :flash do
 	end
 
 	desc "Encode all files"
-	task :encode do
+	task :encode => :configurate_compiler do
 		RProtectorVersionizer.instance("#{ROOT}/tmp/rprotector_versions.txt")
 		bin_folder = "#{ROOT}/bin-debug"
 		RProtectorVersionizer.instance.encode("#{bin_folder}/RabbitApplication.swf")
@@ -105,6 +110,16 @@ namespace :flash do
 
 	def compile_editor_file(filename)
 	  puts %x[#{MXMLC_COMMON_COMMANDLINE_ARGS} -output=bin-debug/#{filename}.swf rabbit_editor/src/#{filename}.mxml]
+	end
+end
+
+desc "Fcsh tasks"
+namespace :fcsh do
+	desc "Stop fcsh background process"
+	task :stop do
+		File.delete("#{ROOT}/screenlog.0") rescue nil
+		File.delete("/tmp/fcshctl_screen_log") rescue nil
+		10.times{puts %x[killall -r fcsh]}
 	end
 end
 

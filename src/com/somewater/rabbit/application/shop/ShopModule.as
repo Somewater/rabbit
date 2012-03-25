@@ -195,7 +195,7 @@ package com.somewater.rabbit.application.shop {
 				var itemIdsToQuantity:Array = [];
 				for each(var item:ItemDef in basket.items)
 					itemIdsToQuantity[item.id] = basket.itemToQuantity(item);
-				AppServerHandler.instance.purchaseItems(itemIdsToQuantity, function(response:Object):void{
+				AppServerHandler.instance.purchaseItems(itemIdsToQuantity, sumPrice, function(response:Object):void{
 					// success
 					Config.application.message('SHOP_TRANSACTION_SUCCESS_MSG');
 					basket.clearBasket();

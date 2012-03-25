@@ -14,6 +14,7 @@ class Lang < ActiveRecord::Base
 		lang_locale.author = author if author
 		lang_locale.value = text
 		lang_locale.save
+		@locales = nil
 		lang_locale
 	end
 
@@ -23,7 +24,14 @@ class Lang < ActiveRecord::Base
 	end
 
 	def get_locale(locale)
-		LangLocale.where(:key => self.key, :locale => self.class.to_locale(locale)).first
+		locale = self.class.to_locale(locale)
+		unless @locales
+			@locales = {}
+			LangLocale.where(:key => self.key).each do |l|
+				@locales[l.locale] = l
+			end
+		end
+		@locales[locale]
 	end
 
 	# все локали, соответствующие данному ключу, в виде хэша

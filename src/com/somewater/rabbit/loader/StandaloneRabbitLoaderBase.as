@@ -1,6 +1,7 @@
 package com.somewater.rabbit.loader {
 	import com.somewater.net.SWFDecoderWrapper;
 	import com.somewater.net.ServerHandler;
+	import com.somewater.rabbit.net.LocalServerHandler;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.social.SocialUser;
 
@@ -12,6 +13,45 @@ package com.somewater.rabbit.loader {
 	 * Прелоадер с эмбедом всех необходимых файлов внутрь себя
 	 */
 	public class StandaloneRabbitLoaderBase extends RabbitLoaderBase{
+
+		[Embed(source='../../../../../bin-debug/RabbitGame.swf', mimeType="application/octet-stream")]
+		private const Game:Class;
+
+		[Embed(source='../../../../../bin-debug/RabbitApplication.swf', mimeType="application/octet-stream")]
+		private const Application:Class;
+
+		[Embed(source='../../../../../bin-debug/assets/interface.swf', mimeType="application/octet-stream")]
+		private const Interface:Class;
+
+		[Embed(source='../../../../../bin-debug/assets/rabbit_asset.swf', mimeType="application/octet-stream")]
+		private const Assets:Class;
+
+		[Embed(source='../../../../../bin-debug/assets/rabbit_reward.swf', mimeType="application/octet-stream")]
+		private const Rewards:Class;
+
+		[Embed(source='../../../../../bin-debug/assets/rabbit_images.swf', mimeType="application/octet-stream")]
+		private const Images:Class;
+
+		[Embed(source='../../../../../bin-debug/assets/music_menu.swf', mimeType="application/octet-stream")]
+		private const MusicMenu:Class;
+
+		[Embed(source='../../../../../bin-debug/assets/music_game.swf', mimeType="application/octet-stream")]
+		private const MusicGame:Class;
+
+		[Embed(source='../../../../../bin-debug/assets/rabbit_sound.swf', mimeType="application/octet-stream")]
+		private const Sound:Class;
+
+		[Embed(source='../../../../../tmp/tmp_lang_pack.swf', mimeType="application/octet-stream")]
+		private const Lang:Class;
+
+		[Embed(source='../../../../../bin-debug/xml_pack.swf', mimeType="application/octet-stream")]
+		private const XmlPack:Class;
+
+		[Embed(source='../../../../../tmp/tmp_config_pack.swf', mimeType="application/octet-stream")]
+		private const ConfigPack:Class;
+
+		[Embed(source='../../../../../bin-debug/assets/fonts_ru.swf', mimeType="application/octet-stream")]
+		private const Font:Class;
 
 		/**
 		 * Сколько файлов находится в процессе энкодинга либо прочих действий,
@@ -32,6 +72,31 @@ package com.somewater.rabbit.loader {
 
 			if(swfs == null)
 				swfs = {};
+		}
+
+		override protected function onNetInitializeComplete(... args):void {
+			// сперва раздекодить все флешки
+			standaloneFilesQueue.push(
+				 {name:'Game', data:Game}
+				,{name:'Application', data:Application}
+				,{name:'Interface', data:Interface}
+				,{name:'Assets', data:Assets}
+				,{name:'Rewards', data:Rewards}
+				,{name:'Images', data:Images}
+				,{name:'MusicMenu', data:MusicMenu}
+				,{name:'MusicGame', data:MusicGame}
+				,{name:'Sound', data:Sound}
+				,{name:'Lang', data:Lang}
+				,{name:'XmlPack', data:XmlPack}
+				,{name:'ConfigPack', data:ConfigPack}
+				,{name:'Font', data:Font}
+			);
+			startDecoding(startOnNetInitializeCompleteImmediately);
+		}
+
+		private function startOnNetInitializeCompleteImmediately(...args):void
+		{
+			super.onNetInitializeComplete(args);
 		}
 
 
@@ -100,52 +165,14 @@ package com.somewater.rabbit.loader {
 			swfs[name].loaded = true;
 		}
 
-		override protected function initializeServerHandler():void
+		protected function getConfigForServerHandler():Object
 		{
-			_serverHandler = new ServerHandler();
-			_serverHandler.base_path = /(asflash|atlantor)/.test(loaderInfo.url) ? String(loaderInfo.url).substr(0, String(loaderInfo.url).indexOf('/', 10) + 1) : "http://localhost:3000/";
-			_serverHandler.init(getUser().id, 'embed', net);
-		}
-
-		//////////////////////////////////////////////////////////////////
-		//																//
-		//		S O C I A L     A P I    I M P L E M E N T A T I O N 	//
-		//																//
-		//////////////////////////////////////////////////////////////////
-
-		override public function get net():int { throw new Error('Must be overriden') }
-
-		override public function getUser():SocialUser
-		{
-			if(user == null)
-				loadUserData();
-			return user;
-		}
-
-		override public function setUser(user:SocialUser):void {
-			saveUserData(user);
-		}
-
-		private var user:SocialUser;
-
-		private function loadUserData():void
-		{
-			var userParams:Object = this.get('user');
-			if(userParams == null)
-				userParams = {};
-			user = new SocialUser();
-			user.male = true;
-			user.id = userParams['id'] ? userParams['id'] : '0';
-			user.itsMe = true;
-			user.balance = 0;
-			user.bdate = new Date(1980, 0, 0).time;
-			user.firstName = userParams['firstName'] ? userParams['firstName'] : "Rabbit";
-			user.lastName = userParams['lastName'] ? userParams['lastName'] : "";
-		}
-
-		private function saveUserData(user:SocialUser):void {
-			var userParams:Object = {"id": user.id};
-			this.set('user', userParams);
+			return {
+				'init_user':{
+								items:"200:2,201:1,202:1,203:1"
+								,money: 10
+							}
+			}
 		}
 	}
 }

@@ -105,6 +105,8 @@ class Application
 					#LevelsAdminController.generate_xml_file(request['release'])
 				when "config.txt"
 					[200,{"Content-Type" => "text/plain; charset=UTF-8"},ConfigGenerator.generate(request['net'].to_i)]
+				when /^lang\/.+/
+					[200,{"Content-Type" => "text/plain; charset=UTF-8"},LangGenerator.generate(method.match(/^lang\/(.{2,10})/)[1])]
 				# ADMIN AREA
 				when /^admin/
 					AdminController.new.call request

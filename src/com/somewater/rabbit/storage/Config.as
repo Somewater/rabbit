@@ -32,6 +32,7 @@ package com.somewater.rabbit.storage
 		 * hideShop
 		 * autoPostLevelPass - автоматически стартовать постинг пройденного уровня
 		 * portfolioMode - включен режим портфолио, максимально раскрывающий воз-ти игры
+		 * 'lang_pack' - нераспарсенный словарь ключей
 		 */
 		public static var memory:Object = {};
 		

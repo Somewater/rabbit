@@ -3,16 +3,21 @@ package com.somewater.storage {
 
 	public class LocalDb implements ILocalDb{
 
+		/**
+		 * Автоматически сохраняться при изменении данных
+		 */
+		public var autosave:Boolean = true;
+
 		private static var _instance:LocalDb;
 
 		private var so:SharedObject;
 
-		public function LocalDb() {
+		public function LocalDb(name:String = 'db') {
 			if(_instance)
 				throw new Error('Singletone');
 			_instance = this;
 
-			so = SharedObject.getLocal('db');
+			so = SharedObject.getLocal(name);
 		}
 
 		public static function get instance():ILocalDb
@@ -32,8 +37,15 @@ package com.somewater.storage {
 			if(so)
 			{
 				so.data[key] = data;
-				so.flush();
+				if(autosave)
+					so.flush();
 			}
+		}
+
+		public function save():void
+		{
+			if(so)
+				so.flush();
 		}
 
 		private function recreateSharedObject():void

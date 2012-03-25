@@ -1,8 +1,7 @@
 package
 {
-	import com.somewater.storage.Lang;
-	
 	import flash.display.Sprite;
+	import flash.utils.getDefinitionByName;
 
 	public class lang_ru extends Sprite
 	{
@@ -12,7 +11,8 @@ package
 		
 		public function lang_ru()
 		{
-			Lang.getInstance().parse(new data());
+			var Config:Class = getDefinitionByName('com.somewater.rabbit.storage.Config') as Class;
+			Config.memory['lang_pack'] = new data();
 		}
 	}
 }

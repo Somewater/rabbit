@@ -204,6 +204,7 @@ package
 		
 		private function recreateLevel():void
 		{
+			include 'com/somewater/rabbit/include/Sitelock.as';
 			InitializeManager.restartLevel();
 			
 			onLevelStartedCallback && onLevelStartedCallback();
@@ -214,6 +215,7 @@ package
 		
 		public function start():void
 		{
+			include 'com/somewater/rabbit/include/Sitelock.as';
 			if(!PBE.processManager.isTicking)
 				PBE.processManager.start();
 			Config.application.dispatchPropertyChange("game.start");

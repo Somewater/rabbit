@@ -1,15 +1,10 @@
 package com.somewater.storage
 {
-	import flash.events.Event;
-	import flash.events.EventDispatcher;
-	import flash.events.IOErrorEvent;
-	import flash.events.SecurityErrorEvent;
-	import flash.net.URLLoader;
-	import flash.net.URLRequest;
-	
+	import com.somewater.rabbit.storage.Config;
+
 	final public class Lang
 	{
-		private static var instance:Lang;
+		private static var _instance:Lang;
 		private var dictionry:Object;
 		
 		// для записи текстовых констант, которые будут доступны еще до выбора и загрузки языка
@@ -25,21 +20,22 @@ package com.somewater.storage
 		
 		public function Lang()
 		{
-			 
+			var langPack:String = Config.memory['lang_pack'];
+			if(langPack != null && langPack.length > 0)
+			{
+				_instance = this;
+				delete(Config.memory['lang_pack']);
+				parse(langPack);
+			}
 		}
 
-		public static function getInstance():Lang{
-			if(instance == null)
-				instance = new Lang();
-			return instance;
-		}
-		
-		
 		/**
 		 * Получить слово по введенному ключу. Согласно текущему словарю
 		 */
 		public static function t(key:String, args:Object = null):String{
-			var dict:Object = instance.dictionry;
+			if(_instance == null) new Lang();
+			if(_instance == null) return key;
+			var dict:Object = _instance.dictionry;
 			if (dict[key])
 			{
 				if(args == null)
@@ -87,7 +83,9 @@ package com.somewater.storage
 		}
 		
 		public static function arr(key:String, separator:String = ","):Array{
-			var dict:Object = instance.dictionry;
+			if(_instance == null) new Lang();
+			if(_instance == null) return [];
+			var dict:Object = _instance.dictionry;
 			if (dict.hasOwnProperty(key))
 				if (dict[key] is Array)
 					return dict[key];

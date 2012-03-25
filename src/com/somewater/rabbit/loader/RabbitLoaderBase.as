@@ -1,6 +1,7 @@
 package com.somewater.rabbit.loader
 {
 
+	import com.adobe.crypto.MD5;
 	import com.somewater.net.IServerHandler;
 	import com.somewater.net.SWFDecoderWrapper;
 	import com.somewater.net.UrlQueueLoader;

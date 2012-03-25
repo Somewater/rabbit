@@ -178,7 +178,7 @@ package com.somewater.rabbit.application {
 			}, onError);
 		}
 
-		public function purchaseItems(itemIdsToQuantity:Array, onComplete:Function, onError:Function):void
+		public function purchaseItems(itemIdsToQuantity:Array, sumPrise:int, onComplete:Function, onError:Function):void
 		{
 			// todo: для покупки декора использовать другую ф-ю!!!
 			var purchaseStr:String = '';
@@ -188,7 +188,7 @@ package com.somewater.rabbit.application {
 			}
 			if(purchaseStr.length == 0)
 				throw new Error('Cant`t buy empty items set');
-			handler.call('items/purchase', {purchase: purchaseStr}, function(response:Object):void{
+			handler.call('items/purchase', {purchase: purchaseStr, prise: sumPrise}, function(response:Object):void{
 				// сервер всё продал, как надо
 				if(response && response['success'])
 				{
@@ -348,6 +348,7 @@ package com.somewater.rabbit.application {
 			json['version'] = levelInstance.version;
 			json['number'] = levelInstance.number;
 			json['success'] = levelInstance.success;
+			json['stars'] = levelInstance.stars;
 			json['rewards'] = levelInstance.rewards.map(function(r:RewardInstanceDef, ...args):Object{
 															return rewardInstanceToJson(r, {});
 														});

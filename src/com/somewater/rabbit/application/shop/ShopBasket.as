@@ -109,6 +109,7 @@ package com.somewater.rabbit.application.shop {
 					}
 					alignAndCalcCost();
 					dispatchChange();
+					return;
 				}
 			throw new Error('Ha not item in basket')
 		}

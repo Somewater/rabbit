@@ -4,6 +4,7 @@ package
 	import com.greensock.TweenMax;
 	import com.somewater.control.IClear;
 	import com.somewater.controller.PopUpManager;
+	import com.somewater.controller.PopUpManager;
 	import com.somewater.display.Window;
 	import com.somewater.net.ServerHandler;
 	import com.somewater.rabbit.IRabbitApplication;
@@ -155,6 +156,8 @@ package
 			createRefs();
 			
 			initializeManagers();
+
+			include 'com/somewater/rabbit/include/Sitelock.as';
 			
 			runInitalizeResponses();
 		}
@@ -168,7 +171,30 @@ package
 		private function initializeManagers():void
 		{
 			Lib.Initialize(Config.loader.swfADs);
-			
+
+			var splashHolder:Sprite = new Sprite();
+			splashHolder.graphics.beginFill(0, 0.3);
+			splashHolder.graphics.drawRect(0, 0, Config.WIDTH, Config.HEIGHT);
+			var splashIcon:DisplayObject = Lib.createMC('LogoRabbit');
+			splashIcon.name = 'logo';
+			var splashBar:MovieClip = Lib.createMC('interface.PreloaderBar');
+			splashBar.name = 'bar';
+			for(var i:int = 0;i<10;i++)
+				splashBar.removeChild(splashBar["carrot" + i]);
+			splashHolder.addChild(splashIcon);
+			splashHolder.addChild(splashBar);
+			var splashBar_x_diff:Number = (Config.WIDTH - splashBar.width) * 0.5 - splashBar.x;
+			splashBar.x += splashBar_x_diff;
+			splashIcon.x += splashBar_x_diff;
+			splashIcon.y = (Config.HEIGHT - splashIcon.height) * 0.5 - 50;
+			splashBar.y = splashIcon.y + splashIcon.height + 40;
+			var blurScreen:Sprite = new Sprite();
+			blurScreen.graphics.beginFill(0, 0.09);
+			blurScreen.graphics.drawRect(0, 0, Config.WIDTH, Config.HEIGHT);
+			Config.loader.popups.addChild(splashHolder);
+			splashHolder.visible = false;
+			PopUpManager.Initialize(Config.loader.popups, _content, Config.WIDTH, Config.HEIGHT, blurScreen, splashHolder);
+
 			EmbededTextField.DEFAULT_FONT = Config.FONT_PRIMARY;
 			Font.registerFont(Lib.createMC("font.FuturaRound_font", null, false));
 			Font.registerFont(Lib.createMC("font.Arial_font", null, false));
@@ -222,7 +248,7 @@ package
 			//		- Config
 			// 2. профайл пользователя с сервера
 			//
-			
+
 			Config.loader.setProgress(2, 0);
 			Config.loader.load({
 				"Levels":Config.loader.getFilePath("Levels")
@@ -312,6 +338,7 @@ package
 
 		public function levelFinishMessage(levelInstance:LevelInstanceDef):void
 		{
+			include 'com/somewater/rabbit/include/Sitelock.as';
 			if(levelInstance.success)
 			{
 				new LevelFinishSuccessWindow(levelInstance);
@@ -388,25 +415,6 @@ package
 		{
 			var preloader:* = Config.loader.allocatePreloader();
 			PageBase.Initialize(preloader);
-			var splashIcon:DisplayObject = preloader.logo;
-			var splashBar:MovieClip = preloader.bar;
-			for(var i:int = 0;i<10;i++) splashBar.removeChild(splashBar["carrot" + i]);
-			var blurScreen:Sprite = new Sprite();
-			blurScreen.graphics.beginFill(0, 0.09);
-			blurScreen.graphics.drawRect(0, 0, Config.WIDTH, Config.HEIGHT);
-			var splashHolder:Sprite = new Sprite();
-			splashHolder.graphics.beginFill(0, 0.3);
-			splashHolder.graphics.drawRect(0, 0, Config.WIDTH, Config.HEIGHT);
-			splashHolder.addChild(splashIcon);
-			splashHolder.addChild(splashBar);
-			var splashBar_x_diff:Number = (Config.WIDTH - splashBar.width) * 0.5 - splashBar.x;
-			splashBar.x += splashBar_x_diff;
-			splashIcon.x += splashBar_x_diff;
-			splashIcon.y = (Config.HEIGHT - splashIcon.height) * 0.5 - 50;
-			splashBar.y = splashIcon.y + splashIcon.height + 40;
-			Config.loader.popups.addChild(splashHolder);
-			splashHolder.visible = false;			
-			PopUpManager.Initialize(Config.loader.popups, _content, Config.WIDTH, Config.HEIGHT, blurScreen, splashHolder);
 			Config.loader.clear();
 		}
 		
@@ -428,13 +436,21 @@ package
 		
 		public function fatalError(msg:String):void
 		{
+			var openWndErr:Error;
+			try
+			{
+				var wnd:Window = message(msg) as Window;
+				wnd.closeButton.visible = false;
+				wnd.buttons = [];
+			}catch(err:Error){
+				openWndErr = err;
+			}
 			Config.application.hideSplash();
-			var wnd:Window = message(msg) as Window;
-			wnd.closeButton.visible = false;
-			wnd.buttons = [];
 			Config.application = null;
 			Config.game = null;
 			Config.loader = null;
+			if(openWndErr)
+				throw openWndErr;
 		}
 		
 		
@@ -487,6 +503,7 @@ package
 			
 			function onGameInited():void
 			{
+				include 'com/somewater/rabbit/include/Sitelock.as';
 				Config.game.startLevel(level, onGameStarted);
 				
 			}

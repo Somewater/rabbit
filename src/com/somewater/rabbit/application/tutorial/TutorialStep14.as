@@ -21,7 +21,7 @@ package com.somewater.rabbit.application.tutorial {
 		}
 
 		override public function tick():void {
-			if(!TutorialManager.instance.levelStartWindowClosed)
+			if(!Config.gameModuleActive || !TutorialManager.instance.levelStartWindowClosed)
 			{
 				if(messageShowed)
 				{
