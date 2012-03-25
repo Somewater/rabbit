@@ -17,7 +17,7 @@
 
 		private function onSomeChanged(arg:Event = null):void {
 			level.number = level_number.value;
-			level.description = level_desc.text;
+			//level.description = level_desc.text;
 			level.width = level_width.value;
 			level.height = level_height.value;
 			level.image = level_image.text;
@@ -58,7 +58,7 @@
 
 			<mx:Label text="description:"></mx:Label>
 			<mx:Spacer height="-7"></mx:Spacer>
-			<mx:TextArea id="level_desc" change="onSomeChanged()" text="{level.description}" width="100%"></mx:TextArea>
+			<mx:TextArea id="level_desc" change="onSomeChanged()" text="{level.name}" width="100%"></mx:TextArea>
 			<mx:Spacer></mx:Spacer>
 
 			<mx:HBox horizontalGap="0">

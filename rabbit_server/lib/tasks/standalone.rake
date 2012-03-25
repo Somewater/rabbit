@@ -3,6 +3,7 @@ namespace :standalone do
 	task :fgl => [:compile_config, :compile_lang] do
 		Rake::Task['flash:configurate_compiler'].execute()
 		Rake::Task['flash:compile'].execute()
+		Rake::Task['flash:encode'].execute()
 		Rake::Task['flash:compile'].execute({:filename => 'FGLRabbitLoader'})
 	end
 
@@ -36,7 +37,7 @@ namespace :standalone do
 
 	def get_site_file(urn, local_filename, base_path = nil)
 		require "httparty"
-		base_path = (ENV['BASE_PATH'] ? ENV['BASE_PATH'] : 'http://asflash.ru/') unless base_path
+		base_path = (ENV['BASE_PATH'] ? ENV['BASE_PATH'] : 'http://rabbit.asflash.ru/') unless base_path
 		response = HTTParty.get(base_path.to_s + urn.to_s)
 		full_local_filename = "#{ROOT}/tmp/#{local_filename}"
 		File.open(full_local_filename,'w') {|f| f.write(response) }

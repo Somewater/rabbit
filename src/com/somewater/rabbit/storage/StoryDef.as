@@ -8,8 +8,6 @@ package com.somewater.rabbit.storage {
 		private static var storiesByNumber:Array = [];
 
 		public var number:int;
-		public var name:String;
-		public var description:String;
 		public var image:String;
 
 		public var start_level:int;
@@ -42,6 +40,16 @@ package com.somewater.rabbit.storage {
 		public static function all():Array
 		{
 			return storiesByNumber.slice();
+		}
+
+		public function get name():String
+		{
+			return Config.application.translate('STORY_NAME_' + this.number);
+		}
+
+		public function get description():String
+		{
+			return Config.application.translate('STORY_DESC_' + this.number);
 		}
 	}
 }

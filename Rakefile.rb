@@ -1,5 +1,10 @@
 # encoding: utf-8
 
+# Используемые переменные среды:
+# LOCALE - локаль компиляции языкового конфига
+# BASE_PATH - адрес сервера, с которого берется конфиг
+# DEBUG - компиляция в дебаг-може
+
 ROOT = File.dirname( File.expand_path( __FILE__ ) )
 WIN_OS = RUBY_PLATFORM['mswin'] || RUBY_PLATFORM['mingw'] || RUBY_PLATFORM['cygwin']
 $:.unshift("#{ROOT}/lib/tasks")

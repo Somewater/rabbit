@@ -27,9 +27,19 @@ class LangAdminController < AdminController::Base
 			end
 			Lang.clear_cache()
 		elsif(@request['create'])
-			# проверить, что указанный ключ еще не создан
-			# получить список известных ключей
-			# создать пустые значения под ключь (в т.ч. локали) и сохранить
+			request_lang = @request['lang']
+			lang = Lang[request_lang['key']]
+			raise LogicError, "Key #{request_lang['key']} already exist" if lang
+			lang = Lang.create(request_lang['key'], request_lang['value'], request_lang['locale'], @admin_user.user.login)
+			lang.part = request_lang['part']
+			lang.comment = request_lang['comment']
+			# создаем пустые локали под заготовку
+			LangLocale.find(:all, :select => 'locale', :group => 'locale').map(&:locale).each do |locale|
+				if request_lang['locale'].to_s != locale.to_s
+					lang.set(locale, nil, @admin_user.user.login)
+				end
+			end
+			lang.save
 			Lang.clear_cache()
 		end
 

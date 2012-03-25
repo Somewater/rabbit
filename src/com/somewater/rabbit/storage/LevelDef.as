@@ -7,7 +7,6 @@ package com.somewater.rabbit.storage
      	public var id:int;
 		public var number:uint = 0;// нумерация с "1"
 		public var version:int;
-		public var description:String;
 		public var image:String;// идентификатор картинки уровня
 		
 		public var author:String = "nobody";
@@ -91,22 +90,12 @@ package com.somewater.rabbit.storage
 		
 		public function get name():String
 		{
-			if(description == null) return '';
-			var data:Array = this.description.split('--');
-			if(data.length == 2)
-				return data[0]
-			else
-				return this.description;
+			return Config.application.translate('LEVEL_TITLE_' + this.number);
 		}
 		
 		public function get shortDescription():String
 		{
-			if(description == null) return '';
-			var data:Array = this.description.split('--');
-			if(data.length == 2)
-				return data[1]
-			else
-				return this.description;	
+			return Config.application.translate('LEVEL_DESC_' + this.number);
 		}
 
 		public function get story():StoryDef

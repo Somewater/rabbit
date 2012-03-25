@@ -77,3 +77,48 @@
 			</tr>
 	<% end %>
 </table>
+<table width='100%' border='1'>
+	<tr width='100%'>
+		<th>key</th>
+		<td><input type="text" id="newlang_key" maxlength="20" size="50"></input></td>
+	</tr>
+	<tr width='100%'>
+		<th>value</th>
+		<td><textarea id="newlang_value" rows="3" cols="100"></textarea></td>
+	</tr>
+	<tr width='100%'>
+		<th>locale</th>
+		<td><input type="text" id="newlang_locale" value="ru" maxlength="6" size="6"></input></td>
+	</tr>
+	<tr width='100%'>
+		<th>part</th>
+		<td><input type="text" id="newlang_part" maxlength="100" size="50"></input></td>
+	</tr>
+	<tr width='100%'>
+		<th>comment</th>
+		<td><input type="text" id="newlang_comment" maxlength="100" size="50"></input></td>
+	</tr>
+	<tr width='100%'>
+		<td>
+		<button type="button"
+			onclick="if(document.getElementById('newlang_key').value.length < 2) return; send('<%= LANG_PATH %>?create=true',
+				{lang:{
+							key:document.getElementById('newlang_key').value,
+							value:document.getElementById('newlang_value').value,
+							locale:document.getElementById('newlang_locale').value,
+							part:document.getElementById('newlang_part').value,
+							comment:document.getElementById('newlang_comment').value
+						}, no_content: true}, function(data){
+					key = document.getElementById('newlang_key').value
+					document.getElementById('newlang_key').value = '';
+					document.getElementById('newlang_value').value = '';
+					document.getElementById('newlang_part').value = '';
+					document.getElementById('newlang_comment').value = '';
+					document.getElementById('newlang_log').innerHTML += key + ', ';
+				});">Create NEW</button>
+		</td>
+		<td>
+			<div id="newlang_log"></div>
+		</td>
+	</tr>
+</table>
