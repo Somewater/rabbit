@@ -7,6 +7,7 @@ package {
 	public class FGLRabbitLoader extends StandaloneRabbitLoaderBase{
 
 		public function FGLRabbitLoader() {
+			Config.memory['hideTop'] = true;
 		}
 
 		override protected function netInitialize():void {

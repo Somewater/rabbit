@@ -20,10 +20,7 @@ package
 		public function EmbedRabbitLoader()
 		{
 			super();
-			CONFIG::debug
-			{
-				addChild(new Stats())
-			}
+			
 			Config.memory['portfolioMode'] = true;
 		}
 		
