@@ -67,7 +67,7 @@ package com.somewater.rabbit.application {
 			// *** ALL_CARROT
 			var levelCarrotMiddle:int = XmlController.instance.calculateMiddleCarrots(levelInstance.levelDef);
 			var levelCarrotMax:int = XmlController.instance.calculateMaxCarrots(levelInstance.levelDef);
-			if(levelInstance.carrotHarvested >= levelCarrotMiddle && // если собрано морковок не мнее, чем для получения 2-х звезд
+			if((levelInstance.number == 1 || levelInstance.carrotHarvested >= levelCarrotMiddle) && // если собрано морковок не мнее, чем для получения 2-х звезд
 					lastLevelInstance == null)  // ранее уровень не проходили
 			{
 				if(

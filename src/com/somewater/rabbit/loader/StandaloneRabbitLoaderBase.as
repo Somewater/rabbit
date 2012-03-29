@@ -64,6 +64,7 @@ package com.somewater.rabbit.loader {
 		 * {name:'RabbitGame', data:Class}
 		 */
 		protected var standaloneFilesQueue:Array = [];
+		private var maxStandaloneFilesQueue:int;
 
 		private var startDecodingCallback:Function;
 
@@ -109,12 +110,14 @@ package com.somewater.rabbit.loader {
 			if(startDecodingCallback != null)
 				throw new Error('Only one thread');
 			startDecodingCallback = onComplete;
+			maxStandaloneFilesQueue = standaloneFilesQueue.length;
 			addEventListener(Event.ENTER_FRAME, onDecodeEnterFrame);
 		}
 
 		private function onDecodeEnterFrame(event:Event):void {
 			if(standaloneFilesInProcess == 0)
 			{
+				setProgress(0, (maxStandaloneFilesQueue - standaloneFilesQueue.length) / maxStandaloneFilesQueue)
 				if(standaloneFilesQueue.length)
 				{
 					var fileData:Object = standaloneFilesQueue.pop();

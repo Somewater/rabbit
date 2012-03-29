@@ -5,6 +5,8 @@ namespace :standalone do
 		Rake::Task['flash:compile'].execute()
 		Rake::Task['flash:encode'].execute()
 		Rake::Task['flash:compile'].execute({:filename => 'FGLRabbitLoader'})
+		puts "******************************\n\tWARNING LOCALE = #{ENV['LOCALE']}\n******************************" if ENV['LOCALE'] != 'en'
+		puts "******************************\n\tWARNING SITELOCK NOT ASSIGNED\n******************************" unless ENV['SITELOCK']
 	end
 
 	desc "Compile xml_pack from asflash.ru"

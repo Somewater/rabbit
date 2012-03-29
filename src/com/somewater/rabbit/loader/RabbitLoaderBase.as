@@ -129,9 +129,12 @@ package com.somewater.rabbit.loader
 
 			filePaths['Config'] = "/config.txt?net=" + this.net;
 
-			preloader = new PRELOADER_CLASS();
-			for(var i:int = 0; i < 10; i++)
-				preloader.bar["carrot" + i].stop();
+			if(preloader == null)
+			{
+				preloader = new PRELOADER_CLASS();
+				for(var i:int = 0; i < 10; i++)
+					preloader.bar["carrot" + i].stop();
+			}
 
 			createLayers();
 			
@@ -391,7 +394,7 @@ package com.somewater.rabbit.loader
 				
 			}
 			
-			_loadSwfsOnProgress && _loadSwfsOnProgress((_loadSwfsQueueIterator)/_loadSwfsQueue.length);
+			_loadSwfsOnProgress && _loadSwfsOnProgress((_loadSwfsQueueIterator)/(_loadSwfsQueue.length ? _loadSwfsQueue.length : 1));
 			
 			swfToLoading = _loadSwfsQueue[_loadSwfsQueueIterator];
 			
@@ -629,11 +632,14 @@ package com.somewater.rabbit.loader
 		
 
 		private var lastMaxValue:Number = Number.MIN_VALUE;
+		protected var progressStepsByType:Array = [0, 0.1, 0.6, 0.9, 1];
 		public function setProgress(type:int, value:Number):void
 		{
 			if(preloader)
-			{	
-				value = ([0, 0.1, 0.6, 0.9] as Array)[type] + ([0.1, 0.5, 0.3, 0.1] as Array)[type] * value;
+			{
+				var stepSize:Number = progressStepsByType[type + 1] - progressStepsByType[type];
+				value = progressStepsByType[type] + stepSize * value;
+				if(value > 1) value = 1;
 				if(lastMaxValue > value) return;
 				lastMaxValue = value;
 				trace('[VALUE] ' + int(value * 100))

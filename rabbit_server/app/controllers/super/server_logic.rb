@@ -37,7 +37,7 @@ class ServerLogic
 			# *** ALL_CARROT
 			levelCarrotMiddle = XmlController.instance.carrot_middle(levelInstance.levelDef);
 			levelCarrotMax = XmlController.instance.carrot_max(levelInstance.levelDef);
-			if(levelInstance.carrotHarvested >= levelCarrotMiddle && # если собрано морковок не мнее, чем для получения 2-х звезд
+			if((levelInstance.levelDef.number == 1 || levelInstance.carrotHarvested >= levelCarrotMiddle) && # если собрано морковок не мнее, чем для получения 2-х звезд
 					lastLevelInstance == nil)  # ранее уровень не проходили
 				if(
 						(levelInstance.levelDef.number == 1 || # на первом (туториальном) уровне всегда выдаем награду, если он проходится впервые
