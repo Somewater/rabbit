@@ -13,6 +13,7 @@ package {
 			this.preloader = preloader;
 			super();
 			Config.memory['hideTop'] = true;
+			Config.memory['portfolioMode'] = true;
 
 			// первый пункт должен занимать намного больше, чем остальные, т.к. производится энкодинг флешек
 			// стартуем не со значения 0, а с 0.7, т.к. прелоадер доходит до 70%, когда файл загружен
@@ -28,5 +29,13 @@ package {
 		}
 
 		include 'com/somewater/rabbit/include/LocalServer.as';
+
+		override public function getAppFriends():Array {
+			return [];
+		}
+
+		override public function showInviteWindow():void {
+			Config.application.message('This feature is available for game in social networks only')
+		}
 	}
 }

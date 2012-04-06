@@ -42,7 +42,7 @@
 			user.itsMe = true;
 			user.balance = 0;
 			user.bdate = new Date(1980, 0, 0).time;
-			user.firstName = userParams['firstName'] ? userParams['firstName'] : "Rabbit";
+			user.firstName = userParams['firstName'] ? userParams['firstName'] : "Hopper";
 			user.lastName = userParams['lastName'] ? userParams['lastName'] : "";
 		}
 
