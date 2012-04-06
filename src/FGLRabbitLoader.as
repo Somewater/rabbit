@@ -3,9 +3,11 @@ package {
 	import com.somewater.rabbit.net.LocalServerHandler;
 	import com.somewater.rabbit.storage.Config;
 
-	[Frame(factoryClass="com.somewater.rabbit.loader.Preloader")]
+	[Frame(factoryClass="com.somewater.rabbit.loader.EnPreloader")]
 	[SWF(width="810", height="650", backgroundColor="#FFFFFF", frameRate="30")]
 	public class FGLRabbitLoader extends StandaloneRabbitLoaderBase{
+
+		include 'com/somewater/rabbit/include/EnPreloaderAsset.as';
 
 		public function FGLRabbitLoader(preloader:*) {
 			this.preloader = preloader;

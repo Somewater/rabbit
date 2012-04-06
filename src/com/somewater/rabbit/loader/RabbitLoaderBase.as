@@ -10,6 +10,7 @@ package com.somewater.rabbit.loader
 	import com.somewater.rabbit.IRabbitLoader;
 	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.storage.Config;
+	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.social.SocialUser;
 	import com.somewater.storage.LocalDb;
 	
@@ -36,10 +37,7 @@ package com.somewater.rabbit.loader
 		protected var swfLoader:Loader;
 		protected var preloader:*;
 		private var preloaderCarrotIndex:int = -1;// индекс последней запущенной морковки
-		protected var normalStartFlag:Object;
-		
-		protected var gameLoadingMode:int = 0;
-		
+
 		/**
 		 * Сылка на объект с флашварсами (должна инициализироваться расширяющим классом)
 		 */
@@ -120,9 +118,6 @@ package com.somewater.rabbit.loader
 		 */
 		private var _loadSwfsQueueIterator:int;
 		
-		[Embed(source="./../../../../assets/swc/preloader.swf", symbol="preloader.Preloader")]
-		private var PRELOADER_CLASS:Class;
-
 		public function RabbitLoaderBase()
 		{
 			super();
@@ -131,7 +126,10 @@ package com.somewater.rabbit.loader
 
 			if(preloader == null)
 			{
-				preloader = new PRELOADER_CLASS();
+				var pcl:Class = getClassByName('preloader.Preloader');
+				preloader = new pcl();
+				_swfADs['preloader'] = preloader
+				Lib.data
 				for(var i:int = 0; i < 10; i++)
 					preloader.bar["carrot" + i].stop();
 			}
@@ -818,6 +816,25 @@ package com.somewater.rabbit.loader
 		public function get customHash():Object
 		{
 			return {};
+		}
+
+		public function getClassByName(resourceName:String):Class
+		{
+			if(resourceName == 'preloader.LogoRabbit')
+				return LogoClass;
+			else if(resourceName == 'preloader.Preloader')
+				return PreloaderClass;
+			return null;
+		}
+
+		protected function get PreloaderClass():Class
+		{
+			return null;
+		}
+
+		protected function get LogoClass():Class
+		{
+			return null;
 		}
 	}
 }

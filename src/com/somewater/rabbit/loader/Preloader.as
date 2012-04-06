@@ -12,9 +12,6 @@ package com.somewater.rabbit.loader {
 
 	public class Preloader extends MovieClip{
 
-		[Embed(source="../../../../assets/swc/preloader.swf", symbol="preloader.Preloader")]
-		private var PRELOADER_CLASS:Class;
-
 		public var rabbitLoaderName:String = 'FGLRabbitLoader';
 		private var preloader:*;
 		private var preloaderCarrotIndex:int = -1;// индекс последней запущенной морковки
@@ -36,7 +33,8 @@ package com.somewater.rabbit.loader {
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.showDefaultContextMenu = false;
 
-			preloader = new PRELOADER_CLASS();
+			var pcl:Class = PreloaderAssetClass;
+			preloader = new pcl();
 			for(var i:int = 0; i < 10; i++)
 				preloader.bar["carrot" + i].stop();
 			addChild(preloader);
@@ -82,6 +80,11 @@ package com.somewater.rabbit.loader {
 
 			var app:Class = getDefinitionByName(rabbitLoaderName) as Class;
 			s.addChild(new app(preloader));
+		}
+
+		protected function get PreloaderAssetClass():Class
+		{
+			throw new Error('TODO')
 		}
 	}
 }

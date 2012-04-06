@@ -20,6 +20,8 @@ package {
 	[SWF(width="720", height="680", backgroundColor="#FFFFFF", frameRate="30")]
 	public class MailruRabbitLoader extends SocialRabbitLoader{
 
+		include 'com/somewater/rabbit/include/RuPreloaderAsset.as';
+
 		public function MailruRabbitLoader() {
 			Config.WIDTH = 720;
 			Config.HEIGHT = 650;

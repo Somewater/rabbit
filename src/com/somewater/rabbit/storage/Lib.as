@@ -68,6 +68,9 @@ package com.somewater.rabbit.storage
 				}
 
 				if(cl == null)
+					cl = Config.loader.getClassByName(className);
+
+				if(cl == null)
 				{
 					Config.game.logError(Lib, "createMC", "Mc \"" + className + "\" not loaded");
 					trace("[ERROR] MC " + className + " not created");

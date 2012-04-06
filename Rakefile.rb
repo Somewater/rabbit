@@ -5,6 +5,7 @@
 # BASE_PATH - адрес сервера, с которого берется конфиг
 # DEBUG - компиляция в дебаг-може
 # SITELOCK разрешенный для использования игры сайт, формата "asflash.ru"
+# USE_MXMLC форсированно применять mxmlc, а не fcshctl-mxmlc
 
 ROOT = File.dirname( File.expand_path( __FILE__ ) )
 WIN_OS = RUBY_PLATFORM['mswin'] || RUBY_PLATFORM['mingw'] || RUBY_PLATFORM['cygwin']

@@ -37,6 +37,8 @@ package {
 		//[Embed(source="krolik_jo.jpg")]
 		//private var livecardsAd:Class;
 
+		include 'com/somewater/rabbit/include/RuPreloaderAsset.as';
+
 		public function VkRabbitLoader() {
 			super();
 			Config.memory['autoPostLevelPass'] = true;

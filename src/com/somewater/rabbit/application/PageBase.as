@@ -19,7 +19,7 @@ package com.somewater.rabbit.application
 	public class PageBase extends Sprite implements IClear
 	{
 		protected static var ground:DisplayObject;
-		public var logo:MovieClip;// паблик для туториала
+		public var logo:DisplayObject;// паблик для туториала
 		
 		public function PageBase()
 		{
@@ -48,7 +48,7 @@ package com.somewater.rabbit.application
 			ground.y = (Config.HEIGHT - ground.height) * 0.5;
 			addChild(ground);
 			
-			logo = Lib.createMC("LogoRabbit");
+			logo = Lib.createMC("preloader.LogoRabbit");
 			logo.scaleX = logo.scaleY = 0.625;
 			logo.x = Config.WIDTH - logo.width - 15;
 			logo.y = Config.HEIGHT - logo.height - 20;

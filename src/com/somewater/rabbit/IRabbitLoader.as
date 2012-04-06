@@ -139,5 +139,10 @@ package com.somewater.rabbit
 		 */
 		function get customHash():Object
 
+		/**
+		 * Выдает локализуемые классы
+		 */
+		function getClassByName(resourceName:String):Class
+
 	}
 }
