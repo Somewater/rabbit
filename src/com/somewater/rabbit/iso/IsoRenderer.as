@@ -260,6 +260,7 @@ package com.somewater.rabbit.iso
 			{
 				// проинициировать все свойства, т.к. кип компонента был заменен (или впервые добавлен)
 				onClipAdded(_clip);
+				onClipInited(_clip);
 				_clipDirty = false;
 			}
 
@@ -541,8 +542,16 @@ package com.somewater.rabbit.iso
 			{
 				var child:MovieClip = mc.getChildAt(i) as MovieClip;
 				if(child)
-					onClipAdded(child, branch++);
+					onClipAdded(child, branch + 1);
 			}
+		}
+
+		/**
+		 * Клип добавлен и обработан (например, рекурсивно остановлено воспроизведение)
+		 */
+		protected function onClipInited(mc:MovieClip):void
+		{
+
 		}
 		
 		

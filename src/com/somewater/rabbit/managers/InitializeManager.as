@@ -20,7 +20,8 @@ package com.somewater.rabbit.managers
 	import com.somewater.rabbit.creature.HeroIsoMover;
 	import com.somewater.rabbit.creature.MoneyRewardControllerComponent;
 	import com.somewater.rabbit.creature.OfferControllerComponent;
-	import com.somewater.rabbit.creature.ShapeSpatialComponent;
+  import com.somewater.rabbit.creature.OfferRendererComponent;
+  import com.somewater.rabbit.creature.ShapeSpatialComponent;
 	import com.somewater.rabbit.decor.BackgroundRenderer;
 	import com.somewater.rabbit.decor.GroundGrassRenderer;
 	import com.somewater.rabbit.decor.PopupEffectRenderer;
@@ -189,6 +190,7 @@ package com.somewater.rabbit.managers
 			PBE.registerType(ProxyIsoRenderer);
 			PBE.registerType(LevelHorizontRender);
 			PBE.registerType(MoneyRewardControllerComponent);
+      PBE.registerType(OfferRendererComponent);
 
 			RandomizeUtil.initialize();				
 		}

@@ -671,7 +671,7 @@
 
 	-->
 	<template name="OfferTemplate" template="IsoBase">
-		<component name="Render">
+		<component name="Render" type="com.somewater.rabbit.creature.OfferRendererComponent">
 			<slug>rabbit.OfferActor</slug>
 			<frameRate>15</frameRate>
 			<useDirection>1</useDirection>
