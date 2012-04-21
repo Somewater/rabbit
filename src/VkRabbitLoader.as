@@ -41,7 +41,7 @@ package {
 
 		public function VkRabbitLoader() {
 			super();
-			Config.memory['autoPostLevelPass'] = true;
+			Config.memory['autoPostLevelPass'] = false;
 		}
 
 		override protected function createLayers():void {
@@ -214,19 +214,19 @@ package {
 		{
 			basePath = 'http://rabbit.asflash.ru/';
 			swfs = {
-						"Game":{priority:-1,preload:true,url:"http://cs301110.vk.com/u245894/01597fa71d6f5d.zip"}
+						"Game":{priority:-1,preload:true,url:"http://cs305802.vk.com/u245894/c0342f4f128ff6.zip"}
 						,
 						"Application":{priority:int.MIN_VALUE,
-							preload:true,url:"http://cs301110.vk.com/u245894/557ea2786bc22a.zip"}
-						,"Interface":{preload:true, url:"http://cs301110.vk.com/u245894/cc22527e06784b.zip"}
-						,"Assets":{preload:true, url:"http://cs301110.vk.com/u245894/4fcd0a957bde46.zip"}
+							preload:true,url:"http://cs305802.vk.com/u245894/bb198e1241b943.zip"}
+						,"Interface":{preload:true, url:"http://cs305802.vk.com/u245894/83ec55adf88410.zip"}
+						,"Assets":{preload:true, url:"http://cs305802.vk.com/u245894/bd7524baebc614.zip"}
 						,"Rewards":{preload:true, url:"http://cs301110.vk.com/u245894/8a12bef99da591.zip"}
-						,"Images":{preload:true, url:"http://cs5787.vk.com/u245894/528c21185ad41d.zip"}
+						,"Images":{preload:true, url:"http://cs305802.vk.com/u245894/95efe3baee86a7.zip"}
 						,"MusicMenu":{url:"http://cs5231.userapi.com/u245894/9f85f9d027e598.zip"}
 						,"MusicGame":{url:"http://cs5231.userapi.com/u245894/16c9f64377d623.zip"}
 						,"Sound":{url:"http://cs5231.userapi.com/u245894/af59e6c026863d.zip"}
-						,"Lang":{priority:100, preload:true, url:"http://cs301110.vk.com/u245894/87114c1d96d4e1.zip"}
-						,"XmlPack":{preload:true, url:"http://cs301110.vk.com/u245894/b69e430ffeebbf.zip"}
+						,"Lang":{priority:100, preload:true, url:"http://cs305802.vk.com/u245894/d8358c76ac5e74.zip"}
+						,"XmlPack":{preload:true, url:"http://cs305802.vk.com/u245894/8ec9ca036c8285.zip"}
 
 						,"Font":{priority:100, preload:true, url:"http://cs5231.userapi.com/u245894/fe712dd002e7c1.zip"}
 					}
