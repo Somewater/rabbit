@@ -7,5 +7,7 @@ package com.somewater.rabbit.application.tutorial {
 	public interface ITutorialMessage extends IClear{
 
 		function set toLeft(value:Boolean):void
+
+		function set top(value:Boolean):void
 	}
 }

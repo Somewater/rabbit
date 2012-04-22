@@ -4,9 +4,12 @@ package com.somewater.rabbit.application.tutorial {
 	import com.somewater.rabbit.application.AppServerHandler;
 	import com.somewater.rabbit.application.LevelsPage;
 	import com.somewater.rabbit.application.MainMenuPage;
+	import com.somewater.rabbit.application.tutorial.TutorialLevelDef;
 	import com.somewater.rabbit.application.windows.LevelStartWindow;
+	import com.somewater.rabbit.application.windows.PauseMenuWindow;
 	import com.somewater.rabbit.managers.IGameTutorialModule;
 	import com.somewater.rabbit.storage.Config;
+	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.UserProfile;
 
 	import flash.display.DisplayObject;
@@ -62,7 +65,7 @@ package com.somewater.rabbit.application.tutorial {
 	 * 		"Поздравляю, теперь ты умный кролик и самостоятельно можешь собирать морковку"
 	 * 14) объяснения про энергетики, когда юзер включит любой уровень
 	 */
-	public class TutorialManager implements IClear{
+	public class TutorialManager{
 
 		public static const TIME_WAITING:int = 8000;
 
@@ -70,23 +73,22 @@ package com.somewater.rabbit.application.tutorial {
 
 		private static var _instance:TutorialManager;
 
-		private var age:int = 0;
-		private var cleared:Boolean = false;
+		private var running:Boolean;
 		private const YOUNG_AGE:int = 1;// первые 2 секнуды тьюториал не стартует, он "ждет"
 		internal var STEPS:Array = [
-										 TutorialStep1
-										,TutorialStep2
+										/*TutorialStep1
+										,*/TutorialStep2
 										,TutorialStep3
 										,TutorialStep4
 										,TutorialStep5
 										,TutorialStep6
 										,TutorialStep7
 										,TutorialStep8
-										,TutorialStep9
+										/*,TutorialStep9
 										,TutorialStep10
 										,TutorialStep11
 										,TutorialStep12
-										,TutorialStep13
+										,TutorialStep13*/
 										,TutorialStep14
 									 ];
 
@@ -107,13 +109,10 @@ package com.somewater.rabbit.application.tutorial {
 		private var onObjectHighlightedActiveWindow:Class;
 
 		public function TutorialManager() {
-			tickTimer = new Timer(300);
-			tickTimer.addEventListener(TimerEvent.TIMER, onTick);
-			tickTimer.start();
 
-			arrowRepositTimer = new Timer(200);
-			arrowRepositTimer.addEventListener(TimerEvent.TIMER, refrestarrowPosition);
-			arrowRepositTimer.start();
+			super();
+
+			running = false;
 
 			// при старте менеджера, проверить, как обстоят дела с friends api и удалить шаг посещения друга, если надо
 			if(!Config.loader.hasFriendsApi)
@@ -136,28 +135,22 @@ package com.somewater.rabbit.application.tutorial {
 		 * @param step
 		 */
 		public function startStep(step:int):void {
-			if(age < YOUNG_AGE || cleared) return;
-
-			if(currentStep == null || step > currentStep.index)
+			if(currentStep)
+				currentStep.clear();
+			clearAllStuff();
+			currentStep = null;
+			var cl:Class = STEPS[step];
+			if(cl)
 			{
-				if(currentStep)
-					currentStep.clear();
-				clearAllStuff();
-				currentStep = null;
-				var cl:Class = STEPS[step];
-				if(cl)
-				{
-					currentStep = new cl();
-					currentStep.execute();
-				}
-				else
-				{
-					// нет шага с таким номером, тьюториал выполнен
-					clear();
-				}
+				currentStep = new cl();
+				currentStep.execute();
+				setTimers(true);
 			}
-			else if(step < currentStep.index)
-				trace('Tutorial step is ' + currentStep.index + ', cannot assign ' + step);
+			else
+			{
+				// нет шага с таким номером, тьюториал выполнен
+				setTimers(false);
+			}
 		}
 
 		/**
@@ -166,34 +159,13 @@ package com.somewater.rabbit.application.tutorial {
 		 * @param event
 		 */
 		private function onTick(event:TimerEvent):void {
-			age++;
-			if(age < YOUNG_AGE || cleared) return;
-
-			if(currentStep == null && UserProfile.instance.tutorial >= 0)
-				startStep(UserProfile.instance.tutorial);
-
 			if(currentStep)
 			{
-				// HOOK: если юзер уже прошел 2-й уровень, то не показываем ему полянку наград и страницу левелов
-				if(currentStep.index <= STEPS.indexOf(TutorialStep10) && UserProfile.instance.levelNumber > 2)
-				{
-					TutorialManager.instance.startStep(STEPS.indexOf(TutorialStep10) + 1);
-					return;
-				}
-
-				// HOOK: если юзер прошел 1-й левел, автоматом отметить ему прохождение шагов тьюториала вплоть до 8-го
-				if(currentStep.index <= STEPS.indexOf(TutorialStep8) && UserProfile.instance.levelNumber > 1)
-				{
-					TutorialManager.instance.startStep(STEPS.indexOf(TutorialStep8) + 1);
-					return;
-				}
-
 				currentStep.tick();
 
 				if(currentStep.completed())
 				{
-					AppServerHandler.instance.incrementTutorial(currentStep.index + 1);
-					UserProfile.instance.tutorial = currentStep.index + 1;
+					startStep(currentStep.index + 1);
 				}
 			}
 		}
@@ -203,16 +175,31 @@ package com.somewater.rabbit.application.tutorial {
 			return currentStep ? currentStep.index : -1;
 		}
 
-		public function clear():void {
-			cleared = true;
-			tickTimer.removeEventListener(TimerEvent.TIMER, onTick);
-			tickTimer.stop();
-			tickTimer = null;
+		public function setTimers(running:Boolean):void {
+			if(this.running == running) return;
+			this.running = running;
 
-			arrowRepositTimer.removeEventListener(TimerEvent.TIMER, refrestarrowPosition);
-			if(arrowRepositTimer.running)
-				arrowRepositTimer.stop();
-			arrowRepositTimer = null;
+			if(running)
+			{
+				tickTimer = new Timer(300);
+				tickTimer.addEventListener(TimerEvent.TIMER, onTick);
+				tickTimer.start();
+
+				arrowRepositTimer = new Timer(200);
+				arrowRepositTimer.addEventListener(TimerEvent.TIMER, refrestarrowPosition);
+				arrowRepositTimer.start();
+			}
+			else
+			{
+				tickTimer.removeEventListener(TimerEvent.TIMER, onTick);
+				tickTimer.stop();
+				tickTimer = null;
+
+				arrowRepositTimer.removeEventListener(TimerEvent.TIMER, refrestarrowPosition);
+				if(arrowRepositTimer.running)
+					arrowRepositTimer.stop();
+				arrowRepositTimer = null;
+			}
 		}
 
 		/**
@@ -337,7 +324,9 @@ package com.somewater.rabbit.application.tutorial {
 		private function refrestarrowPosition(event:TimerEvent = null):void {
 
 			var activePageOrWindow:DisplayObject = this.activePageOrWindow(false);
-			var messageMustVisible:Boolean = onMessageShowedActiveWindow == null || Boolean(activePageOrWindow is onMessageShowedActiveWindow);
+			var messageMustVisible:Boolean = onMessageShowedActiveWindow == null || Boolean(activePageOrWindow is onMessageShowedActiveWindow
+					&& (activePageOrWindow is PauseMenuWindow // подсказка может накладываться только на окно паузы
+						|| activePageOrWindow == (Config.application as RabbitApplication).currentPage)); // либо самой страницей игры
 			var highlightMustVisible:Boolean = onObjectHighlightedActiveWindow == null || Boolean(activePageOrWindow is onObjectHighlightedActiveWindow);
 
 			for(var target:* in highlightedToArrow)
@@ -417,7 +406,17 @@ package com.somewater.rabbit.application.tutorial {
 		}
 
 		public static function get active():Boolean {
-			return instance && instance.currentStep != null || UserProfile.instance.tutorial < instance.STEPS.length;
+			return instance && instance.currentStep != null;
+		}
+
+		public function restart(level:LevelDef):void
+		{
+			if(level && level.type == TutorialLevelDef.TYPE)
+				startStep(0);
+			else
+			{
+				startStep(-1);
+			}
 		}
 	}
 }

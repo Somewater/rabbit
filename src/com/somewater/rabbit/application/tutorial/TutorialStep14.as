@@ -66,7 +66,7 @@ package com.somewater.rabbit.application.tutorial {
 		{
 			// прошло 5 или была нажата кнопка Accept
 			return messageShowed &&
-					((getTimer() - stepStartTime) > TutorialManager.TIME_WAITING || powerupEvent);
+					((getTimer() - stepStartTime) > TutorialManager.TIME_WAITING * 3 || powerupEvent);
 		}
 
 		override public function clear():void {

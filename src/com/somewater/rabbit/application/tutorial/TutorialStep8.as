@@ -29,7 +29,7 @@ package com.somewater.rabbit.application.tutorial {
 		{
 			var diagonalMovement:Boolean = false;
 			return messageShowed &&
-					(messageAccepted || (getTimer() - stepStartTime) > TutorialManager.TIME_WAITING * 3 || diagonalMovement);
+					(messageAccepted || (getTimer() - stepStartTime) > TutorialManager.TIME_WAITING * 1 || diagonalMovement);
 		}
 	}
 }

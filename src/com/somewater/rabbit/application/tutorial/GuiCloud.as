@@ -61,5 +61,9 @@ package com.somewater.rabbit.application.tutorial {
 			cloud.toLeft = value;
 			rabbitActor.gotoAndStop(value ? 2 : 1);
 		}
+
+		public function set top(value:Boolean):void {
+			cloud.top = value;
+		}
 	}
 }

@@ -26,6 +26,7 @@ package
 	import com.somewater.rabbit.application.RewardManager;
 	import com.somewater.rabbit.application.ServerLogic;
 	import com.somewater.rabbit.application.TopPage;
+	import com.somewater.rabbit.application.tutorial.TutorialLevelDef;
 	import com.somewater.rabbit.application.WindowBackground;
 	import com.somewater.rabbit.application.shop.ShopPage;
 	import com.somewater.rabbit.application.tutorial.TutorialManager;
@@ -103,6 +104,7 @@ package
 									}
 		private const LEVELS_GUI:Object = {
 												'Level':GameGUI,
+												'TutorialLevel':GameGUI,
 												'RewardLevel':RewardLevelGUI
 											}
 			
@@ -351,9 +353,14 @@ package
 
 		public function addFinishedLevel(levelInstance:LevelInstanceDef):void
 		{
-			ServerLogic.addRewardsToLevelInstance(UserProfile.instance, levelInstance);
-			if(levelInstance.success)
-				AppServerHandler.instance.onLevelPassed(UserProfile.instance, levelInstance);
+			if(levelInstance.levelDef.type == LevelDef.TYPE)
+			{
+				ServerLogic.addRewardsToLevelInstance(UserProfile.instance, levelInstance);
+				if(levelInstance.success)
+					AppServerHandler.instance.onLevelPassed(UserProfile.instance, levelInstance);
+			}
+
+			TutorialManager.instance.restart(null);
 		}
 
 		
@@ -371,7 +378,6 @@ package
 			}
 
 			startPage("main_menu");
-			TutorialManager.instance;// Initialize TutorialManager
 
 			Config.stat(Stat.APP_STARTED);
 
@@ -535,6 +541,8 @@ package
 					CustomizeManager.instance.customize();
 				}
 
+				TutorialManager.instance.restart(level);
+
 				gameStartedCompletely = true;
 				dispatchEvent(new GameModuleEvent(GameModuleEvent.GAME_MODULE_STARTED_EVENT, level));
 			}
@@ -555,6 +563,7 @@ package
 					IClear(child).clear();
 			}
 			currentPage = null;
+			TutorialManager.instance.restart(null);
 		}
 		
 		

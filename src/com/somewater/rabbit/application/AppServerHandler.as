@@ -142,8 +142,8 @@ package com.somewater.rabbit.application {
 
 		public function incrementTutorial(newValue:int):void
 		{
-			if(UserProfile.instance.tutorial < newValue)
-				handler.call('tutorial/inc', {'tutorial':newValue});
+			//if(UserProfile.instance.tutorial < newValue)
+			//	handler.call('tutorial/inc', {'tutorial':newValue});
 		}
 
 		public function addOffer(offer:OfferDef):void {

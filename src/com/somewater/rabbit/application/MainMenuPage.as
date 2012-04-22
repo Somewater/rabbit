@@ -4,6 +4,7 @@ package com.somewater.rabbit.application
 	import com.somewater.rabbit.application.buttons.GreenButton;
 	import com.somewater.rabbit.application.commands.OpenRewardLevelCommand;
 	import com.somewater.rabbit.application.commands.StartNextLevelCommand;
+	import com.somewater.rabbit.application.tutorial.TutorialLevelDef;
 	import com.somewater.rabbit.application.tutorial.TutorialManager;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Config;
@@ -35,6 +36,8 @@ package com.somewater.rabbit.application
 						"MY_ACHIEVEMENTS",
 						"ABOUT_GAME"
 					  ];
+
+			buttons.splice((beginner ? 0 : 1), 0, 'TUTORIAL_BTN');
 
 			if(!Config.memory['hideTop'] && UserProfile.instance.levelNumber > 1 && !TutorialManager.active)// т.е. человек прошел туториал
 			{
@@ -125,6 +128,9 @@ package com.somewater.rabbit.application
 						break;
 				case Lang.t("ABOUT_GAME"):
 						Config.application.startPage("about");
+						break;
+				case Lang.t('TUTORIAL_BTN'):
+						Config.application.startGame(new TutorialLevelDef())
 						break;
 			}
 		}

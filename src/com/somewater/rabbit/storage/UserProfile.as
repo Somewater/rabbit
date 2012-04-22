@@ -232,7 +232,7 @@ package com.somewater.rabbit.storage
 			if(value != _tutorial)
 			{
 				_tutorial = value;
-				TutorialManager.instance.startStep(_tutorial);
+				//TutorialManager.instance.startStep(_tutorial);
 			}
 		}
 

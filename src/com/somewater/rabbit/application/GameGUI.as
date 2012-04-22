@@ -32,7 +32,7 @@ package com.somewater.rabbit.application
 		private var minutesArrowShelf:Shape;
 		private var offerStat:OfferStatPanel;
 		public var powerupPanel:PowerupsGameGUI;
-		private var pauseSplash:DisplayObject;
+		private var pauseSplash:Sprite;
 
 		private var healthHintArea:Sprite;
 		private var timeHintArea:Sprite;
@@ -50,7 +50,7 @@ package com.somewater.rabbit.application
 			
 			playPauseButton = Lib.createMC("interface.PauseButton");
 			playPauseButton.x = 15;
-			playPauseButton.y = Config.HEIGHT - playPauseButton.width - 15;
+			playPauseButton.y = 15;
 			addChild(playPauseButton);
 			playPauseButton.addEventListener(MouseEvent.CLICK, onPlayPauseClick);
 			
@@ -106,6 +106,7 @@ package com.somewater.rabbit.application
 			}
 
 			pauseSplash = Lib.createMC('interface.PauseSplash');
+			pauseSplash.useHandCursor = pauseSplash.buttonMode = true;
 			pauseSplash.x = (Config.WIDTH - pauseSplash.width) * 0.5;
 			pauseSplash.y = (Config.HEIGHT - pauseSplash.height) * 0.5;
 			pauseSplash.visible = false;
@@ -174,6 +175,9 @@ package com.somewater.rabbit.application
 		
 		private function onPlayPauseClick(e:Event):void
 		{
+			// закрыть панель паверапов, если она была открыта
+			powerupPanel.close();
+
 			Config.application.play(Sounds.ALPHA_BUTTON_CLICK, SoundTrack.INTERFACE, true);
 			new PauseMenuWindow();
 		}

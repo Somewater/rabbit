@@ -26,11 +26,12 @@ package com.somewater.rabbit.application.tutorial {
 		private var onAccept:Function;
 		private var image:*;
 		private var _toLeft:Boolean;
+		private var _top:Boolean = true;
 
 		private var cloud:DisplayObject;
 		private var miniCloud:DisplayObject;
 		private var microCloud:DisplayObject;
-		private var contentHolder:Sprite;
+		public var contentHolder:Sprite;
 		private var textField:EmbededTextField;
 		private var photo:Photo;
 		private var photoBorder:DisplayObjectContainer;
@@ -51,12 +52,10 @@ package com.somewater.rabbit.application.tutorial {
 				removeChildAt(0);
 
 			microCloud = Lib.createMC('tutorial.TutorialMiniCloud');
-			microCloud.y = -50;
 			microCloud.scaleX = microCloud.scaleY = 0.75;
 			addChild(microCloud);
 
 			miniCloud = Lib.createMC('tutorial.TutorialMiniCloud');
-			miniCloud.y = -75;
 			addChild(miniCloud);
 
 			cloud = Lib.createMC('tutorial.TutorialCloud');
@@ -100,7 +99,6 @@ package com.somewater.rabbit.application.tutorial {
 			// resize
 			cloud.width = (photoBorder ? photoBorder.x + photoBorder.width + 15 : textField.x + textField.width) + 10 + PADDING * 2;
 			cloud.height = buttonNext ? buttonNext.y + buttonNext.height + 45 : (photoBorder ? Math.max(photoBorder.y + photoBorder.height, textField.y + textField.height) : textField.height) + 25 + PADDING * 2;
-			cloud.y = -90 - cloud.height;
 
 			_toLeft = !_toLeft;
 			toLeft = !_toLeft;
@@ -148,12 +146,45 @@ package com.somewater.rabbit.application.tutorial {
 			{
 				_toLeft = value;
 
-				microCloud.x = _toLeft ? -45 : 45;
-				miniCloud.x = _toLeft ? -65 : 65;
-				cloud.x = _toLeft ? -40 - cloud.width : 40;
-				contentHolder.x = cloud.x + PADDING;
-				contentHolder.y = cloud.y + PADDING + 10;
+				refresh();
 			}
+		}
+
+		public function set top(value:Boolean):void {
+			if(value != _top)
+			{
+				_top = value;
+				refresh();
+			}
+		}
+
+		private function refresh():void {
+			microCloud.x = _toLeft ? -45 : 45;
+			miniCloud.x = _toLeft ? -65 : 65;
+			cloud.x = _toLeft ? -40 - cloud.width : 40;
+			contentHolder.x = cloud.x + PADDING;
+
+			if(_top)
+			{
+				cloud.y = -90 - cloud.height;
+				microCloud.y = -50;
+				miniCloud.y = -75;
+			}
+			else
+			{
+				const BOTTOM_FIX:int = -25;
+				cloud.y = 90 + BOTTOM_FIX;
+				microCloud.y = 50 + BOTTOM_FIX;
+				miniCloud.y = 75 + BOTTOM_FIX;
+				//contentHolder.y = 90 + PADDING * 2 + BOTTOM_FIX;
+			}
+
+			contentHolder.y = cloud.y + PADDING + 10;
+		}
+
+		public function get heightIfBottom():int
+		{
+			return 90 + contentHolder.height + PADDING;
 		}
 	}
 }

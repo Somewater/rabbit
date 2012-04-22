@@ -7,6 +7,7 @@ package com.somewater.rabbit.managers
 	import com.pblabs.engine.core.NameManager;
 	import com.pblabs.engine.core.PBObject;
 	import com.pblabs.engine.core.PBSet;
+	import com.somewater.rabbit.application.tutorial.TutorialLevelDef;
 	import com.somewater.rabbit.components.HeroDataComponent;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
@@ -78,9 +79,11 @@ package com.somewater.rabbit.managers
 			conditionsRef = [];
 			var levelRef:LevelDef = Config.game.level;
 
-			_levelFinished = levelRef.type != 'Level';// для всех "необычных" уровней, блочим логику менеджера
+			var normalLevelMode:Boolean = levelRef.type == LevelDef.TYPE || levelRef.type == TutorialLevelDef.TYPE
 
-			if(levelRef.type != 'Level')
+			_levelFinished = !normalLevelMode;// для всех "необычных" уровней, блочим логику менеджера
+
+			if(!normalLevelMode)
 				return;
 
 			for (var key:String in levelRef.conditions)

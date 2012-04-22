@@ -1,4 +1,5 @@
 package com.somewater.rabbit.application.tutorial {
+	import com.somewater.controller.PopUpManager;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Lib;
 
@@ -53,10 +54,18 @@ package com.somewater.rabbit.application.tutorial {
 			this.y = tmpPoint.y;
 
 			this.toLeft =  tmpPoint.x > Config.WIDTH * 0.5;
+
+			var canBottom:Boolean = tmpPoint.y + cloud.heightIfBottom < Config.HEIGHT;
+			var needBottom:Boolean = PopUpManager.activeWindow != null || (tmpPoint.y - cloud.heightIfBottom - 100) < 0;
+			this.top = !(canBottom && needBottom);
 		}
 
 		public function set toLeft(value:Boolean):void {
 			cloud.toLeft = value;
+		}
+
+		public function set top(value:Boolean):void {
+			cloud.top = value;
 		}
 	}
 }

@@ -41,6 +41,7 @@ package com.somewater.rabbit.application {
 		public function PowerupsGameGUI(pauseSplashRef:DisplayObject) {
 
 			this.pauseSplashRef = pauseSplashRef;
+			pauseSplashRef.addEventListener(MouseEvent.CLICK, close);
 
 			ground = Lib.createMC('interface.OpaqueBackground');
 			ground.width = WIDTH;
@@ -124,6 +125,8 @@ package com.somewater.rabbit.application {
 			if(autoCloseTimer.running)
 				autoCloseTimer.stop();
 			Hint.removeHint(this);
+			pauseSplashRef.removeEventListener(MouseEvent.CLICK, close)
+			pauseSplashRef = null;
 		}
 
 
@@ -186,6 +189,10 @@ package com.somewater.rabbit.application {
 		public function isOpened():Boolean
 		{
 			return opened;
+		}
+
+		public function close(event:Event = null):void {
+			setStateAnimated(false);
 		}
 	}
 }

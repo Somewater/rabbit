@@ -1,4 +1,5 @@
 package com.somewater.rabbit.application.commands {
+	import com.somewater.rabbit.application.tutorial.TutorialLevelDef;
 	import com.somewater.rabbit.application.tutorial.TutorialManager;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
@@ -18,8 +19,7 @@ package com.somewater.rabbit.application.commands {
 
 			// хук для тьюториала. Если тольтко что пройден первый левел игры, тьюториал не доведен до (LEVEL_LAST_STEP+1) шага
 			// и стартовать пытается 2й левел, открываем главное меню
-			if(UserProfile.instance.levelNumber == 2 &&
-					TutorialManager.instance.stepIndex() != -1 && TutorialManager.instance.stepIndex() <= TutorialManager.AFTER_LEVEL_STEP)
+			if(currentPassedLevel is TutorialLevelDef)
 			{
 				Config.application.startPage('main_menu');
 				return;

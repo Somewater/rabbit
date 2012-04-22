@@ -17,6 +17,7 @@ package com.somewater.rabbit.application.windows
 	public class PauseMenuWindow extends Window
 	{
 		private var gotoMainMenuButton:OrangeButton;
+		private var gotoSelectLevelButton:OrangeButton;
 		private var restartLevelButton:OrangeButton;
 		
 		private var audioControls:AudioControls;
@@ -26,19 +27,30 @@ package com.somewater.rabbit.application.windows
 			super("", Lang.t("PAUSE"), null, [])
 			setSize(270, 320);
 			
-			gotoMainMenuButton = new OrangeButton();
+			/*gotoMainMenuButton = new OrangeButton();
 			gotoMainMenuButton.setSize(180, 32);
 			gotoMainMenuButton.label = Lang.t("BUTTON_GOTO_MAIN_MENU");
 			gotoMainMenuButton.x = (width - gotoMainMenuButton.width) * 0.5;
 			gotoMainMenuButton.y = 70;
 			addChild(gotoMainMenuButton);
-			gotoMainMenuButton.addEventListener(MouseEvent.CLICK, onGotoMainMenuClick);
+			gotoMainMenuButton.addEventListener(MouseEvent.CLICK, onGotoMainMenuClick);*/
+
+			gotoSelectLevelButton = new OrangeButton();
+			gotoSelectLevelButton.setSize(180, 32);
+			gotoSelectLevelButton.label = Lang.t("LEVEL_SELECTION");
+			gotoSelectLevelButton.x = (width - gotoSelectLevelButton.width) * 0.5;
+			gotoSelectLevelButton.y = 70;
+			addChild(gotoSelectLevelButton);
+			gotoSelectLevelButton.addEventListener(MouseEvent.CLICK, onSelectLevelClick);
 			
 			restartLevelButton = new OrangeButton();
 			restartLevelButton.setSize(180, 32);
 			restartLevelButton.label = Lang.t("BUTTON_RESTART_LEVEL");
 			restartLevelButton.x = (width - restartLevelButton.width) * 0.5;
-			restartLevelButton.y = gotoMainMenuButton.y + gotoMainMenuButton.height + 25;
+			if(gotoMainMenuButton)
+				restartLevelButton.y = gotoMainMenuButton.y + gotoMainMenuButton.height + 25;
+			else if(gotoSelectLevelButton)
+				restartLevelButton.y = gotoSelectLevelButton.y + gotoSelectLevelButton.height + 25;
 			addChild(restartLevelButton);
 			restartLevelButton.addEventListener(MouseEvent.CLICK, onRestartLevelClick);
 			
@@ -77,7 +89,10 @@ package com.somewater.rabbit.application.windows
 		{
 			super.clear();
 			
-			gotoMainMenuButton.removeEventListener(MouseEvent.CLICK, onGotoMainMenuClick);
+			if(gotoMainMenuButton)
+				gotoMainMenuButton.removeEventListener(MouseEvent.CLICK, onGotoMainMenuClick);
+			if(gotoSelectLevelButton)
+				gotoSelectLevelButton.removeEventListener(MouseEvent.CLICK, onSelectLevelClick);
 			restartLevelButton.removeEventListener(MouseEvent.CLICK, onRestartLevelClick);
 			audioControls.clear();
 		}
@@ -88,6 +103,14 @@ package com.somewater.rabbit.application.windows
 			
 			Config.game.finishLevel(LevelInstanceDef.DUMMY_FATAL_LEVEL, true);
 			Config.application.startPage("main_menu");
+		}
+
+		private function onSelectLevelClick(event:Event):void
+		{
+			close();
+
+			Config.game.finishLevel(LevelInstanceDef.DUMMY_FATAL_LEVEL, true);
+			Config.application.startPage("levels");
 		}
 		
 		
