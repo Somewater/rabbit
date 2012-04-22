@@ -5,6 +5,7 @@ package com.somewater.rabbit.storage {
 		public static const TYPE_ROOF:String = 'roof';
 		public static const TYPE_DOOR:String = 'door';
 		public static const TYPE_TITLE:String = 'title';
+		public static const TYPE_MAT:String = 'mat';
 
 		public var type:String;
 		public var start:Boolean = false;

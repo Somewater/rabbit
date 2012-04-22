@@ -74,3 +74,25 @@ zinc_title:
   <<: *title
   id: 121
   slug: reward.ZincTitle
+
+#####################
+#
+#	КОВРИКИ
+#
+#####################
+
+mat: &mat
+  <<: *customize
+  type: mat
+  id: -130
+
+default_mat:
+  <<: *mat
+  id: 130
+  slug: reward.DefaultMat
+  start: true
+
+color_mat:
+  <<: *mat
+  id: 131
+  slug: reward.ColorMat

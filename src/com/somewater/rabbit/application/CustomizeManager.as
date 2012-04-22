@@ -64,6 +64,7 @@ package com.somewater.rabbit.application {
 			// добавить крышу, которую заслуживает этот юзер
 			createByCustomize(CustomizeDef.TYPE_ROOF);
 			createByCustomize(CustomizeDef.TYPE_DOOR);
+			createByCustomize(CustomizeDef.TYPE_MAT);
 			var titleClip:DisplayObjectContainer = createByCustomize(CustomizeDef.TYPE_TITLE);
 
 			var titleClipTextField:TextField = titleClip.getChildByName('textField') as TextField;
