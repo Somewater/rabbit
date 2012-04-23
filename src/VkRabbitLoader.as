@@ -224,7 +224,7 @@ package {
 						,"Images":{preload:true, url:"http://cs305802.vk.com/u245894/95efe3baee86a7.zip"}
 						,"MusicMenu":{url:"http://cs5231.userapi.com/u245894/9f85f9d027e598.zip"}
 						,"MusicGame":{url:"http://cs5231.userapi.com/u245894/16c9f64377d623.zip"}
-						,"Sound":{url:"http://cs5231.userapi.com/u245894/af59e6c026863d.zip"}
+						,"Sound":{preload:true, url:"http://cs5231.userapi.com/u245894/af59e6c026863d.zip"}
 						,"Lang":{priority:100, preload:true, url:"http://cs305802.vk.com/u245894/d8358c76ac5e74.zip"}
 						,"XmlPack":{preload:true, url:"http://cs5787.vk.com/u245894/e8ecbb5ec16b74.zip"}
 

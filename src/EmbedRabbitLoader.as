@@ -45,7 +45,7 @@ package
 				,"Images":{preload:true, url:"assets/rabbit_images.swf"}
 				,"MusicMenu":{url:"assets/music_menu.swf"}
 				,"MusicGame":{url:"assets/music_game.swf"}
-				,"Sound":{url:"assets/rabbit_sound.swf"}
+				,"Sound":{preload:true, url:"assets/rabbit_sound.swf"}
 				,"Lang":{priority:100, preload:true, url:"lang_pack.swf"}
 
 				,"Font":{priority:100, preload:true, url:"assets/fonts_ru.swf"}

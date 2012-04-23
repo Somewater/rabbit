@@ -297,7 +297,6 @@ package com.somewater.rabbit.managers
 				clear();
 
 				Config.application.addFinishedLevel(event);
-				Config.application.levelFinishMessage(event);
 				Config.game.finishLevel(event, true);
 			});
 		}

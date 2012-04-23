@@ -42,7 +42,11 @@ package com.somewater.rabbit.application.tutorial {
 
 		public function tick():void {
 			// позиционируемся
-			var personageDO:DisplayObject = TutorialManager.modile.heroDisplayObject;
+			var personageDO:DisplayObject
+			try
+			{
+				personageDO	= TutorialManager.modile.heroDisplayObject;
+			}catch(err:Error){}
 			if(personageDO == null)
 				return;
 			tmpPoint.x = 0;

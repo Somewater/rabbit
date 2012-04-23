@@ -1,6 +1,7 @@
 package
 {
 	import com.google.analytics.GATracker;
+	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
 	import com.somewater.control.IClear;
 	import com.somewater.controller.PopUpManager;
@@ -130,6 +131,8 @@ package
 		private var _musicSoundTransform:SoundTransform = new SoundTransform();
 		private var soundLibraryLoadingStarted:Boolean = false;
 		private var soundLibraryLoaded:Boolean = false;
+		private const musicNameToFile:Object = {'sound.MusicMenu':'MusicMenu',
+												'sound.MusicGame':'MusicGame'};
 
 		private var friendInviteTimer:Timer;
 
@@ -141,7 +144,7 @@ package
 		public var gameStartedCompletely:Boolean = false;
 
 		protected var gaTracker:GATracker;
-		
+
 		public function RabbitApplication()
 		{
 			super();
@@ -361,6 +364,13 @@ package
 			}
 
 			TutorialManager.instance.restart(null);
+
+			levelFinishMessage(levelInstance);
+
+			if(levelInstance.success)
+				playMusicFadeIn(Sounds.MUSIC_WIN, true);
+			else
+				playMusicFadeIn(Sounds.MUSIC_LOSE, true);
 		}
 
 		
@@ -470,7 +480,7 @@ package
 			_content.addChild(currentPage);
 			Config.gameModuleActive = false;
 			_gameGUI = null;
-			play(Sounds.MUSIC_MENU, SoundTrack.MUSIC);
+			playMusicFadeIn(Sounds.MUSIC_MENU);
 		}
 		
 		/**
@@ -492,7 +502,7 @@ package
 
 			clearContent();
 			showSlash(-1);
-			play(level.type == RewardLevelDef.TYPE ? Sounds.MUSIC_MENU : Sounds.MUSIC_GAME, SoundTrack.MUSIC);
+			playMusicFadeIn(level.type == RewardLevelDef.TYPE ? Sounds.MUSIC_MENU : Sounds.MUSIC_GAME);
 			
 			currentPage = Config.game as DisplayObject;
 			_content.addChild(currentPage);
@@ -728,7 +738,7 @@ package
 				// if music, load and start playing async
 				if(track == SoundTrack.MUSIC)
 				{
-					Config.loader.loadSwf(soundName == Sounds.MUSIC_MENU ? 'MusicMenu' : 'MusicGame', onMusicLibraryLoaded);
+					Config.loader.loadSwf(musicNameToFile[soundName] || 'Sound', playActualMusic);
 				}
 				else
 				{
@@ -747,7 +757,7 @@ package
 				SoundData(soundTracks[track]).channel.stop();
 				SoundData(soundTracks[track]).channel.removeEventListener(Event.SOUND_COMPLETE, onSoundComplete)
 				if(track == SoundTrack.MUSIC)
-					Config.callLater(playNewSound, null, 8)
+					Config.callLater(playNewSound, null, 1)
 				else
 					playNewSound();
 			}
@@ -756,8 +766,11 @@ package
 
 			function playNewSound():void
 			{
-				soundTracks[track] = new SoundData(soundName, soundObject.play(0, track == SoundTrack.MUSIC ? 0xFFFF : 0, track == SoundTrack.MUSIC ? _musicSoundTransform : _soundSoundTransform));
-				SoundData(soundTracks[track]).channel.addEventListener(Event.SOUND_COMPLETE, onSoundComplete)
+				var ortadoxMusic:Boolean = track == SoundTrack.MUSIC && (soundName == Sounds.MUSIC_MENU || soundName == Sounds.MUSIC_GAME)
+				soundTracks[track] = new SoundData(soundName, soundObject.play(0,
+						ortadoxMusic ? 0xFFFF : 0,
+						track == SoundTrack.MUSIC ? _musicSoundTransform : _soundSoundTransform));
+				SoundData(soundTracks[track]).channel.addEventListener(Event.SOUND_COMPLETE, onSoundComplete);
 			}
 		}
 
@@ -778,14 +791,22 @@ package
 
 		private function onSoundComplete(event:Event):void
 		{
-			for(var track:String in soundTracks)
+			var sd:SoundData;
+			var track:String;
+			for(track in soundTracks)
 			{
-				var sd:SoundData = soundTracks[track];
+				sd = soundTracks[track];
 				if(sd.channel == event.currentTarget as SoundChannel)
 				{
 					sd.channel.removeEventListener(Event.SOUND_COMPLETE, onSoundComplete);
 					delete(soundTracks[track]);
 					break;
+				}
+			}
+
+			if(sd) {
+				if(track == SoundTrack.MUSIC) {
+					playActualMusic(true);
 				}
 			}
 		}
@@ -819,12 +840,22 @@ package
 		/**
 		 * Loaded lib file with some music theme
 		 */
-		private function onMusicLibraryLoaded():void
+		private function playActualMusic(fade:Boolean = false):void
 		{
-			if(Config.gameModuleActive)
-				play(Sounds.MUSIC_GAME, SoundTrack.MUSIC);
+			if(currentPage == Config.game)
+			{
+				if(fade)
+					playMusicFadeIn(Sounds.MUSIC_GAME, !fade)
+			    else
+					play(Sounds.MUSIC_GAME, SoundTrack.MUSIC);
+			}
 			else
-				play(Sounds.MUSIC_MENU, SoundTrack.MUSIC);
+			{
+				if(fade)
+					playMusicFadeIn(Sounds.MUSIC_MENU)
+				else
+					play(Sounds.MUSIC_MENU, SoundTrack.MUSIC);
+			}
 		}
 
 		private function onSoundLibraryLoaded():void
@@ -899,6 +930,31 @@ package
 				// error
 				message(Lang.t('ERROR_FRIEND_VISIT_REWARD'));
 			})
+		}
+
+		private function playMusicFadeIn(musicName:String, fastFade:Boolean = false):void
+		{
+			if(soundTracks[SoundTrack.MUSIC])
+			{
+				if(SoundData(soundTracks[SoundTrack.MUSIC]).soundName == musicName)
+					return;// не нужно плавного перехода, если и так играет что надо
+
+				TweenLite.killTweensOf(this, true);
+				TweenLite.to(this, fastFade ? 0.3 : 0.8, {music: 0,
+					onComplete:startMusicFadeInImmediately,
+					onCompleteParams: [musicName, fastFade, this.music]});
+			}
+			else
+			{
+				startMusicFadeInImmediately(musicName, fastFade, this.music);
+				this.music = 0;
+			}
+		}
+
+		private function startMusicFadeInImmediately(musicName:String, fastFade:Boolean, volume:Number):void
+		{
+			TweenLite.to(this, fastFade ? 0.3 : 0.8, {music: volume});
+			play(musicName, SoundTrack.MUSIC);
 		}
 	}
 }

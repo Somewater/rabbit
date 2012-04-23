@@ -59,7 +59,7 @@ package {
 						,"Images":{preload:true, url:"http://cdn1.appsmail.ru/hosting/666052/rabbit_images.swf?cb=6"}
 						,"MusicMenu":{url:"http://cdn2.appsmail.ru/hosting/666052/music_menu.swf"}
 						,"MusicGame":{url:"http://cdn5.appsmail.ru/hosting/666052/music_game.swf"}
-						,"Sound":{url:"http://cdn6.appsmail.ru/hosting/666052/rabbit_sound.swf"}
+						,"Sound":{preload:true, url:"http://cdn6.appsmail.ru/hosting/666052/rabbit_sound.swf"}
 						,"Lang":{priority:100, preload:true, url:"http://cdn4.appsmail.ru/hosting/666052/lang_pack.swf?cb=6"}
 						,"XmlPack":{preload:true, url:"http://cdn8.appsmail.ru/hosting/666052/xml_pack.swf?cb=6.1"}
 
