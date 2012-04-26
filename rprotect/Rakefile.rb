@@ -1,4 +1,4 @@
-$debug_flag = 'false'
+$debug = ENV['DEBUG'] ? ENV['DEBUG'].to_s == 'true' || ENV['DEBUG'].to_s == '1': false
 
 task :environment do
 	ROOT = File.expand_path('../',  __FILE__)
@@ -46,14 +46,14 @@ end
 
 def compile_file file
 	puts "Compiling #{file} ..."
-	puts `mxmlc -default-background-color=#FFFFFF -default-frame-rate=24 -default-size 100 100 -target-player=10.0.0 -compiler.debug=#{$debug_flag} -use-network=true -benchmark=true -optimize=true -output=#{file}.swf #{file}.as`
+	puts `mxmlc -default-background-color=#FFFFFF -default-frame-rate=24 -default-size 100 100 -target-player=10.0.0 -compiler.debug=#{$debug} -use-network=true -benchmark=true -optimize=true -output=#{file}.swf #{file}.as`
 end
 
 def compile_library()
 	puts `compc -source-path "#{ROOT}" \
 -include-classes "com.somewater.net.SWFDecoderWrapper" \
 -optimize \
--compiler.debug=#{$debug_flag} \
+-compiler.debug=#{$debug} \
 -target-player=10.0 \
 -output "#{ROOT}/RProtector.swc"`
 end

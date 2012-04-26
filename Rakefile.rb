@@ -14,6 +14,7 @@ Dir["#{ROOT}/rabbit_server/lib/tasks/*.rake"].sort.each { |x| import x }
 require 'rake'
 
 $debug = ENV['DEBUG'] ? ENV['DEBUG'].to_s == 'true' || ENV['DEBUG'].to_s == '1': false
+$air = ENV['AIR'] ? ENV['AIR'].to_s == 'true' || ENV['AIR'].to_s == '1': false
 
 task :default => ["flash:compile"]
 
@@ -42,7 +43,10 @@ namespace :flash do
 
 	desc 'Configurate compiler keys'
 	task :configurate_compiler do
-	MXMLC_COMMON_COMMANDLINE_ARGS="#{ENV['USE_MXMLC'] || `which fcshctl-mxmlc`.size == 0 ? 'mxmlc' : 'fcshctl-mxmlc'} \
+	compiler = ENV['USE_MXMLC'] || `which fcshctl-mxmlc`.size == 0 ? 'mxmlc' : 'fcshctl-mxmlc'
+	compiler = '/home/pav/bin/sdks/4.5.0/bin/amxmlc' if $air
+
+	MXMLC_COMMON_COMMANDLINE_ARGS="#{compiler} \
 -warnings=false \
 -static-link-runtime-shared-libraries \
 -default-background-color=#FFFFFF \

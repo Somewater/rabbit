@@ -4,6 +4,7 @@ import flash.display.DisplayObject;
 import flash.display.Loader;
 	import flash.display.LoaderInfo;
 	import flash.display.Sprite;
+	import flash.errors.IOError;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.SecurityErrorEvent;
@@ -126,13 +127,13 @@ import flash.display.Loader;
 			  clear();
 				onErrorRef();
 			}
-			catch(err:Error)
+			catch(err:IOError)
 			{
 				try
 				{
 					onErrorRef(event);
-				}catch(err2:Error){
-					
+				}catch(err2:IOError){
+
 				}
 			}
 		}
@@ -152,7 +153,9 @@ import flash.display.Loader;
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, reloadHandler);
 			try
 			{
-				loader.loadBytes(byteArray, new LoaderContext(false, appDomain, SecurityDomain.currentDomain));
+				var lc:* = new LoaderContext(false, appDomain, SecurityDomain.currentDomain);
+				lc[ "allowCodeImport" ] = true;
+				loader.loadBytes(byteArray, lc);
 			}catch(e:Error)
 			{
 				try
@@ -160,12 +163,14 @@ import flash.display.Loader;
 					if(e.errorID == 2114)
 					{
 					  byteArray.position = 0;
-						loader.loadBytes(byteArray, new LoaderContext(false, appDomain, null));
+						var lc2:* = new LoaderContext(false, appDomain, null);
+						lc2[ "allowCodeImport" ] = true;
+						loader.loadBytes(byteArray, lc2);
 					}
 					else
 						fireError();
 						
-				}catch(e2:Error)
+				}catch(e2:IOError)
 				{
 					fireError();
 				}
@@ -212,7 +217,7 @@ import flash.display.Loader;
                             onCompleteRef(content);
                     }
                 }
-			}catch(err:Error)
+			}catch(err:IOError)
 			{
                 fireError();
 			}

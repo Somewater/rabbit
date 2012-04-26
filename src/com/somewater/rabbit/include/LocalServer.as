@@ -40,8 +40,7 @@
 			user.male = true;
 			user.id = userParams['id'] ? userParams['id'] : '0';
 			user.itsMe = true;
-			user.balance = 0;
-			user.bdate = new Date(1980, 0, 0).time;
+			user.birthday = new Date(1980, 0, 0);
 			user.firstName = userParams['firstName'] ? userParams['firstName'] : "Hopper";
 			user.lastName = userParams['lastName'] ? userParams['lastName'] : "";
 		}

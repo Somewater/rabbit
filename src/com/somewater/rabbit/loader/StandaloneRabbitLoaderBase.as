@@ -156,7 +156,7 @@ package com.somewater.rabbit.loader {
 			}, function():void{
 				CONFIG::debug
 				{
-					trace('[STANDALONE DECODING ERROR]');
+					trace('[STANDALONE DECODING ERROR] filename ' + name);
 				}
 			});
 		}

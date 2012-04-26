@@ -132,7 +132,7 @@ import flash.display.Loader;
 				{
 					onErrorRef(event);
 				}catch(err2:Error){
-					
+
 				}
 			}
 		}
@@ -152,7 +152,9 @@ import flash.display.Loader;
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, reloadHandler);
 			try
 			{
-				loader.loadBytes(byteArray, new LoaderContext(false, appDomain, SecurityDomain.currentDomain));
+				var lc:LoaderContext = new LoaderContext(false, appDomain, SecurityDomain.currentDomain);
+				lc[ "allowCodeImport" ] = true;
+				loader.loadBytes(byteArray, lc);
 			}catch(e:Error)
 			{
 				try
@@ -160,7 +162,9 @@ import flash.display.Loader;
 					if(e.errorID == 2114)
 					{
 					  byteArray.position = 0;
-						loader.loadBytes(byteArray, new LoaderContext(false, appDomain, null));
+						var lc2:LoaderContext = new LoaderContext(false, appDomain, null);
+						lc2[ "allowCodeImport" ] = true;
+						loader.loadBytes(byteArray, lc2);
 					}
 					else
 						fireError();

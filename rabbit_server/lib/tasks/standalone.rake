@@ -15,6 +15,26 @@ namespace :standalone do
 		puts "******************************\n\tWARNING SITELOCK NOT ASSIGNED\n******************************" unless ENV['SITELOCK']
 	end
 
+	desc 'Compile FGL'
+	task :airswf, [:preloader_only] do |task, args|
+		ENV['SITELOCK'] = "*"
+		ENV['LOCALE'] = 'en'
+		#ENV['USE_MXMLC'] = 'true'
+		ENV['LOADERNAME'] = 'AIRSWFRabbitLoader'
+		Rake::Task['flash:configurate_compiler'].execute()
+		unless args[:preloader_only]
+			Rake::Task['standalone:compile_config'].execute()
+			Rake::Task['standalone:compile_lang'].execute()
+			Rake::Task['flash:compile'].execute()
+			Rake::Task['flash:encode'].execute()
+		end
+		Rake::Task['flash:compile'].execute({:filename => 'AIRSWFRabbitLoader'})
+		require 'fileutils'
+		FileUtils.mv "#{ROOT}/bin-debug/AIRSWFRabbitLoader.swf", "#{ROOT}/air/AIRSWFRabbitLoader.swf"
+		puts "******************************\n\tWARNING LOCALE = #{ENV['LOCALE']}\n******************************" if ENV['LOCALE'] != 'en'
+		#puts "******************************\n\tWARNING SITELOCK NOT ASSIGNED\n******************************" unless ENV['SITELOCK']
+	end
+
 	desc 'Compile FLASH GAMM'
 	task :gamm do
 		ENV['SITELOCK'] = "flashgamm.com"

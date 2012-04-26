@@ -141,7 +141,11 @@ package com.somewater.rabbit.loader
 			
 			tabChildren = false;
 			
+			try{
 			Security.allowDomain("*");
+			}catch(err:Error){
+				trace(err)
+			}
 			
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}

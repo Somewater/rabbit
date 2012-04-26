@@ -55,6 +55,7 @@ package com.somewater.net
 		{
 			var loader:Loader = new Loader();
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, function(event:Event):void{
+
 				event.target.removeEventListener(event.type, arguments.callee);
 				engine = event.target.content.constructor;
 				try
@@ -68,12 +69,16 @@ package com.somewater.net
 			var bytes:ByteArray = new core();
 			try
 			{
-				loader.loadBytes(bytes, new LoaderContext(false, ApplicationDomain.currentDomain, SecurityDomain.currentDomain));
+				var lc:LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain, SecurityDomain.currentDomain);
+				lc[ "allowCodeImport" ] = true;
+				loader.loadBytes(bytes, lc);
 			}catch(err:Error)
 			{
 				try
 				{
-					loader.loadBytes(bytes, new LoaderContext(false, ApplicationDomain.currentDomain, null));
+					var lc2:LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain, null)
+					lc2[ "allowCodeImport" ] = true;
+					loader.loadBytes(bytes, lc2);
 				}catch(err2:Error)
 				{
 					onError();

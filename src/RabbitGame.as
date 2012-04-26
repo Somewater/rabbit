@@ -74,8 +74,12 @@ package
 			
 			graphics.beginFill(0x85B53D);
 			graphics.drawRect(0,0,810,650);
-			
+
+			try{
 			Security.allowDomain("*");
+			}catch(err:Error){
+				trace(err)
+			}
 			
 			if(stage)// если запущена непоследстенно игра, минуя прелоадер
 				run();

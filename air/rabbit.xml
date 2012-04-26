@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<application xmlns="http://ns.adobe.com/air/application/2.6"> 
+    <id>AIRSWFRabbitLoader</id>
+    <versionNumber>0.1</versionNumber> 
+    <filename>AIRSWFRabbitLoader</filename>
+    <initialWindow> 
+        <content>AIRSWFRabbitLoader.swf</content>
+        <visible>true</visible> 
+        <width>810</width> 
+        <height>650</height> 
+    </initialWindow> 
+</application>
