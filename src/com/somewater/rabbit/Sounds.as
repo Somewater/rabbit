@@ -8,7 +8,7 @@ package com.somewater.rabbit {
 		public static const MUSIC_MENU:String = 'sound.MusicMenu';
 		public static const MUSIC_GAME:String = 'sound.MusicGame';
 		public static const MUSIC_WIN:String = 'sound.MusicWin';
-		public static const MUSIC_LOSE:String = 'sound.MusicLose2';
+		public static const MUSIC_LOSE:String = 'sound.MusicLose';
 
 		public static const ALPHA_BUTTON_CLICK:String = 'sound.AlphaButtonClick';
 		public static const ORANGE_BUTTON_CLICK:String = 'sound.OrangeButtonClick';
