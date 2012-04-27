@@ -727,7 +727,8 @@ package
 
 		public function play(soundName:String, track:String, force:Boolean = false):void
 		{
-			if(track != SoundTrack.MUSIC) return;// Пока музыка (звуки вернее) идиотская, не проигрываем ее вовсе
+			if(track != SoundTrack.MUSIC && soundName != Sounds.HARVEST && soundName != Sounds.DAMAGE)
+				return;// Пока музыка (звуки вернее) идиотская, не проигрываем ее вовсе
 
 			if(force == false && soundTracks[track] && SoundData(soundTracks[track]).soundName == soundName)
 				return; // игнорируем попытку прогирать один и тот же звук, когда не доиграл такой же

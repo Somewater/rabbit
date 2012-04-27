@@ -12,7 +12,7 @@ package com.somewater.rabbit.util {
 
 		private static var _instance:AnimationHelper;
 
-		private const TICK_RATE_SEC:Number = 0.3;
+		private const TICK_RATE_SEC:Number = 0.2;
 
 		private var blinkQueue:Array = [];
 		private var blinkObjectToStopAt:Dictionary = new Dictionary(true);
