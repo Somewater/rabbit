@@ -356,7 +356,7 @@ package
 
 		public function addFinishedLevel(levelInstance:LevelInstanceDef):void
 		{
-			if(levelInstance.levelDef.type == LevelDef.TYPE)
+			if(levelInstance.levelDef.type == LevelDef.TYPE || levelInstance.levelDef.type == TutorialLevelDef.TYPE)
 			{
 				ServerLogic.addRewardsToLevelInstance(UserProfile.instance, levelInstance);
 				if(levelInstance.success)
