@@ -100,6 +100,7 @@ package com.somewater.rabbit.application
 				{
 					b.setSize(180, 48);
 					b.textField.size = 17;
+					b.textField.y -= 2;
 					b.icon.scaleX = b.icon.scaleY = 1.45;
 				}
 				else

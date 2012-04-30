@@ -47,6 +47,7 @@ package com.somewater.rabbit.application.shop {
 			addChild(quantityTF);
 
 			_background = Lib.createMC('interface.OpaqueBackground');
+			_background.y = -2;
 			_background.x = -5;
 			_background.height = HEIGHT;
 			addChildAt(_background, 0);
