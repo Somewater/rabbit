@@ -12,7 +12,7 @@ package com.somewater.rabbit.loader {
 
 	public class Preloader extends MovieClip{
 
-		public var rabbitLoaderName:String = 'FGLRabbitLoader';
+		public var rabbitLoaderName:String = CONFIG::loadername;
 		private var preloader:*;
 		private var preloaderCarrotIndex:int = -1;// индекс последней запущенной морковки
 

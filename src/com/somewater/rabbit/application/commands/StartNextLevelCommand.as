@@ -19,7 +19,7 @@ package com.somewater.rabbit.application.commands {
 
 			// хук для тьюториала. Если тольтко что пройден первый левел игры, тьюториал не доведен до (LEVEL_LAST_STEP+1) шага
 			// и стартовать пытается 2й левел, открываем главное меню
-			if(currentPassedLevel is TutorialLevelDef)
+			if(currentPassedLevel is TutorialLevelDef && nextLevelDef.number != 2)
 			{
 				Config.application.startPage('main_menu');
 				return;

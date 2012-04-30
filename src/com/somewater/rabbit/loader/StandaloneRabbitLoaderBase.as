@@ -73,6 +73,10 @@ package com.somewater.rabbit.loader {
 
 			if(swfs == null)
 				swfs = {};
+
+			// первый пункт должен занимать намного больше, чем остальные, т.к. производится энкодинг флешек
+			// стартуем не со значения 0, а с 0.7, т.к. прелоадер доходит до 70%, когда файл загружен
+			progressStepsByType = [0.7, 0.95, 0.97, 0.99, 1];
 		}
 
 		override protected function onNetInitializeComplete(... args):void {
@@ -176,6 +180,18 @@ package com.somewater.rabbit.loader {
 								,money: 10
 							}
 			}
+		}
+
+
+		override public function getClassByName(resourceName:String):Class {
+			if(resourceName == 'interface.SponsorLogo')
+				return SponsorLogo;
+			else
+				return super.getClassByName(resourceName);
+		}
+
+		protected function get SponsorLogo():Class {
+			return null;
 		}
 	}
 }

@@ -30,6 +30,7 @@ package com.somewater.rabbit.application {
 		public var myPowerups:MyPowerupsBag;
 		private var ground:DisplayObject;
 		private var btnHolder:DisplayObject;
+		private var btnHolderPadding:int;
 
 		private var opened:Boolean = false;
 
@@ -57,8 +58,8 @@ package com.somewater.rabbit.application {
 
 
 			btnHolder = Lib.createMC('interface.PowerupGUIPanelBtn');
-			btnHolder.scaleX = -1;
-			btnHolder.x = (WIDTH + btnHolder.width) * 0.5 - 4;
+			//btnHolder.scaleX = -1;
+			btnHolder.x = btnHolderPadding = (WIDTH - btnHolder.width) * 0.5;
 			btnHolder.y = (HEIGHT - btnHolder.height) * 0.5;
 			addChild(btnHolder);
 
@@ -83,7 +84,7 @@ package com.somewater.rabbit.application {
 			if(opened)
 			{
 				Config.game.pause();
-				btnHolder.scaleX = 1;
+				//btnHolder.scaleX = 1;
 				var myPowerupsWidth:int = myPowerups.width + 5;
 				TweenLite.to(btnHolder, 0.2, {alpha:0.4, x: (WIDTH - btnHolder.width) * 0.5 - myPowerupsWidth})
 				TweenLite.to(ground, 0.2, {width:WIDTH + myPowerupsWidth, x: -myPowerups.width, onComplete: onPanelOpenComplete});
@@ -108,8 +109,8 @@ package com.somewater.rabbit.application {
 
 		private function onPowerupsAnimComplete():void {
 			myPowerups.visible = false;
-			btnHolder.scaleX = -1;
-			TweenLite.to(btnHolder, 0.2, {alpha:1, x: (WIDTH + btnHolder.width) * 0.5 - 4})
+			//btnHolder.scaleX = -1;
+			TweenLite.to(btnHolder, 0.2, {alpha:1, x: (WIDTH - btnHolder.width) * 0.5})
 			TweenLite.to(ground, 0.2, {width:WIDTH, x: 0});
 		}
 

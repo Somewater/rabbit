@@ -53,6 +53,7 @@ namespace :flash do
 -use-network=true \
 -define+=CONFIG::debug,#{$debug ? 'true' : 'false'} \
 -define+=CONFIG::sitelock,\"'#{ENV['SITELOCK'] ? Digest::MD5.hexdigest(ENV['SITELOCK'].to_s) : 'flash.display::Sprite'}'\" \
+-define+=CONFIG::loadername,\"'#{ENV['LOADERNAME'] ? ENV['LOADERNAME'] : 'FGLRabbitLoader'}'\" \
 --keep-as3-metadata+=TypeHint,EditorData,Embed \
 -benchmark=true \
 -optimize=true \

@@ -5,11 +5,14 @@ package {
 
 	[Frame(factoryClass="com.somewater.rabbit.loader.EnPreloader")]
 	[SWF(width="810", height="650", backgroundColor="#FFFFFF", frameRate="30")]
-	public class FGLRabbitLoader extends StandaloneRabbitLoaderBase{
+	public class GAMMRabbitLoader extends StandaloneRabbitLoaderBase{
+
+		[Embed(source='assets/images/gamm.png')]
+		private const GAMM_LOGO:Class;
 
 		include 'com/somewater/rabbit/include/EnPreloaderAsset.as';
 
-		public function FGLRabbitLoader(preloader:*) {
+		public function GAMMRabbitLoader(preloader:*) {
 			this.preloader = preloader;
 			super();
 			Config.memory['hideTop'] = true;
@@ -21,7 +24,7 @@ package {
 		}
 
 		override public function get net():int {
-			return 10;
+			return 11;
 		}
 
 		include 'com/somewater/rabbit/include/LocalServer.as';
@@ -32,6 +35,10 @@ package {
 
 		override public function showInviteWindow():void {
 			Config.application.message('This feature is available for game in social networks only')
+		}
+
+		override protected function get SponsorLogo():Class {
+			return GAMM_LOGO;
 		}
 	}
 }

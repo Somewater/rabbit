@@ -1,5 +1,6 @@
 package com.somewater.rabbit.application
 {
+	import com.gskinner.geom.ColorMatrix;
 	import com.somewater.control.IClear;
 	import com.somewater.rabbit.SoundTrack;
 	import com.somewater.rabbit.Sounds;
@@ -11,6 +12,7 @@ package com.somewater.rabbit.application
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.filters.BlurFilter;
+	import flash.filters.ColorMatrixFilter;
 	import flash.filters.DropShadowFilter;
 	import flash.text.Font;
 	
@@ -18,9 +20,14 @@ package com.somewater.rabbit.application
 	public class OrangeButton extends OrangeGround
 	{
 
+		public var ICON_PADDING:int = 50;
+
 		public var textField:EmbededTextField;
 		private const defaultHeight:int = 32;
 		private var _enabled:Boolean = true;
+		protected var _icon:DisplayObject;
+
+		private var downFilter:ColorMatrixFilter;
 		
 		public function OrangeButton()
 		{
@@ -33,13 +40,31 @@ package com.somewater.rabbit.application
 			addChild(textField);
 			
 			useHandCursor = buttonMode = true;
+
+			var cm:ColorMatrix = new ColorMatrix([]);
+			cm.colorize(0xFF8A1B);
+			downFilter = new ColorMatrixFilter(cm.toArray());
 		}
 		
 		override protected function resize():void
 		{
 			super.resize();
-			
-			textField.x = (_width - textField.width) * 0.5;
+
+			if(_icon)
+			{
+				_icon.x = ICON_PADDING * 0.5;
+				_icon.y = _height * 0.5;
+			}
+
+			if(_icon)
+			{
+				var iconRight:int = _icon ? _icon.x + _icon.width + ICON_PADDING : 0
+				textField.x = ICON_PADDING;
+			}
+			else
+			{
+				textField.x = (_width - textField.width) * 0.5;
+			}
 			textField.y = (_height - textField.height) * 0.5 - 0.5;// KLUDGE 0.5
 		}
 		
@@ -59,18 +84,24 @@ package com.somewater.rabbit.application
 			Config.application.play(Sounds.ORANGE_BUTTON_CLICK, SoundTrack.INTERFACE, true);
 			super.onDown(e);
 			textField.color = 0xFF8A1B;
+			if(icon)
+				icon.filters = [downFilter];
 		}
 		
 		override protected function onOut(e:MouseEvent):void
 		{
 			super.onOut(e);
 			textField.color = 0xFFFFFF;
+			if(icon)
+				icon.filters = [];
 		}
 		
 		override protected function onOver(e:MouseEvent):void
 		{
 			super.onOver(e);
 			textField.color = 0xFFFFFF;
+			if(icon)
+				icon.filters = [];
 		}
 
 		public function set enabled(value:Boolean):void
@@ -95,6 +126,26 @@ package com.somewater.rabbit.application
 				return super.createGround(type)
 			else
 				return Lib.createMC("interface.ShadowOrangeButton_" + 'up');
+		}
+
+		public function get icon():DisplayObject {
+			return _icon;
+		}
+
+		public function set icon(value:DisplayObject):void {
+			if(value != _icon)
+			{
+				if(_icon && _icon.parent)
+				{
+					_icon.parent.removeChild(_icon);
+				}
+				_icon = value;
+				if(_icon)
+				{
+					addChild(_icon);
+					resize();
+				}
+			}
 		}
 	}
 }

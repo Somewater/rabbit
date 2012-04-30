@@ -141,6 +141,9 @@ package com.somewater.rabbit
 
 		/**
 		 * Выдает локализуемые классы
+		 * preloader.LogoRabbit
+		 * preloader.Preloader
+		 * interface.SponsorLogo
 		 */
 		function getClassByName(resourceName:String):Class
 
