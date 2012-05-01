@@ -1,7 +1,7 @@
 namespace :standalone do
 	desc 'Compile FGL'
 	task :fgl do
-		ENV['SITELOCK'] = "www.flashgamelicense.com"
+		ENV['SITELOCK'] = "flashgamelicense.com"
 		ENV['LOCALE'] = 'en'
 		ENV['USE_MXMLC'] = 'true'
 		ENV['LOADERNAME'] = 'FGLRabbitLoader'
@@ -17,7 +17,7 @@ namespace :standalone do
 
 	desc 'Compile FLASH GAMM'
 	task :gamm do
-		ENV['SITELOCK'] = "www.flashgamm.com"
+		ENV['SITELOCK'] = "flashgamm.com"
 		ENV['LOCALE'] = 'en'
 		ENV['USE_MXMLC'] = 'true'
 		ENV['LOADERNAME'] = 'GAMMRabbitLoader'

@@ -49,19 +49,19 @@ package {
 		{
 			basePath = 'http://rabbit.asflash.ru/';
 			swfs = {
-						"Game":{priority:-1,preload:true,url:"http://cdn9.appsmail.ru/hosting/666052/RabbitGame.swf?cb=6"}
+						"Game":{priority:-1,preload:true,url:"http://cdn9.appsmail.ru/hosting/666052/RabbitGame.swf?cb=7"}
 						,
 						"Application":{priority:int.MIN_VALUE,
-							preload:true,url:"http://cdn0.appsmail.ru/hosting/666052/RabbitApplication.swf?cb=6.1"}
-						,"Interface":{preload:true, url:"http://cdn6.appsmail.ru/hosting/666052/interface.swf?cb=6"}
+							preload:true,url:"http://cdn0.appsmail.ru/hosting/666052/RabbitApplication.swf?cb=7"}
+						,"Interface":{preload:true, url:"http://cdn6.appsmail.ru/hosting/666052/interface.swf?cb=7"}
 						,"Assets":{preload:true, url:"http://cdn6.appsmail.ru/hosting/666052/rabbit_asset.swf?cb=6"}
 						,"Rewards":{preload:true, url:"http://cdn9.appsmail.ru/hosting/666052/rabbit_reward.swf?cb=6"}
 						,"Images":{preload:true, url:"http://cdn1.appsmail.ru/hosting/666052/rabbit_images.swf?cb=6"}
 						,"MusicMenu":{url:"http://cdn2.appsmail.ru/hosting/666052/music_menu.swf"}
 						,"MusicGame":{url:"http://cdn5.appsmail.ru/hosting/666052/music_game.swf"}
-						,"Sound":{preload:true, url:"http://cdn6.appsmail.ru/hosting/666052/rabbit_sound.swf"}
-						,"Lang":{priority:100, preload:true, url:"http://cdn4.appsmail.ru/hosting/666052/lang_pack.swf?cb=6"}
-						,"XmlPack":{preload:true, url:"http://cdn8.appsmail.ru/hosting/666052/xml_pack.swf?cb=6.1"}
+						,"Sound":{preload:true, url:"http://cdn6.appsmail.ru/hosting/666052/rabbit_sound.swf?cb=7"}
+						,"Lang":{priority:100, preload:true, url:"http://cdn4.appsmail.ru/hosting/666052/lang_pack.swf?cb=7"}
+						,"XmlPack":{preload:true, url:"http://cdn8.appsmail.ru/hosting/666052/xml_pack.swf?cb=7"}
 
 						,"Font":{priority:100, preload:true, url:"http://cdn9.appsmail.ru/hosting/666052/fonts_ru.swf"}
 					}
