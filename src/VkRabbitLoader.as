@@ -225,7 +225,7 @@ package {
 						,"MusicMenu":{url:"http://cs5231.userapi.com/u245894/9f85f9d027e598.zip"}
 						,"MusicGame":{url:"http://cs5231.userapi.com/u245894/16c9f64377d623.zip"}
 						,"Sound":{preload:true, url:"http://cs11458.vk.com/u245894/b1e1ab2e3fa973.zip"}
-						,"Lang":{priority:100, preload:true, url:"http://cs11458.vk.com/u245894/9fd075fcc7861c.zip"}
+						,"Lang":{priority:100, preload:true, url:"http://cs302513.vk.com/u245894/69265f10873aeb.zip"}
 						,"XmlPack":{preload:true, url:"http://cs11458.vk.com/u245894/4a3766fe0127a7.zip"}
 
 						,"Font":{priority:100, preload:true, url:"http://cs5231.userapi.com/u245894/fe712dd002e7c1.zip"}

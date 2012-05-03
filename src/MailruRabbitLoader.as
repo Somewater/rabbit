@@ -60,7 +60,7 @@ package {
 						,"MusicMenu":{url:"http://cdn2.appsmail.ru/hosting/666052/music_menu.swf"}
 						,"MusicGame":{url:"http://cdn5.appsmail.ru/hosting/666052/music_game.swf"}
 						,"Sound":{preload:true, url:"http://cdn6.appsmail.ru/hosting/666052/rabbit_sound.swf?cb=7"}
-						,"Lang":{priority:100, preload:true, url:"http://cdn4.appsmail.ru/hosting/666052/lang_pack.swf?cb=7"}
+						,"Lang":{priority:100, preload:true, url:"http://cdn4.appsmail.ru/hosting/666052/lang_pack.swf?cb=7.1"}
 						,"XmlPack":{preload:true, url:"http://cdn8.appsmail.ru/hosting/666052/xml_pack.swf?cb=7"}
 
 						,"Font":{priority:100, preload:true, url:"http://cdn9.appsmail.ru/hosting/666052/fonts_ru.swf"}

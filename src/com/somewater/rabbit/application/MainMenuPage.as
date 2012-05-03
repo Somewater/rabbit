@@ -133,7 +133,7 @@ package com.somewater.rabbit.application
 				sponsorLogoHolder.addChild(sponsorLogo);
 				addChild(sponsorLogoHolder)
 				sponsorLogoHolder.x = 40;
-				sponsorLogoHolder.y = 40;
+				sponsorLogoHolder.y = DisplayObject(buttons[0]).y;
 				sponsorLogoHolder.buttonMode = sponsorLogoHolder.useHandCursor = true;
 			}
 
