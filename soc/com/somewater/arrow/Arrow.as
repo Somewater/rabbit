@@ -1,8 +1,9 @@
 package com.somewater.arrow
 {
-	import flash.display.*
 	import com.somewater.social.SocialAdapter;
 	import com.somewater.social.SocialUser;
+
+	import flash.display.*;
 
 	//import flash.events.Event;
 	//import flash.text.*
@@ -10,8 +11,7 @@ package com.somewater.arrow
     //import flash.utils.setTimeout;
 
     //[Embed(source="arrow.swf", symbol="HintArrow")]
-	public class Arrow extends Sprite
-	{
+	public class Arrow extends Sprite {
 		protected var social:SocialAdapter;
 		//private var textField:TextField;
 		//private static var instance:Arrow;
@@ -115,72 +115,54 @@ package com.somewater.arrow
 			return social;
 		}
 
-		public function get flashVars():Object
-		{
+		public function get flashVars():Object {
 			return social.flashVars;
 		}
 
-		public function get key():String
-		{
+		public function get key():String {
 			return social.authentication_key;
 		}
-		
-		public function init(params:Object):void
-		{
-			if(social == null)
+
+		public function init(params:Object):void {
+			if (social == null)
 				createSocial();
 			social.init(params['stage'], params['complete'], params['error'], params['key']);
 		}
-		
-		public function get hasUserApi():Boolean
-		{
+
+		public function get hasUserApi():Boolean {
 			return true;
 		}
-		
-		public function get hasFriendsApi():Boolean
-		{
+
+		public function get hasFriendsApi():Boolean {
 			return true;
 		}
-			
-		public function getFriends():Array
-		{
+
+		public function getFriends():Array {
 			return social.getFriends();
 		}
-			
-		public function getAppFriends():Array
-		{
+
+		public function getAppFriends():Array {
 			return social.getAppFriends();
 		}
-			
-		public function getUser():SocialUser
-		{
+
+		public function getUser():SocialUser {
 			return social.user;
 		}
-			
-		public function showInviteWindow():void
-		{
+
+		public function showInviteWindow():void {
 			social.showInviteBox();
 		}
 
-        /**
-         *
-         * @param quantity
-         * @param onSuccess
-         * @param onFailure
-         * @param params {title, message, code, ...}
-         */
-		public function pay(quantity:Object, onSuccess:Function, onFailure:Function, params:Object = null):void
-		{
+		public function pay(quantity:Object, onSuccess:Function, onFailure:Function, params:Object = null):void {
 			var result:Boolean = social.showPaymentBox(Number(quantity), onSuccess,
-                                                        (params ? params['title'] : null),
-                                                        (params ? params['message'] : null),
-                                                        (params ? params['code'] : null), params);
-			if(result == false)
+					(params ? params['title'] : null),
+					(params ? params['message'] : null),
+					(params ? params['code'] : null), params);
+			if (result == false)
 				onFailure && onFailure();
 		}
-			
-		public function getUsers(uids:Array, onComplete:Function, onError:Function):void
-		{
+
+		public function getUsers(uids:Array, onComplete:Function, onError:Function):void {
 			social.getProfiles(uids, onComplete, onError);
 		}
 
@@ -188,8 +170,7 @@ package com.somewater.arrow
 			social.wallPost(user, title, message, image, imageUrl, data, onComplete, onError, additionParams);
 		}
 
-		public function getCachedUser(uid:String):SocialUser
-		{
+		public function getCachedUser(uid:String):SocialUser {
 			return social.getUserById(uid);
 		}
 	}

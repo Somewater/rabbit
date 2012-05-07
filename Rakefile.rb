@@ -62,8 +62,7 @@ namespace :flash do
 -source-path+=soc \
 -library-path+=src/assets/swc/library.swc \
 -library-path+=lib \
--library-path+=rprotect/RProtector.swc \
--library-path+=soc/Social.swc"
+-library-path+=rprotect/RProtector.swc"
 
 	COMPC_COMMON_COMMANDLINE_ARGS="compc \
 -target-player=10.0 \

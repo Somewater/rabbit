@@ -1,5 +1,7 @@
 package com.somewater.rabbit.loader{
 	import com.google.analytics.GATracker;
+	import com.somewater.arrow.ArrowPermission;
+	import com.somewater.arrow.IArrow;
 	import com.somewater.net.ServerHandler;
 	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.storage.Config;
@@ -14,7 +16,7 @@ package com.somewater.rabbit.loader{
 	[SWF(width="810", height="650", backgroundColor="#FFFFFF", frameRate="30")]
 	public class SocialRabbitLoader extends RabbitLoaderBase{
 
-		protected var arrow:*;
+		protected var arrow:IArrow;
 
 		public function SocialRabbitLoader() {
 			super();
@@ -87,7 +89,10 @@ package com.somewater.rabbit.loader{
 
 		override public function canPost(type:String = null):Boolean
 		{
-			return true;
+			if(type == null || type == arrow.getUser().id)
+				return arrow.hasPermissions & ArrowPermission.STREAM_POST;
+			else
+				return arrow.hasPermissions & ArrowPermission.WALL_POST;
 		}
 
 		override public function posting(user:SocialUser = null, title:String = null, message:String = null, image:* = null, imageUrl:String = null, data:String = null, onComplete:Function = null, onError:Function = null, additionParams:Object = null):void {

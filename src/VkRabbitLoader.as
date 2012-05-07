@@ -5,6 +5,8 @@ package {
 	import clickozavr.ClickozavrEvent;
 	import clickozavr.ContainerInfo;
 
+	import com.somewater.arrow.ArrowVkcom;
+
 	import com.somewater.net.SWFDecoderWrapper;
 	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.loader.SocialRabbitLoader;
@@ -52,16 +54,10 @@ package {
 
 		override protected function netInitialize():void
 		{
-			arrow = ArrowVKLCFactory.create;
-			SWFDecoderWrapper.load(arrow, function(_arr:DisplayObject):void{
-				arrow = _arr;
-				arrow.createSocial();
-				arrow.data.onWallPostInline = onWallPostInline;
-				arrow.data.onWallViewInline = onWallViewInline;
-				onArrowComplete('hjli32ls');
-			}, function(...args):void{
-				trace('ERROR ARROW PARSING ' + args);
-			})
+			arrow = new ArrowVkcom();
+			arrow.addEventListener('wall_view_inline',onWallViewInline);
+			arrow.addEventListener('wall_post_inline',onWallPostInline);
+			onArrowComplete('hjli32ls');
 		}
 		
 		override protected function onNetInitializeComplete(...args):void
@@ -182,7 +178,7 @@ package {
 			preloader.y += -30;
 		}
 
-		private function onWallViewInline(flashVars:Object):void {
+		private function onWallViewInline(...args):void {
 			onWall();
 			preloader.bar.textField.text = 'Играть!';
 			preloader.bar.textField.mouseEnabled = false;
@@ -205,7 +201,7 @@ package {
 					'?from_id=' + flashVars['user_id'] + '&loc=' + flashVars['post_id']), '_blank')
 		}
 
-		private function onWallPostInline(flashVars:Object):void {
+		private function onWallPostInline(...args):void {
 			onWall();
 			preloader.bar.textField.text = 'Ошибка!';
 		}
@@ -217,7 +213,7 @@ package {
 						"Game":{priority:-1,preload:true,url:"http://cs11458.vk.com/u245894/cd43d6d4b64ef5.zip"}
 						,
 						"Application":{priority:int.MIN_VALUE,
-							preload:true,url:"http://cs11458.vk.com/u245894/6468c195fc0212.zip"}
+							preload:true,url:"http://cs302513.vk.com/u245894/11b0a7c264339d.zip"}
 						,"Interface":{preload:true, url:"http://cs11458.vk.com/u245894/ab372656291ece.zip"}
 						,"Assets":{preload:true, url:"http://cs5787.vk.com/u245894/9fe59894a8be14.zip"}
 						,"Rewards":{preload:true, url:"http://cs5787.vk.com/u245894/0033f7dc6423f7.zip"}

@@ -1,6 +1,8 @@
 package {
 	import clickozavr.Clickozavr;
 
+	import com.somewater.arrow.ArrowMailru;
+
 	import com.somewater.net.SWFDecoderWrapper;
 	import com.somewater.rabbit.loader.SocialRabbitLoader;
 	import com.somewater.rabbit.storage.Config;
@@ -36,23 +38,17 @@ package {
 
 		override protected function netInitialize():void
 		{
-			arrow = ArrowMailFactory.create;
-			SWFDecoderWrapper.load(arrow, function(_arr:DisplayObject):void{
-				arrow = _arr;
-				arrow.createSocial();
-				onArrowComplete('3bc7d481082d5f4ac4e46e742ea9858f');
-			}, function(...args):void{
-				trace('ERROR ARROW PARSING ' + args);
-			})
+			arrow = new ArrowMailru();
+			onArrowComplete('3bc7d481082d5f4ac4e46e742ea9858f');
 		}
 		override protected function createSpecificPaths():void
 		{
 			basePath = 'http://rabbit.asflash.ru/';
 			swfs = {
-						"Game":{priority:-1,preload:true,url:"http://cdn9.appsmail.ru/hosting/666052/RabbitGame.swf?cb=7"}
+						"Game":{priority:-1,preload:true,url:"http://cdn9.appsmail.ru/hosting/666052/RabbitGame.swf?cb=7.1"}
 						,
 						"Application":{priority:int.MIN_VALUE,
-							preload:true,url:"http://cdn0.appsmail.ru/hosting/666052/RabbitApplication.swf?cb=7"}
+							preload:true,url:"http://cdn0.appsmail.ru/hosting/666052/RabbitApplication.swf?cb=7.2"}
 						,"Interface":{preload:true, url:"http://cdn6.appsmail.ru/hosting/666052/interface.swf?cb=7"}
 						,"Assets":{preload:true, url:"http://cdn6.appsmail.ru/hosting/666052/rabbit_asset.swf?cb=6"}
 						,"Rewards":{preload:true, url:"http://cdn9.appsmail.ru/hosting/666052/rabbit_reward.swf?cb=6"}

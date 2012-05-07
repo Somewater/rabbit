@@ -65,23 +65,6 @@ package com.somewater.social
 		}
 
 		
-		/**
-		 * Получить геолокацию через JS
-		 * @param onComlete функция на получение результата вида function({success:true, lat, lng, acc, utime})
-		 * @param onError функция на ошибку при получении результата, либо на отмену пользователем вида function({success:false,error:{code,message}})
-		 * 
-		 */
-		public function getGeolocation(onComplete:Function, onError:Function = null):void
-		{
-			if(ExternalInterface.available)
-			{
-				flashCallbacksCounter++;
-				flashCallbacks[flashCallbacksCounter] = new CallbackPair(onComplete, onError);
-				ExternalInterface.call("getGeolocation", flashCallbacksCounter);
-			}
-		}
-		
-		
 		
 		// раскомментить для JS API
 		/*override protected function _sendRequest(method:String, request:Object=null, onComplete:Function=null, onError:Function=null, GET:Boolean=false):void
@@ -140,59 +123,8 @@ package com.somewater.social
 			}
 		}
 		
-		override public function resizeApplication(width:int, height:int):Boolean {
-			if(CAN_RESIZE) {
-				VK.callMethod("resizeWindow",width, height);
-				return true;
-			} 
-			return false;
-		}
-		
-		// раскомментить для JS API
-		/*override protected function wallPostManager_savePhoto(upload_url:String):void{
-			var jpgEncode:ByteArray= new JPGEncoder(90).encode(wallPostManager_image);
-			var header:URLRequestHeader=new flash.net.URLRequestHeader("Content-type", "multipart/form-data; boundary=abc");
-			var byteArray:ByteArray=new flash.utils.ByteArray();
-			byteArray.writeUTFBytes("--abc\r\nContent-Disposition: form-data; name=\""+(wallPostManager_album == null?"photo":"file1")+"\"; filename=\"post.jpg\"\r\nContent-Type: image/jpeg\r\n\r\n");
-			byteArray.writeBytes(jpgEncode);
-			byteArray.writeUTFBytes("\r\n--abc--\r\n");
-			var request:URLRequest=new flash.net.URLRequest();
-			request.requestHeaders.push(header);
-			request.url = upload_url;
-			request.method = flash.net.URLRequestMethod.POST;
-			request.data = byteArray;
-			
-			//var mess:String = byteArrayToString(jpgEncode);
-			//trace(mess);
-			
-			var saver:URLLoader = new flash.net.URLLoader();
-			saver.addEventListener(Event.COMPLETE, wallPostManager_onSavePhotoComplete);
-			saver.load(request);
 
-			
-			//ExternalInterface.call("wallPost", upload_url, mess);
-			
-			function byteArrayToString(ba:ByteArray):String 
-			{
-				var acum:String = "";
-				
-				ba.position = 0;
-				
-				while (ba.position < ba.length) {
-					var dat:String = ba.readUnsignedByte().toString(16);
-					
-					while (dat.length < 2) dat = "0" + dat;
-					
-					acum += dat;
-				}
-				
-				ba.position = 0;
-				
-				return acum;
-			}
 
-		}*/
-		
 		
 		override protected function wallPostManager_onSavePostComplete(e:Object):void{			
 			wrapper.addEventListener("onWallPostSave", wallPostManager_onWallPostSave);

@@ -11,8 +11,7 @@ package com.somewater.social
 		public var nickName:String;
 		
 		public var id:String;
-		public var serverId:String;
-		
+
 		public var photos:Array = [];
 		public function get photoSmall():String{return photos[0];}
 		public function get photoMedium():String{return photos[1]?photos[1]:photos[0];}
@@ -21,10 +20,12 @@ package com.somewater.social
 		public var isAppFriend:Boolean = false; // appfriend sets from outside
 		public var isFriend:Boolean = false;
 		public var itsMe:Boolean = false;// данный объект SocialUser описывает самого пользователя игры
-		
-		public var bdate:Number = 0;// дата рождение timestamp (секунды)		
-		public var balance : Number = 0;
-		
+
+		[Deprecated(message='use birthday')]
+		public function get bdate():Number{return birthday.time}
+
+		public var birthday:Date = new Date(1990);
+
 		public var city : String;
 		public var cityCode:int;
 		public var country : String;
@@ -36,7 +37,7 @@ package com.somewater.social
 		
 		internal var _sex : uint;
 		public function get sex():String{
-			return _sex?_sex == 1?"male":"female":null;
+			return _sex?_sex == SEX_MALE?"male":"female":null;
 		}
 		public function set sex(value:String):void
 		{
@@ -44,19 +45,19 @@ package com.somewater.social
 			{
 				var char:String = value.charAt().toLowerCase();
 				if(char == "m")
-					_sex = 1;
+					_sex = SEX_MALE;
 				else if(char == "f")
-					_sex = 2;
+					_sex = SEX_FEMALE;
 				else 
-					_sex = 0;
+					_sex = SEX_NONE;
 			}
 			else
-				_sex = 0;
+				_sex = SEX_NONE;
 		}
-		public function get male():Boolean { return _sex == 1;	}
-		public function set male(value:Boolean):void{_sex = 1;}
-		public function get female():Boolean { return _sex == 2;	}
-		public function set female(value:Boolean):void{_sex = 2;}
+		public function get male():Boolean { return _sex == SEX_MALE;	}
+		public function set male(value:Boolean):void{_sex = SEX_MALE;}
+		public function get female():Boolean { return _sex == SEX_FEMALE;	}
+		public function set female(value:Boolean):void{_sex = SEX_FEMALE;}
 		
 		
 		public function SocialUser() {

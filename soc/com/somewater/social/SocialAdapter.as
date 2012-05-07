@@ -776,18 +776,18 @@ package com.somewater.social
 			urlLoader.load(urlRequest);			
 			
 			function onLoaderComplete(e:Event):void{
-				clearLoader(e.target);
+				clearLoader(e.target as URLLoader);
 				// передать данные от сервера отдельной функции-обработчику
 				_responseHandler(e.target.data, onComplete, onError);
 			}
 			
 			function onIOError(e:IOErrorEvent):void{
-				clearLoader(e.target);
+				clearLoader(e.target as URLLoader);
 				onError && onError({error:e.text});
 			}
 			
 			function onSecurityError(e:SecurityErrorEvent):void{
-				clearLoader(e.target);
+				clearLoader(e.target as URLLoader);
 				onError && onError({error:e.text});
 			}
 			// очистка от всех листенеров

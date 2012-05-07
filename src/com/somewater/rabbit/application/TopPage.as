@@ -1,4 +1,5 @@
 package com.somewater.rabbit.application {
+	import com.somewater.arrow.ArrowEvent;
 	import com.somewater.controller.PopUpManager;
 	import com.somewater.display.CorrectSizeDefinerSprite;
 	import com.somewater.rabbit.SoundTrack;
@@ -210,8 +211,8 @@ package com.somewater.rabbit.application {
 			}
 		}
 
-		private function onUsersSocialInfoReceived(users:*):void {
-			for each(var user:SocialUser in users)
+		private function onUsersSocialInfoReceived(event:ArrowEvent):void {
+			for each(var user:SocialUser in event.response)
 			{
 				// ищем строку таблицы, готовую принять инфу по юзеру
 				for each(var btn:Row in rows)
@@ -223,7 +224,7 @@ package com.somewater.rabbit.application {
 			}
 		}
 
-		private function onUsersSocialInfoReceiveError(...params):void {
+		private function onUsersSocialInfoReceiveError(event:ArrowEvent):void {
 
 		}
 	}
