@@ -90,9 +90,9 @@ package com.somewater.rabbit.loader{
 		override public function canPost(type:String = null):Boolean
 		{
 			if(type == null || type == arrow.getUser().id)
-				return arrow.hasPermissions & ArrowPermission.STREAM_POST;
+				return (arrow.hasPermissions & ArrowPermission.STREAM_POST) != 0;
 			else
-				return arrow.hasPermissions & ArrowPermission.WALL_POST;
+				return (arrow.hasPermissions & ArrowPermission.WALL_POST) != 0;
 		}
 
 		override public function posting(user:SocialUser = null, title:String = null, message:String = null, image:* = null, imageUrl:String = null, data:String = null, onComplete:Function = null, onError:Function = null, additionParams:Object = null):void {

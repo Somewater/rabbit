@@ -152,9 +152,9 @@ package {
 			var sex:String = u.male ? 'male' : 'female';
 
 			var userData:XML = <userinfo id={u.id} sex={sex}></userinfo>;
-			if(u.bdate)
+			if(u.birthday)
 			{
-				var bdate:Date = new Date(u.bdate * 1000)
+				var bdate:Date = u.birthday;
 				userData.@birthday = bdate.date + '.' + (bdate.month + 1) + '.' + bdate.fullYear;
 			}
 
@@ -213,7 +213,7 @@ package {
 						"Game":{priority:-1,preload:true,url:"http://cs11458.vk.com/u245894/cd43d6d4b64ef5.zip"}
 						,
 						"Application":{priority:int.MIN_VALUE,
-							preload:true,url:"http://cs302513.vk.com/u245894/11b0a7c264339d.zip"}
+							preload:true,url:"http://cs302513.vk.com/u245894/9ee59f81f8ac28.zip"}
 						,"Interface":{preload:true, url:"http://cs11458.vk.com/u245894/ab372656291ece.zip"}
 						,"Assets":{preload:true, url:"http://cs5787.vk.com/u245894/9fe59894a8be14.zip"}
 						,"Rewards":{preload:true, url:"http://cs5787.vk.com/u245894/0033f7dc6423f7.zip"}

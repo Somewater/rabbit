@@ -7,6 +7,7 @@ package com.somewater.rabbit.application.shop {
 	import com.somewater.text.EmbededTextField;
 
 	import flash.events.MouseEvent;
+	import flash.utils.getTimer;
 
 	public class BuyMoneyWindow extends Window{
 
@@ -92,11 +93,19 @@ package com.somewater.rabbit.application.shop {
 			}
 		}
 
+		private var lastClickTime:uint = 0;
 		private function onClick(event:MouseEvent):void {
 			var btn:BuyMoneyButton = event.currentTarget as BuyMoneyButton;
 			if(!btn.enabled) return;
+			var currentClickTime:uint = getTimer()
+			if(currentClickTime - lastClickTime < 2000) return;// не реже раза в 2 секнуды
+			lastClickTime = currentClickTime;
 			Config.loader.pay(btn.netmoney, function(...args):void{
 				// success
+				if(currentClickTime == lastClickTime)
+					lastClickTime = 0;
+				else
+					return;// уже был другой запрос к апи, этот неактуален
 				Config.application.showSlash(0);
 				AppServerHandler.instance.buyMoney(btn.money, btn.netmoney, function(response:Object):void{
 					// SUCCESSSSS
@@ -108,8 +117,11 @@ package com.somewater.rabbit.application.shop {
 					Config.application.hideSplash();
 					Config.application.message(Lang.t('ERROR_BUY_MONEY', {error: Config.loader.serverHandler.toJson(response)}))
 				});
+
 			}, function(...args):void{
 				// error
+				if(currentClickTime == lastClickTime)
+					lastClickTime = 0;
 			});
 		}
 	}
