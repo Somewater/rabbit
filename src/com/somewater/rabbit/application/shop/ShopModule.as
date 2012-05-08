@@ -2,6 +2,7 @@ package com.somewater.rabbit.application.shop {
 	import com.somewater.control.IClear;
 	import com.somewater.rabbit.application.AppServerHandler;
 	import com.somewater.rabbit.storage.Config;
+	import com.somewater.rabbit.storage.CustomizeDef;
 	import com.somewater.rabbit.storage.ItemDef;
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.rabbit.storage.PowerupDef;
@@ -21,6 +22,14 @@ package com.somewater.rabbit.application.shop {
 		public static var SHOP_TYPES:Array =
 		[
 			new ShopData('powerups', PowerupDef)
+			,
+			new ShopData('roofs', CustomizeDef, 'roof')
+			,
+			new ShopData('doors', CustomizeDef, 'door')
+			,
+			new ShopData('titles', CustomizeDef, 'title')
+			,
+			new ShopData('mats', CustomizeDef, 'mat')
 		]
 
 		public static const WIDTH:int = 655;
@@ -80,6 +89,7 @@ package com.somewater.rabbit.application.shop {
 			shopTabs.x = 0;
 			shopTabs.y = CONTENT_Y - ShopTabs.HEIGHT;
 			addChild(shopTabs);
+			shopTabs.addEventListener(Event.CHANGE, onTabChanged);
 
 			shopIconsHolder = new Sprite();
 			shopIconsHolder.x = shopGround.x + 245;
@@ -101,10 +111,15 @@ package com.somewater.rabbit.application.shop {
 			recreateIcons();
 		}
 
+		private function onTabChanged(event:Event):void {
+			recreateIcons();
+		}
+
 		public function clear():void {
 			myPowerups.clear();
 			myMoney.clear();
 			shopTabs.clear();
+			shopTabs.removeEventListener(Event.CHANGE, onTabChanged);
 			itemDescription.clear();
 			basket.clear();
 			basket.buyButton.removeEventListener(MouseEvent.CLICK, onBuyAllClicked);
@@ -122,6 +137,15 @@ package com.somewater.rabbit.application.shop {
 					break;
 
 			var items:Array = ItemDef.byClass(selectedShopData.clazz);
+			if(selectedShopData.type)
+			{
+				items = items.filter(function(obj:ItemDef, ...args):Boolean{
+					if(obj.hasOwnProperty('type') && Object(obj).type == selectedShopData.type)
+						return true;
+					else
+						return false;
+				})
+			}
 			items.sortOn('cost', Array.NUMERIC);
 			for (var i:int = 0; i < items.length; i++) {
 				var item:ItemDef = items[i];

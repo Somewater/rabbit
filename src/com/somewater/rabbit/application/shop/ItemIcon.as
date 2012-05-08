@@ -1,9 +1,13 @@
 package com.somewater.rabbit.application.shop {
 	import com.somewater.control.IClear;
 	import com.somewater.display.HintedSprite;
+	import com.somewater.display.Photo;
+	import com.somewater.display.SpriteAligner;
 	import com.somewater.rabbit.storage.Config;
+	import com.somewater.rabbit.storage.CustomizeDef;
 	import com.somewater.rabbit.storage.ItemDef;
 	import com.somewater.rabbit.storage.Lib;
+	import com.somewater.rabbit.storage.PowerupDef;
 	import com.somewater.text.EmbededTextField;
 	import com.somewater.utils.MovieClipHelper;
 
@@ -35,12 +39,25 @@ package com.somewater.rabbit.application.shop {
 
 			image = Lib.createMC(item.slug);
 			if(image is MovieClip) MovieClipHelper.stopAll(image as MovieClip);
-			image.scaleX = image.scaleY = imageScale;
-			addChild(image);
+			if(item is PowerupDef)
+			{
+				image.scaleX = image.scaleY = imageScale;
 
-			var bounds:Rectangle = image.getBounds(image);
-			image.x = -bounds.x * imageScale;
-			image.y = MyPowerupsBag.HEIGHT - 10;
+				var bounds:Rectangle = image.getBounds(image);
+				image.x = -bounds.x * imageScale;
+				image.y = MyPowerupsBag.HEIGHT - 10;
+			}
+			else if(item is CustomizeDef)
+			{
+				//image = new Photo(new SpriteAligner(image), Photo.ORIENTED_CENTER | Photo.SIZE_HEIGHT, 200, HEIGHT);
+				image = new SpriteAligner(image);
+				image.scaleX = image.scaleY = Math.min(1, (HEIGHT - 10) / image.height, 90 / image.width);
+				image.x = 5;
+				image.y = 5 + (HEIGHT - 10 - image.height) * 0.5;
+			}
+			else
+				throw new Error('Undefined shop item');
+			addChild(image);
 
 			quantityTF = new EmbededTextField(Config.FONT_SECONDARY, 0xFFFFFF, 16, true, false, false, false, 'right');
 			quantityTF.x = image.width + 10;

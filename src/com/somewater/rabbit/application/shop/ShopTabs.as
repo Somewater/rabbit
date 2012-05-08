@@ -27,7 +27,8 @@ package com.somewater.rabbit.application.shop {
 				tab.x = nextX;
 				nextX += TAB_WIDTH;
 				addChild(tab);
-				tab.addEventListener(MouseEvent.CLICK, onClick);
+				tab.HitArea.addEventListener(MouseEvent.CLICK, onClick);
+				tab.selected = selectedTab ? data.name == selectedTab : i == 0;
 				tabs.push(tab);
 				i++;
 			}
@@ -36,18 +37,19 @@ package com.somewater.rabbit.application.shop {
 				this.selectedTab = Tab(tabs[0]).tabName;
 			else
 				this.selectedTab = selectedTab;
+
 		}
 
 		public function clear():void {
 			for each(var t:Tab in tabs)
 			{
 				t.clear();
-				t.removeEventListener(MouseEvent.CLICK, onClick)
+				t.HitArea.removeEventListener(MouseEvent.CLICK, onClick)
 			}
 		}
 
 		private function onClick(event:MouseEvent):void {
-			var tab:Tab = event.currentTarget as Tab;
+			var tab:Tab = event.currentTarget.parent as Tab;
 			selectedTab = tab.tabName;
 			for each(var t:Tab in tabs)
 			{
@@ -80,6 +82,7 @@ class Tab extends Sprite implements IClear
 
 	private var background:Sprite;
 	private var selectBack:DisplayObject;
+	public var HitArea:Sprite;
 	private var textField:EmbededTextField;
 
 	private var _selected:Boolean = false;
@@ -89,25 +92,30 @@ class Tab extends Sprite implements IClear
 		this.tabName = name;
 
 		background = Lib.createMC(backTypeSelected ? 'interface.ShopTabElement_orange' : 'interface.ShopTabElement_green');
+		HitArea = background.getChildByName('HitArea') as Sprite;
 		selectBack = background.getChildByName('select');
 		textField = new EmbededTextField(Config.FONT_SECONDARY, 0x124D18, 12, true, false, false, false, 'center');
 		textField.width = ShopTabs.TAB_WIDTH;
 		textField.text = Lang.t('SHOP_TAB_' + name.toUpperCase());
+		textField.mouseEnabled = false;
 		textField.y = 4;
 		addChild(selectBack);
 		addChild(textField);
+		addChild(HitArea);
 		botShGround.addChild(background);
 		background.x = index * ShopTabs.TAB_WIDTH;
 
-		addEventListener(MouseEvent.ROLL_OVER, onOver);
-		addEventListener(MouseEvent.ROLL_OUT, onOut);
+		HitArea.alpha = 0;
+		HitArea.addEventListener(MouseEvent.ROLL_OVER, onOver);
+		HitArea.addEventListener(MouseEvent.ROLL_OUT, onOut);
 
-		onOut(null);
+		_selected = true;
+		selected = false;
 	}
 
 	public function clear():void {
-		removeEventListener(MouseEvent.ROLL_OVER, onOver);
-		removeEventListener(MouseEvent.ROLL_OUT, onOut);
+		HitArea.removeEventListener(MouseEvent.ROLL_OVER, onOver);
+		HitArea.removeEventListener(MouseEvent.ROLL_OUT, onOut);
 	}
 
 	private function onOut(event:MouseEvent):void {
@@ -125,6 +133,7 @@ class Tab extends Sprite implements IClear
 		if(_selected != value)
 		{
 			_selected = value;
+			HitArea.buttonMode = HitArea.useHandCursor = !value;
 			onOut(null);
 		}
 	}
