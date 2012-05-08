@@ -1,9 +1,10 @@
 package com.somewater.rabbit.storage
 {
+	import com.somewater.rabbit.application.shop.ICustomizable;
 	import com.somewater.social.SocialUser;
 	import com.somewater.storage.InfoDef;
 
-	public class GameUser extends InfoDef implements IGameUser {
+	public class GameUser extends InfoDef implements IGameUser, ICustomizable {
 		protected var _socialUser:SocialUser;
 		
 		protected var _score:int;

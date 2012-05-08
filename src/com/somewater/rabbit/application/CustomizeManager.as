@@ -1,5 +1,6 @@
 package com.somewater.rabbit.application {
 	import com.somewater.rabbit.IUserLevel;
+	import com.somewater.rabbit.application.shop.ICustomizable;
 	import com.somewater.rabbit.events.CustomizeEvent;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.CustomizeDef;
@@ -11,6 +12,7 @@ package com.somewater.rabbit.application {
 	import flash.display.DisplayObjectContainer;
 
 	import flash.display.DisplayObjectContainer;
+	import flash.display.MovieClip;
 
 	import flash.text.TextField;
 	import flash.text.TextFormat;
@@ -51,7 +53,7 @@ package com.somewater.rabbit.application {
 			switch(event.customObjectType)
 			{
 				case CustomizeEvent.TYPE_HOLE:
-												customizeHole(user, event);
+												customizeHole(user, event.clip);
 												break;
 				default:
 						throw new Error('Undefined CustomEvent type ' + event.customObjectType);
@@ -60,7 +62,7 @@ package com.somewater.rabbit.application {
 			event.applyed = true;
 		}
 
-		private function customizeHole(user:GameUser, event:CustomizeEvent):void {
+		public function customizeHole(user:ICustomizable, holeClip:MovieClip):void {
 			// добавить крышу, которую заслуживает этот юзер
 			createByCustomize(CustomizeDef.TYPE_ROOF);
 			createByCustomize(CustomizeDef.TYPE_DOOR);
@@ -87,7 +89,7 @@ package com.somewater.rabbit.application {
 
 			function getHolder(name:String):DisplayObjectContainer
 			{
-				return event.clip.getChildByName(name) as DisplayObjectContainer;
+				return holeClip.getChildByName(name) as DisplayObjectContainer;
 			}
 
 			function createByCustomize(type:String):DisplayObjectContainer
@@ -95,7 +97,10 @@ package com.somewater.rabbit.application {
 				var custom:CustomizeDef = user.getCustomize(type);
 				if(custom == null) custom =	CustomizeDef.getDefault(type);
 				var customClip:DisplayObjectContainer = Lib.createMC(custom.slug)
-				getHolder(type).addChild(customClip);
+				var holder:DisplayObjectContainer = getHolder(type);
+				while(holder.numChildren)
+					holder.removeChildAt(0);
+				holder.addChild(customClip);
 				return customClip;
 			}
 		}

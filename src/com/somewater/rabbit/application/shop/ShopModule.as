@@ -19,9 +19,11 @@ package com.somewater.rabbit.application.shop {
 
 	public class ShopModule extends Sprite implements IClear{
 
+		public static const POWERUPS_TAB:String = 'powerups';
+
 		public static var SHOP_TYPES:Array =
 		[
-			new ShopData('powerups', PowerupDef)
+			new ShopData(POWERUPS_TAB, PowerupDef)
 			,
 			new ShopData('roofs', CustomizeDef, 'roof')
 			,
@@ -51,6 +53,7 @@ package com.somewater.rabbit.application.shop {
 		private var shopIconsHolder:Sprite;
 
 		private var itemDescription:ItemDescriptionPanel;
+		private var customizePreviewPanel:CustomizePreviewPanel;
 
 		public function ShopModule() {
 			var title:EmbededTextField = new EmbededTextField(null, 0xDB661B, 20);
@@ -108,11 +111,26 @@ package com.somewater.rabbit.application.shop {
 			itemDescription.y = shopGround.y + 40;
 			addChild(itemDescription)
 
-			recreateIcons();
+			customizePreviewPanel = new CustomizePreviewPanel();
+			customizePreviewPanel.x = shopGround.x;
+			customizePreviewPanel.y = shopGround.y;
+			addChild(customizePreviewPanel);
+
+			itemDescription.visible = customizePreviewPanel.visible = false;
+
+			onTabChanged(null);
 		}
 
 		private function onTabChanged(event:Event):void {
 			recreateIcons();
+			onBasketChanged(null);
+
+			if(shopTabs.selectedTab != POWERUPS_TAB) {
+				customizePreviewPanel.visible = true;
+				customizePreviewPanel.show([]);// только согласно покупкам юзера
+			} else {
+				customizePreviewPanel.visible = false;
+			}
 		}
 
 		public function clear():void {
@@ -121,6 +139,7 @@ package com.somewater.rabbit.application.shop {
 			shopTabs.clear();
 			shopTabs.removeEventListener(Event.CHANGE, onTabChanged);
 			itemDescription.clear();
+			customizePreviewPanel.clear();
 			basket.clear();
 			basket.buyButton.removeEventListener(MouseEvent.CLICK, onBuyAllClicked);
 			basket.removeEventListener(Event.CHANGE, onBasketChanged);
@@ -175,6 +194,8 @@ package com.somewater.rabbit.application.shop {
 		private function onIconOut(event:MouseEvent):void {
 			var icon:ShopIcon = event.currentTarget as ShopIcon;
 			itemDescription.visible = false;
+			if(customizePreviewPanel.visible)
+				customizePreviewPanel.show(basket.items);
 		}
 
 		private function onIconOver(event:MouseEvent):void {
@@ -183,6 +204,8 @@ package com.somewater.rabbit.application.shop {
 			{
 				itemDescription.visible = true;
 				itemDescription.show(icon.itemDef as PowerupDef)
+			} else if(icon.itemDef is CustomizeDef) {
+				customizePreviewPanel.show(basket.items.concat(icon.itemDef));
 			}
 		}
 

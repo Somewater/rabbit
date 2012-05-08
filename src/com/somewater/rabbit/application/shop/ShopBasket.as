@@ -5,6 +5,7 @@ package com.somewater.rabbit.application.shop {
 	import com.somewater.rabbit.storage.CustomizeDef;
 	import com.somewater.rabbit.storage.ItemDef;
 	import com.somewater.rabbit.storage.Lib;
+	import com.somewater.rabbit.storage.PowerupDef;
 	import com.somewater.storage.Lang;
 	import com.somewater.text.EmbededTextField;
 
@@ -68,10 +69,32 @@ package com.somewater.rabbit.application.shop {
 
 		public function addItem(item:ItemDef):void
 		{
+			var icon:ItemIcon;
+
 			if(item is CustomizeDef && itemToQuantity(item) > 0)
 				return;// нельзя купить 2 крыши и т.д.
 
-			var icon:ItemIcon;
+			// удаляем из айтемов все не кастомные объекты, а также кастомные с тем же типом что новенький
+			var i:int = 0;
+			while(i < icons.length)
+			{
+				icon = icons[i];
+				if((item is CustomizeDef &&
+						(
+							!(icon.item is CustomizeDef)
+							||
+							CustomizeDef(icon.item).type == CustomizeDef(item).type)
+						)
+					||
+					(item is PowerupDef && !(icon.item is PowerupDef))
+				)
+				{
+					removeItem(icon.item);
+				}
+				else
+					i++;
+			}
+			icon = null;
 			for each(var ic:ItemIcon in icons)
 				if(ic.item == item)
 				{
@@ -158,7 +181,7 @@ package com.somewater.rabbit.application.shop {
 			iconsHolder.x = -buyButton.width - 20 - iconsWidth;
 			titleTF.x = iconsHolder.x - titleTF.width - 15;
 
-			this.visible = sumPrice > 0;
+			this.visible = icons.length > 0;
 		}
 
 		public function get sumPrice():int

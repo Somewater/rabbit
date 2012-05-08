@@ -34,11 +34,12 @@ package com.somewater.rabbit.application.shop {
 			core = Lib.createMC('interface.ShopIcon');
 			addChild(core);
 
-			photo = new Photo(null, Photo.ORIENTED_CENTER);
+			photo = new Photo(null, Photo.ORIENTED_CENTER | Photo.SIZE_MIN);
+			photo.maxScale = 1;
 			photo.photoMask = core.getChildByName('photoMask');
 			costTF = new EmbededTextField(Config.FONT_SECONDARY, 0x124D18, 20, true);
 			costTF.x = 60;
-			costTF.y = 92;
+			costTF.y = 98;
 			addChild(costTF);
 			ground = core.getChildByName('ground');
 			ground.alpha = 0
@@ -50,10 +51,12 @@ package com.somewater.rabbit.application.shop {
 			addEventListener(MouseEvent.CLICK, onClick);
 
 			// установка неизменных хар-к айтема
-			var mc:DisplayObject = Lib.createMC(itemDef.slug);
+			var mc:DisplayObject = Lib.createMC(itemDef.shop_slug && itemDef.shop_slug.length > 0 ? itemDef.shop_slug : itemDef.slug);
 			if(mc is MovieClip)
 				MovieClipHelper.stopAll(mc as MovieClip);
-			photo.source = new SpriteAligner(mc);
+			mc = new SpriteAligner(mc)
+			photo.source = mc;
+			this.hint = itemDef.getTitle();
 
 			mouseChildren = false;
 

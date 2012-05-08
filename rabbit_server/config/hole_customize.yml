@@ -47,6 +47,7 @@ default_door:
   <<: *door
   id: 110
   slug: reward.DefaultDoor
+  shop_slug: reward.DefaultDoorView
   start: true
 
 wood_roof:

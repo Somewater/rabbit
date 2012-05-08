@@ -11,6 +11,7 @@ package com.somewater.rabbit.storage {
 		public var slug:String;
 		public var cost:int;// цена в кругликах
 		public var shop_photo:String;
+		public var shop_slug:String;
 
 		public function ItemDef(data:Object) {
 			super(data);

@@ -24,6 +24,7 @@ package com.somewater.rabbit.application.shop {
 	public class ItemIcon extends HintedSprite implements IClear{
 
 		public static const HEIGHT:int = 48;
+		public static const MAX_WIDTH:int = 70;
 
 		public var item:ItemDef;
 
@@ -51,7 +52,7 @@ package com.somewater.rabbit.application.shop {
 			{
 				//image = new Photo(new SpriteAligner(image), Photo.ORIENTED_CENTER | Photo.SIZE_HEIGHT, 200, HEIGHT);
 				image = new SpriteAligner(image);
-				image.scaleX = image.scaleY = Math.min(1, (HEIGHT - 10) / image.height, 90 / image.width);
+				image.scaleX = image.scaleY = Math.min(1, (HEIGHT - 10) / image.height, (MAX_WIDTH) / image.width);
 				image.x = 5;
 				image.y = 5 + (HEIGHT - 10 - image.height) * 0.5;
 			}

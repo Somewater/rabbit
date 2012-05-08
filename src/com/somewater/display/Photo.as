@@ -109,6 +109,9 @@ package com.somewater.display
 		
 		public var maxWidth:uint;
 		public var maxHeight:uint;
+
+		public var maxScale:Number = 1000;
+		public var minScale:Number = 0.001;
 		
 		public var scaleType:uint = ORIENTED_CENTER;
 		
@@ -343,10 +346,12 @@ package com.somewater.display
 				ratio = ratioX;
 			else if(scaleType & SIZE_HEIGHT)
 				ratio = ratioY;
+
+			ratio = Math.max(minScale, Math.min(maxScale, ratio));
 			
 			w = image.width * ratio;
 			h = image.height * ratio;
-			
+
 			if(ratio != 1)
 			{	
 				image.scaleX = ratio;
