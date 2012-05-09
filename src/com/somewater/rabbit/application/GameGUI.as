@@ -50,6 +50,7 @@ package com.somewater.rabbit.application
 			super();
 			
 			playPauseButton = Lib.createMC("interface.PauseButton");
+			Hint.bind(playPauseButton, Lang.t('PAUSE'))
 			playPauseButton.x = 15;
 			playPauseButton.y = 15;
 			addChild(playPauseButton);
@@ -163,6 +164,7 @@ package com.somewater.rabbit.application
 		public function clear():void
 		{
 			playPauseButton.removeEventListener(MouseEvent.CLICK, onPlayPauseClick);
+			Hint.removeHint(playPauseButton);
 			if(offerStat)
 				offerStat.clear();
 			if(powerupPanel)

@@ -213,8 +213,8 @@ package {
 						"Game":{priority:-1,preload:true,url:"http://cs302513.vk.com/u245894/8c8974beab42a3.zip"}
 						,
 						"Application":{priority:int.MIN_VALUE,
-							preload:true,url:"http://cs302513.vk.com/u245894/2ee3d9d49fce81.zip"}
-						,"Interface":{preload:true, url:"http://cs302513.vk.com/u245894/9d83fb035d543f.zip"}
+							preload:true,url:"http://cs302513.vk.com/u245894/ab64653ba0f568.zip"}
+						,"Interface":{preload:true, url:"http://cs302513.vk.com/u245894/f65de632552772.zip"}
 						,"Assets":{preload:true, url:"http://cs302513.vk.com/u245894/477a5644135f26.zip"}
 						,"Rewards":{preload:true, url:"http://cs302513.vk.com/u245894/c38365043b0e29.zip"}
 						,"Images":{preload:true, url:"http://cs305802.vk.com/u245894/95efe3baee86a7.zip"}
