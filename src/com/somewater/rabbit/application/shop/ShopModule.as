@@ -1,6 +1,7 @@
 package com.somewater.rabbit.application.shop {
 	import com.somewater.control.IClear;
 	import com.somewater.rabbit.application.AppServerHandler;
+	import com.somewater.rabbit.application.shop.ShopData;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.CustomizeDef;
 	import com.somewater.rabbit.storage.ItemDef;
@@ -24,15 +25,15 @@ package com.somewater.rabbit.application.shop {
 
 		public static var SHOP_TYPES:Array =
 		[
-			new ShopData(POWERUPS_TAB, PowerupDef)
+			new ShopData(POWERUPS_TAB, PowerupDef, null, 0)
 			,
-			new ShopData('roofs', CustomizeDef, 'roof')
+			new ShopData('roofs', CustomizeDef, 'roof', 1)
 			,
-			new ShopData('doors', CustomizeDef, 'door')
+			new ShopData('doors', CustomizeDef, 'door', 1)
 			,
-			new ShopData('titles', CustomizeDef, 'title')
+			new ShopData('titles', CustomizeDef, 'title', 1)
 			,
-			new ShopData('mats', CustomizeDef, 'mat')
+			new ShopData('mats', CustomizeDef, 'mat', 1)
 		]
 
 		public static const WIDTH:int = 655;
@@ -42,6 +43,8 @@ package com.somewater.rabbit.application.shop {
 		private const CONTENT_HEIGHT:int = HEIGHT - 200;
 		private const CONTENT_Y:int = 120;
 		private const BOTTOM_PANEL_Y:int = HEIGHT - 40;
+
+		private var shopTabsByName:Array;// конструируются в процессе выполнения класса
 
 
 		private var myPowerups:MyPowerupsBag;
@@ -57,8 +60,13 @@ package com.somewater.rabbit.application.shop {
 		private var customizePreviewPanel:CustomizePreviewPanel;
 
 		private var lastSelectedTab:String;
+		private var lastBasketByBasketId:Array = [];// ассортимент корзины другого раздела магазина
 
 		public function ShopModule(selectedTab:String = null) {
+			shopTabsByName = []
+			for each(var sd:ShopData in SHOP_TYPES)
+				shopTabsByName[sd.name] = sd;
+
 			var title:EmbededTextField = new EmbededTextField(null, 0xDB661B, 20);
 			title.text = Lang.t('SHOP').toUpperCase();
 			title.x = (WIDTH - title.width) * 0.5;
@@ -138,12 +146,22 @@ package com.somewater.rabbit.application.shop {
 
 			if(lastSelectedTab)
 			{
-				if(
-					(lastSelectedTab == POWERUPS_TAB && shopTabs.selectedTab != POWERUPS_TAB)
-					||
-					(lastSelectedTab != POWERUPS_TAB && shopTabs.selectedTab == POWERUPS_TAB)
-				)
+				var lastBasketId:int = ShopData(shopTabsByName[lastSelectedTab]).basketId;
+				var currentBasketId:int = ShopData(shopTabsByName[shopTabs.selectedTab]).basketId;
+				if(lastBasketId != currentBasketId)
+				{
+					// запомнить текущий ассортимент корзины, вставить (если есть) запомненный ассортимент
+					var basketToSet:Array = lastBasketByBasketId[currentBasketId] || [];
+					lastBasketByBasketId[lastBasketId] = basket.itemIdByQuantity();
+
 					basket.clearBasket();
+					for(var id:String in basketToSet)
+					{
+						var itemId:int = int(id);
+						var quantity:int = basketToSet[itemId]
+						basket.addItem(ItemDef.byId(itemId), quantity);
+					}
+				}
 			}
 
 			lastSelectedTab = shopTabs.selectedTab
@@ -272,9 +290,7 @@ package com.somewater.rabbit.application.shop {
 				if(itemClass == PowerupDef)
 				{
 					// произвести покупу
-					var itemIdsToQuantity:Array = [];
-					for each(item in items)
-						itemIdsToQuantity[item.id] = basket.itemToQuantity(item);
+					var itemIdsToQuantity:Array = basket.itemIdByQuantity();
 					AppServerHandler.instance.purchaseItems(itemIdsToQuantity, sumPrice, function(response:Object):void{
 						// success
 						Config.application.message('SHOP_TRANSACTION_SUCCESS_MSG');

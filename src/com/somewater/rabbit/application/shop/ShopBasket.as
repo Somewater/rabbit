@@ -67,7 +67,7 @@ package com.somewater.rabbit.application.shop {
 			removeItem(ItemIcon(event.currentTarget).item);
 		}
 
-		public function addItem(item:ItemDef):void
+		public function addItem(item:ItemDef, quantity:int = 1):void
 		{
 			var icon:ItemIcon;
 
@@ -98,13 +98,14 @@ package com.somewater.rabbit.application.shop {
 			for each(var ic:ItemIcon in icons)
 				if(ic.item == item)
 				{
-					ic.quantity++;
+					ic.quantity += quantity;
 					icon = ic;
 					break;
 				}
 			if(icon == null)
 			{
 				icon = new ItemIcon(item);
+				icon.quantity = quantity;
 				icon.quantituColor = 0x124D18;
 				icon.useHandCursor = icon.buttonMode = true;
 				icon.addEventListener(MouseEvent.CLICK, onItemClick);
@@ -155,6 +156,14 @@ package com.somewater.rabbit.application.shop {
 				if(ic.item == item)
 					return ic.quantity;
 			return 0;
+		}
+
+		public function itemIdByQuantity():Array
+		{
+			var itemIdsToQuantity:Array = [];
+			for each(var ic:ItemIcon in icons)
+				itemIdsToQuantity[ic.item.id] = ic.quantity;
+			return itemIdsToQuantity;
 		}
 
 		private function dispatchChange():void
