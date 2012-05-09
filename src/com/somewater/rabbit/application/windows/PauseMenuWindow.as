@@ -11,12 +11,14 @@ package com.somewater.rabbit.application.windows
 	import com.somewater.rabbit.storage.LevelInstanceDef;
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.storage.Lang;
-	
+	import com.somewater.text.EmbededTextField;
+
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 
 	public class PauseMenuWindow extends Window
 	{
+		private var backToTheGame:OrangeButton;
 		private var gotoMainMenuButton:OrangeButton;
 		private var gotoSelectLevelButton:OrangeButton;
 		private var restartLevelButton:OrangeButton;
@@ -25,14 +27,29 @@ package com.somewater.rabbit.application.windows
 		
 		public function PauseMenuWindow()
 		{
-			super("", Lang.t("PAUSE"), null, [])
-			setSize(270, 390);
-			
+			super("", null, null, [])
+			setSize(270, 430);
+
+			var title:EmbededTextField = new EmbededTextField(null, 0xDB661B, 20);
+			title.text = Lang.t('PAUSE').toUpperCase();
+			title.x = (this.width - title.width) * 0.5 - 5;
+			title.y = 20;
+			addChild(title);
+
+			backToTheGame = new OrangeButton();
+			backToTheGame.setSize(180, 32);
+			backToTheGame.label = Lang.t("BACK_TO_THE_GAME_BTN");
+			backToTheGame.x = (width - backToTheGame.width) * 0.5;
+			backToTheGame.y = 70;
+			addChild(backToTheGame);
+			backToTheGame.addEventListener(MouseEvent.CLICK, onBackToTheGameClick);
+			backToTheGame.icon = Lib.createMC('interface.IconPlay');
+
 			gotoMainMenuButton = new OrangeButton();
 			gotoMainMenuButton.setSize(180, 32);
 			gotoMainMenuButton.label = Lang.t("BUTTON_GOTO_MAIN_MENU");
 			gotoMainMenuButton.x = (width - gotoMainMenuButton.width) * 0.5;
-			gotoMainMenuButton.y = 70;
+			gotoMainMenuButton.y = backToTheGame.y + backToTheGame.height + 25;
 			addChild(gotoMainMenuButton);
 			gotoMainMenuButton.addEventListener(MouseEvent.CLICK, onGotoMainMenuClick);
 			gotoMainMenuButton.icon = Lib.createMC('interface.IconHome');
@@ -92,13 +109,20 @@ package com.somewater.rabbit.application.windows
 		override public function clear():void
 		{
 			super.clear();
-			
+
+			if(backToTheGame)
+				backToTheGame.removeEventListener(MouseEvent.CLICK, onBackToTheGameClick);
 			if(gotoMainMenuButton)
 				gotoMainMenuButton.removeEventListener(MouseEvent.CLICK, onGotoMainMenuClick);
 			if(gotoSelectLevelButton)
 				gotoSelectLevelButton.removeEventListener(MouseEvent.CLICK, onSelectLevelClick);
 			restartLevelButton.removeEventListener(MouseEvent.CLICK, onRestartLevelClick);
 			audioControls.clear();
+		}
+
+		private function onBackToTheGameClick(e:MouseEvent):void
+		{
+			onCloseBtnClick(e);
 		}
 		
 		private function onGotoMainMenuClick(e:Event):void

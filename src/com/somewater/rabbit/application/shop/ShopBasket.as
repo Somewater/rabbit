@@ -105,6 +105,7 @@ package com.somewater.rabbit.application.shop {
 			if(icon == null)
 			{
 				icon = new ItemIcon(item);
+				icon.closeVisible = true;
 				icon.quantity = quantity;
 				icon.quantituColor = 0x124D18;
 				icon.useHandCursor = icon.buttonMode = true;

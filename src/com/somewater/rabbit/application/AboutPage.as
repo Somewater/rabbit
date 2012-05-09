@@ -206,7 +206,12 @@ package com.somewater.rabbit.application
 			var data:String = LinkLabel(event.currentTarget).data as String;
 			if(data && data.length)
 			{
-				if(data.substr(0,7) != 'http://')
+				if(data.indexOf('@') != -1)
+				{
+					if(data.substr(0,7) != 'mailto:')
+						data = 'mailto:' + data;
+				}
+				else if(data.substr(0,7) != 'http://')
 					data = 'http://' + data;
 				navigateToURL(new URLRequest(data), '_blank')
 			}
@@ -283,7 +288,13 @@ class AuthorItem extends Sprite implements IClear
 	}
 
 	private function onLinkCLick(event:Event):void {
-		navigateToURL(new URLRequest(homepage), '_blank');
+		var link:String = homepage;
+		if(link.indexOf('@') != -1)
+		{
+			if(link.substr(0,7) != 'mailto:')
+				link = 'mailto:' + link;
+		}
+		navigateToURL(new URLRequest(link), '_blank');
 	}
 
 	public function clear():void

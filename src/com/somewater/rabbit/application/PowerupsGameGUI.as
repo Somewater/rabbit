@@ -36,7 +36,6 @@ package com.somewater.rabbit.application {
 
 		private var wishPowerupId:int// id паверапа, который надо купить и применить
 
-		private var autoCloseTimer:Timer;
 		private var pauseSplashRef:DisplayObject;
 
 		public function PowerupsGameGUI(pauseSplashRef:DisplayObject) {
@@ -67,9 +66,6 @@ package com.somewater.rabbit.application {
 
 			UserProfile.bind(onUserDataChanged);
 
-			autoCloseTimer = new Timer(15000);
-			autoCloseTimer.addEventListener(TimerEvent.TIMER, onAutoClose);
-
 			Hint.bind(this, Lang.t('POWERUP_GAME_GUI_BTN_HINT'))
 		}
 
@@ -88,7 +84,6 @@ package com.somewater.rabbit.application {
 				var myPowerupsWidth:int = myPowerups.width + 5;
 				TweenLite.to(btnHolder, 0.2, {alpha:0.4, x: (WIDTH - btnHolder.width) * 0.5 - myPowerupsWidth})
 				TweenLite.to(ground, 0.2, {width:WIDTH + myPowerupsWidth, x: -myPowerups.width, onComplete: onPanelOpenComplete});
-				autoCloseTimer.start();
 			}
 			else
 			{
@@ -96,8 +91,6 @@ package com.somewater.rabbit.application {
 					Config.game.start();
 				myPowerups.visible = true;
 				TweenLite.to(myPowerups, 0.2, {alpha: 0, onComplete: onPowerupsAnimComplete});
-				if(autoCloseTimer.running)
-					autoCloseTimer.stop();
 			}
 		}
 
@@ -122,9 +115,6 @@ package com.somewater.rabbit.application {
 			myPowerups.removeEventListener(PowerupEvent.POWERUP_EVENT, onPowerupCliced);
 			myPowerups.clear();
 			UserProfile.unbind(onUserDataChanged);
-			autoCloseTimer.removeEventListener(TimerEvent.TIMER, onAutoClose);
-			if(autoCloseTimer.running)
-				autoCloseTimer.stop();
 			Hint.removeHint(this);
 			pauseSplashRef.removeEventListener(MouseEvent.CLICK, close)
 			pauseSplashRef = null;
@@ -165,19 +155,6 @@ package com.somewater.rabbit.application {
 			if(wishPowerupId && UserProfile.instance.hasItem(wishPowerupId))
 			{
 				userPowerup(ItemDef.byId(wishPowerupId) as PowerupDef);
-				setStateAnimated(false);
-			}
-			else
-			{
-				if(!autoCloseTimer.running)
-					autoCloseTimer.start();
-			}
-		}
-
-		private function onAutoClose(event:TimerEvent):void {
-			autoCloseTimer.stop();
-			if(opened && PopUpManager.activeWindow == null)
-			{
 				setStateAnimated(false);
 			}
 		}

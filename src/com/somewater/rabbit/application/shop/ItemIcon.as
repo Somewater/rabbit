@@ -32,6 +32,7 @@ package com.somewater.rabbit.application.shop {
 		private var quantityTF:EmbededTextField;
 		private var _quantity:int = 1;
 		private var _background:DisplayObject;
+		private var closeSmall:DisplayObject;
 
 		public function ItemIcon(item:ItemDef) {
 			this.item = item;
@@ -74,6 +75,10 @@ package com.somewater.rabbit.application.shop {
 			hint = item.getTitle();
 
 			quantity = _quantity;
+
+			closeSmall = Lib.createMC('interface.CloseButton_small');
+			addChild(closeSmall);
+			closeSmall.visible = false;
 		}
 
 		public function clear():void {
@@ -110,6 +115,11 @@ package com.somewater.rabbit.application.shop {
 		public function set background(value:Boolean):void
 		{
 			_background.visible = value;
+		}
+
+		public function set closeVisible(value:Boolean):void
+		{
+			closeSmall.visible = value;
 		}
 	}
 }

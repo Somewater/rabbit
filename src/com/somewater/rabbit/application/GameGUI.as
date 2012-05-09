@@ -1,5 +1,6 @@
 package com.somewater.rabbit.application
 {
+	import com.greensock.TweenLite;
 	import com.somewater.control.IClear;
 	import com.somewater.rabbit.SoundTrack;
 	import com.somewater.rabbit.Sounds;
@@ -116,6 +117,8 @@ package com.somewater.rabbit.application
 			powerupPanel.x = (offerStat ? offerStat.x : statPanel.x) - 10 - PowerupsGameGUI.WIDTH;
 			powerupPanel.y = statPanel.y;
 			addChild(powerupPanel);
+
+			Config.application.addPropertyListener('game.switch', onGameSwitched);
 		}
 
 		public function init():void
@@ -171,6 +174,13 @@ package com.somewater.rabbit.application
 			Hint.removeHint(statPanel.getChildByName('timeHintArea'));
 			Hint.removeHint(statPanel.getChildByName('healthHintArea'));
 			Hint.removeHint(statPanel.getChildByName('scoreRatingHintArea'));
+
+			Config.application.removePropertyListener('game.switch', onGameSwitched);
+		}
+
+		private function onGameSwitched():void {
+			var vis:Boolean = Config.game.isTicking;
+			TweenLite.to(pauseButton, 0.3, {'autoAlpha': (vis ? 1 : 0)})
 		}
 		
 		private function onPlayPauseClick(e:Event):void
