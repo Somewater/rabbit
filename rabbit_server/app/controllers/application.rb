@@ -120,6 +120,10 @@ class Application
 																											})).call
 				when "images/manage"
 					ImagesManageController.new(request).call	
+				when "locales"
+					content = ''
+					Lang.all.each{|l| content << "#{l.key}=#{l.get(:ru)}\n#{l.key}=#{l.get(:en)}\n\n"}
+					[200,{"Content-Type" => "text/plain; charset=UTF-8"},content]
 				else
 					Hello.new.call request
 			end

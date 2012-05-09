@@ -42,7 +42,6 @@ class VkApi < NetApi
 		end
 	end
 	
-	private
 	def secure_vk
 		unless @secure_vk
 			Vkontakte.setup do |config|
