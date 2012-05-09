@@ -7,7 +7,7 @@ class BuyUserItemController < BaseUserController
 		@json['purchase'].split(',').each do |pair|
 			pair = pair.split(':')
 			item = ItemManager.instance.by_id(pair.first.to_i)
-			raise LogicError, "Undefined item id #{user_item_id}" unless item
+			raise LogicError, "Undefined item id #{pair.first.to_i}" unless item
 			total_price += item[:cost].to_i * pair.last.to_i
 			purchase << pair
 		end

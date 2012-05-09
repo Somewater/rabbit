@@ -32,6 +32,13 @@ tile_roof:
   <<: *roof
   id: 101
   slug: reward.TileRoof
+  cost: 50
+
+crab_roof:
+  <<: *roof
+  id: 102
+  slug: reward.CrabRoof
+  cost: 40
 
 #####################
 #
@@ -50,10 +57,17 @@ default_door:
   shop_slug: reward.DefaultDoorView
   start: true
 
-wood_roof:
+wood_door:
   <<: *door
   id: 111
   slug: reward.WoodDoor
+  cost: 30
+
+pink_door:
+  <<: *door
+  id: 112
+  slug: reward.PinkDoor
+  cost: 40
 
 #####################
 #
@@ -75,6 +89,19 @@ zinc_title:
   <<: *title
   id: 121
   slug: reward.ZincTitle
+  cost: 25
+
+pink_title:
+  <<: *title
+  id: 122
+  slug: reward.PinkTitle
+  cost: 20
+
+lilac_title:
+  <<: *title
+  id: 123
+  slug: reward.LilacTitle
+  cost: 20
 
 #####################
 #
@@ -97,3 +124,22 @@ color_mat:
   <<: *mat
   id: 131
   slug: reward.ColorMat
+  cost: 30
+
+board_mat:
+  <<: *mat
+  id: 132
+  slug: reward.BoardMat
+  cost: 10
+
+spiral_mat:
+  <<: *mat
+  id: 133
+  slug: reward.SpiralMat
+  cost: 20
+
+village_mat:
+  <<: *mat
+  id: 134
+  slug: reward.VillageMat
+  cost: 20

@@ -1,6 +1,8 @@
 package com.somewater.rabbit.application {
 	import com.somewater.rabbit.IUserLevel;
 	import com.somewater.rabbit.application.shop.ICustomizable;
+	import com.somewater.rabbit.application.shop.ShopModule;
+	import com.somewater.rabbit.application.shop.ShopWindow;
 	import com.somewater.rabbit.events.CustomizeEvent;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.CustomizeDef;
@@ -55,11 +57,22 @@ package com.somewater.rabbit.application {
 				case CustomizeEvent.TYPE_HOLE:
 												customizeHole(user, event.clip);
 												break;
+				case CustomizeEvent.TYPE_HOLE_CLICK:
+												onHoleClicked(user,  event);
+												break;
 				default:
 						throw new Error('Undefined CustomEvent type ' + event.customObjectType);
 			}
 
 			event.applyed = true;
+		}
+
+		private function onHoleClicked(user:GameUser, event:CustomizeEvent):void {
+			if(user.itsMe())
+				new ShopWindow(ShopModule.CUSTOMIZE_DEFAULT_TAB).closeFunc = function(...args):Boolean{
+					customizeHole(user, event.clip);
+					return true;
+				};
 		}
 
 		public function customizeHole(user:ICustomizable, holeClip:MovieClip):void {

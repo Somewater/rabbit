@@ -20,22 +20,26 @@ powerup_health: &powerup_health
   <<: *powerup
   id: 200
   template: PowerupHealth
+  shop_photo: interface.PowerupHealthScreen
   cost: 5
 
 powerup_protection: &powerup_protection
   <<: *powerup
   id: 201
   template: PowerupProtection
+  shop_photo: interface.PowerupProtectionScreen
   cost: 50
 
 powerup_speed: &powerup_speed
   <<: *powerup
   id: 202
   template: PowerupSpeed
+  shop_photo: interface.PowerupSpeedScreen
   cost: 6
 
 powerup_time: &powerup_time
   <<: *powerup
   id: 203
   template: PowerupTime
+  shop_photo: interface.PowerupTimeScreen
   cost: 8

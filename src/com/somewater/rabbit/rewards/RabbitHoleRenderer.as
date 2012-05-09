@@ -4,6 +4,8 @@ package com.somewater.rabbit.rewards {
 	import com.somewater.rabbit.iso.IsoRenderer;
 	import com.somewater.rabbit.storage.Config;
 
+	import flash.events.MouseEvent;
+
 	import flash.text.TextField;
 
 	/**
@@ -25,7 +27,20 @@ package com.somewater.rabbit.rewards {
 				Config.application.dispatchEvent(event);
 				if(event.applyed)
 					holeCustomized = true;
+				_clip.addEventListener(MouseEvent.CLICK, onHoleClicked)
+				_clip.buttonMode = _clip.useHandCursor = true;
 			}
+		}
+
+		private function onHoleClicked(e:MouseEvent):void {
+			var event:CustomizeEvent = new CustomizeEvent(_clip, CustomizeEvent.TYPE_HOLE_CLICK);
+			Config.application.dispatchEvent(event);
+		}
+
+		override protected function onRemove():void {
+			if(_clip)
+				_clip.removeEventListener(MouseEvent.CLICK, onHoleClicked)
+			super.onRemove();
 		}
 	}
 }

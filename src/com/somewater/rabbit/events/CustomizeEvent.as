@@ -11,6 +11,7 @@ package com.somewater.rabbit.events {
 
 
 		public static const TYPE_HOLE:String = 'hole';
+		public static const TYPE_HOLE_CLICK:String = 'hole_click'
 
 		/**
 		 * Тип кастомного объекта

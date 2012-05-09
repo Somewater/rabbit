@@ -95,6 +95,8 @@ class Application
 					BuyUserItemController.new(request).call
 				when 'items/use'
 					UseItemController.new(request).call
+				when 'customize/purchase'
+					BuyUserCustomizeController.new(request).call
 				when 'friends/update'
 					UpdateFriendStorageController.new(request).call
 				when 'friends/visit'

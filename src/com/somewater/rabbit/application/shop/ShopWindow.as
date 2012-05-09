@@ -5,13 +5,14 @@ package com.somewater.rabbit.application.shop {
 
 	import flash.display.DisplayObject;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 
 	public class ShopWindow extends Window{
 
 		private var module:ShopModule;
 		private var okButtonRef:DisplayObject;
 
-		public function ShopWindow() {
+		public function ShopWindow(selectedTab:String = null) {
 
 			super(null, null, null, [Lang.t('SHOP_WINDOW_GOTO_GAME_BTN')]);
 
@@ -19,7 +20,7 @@ package com.somewater.rabbit.application.shop {
 			const H_PADDING:int = 10;
 			setSize(ShopModule.WIDTH + W_PADDING * 2, ShopModule.HEIGHT + H_PADDING * 2);
 
-			module = new ShopModule();
+			module = new ShopModule(selectedTab);
 			module.basket.addEventListener(Event.CHANGE, onBasketChanged);
 			module.x = W_PADDING;
 			module.y = H_PADDING;
@@ -39,6 +40,15 @@ package com.somewater.rabbit.application.shop {
 
 		private function onBasketChanged(event:Event):void {
 			okButtonRef.visible = !module.basket.visible;
+		}
+
+		override protected function onCloseBtnClick(e:MouseEvent):void {
+			if(closeFunc != null)
+			{
+				if(!closeFunc())
+					return;
+			}
+			super.onCloseBtnClick(e);
 		}
 	}
 }

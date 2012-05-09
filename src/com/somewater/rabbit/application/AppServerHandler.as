@@ -201,6 +201,29 @@ package com.somewater.rabbit.application {
 			}, onError);
 		}
 
+		public function purchaseCustomize(customizes:Array, sumPrise:int, onComplete:Function, onError:Function):void
+		{
+			// todo: для покупки декора использовать другую ф-ю!!!
+			var purchaseStr:String = '';
+			for each(var it:CustomizeDef in customizes)
+			{
+				purchaseStr += (purchaseStr.length ? ',' : '') +  it.type + ':' + it.id;
+			}
+			if(purchaseStr.length == 0)
+				throw new Error('Cant`t buy empty items set');
+			handler.call('customize/purchase', {purchase: purchaseStr, prise: sumPrise}, function(response:Object):void{
+				// сервер всё продал, как надо
+				if(response && response['success'])
+				{
+					response['user'] = jsonToGameUser(response['user'], UserProfile.instance);
+					if(onComplete != null)
+						onComplete(response);
+				}
+				else if(onError != null)
+					onError(response);
+			}, onError);
+		}
+
 		public function friendVisitReward(friend:GameUser, onComplete:Function, onError:Function):void
 		{
 			handler.call('friends/visit', {friend_id: friend.uid}, function(response:Object):void{

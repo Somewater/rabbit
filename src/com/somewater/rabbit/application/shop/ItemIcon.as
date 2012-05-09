@@ -38,7 +38,7 @@ package com.somewater.rabbit.application.shop {
 
 			const imageScale:Number = 0.7;
 
-			image = Lib.createMC(item.slug);
+			image = Lib.createMC(item.shop_slug && item.shop_slug.length > 0 ? item.shop_slug : item.slug);
 			if(image is MovieClip) MovieClipHelper.stopAll(image as MovieClip);
 			if(item is PowerupDef)
 			{

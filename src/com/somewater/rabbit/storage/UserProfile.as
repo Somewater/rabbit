@@ -307,5 +307,11 @@ package com.somewater.rabbit.storage
 		{
 			return new Date().time + msDelta;
 		}
+
+		override public function setCustomize(customize:CustomizeDef):void
+		{
+			super.setCustomize(customize);
+			dispatchChange();
+		}
 	}
 }

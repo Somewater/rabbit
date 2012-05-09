@@ -20,6 +20,7 @@ package com.somewater.rabbit.application.shop {
 	public class ShopModule extends Sprite implements IClear{
 
 		public static const POWERUPS_TAB:String = 'powerups';
+		public static const CUSTOMIZE_DEFAULT_TAB:String = 'roofs';
 
 		public static var SHOP_TYPES:Array =
 		[
@@ -55,7 +56,9 @@ package com.somewater.rabbit.application.shop {
 		private var itemDescription:ItemDescriptionPanel;
 		private var customizePreviewPanel:CustomizePreviewPanel;
 
-		public function ShopModule() {
+		private var lastSelectedTab:String;
+
+		public function ShopModule(selectedTab:String = null) {
 			var title:EmbededTextField = new EmbededTextField(null, 0xDB661B, 20);
 			title.text = Lang.t('SHOP').toUpperCase();
 			title.x = (WIDTH - title.width) * 0.5;
@@ -88,7 +91,7 @@ package com.somewater.rabbit.application.shop {
 			botShGround.x = shopGround.x;
 			botShGround.y = shopGround.y;
 			addChild(shopGround);
-			shopTabs = new ShopTabs(botShGround);
+			shopTabs = new ShopTabs(botShGround, selectedTab);
 			shopTabs.x = 0;
 			shopTabs.y = CONTENT_Y - ShopTabs.HEIGHT;
 			addChild(shopTabs);
@@ -125,12 +128,25 @@ package com.somewater.rabbit.application.shop {
 			recreateIcons();
 			onBasketChanged(null);
 
+
 			if(shopTabs.selectedTab != POWERUPS_TAB) {
 				customizePreviewPanel.visible = true;
 				customizePreviewPanel.show([]);// только согласно покупкам юзера
 			} else {
 				customizePreviewPanel.visible = false;
 			}
+
+			if(lastSelectedTab)
+			{
+				if(
+					(lastSelectedTab == POWERUPS_TAB && shopTabs.selectedTab != POWERUPS_TAB)
+					||
+					(lastSelectedTab != POWERUPS_TAB && shopTabs.selectedTab == POWERUPS_TAB)
+				)
+					basket.clearBasket();
+			}
+
+			lastSelectedTab = shopTabs.selectedTab
 		}
 
 		public function clear():void {
@@ -238,18 +254,47 @@ package com.somewater.rabbit.application.shop {
 			}
 			else
 			{
-				// произвести покупу
-				var itemIdsToQuantity:Array = [];
-				for each(var item:ItemDef in basket.items)
-					itemIdsToQuantity[item.id] = basket.itemToQuantity(item);
-				AppServerHandler.instance.purchaseItems(itemIdsToQuantity, sumPrice, function(response:Object):void{
-					// success
-					Config.application.message('SHOP_TRANSACTION_SUCCESS_MSG');
-					basket.clearBasket();
-				}, function(response:Object):void{
-					// error
-					Config.application.message(Lang.t('SHOP_TRANSACTION_ERROR_MSG', {error:Config.loader.serverHandler.toJson(response)}));
-				})
+				// проверяем, что у нас айтемы одного типа
+				var itemClass:Class;
+				var item:ItemDef;
+				var items:Array = basket.items;
+				for each(item in items)
+				{
+					if(itemClass == null)
+						itemClass = item is PowerupDef ? PowerupDef : (item is CustomizeDef ? CustomizeDef : null);
+					if(!(item is itemClass))
+					{
+						Config.application.message('Wrong basket set');
+						return;// купить не удастся
+					}
+				}
+
+				if(itemClass == PowerupDef)
+				{
+					// произвести покупу
+					var itemIdsToQuantity:Array = [];
+					for each(item in items)
+						itemIdsToQuantity[item.id] = basket.itemToQuantity(item);
+					AppServerHandler.instance.purchaseItems(itemIdsToQuantity, sumPrice, function(response:Object):void{
+						// success
+						Config.application.message('SHOP_TRANSACTION_SUCCESS_MSG');
+						basket.clearBasket();
+					}, function(response:Object):void{
+						// error
+						Config.application.message(Lang.t('SHOP_TRANSACTION_ERROR_MSG', {error:Config.loader.serverHandler.toJson(response)}));
+					})
+				} else if(itemClass == CustomizeDef) {
+					// произвести покупку декора для норки
+					AppServerHandler.instance.purchaseCustomize(items, sumPrice, function(response:Object):void{
+						// success
+						Config.application.message('SHOP_TRANSACTION_SUCCESS_MSG');
+						basket.clearBasket();
+						customizePreviewPanel.show([]);
+					}, function(response:Object):void{
+						// error
+						Config.application.message(Lang.t('SHOP_TRANSACTION_ERROR_MSG', {error:Config.loader.serverHandler.toJson(response)}));
+					})
+				}
 			}
 		}
 	}
