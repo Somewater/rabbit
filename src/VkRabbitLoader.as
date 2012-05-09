@@ -210,19 +210,19 @@ package {
 		{
 			basePath = 'http://rabbit.asflash.ru/';
 			swfs = {
-						"Game":{priority:-1,preload:true,url:"http://cs11458.vk.com/u245894/cd43d6d4b64ef5.zip"}
+						"Game":{priority:-1,preload:true,url:"http://cs302513.vk.com/u245894/8c8974beab42a3.zip"}
 						,
 						"Application":{priority:int.MIN_VALUE,
-							preload:true,url:"http://cs302513.vk.com/u245894/9ee59f81f8ac28.zip"}
-						,"Interface":{preload:true, url:"http://cs11458.vk.com/u245894/ab372656291ece.zip"}
-						,"Assets":{preload:true, url:"http://cs5787.vk.com/u245894/9fe59894a8be14.zip"}
-						,"Rewards":{preload:true, url:"http://cs5787.vk.com/u245894/0033f7dc6423f7.zip"}
+							preload:true,url:"http://cs302513.vk.com/u245894/2ee3d9d49fce81.zip"}
+						,"Interface":{preload:true, url:"http://cs302513.vk.com/u245894/9d83fb035d543f.zip"}
+						,"Assets":{preload:true, url:"http://cs302513.vk.com/u245894/477a5644135f26.zip"}
+						,"Rewards":{preload:true, url:"http://cs302513.vk.com/u245894/c38365043b0e29.zip"}
 						,"Images":{preload:true, url:"http://cs305802.vk.com/u245894/95efe3baee86a7.zip"}
 						,"MusicMenu":{url:"http://cs5231.userapi.com/u245894/9f85f9d027e598.zip"}
 						,"MusicGame":{url:"http://cs5231.userapi.com/u245894/16c9f64377d623.zip"}
 						,"Sound":{preload:true, url:"http://cs11458.vk.com/u245894/b1e1ab2e3fa973.zip"}
-						,"Lang":{priority:100, preload:true, url:"http://cs302513.vk.com/u245894/69265f10873aeb.zip"}
-						,"XmlPack":{preload:true, url:"http://cs11458.vk.com/u245894/4a3766fe0127a7.zip"}
+						,"Lang":{priority:100, preload:true, url:"http://cs302513.vk.com/u245894/2fecc8eccd9223.zip"}
+						,"XmlPack":{preload:true, url:"http://cs302513.vk.com/u245894/cddadf35cd9b56.zip"}
 
 						,"Font":{priority:100, preload:true, url:"http://cs5231.userapi.com/u245894/fe712dd002e7c1.zip"}
 					}
