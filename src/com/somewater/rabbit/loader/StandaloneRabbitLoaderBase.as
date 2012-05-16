@@ -164,7 +164,7 @@ package com.somewater.rabbit.loader {
 		/**
 		 * Добавить разэнкоженный файл
 		 */
-		private function addDecodedFile(name:String, content:DisplayObject):void
+		protected function addDecodedFile(name:String, content:DisplayObject):void
 		{
 			swfADs[name] = content.loaderInfo.applicationDomain || ApplicationDomain.currentDomain;
 			if(swfs[name] == null)
@@ -177,7 +177,7 @@ package com.somewater.rabbit.loader {
 			return {
 				'init_user':{
 								items:"200:2,201:1,202:1,203:1"
-								,money: 10
+								,money: 9999
 							}
 			}
 		}

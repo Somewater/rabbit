@@ -3,6 +3,7 @@
         xmlns:mx="http://www.adobe.com/2006/mxml"
         xmlns:editor="com.somewater.rabbit.editor.ui.*"
 		applicationComplete="complete()"
+		preinitialize="onInited();"
 		width="400"
 		height="1000"
 		backgroundColor="#FFFFFF"
@@ -32,10 +33,17 @@
 			public var WIDTH:int
 			public var HEIGHT:int;
 			public var PANEL_WIDTH:int = 200;
+			private var started:Boolean = false;
 			
 			private var slidePanelHidden:Boolean = true;
 
-			private function complete():void {
+			private function onInited():void {
+				trace('[EDITOR] INITIALIZATION...')
+			}
+
+			public function complete():void {
+				if(started) return;
+				started = true;
 				trace("[EDITOR] EDITOR STARTED");
 				
 				// сохраняем нормальные размеры игры
@@ -90,6 +98,7 @@
 			}
 
 			public function showOrHide():void {
+				complete();
 				onSlideButtonCLick();
 			}
 			

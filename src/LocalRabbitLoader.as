@@ -49,7 +49,12 @@ package
 
 		override protected function initializeServerHandler():void
 		{
-			_serverHandler = new LocalServerHandler();
+			_serverHandler = new LocalServerHandler({
+				'init_user':{
+								items:"200:2,201:1,202:1,203:1"
+								,money: 99999
+							}
+			});
 			_serverHandler.init(getUser().id, 'embed', net);
 		}
 
@@ -136,8 +141,6 @@ package
 			{
 				user = new SocialUser();
 				user.itsMe = true;
-				user.balance = 12;
-				user.bdate = new Date(1987, 6, 6).time;
 				user.city = "Belgorod";
 				user.country = "Russia";
 				user.sex = "male";

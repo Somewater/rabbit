@@ -42,7 +42,7 @@ package com.somewater.rabbit.application.shop {
 			text.text = powerup.getDescription();
 			text.y = title.textHeight + 15;
 
-			if(powerup.name == 'powerup_speed' && powerup.shop_photo && powerup.shop_photo.length > 2)
+			if(powerup.shop_photo && powerup.shop_photo.length > 2)
 			{
 				border.visible = true;
 				photo.source = Lib.createMC(powerup.shop_photo);

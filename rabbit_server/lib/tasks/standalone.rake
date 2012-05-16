@@ -19,7 +19,7 @@ namespace :standalone do
 	task :airswf, [:preloader_only] do |task, args|
 		ENV['SITELOCK'] = "*"
 		ENV['LOCALE'] = 'en'
-		$air = true
+		#$air = true
 		#ENV['USE_MXMLC'] = 'true'
 		ENV['LOADERNAME'] = 'AIRSWFRabbitLoader'
 		Rake::Task['flash:configurate_compiler'].execute()
