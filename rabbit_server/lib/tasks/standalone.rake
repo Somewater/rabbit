@@ -19,6 +19,7 @@ namespace :standalone do
 	task :airswf, [:preloader_only] do |task, args|
 		ENV['SITELOCK'] = "*"
 		ENV['LOCALE'] = 'en'
+		$air = true
 		#ENV['USE_MXMLC'] = 'true'
 		ENV['LOADERNAME'] = 'AIRSWFRabbitLoader'
 		Rake::Task['flash:configurate_compiler'].execute()
@@ -30,7 +31,8 @@ namespace :standalone do
 		end
 		Rake::Task['flash:compile'].execute({:filename => 'AIRSWFRabbitLoader'})
 		require 'fileutils'
-		FileUtils.mv "#{ROOT}/bin-debug/AIRSWFRabbitLoader.swf", "#{ROOT}/air/AIRSWFRabbitLoader.swf"
+		FileUtils
+		FileUtils.mv "#{ROOT}/bin-debug/AIRSWFRabbitLoader.swf", "#{ROOT}/air/output/AIRSWFRabbitLoader.swf"
 		puts "******************************\n\tWARNING LOCALE = #{ENV['LOCALE']}\n******************************" if ENV['LOCALE'] != 'en'
 		#puts "******************************\n\tWARNING SITELOCK NOT ASSIGNED\n******************************" unless ENV['SITELOCK']
 	end

@@ -34,6 +34,7 @@ package com.somewater.net
 		{
 			if(engine)
 			{
+				engine['air'] = air;
 				engine['async'] = async;
 				engine['code'] = code;
 				engine['asyncBytesPerTick'] = asyncBytesPerTick;
@@ -70,14 +71,16 @@ package com.somewater.net
 			try
 			{
 				var lc:LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain, SecurityDomain.currentDomain);
-				lc[ "allowCodeImport" ] = true;
+				if(air)
+					lc[ "allowCodeImport" ] = true;
 				loader.loadBytes(bytes, lc);
 			}catch(err:Error)
 			{
 				try
 				{
 					var lc2:LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain, null)
-					lc2[ "allowCodeImport" ] = true;
+					if(air)
+						lc2[ "allowCodeImport" ] = true;
 					loader.loadBytes(bytes, lc2);
 				}catch(err2:Error)
 				{
@@ -95,5 +98,6 @@ package com.somewater.net
 		public static var asyncBytesPerTick:uint = 1048576;// 1 Mb
 
 		public static var inited:Boolean = false;
+		public static var air:Boolean = false;
 	}
 }

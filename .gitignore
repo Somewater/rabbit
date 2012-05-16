@@ -27,3 +27,9 @@ soc/SocialFree.swc
 rprotect/RProtector.swc
 rprotect/*.swf
 rprotect/com/somewater/net/*.swf
+
+air/*.apk
+air/*.swf
+air/*.exe
+air/*.air
+air/output/*

@@ -189,7 +189,7 @@ package com.somewater.rabbit.loader
 			addChild(_cursors);
 		}
 		
-		private function onAddedToStage(e:Event):void{
+		protected function onAddedToStage(e:Event):void{
 			
 			if(!_basePath)
 				_basePath = loaderInfo.url.substr(0, loaderInfo.url.lastIndexOf("/") + 1);
@@ -207,6 +207,7 @@ package com.somewater.rabbit.loader
 			
 			Config.loader = this;
 			Config.stage = stage;
+			SWFDecoderWrapper.air = CONFIG::air;
 			SWFDecoderWrapper.load(null, null, null);// инициируем заранее
 
 			graphics.beginFill(0xE7E7E7);

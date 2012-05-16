@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<application xmlns="http://ns.adobe.com/air/application/2.6"> 
-    <id>AIRSWFRabbitLoader</id>
-    <versionNumber>0.1</versionNumber> 
-    <filename>AIRSWFRabbitLoader</filename>
-    <initialWindow> 
+<application xmlns="http://ns.adobe.com/air/application/2.6">
+    <id>com.somewater.rabbit.AIRSWFRabbitLoader</id>
+	<name>Hopper</name>
+    <versionNumber>0.1</versionNumber>
+    <filename>Hopper</filename>
+    <initialWindow>
         <content>AIRSWFRabbitLoader.swf</content>
         <visible>true</visible> 
-        <width>810</width> 
-        <height>650</height> 
-    </initialWindow> 
+		<title>Hopper</title>
+		<fullScreen>true</fullScreen>
+    </initialWindow>
+	<icon>
+		<image16x16>icons/hopper16x16.png</image16x16>
+		<image32x32>icons/hopper32x32.png</image32x32>
+		<image48x48>icons/hopper48x48.png</image48x48>
+	</icon>
 </application>

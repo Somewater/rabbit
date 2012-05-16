@@ -153,7 +153,8 @@ import flash.display.Loader;
 			try
 			{
 				var lc:LoaderContext = new LoaderContext(false, appDomain, SecurityDomain.currentDomain);
-				lc[ "allowCodeImport" ] = true;
+				if(air)
+					lc[ "allowCodeImport" ] = true;
 				loader.loadBytes(byteArray, lc);
 			}catch(e:Error)
 			{
@@ -163,7 +164,8 @@ import flash.display.Loader;
 					{
 					  byteArray.position = 0;
 						var lc2:LoaderContext = new LoaderContext(false, appDomain, null);
-						lc2[ "allowCodeImport" ] = true;
+						if(air)
+							lc2[ "allowCodeImport" ] = true;
 						loader.loadBytes(byteArray, lc2);
 					}
 					else
@@ -347,6 +349,8 @@ import flash.display.Loader;
 		public static var asyncBytesPerTick:uint;
 		
 		public static var applicationDomain:ApplicationDomain;
+
+		public static var air:Boolean
 		
 	}
 }

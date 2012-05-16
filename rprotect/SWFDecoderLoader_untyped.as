@@ -4,7 +4,6 @@ import flash.display.DisplayObject;
 import flash.display.Loader;
 	import flash.display.LoaderInfo;
 	import flash.display.Sprite;
-	import flash.errors.IOError;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.SecurityErrorEvent;
@@ -127,12 +126,12 @@ import flash.display.Loader;
 			  clear();
 				onErrorRef();
 			}
-			catch(err:IOError)
+			catch(err:Error)
 			{
 				try
 				{
 					onErrorRef(event);
-				}catch(err2:IOError){
+				}catch(err2:Error){
 
 				}
 			}
@@ -154,7 +153,8 @@ import flash.display.Loader;
 			try
 			{
 				var lc:* = new LoaderContext(false, appDomain, SecurityDomain.currentDomain);
-				lc[ "allowCodeImport" ] = true;
+				if(air)
+					lc[ "allowCodeImport" ] = true;
 				loader.loadBytes(byteArray, lc);
 			}catch(e:Error)
 			{
@@ -164,13 +164,14 @@ import flash.display.Loader;
 					{
 					  byteArray.position = 0;
 						var lc2:* = new LoaderContext(false, appDomain, null);
-						lc2[ "allowCodeImport" ] = true;
+						if(air)
+							lc2[ "allowCodeImport" ] = true;
 						loader.loadBytes(byteArray, lc2);
 					}
 					else
 						fireError();
 						
-				}catch(e2:IOError)
+				}catch(e2:Error)
 				{
 					fireError();
 				}
@@ -217,7 +218,7 @@ import flash.display.Loader;
                             onCompleteRef(content);
                     }
                 }
-			}catch(err:IOError)
+			}catch(err:Error)
 			{
                 fireError();
 			}
@@ -348,6 +349,8 @@ import flash.display.Loader;
 		public static var asyncBytesPerTick:*;
 		
 		public static var applicationDomain:*;
+
+		public static var air:*
 		
 	}
 }

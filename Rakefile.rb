@@ -58,6 +58,7 @@ namespace :flash do
 -define+=CONFIG::debug,#{$debug ? 'true' : 'false'} \
 -define+=CONFIG::sitelock,\"'#{ENV['SITELOCK'] && ENV['SITELOCK'].to_s != '*' ? Digest::MD5.hexdigest(ENV['SITELOCK'].to_s) : 'flash.display::Sprite'}'\" \
 -define+=CONFIG::loadername,\"'#{ENV['LOADERNAME'] ? ENV['LOADERNAME'] : 'FGLRabbitLoader'}'\" \
+-define+=CONFIG::air,#{$air ? 'true' : 'false'} \
 --keep-as3-metadata+=TypeHint,EditorData,Embed \
 -benchmark=true \
 -optimize=true \

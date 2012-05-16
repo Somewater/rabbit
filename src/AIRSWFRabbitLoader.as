@@ -3,6 +3,8 @@ package {
 	import com.somewater.rabbit.net.LocalServerHandler;
 	import com.somewater.rabbit.storage.Config;
 
+	import flash.events.Event;
+
 	[Frame(factoryClass="com.somewater.rabbit.loader.EnPreloader")]
 	[SWF(width="810", height="650", backgroundColor="#FFFFFF", frameRate="30")]
 	public class AIRSWFRabbitLoader extends StandaloneRabbitLoaderBase{
@@ -14,6 +16,14 @@ package {
 			super();
 			Config.memory['hideTop'] = true;
 			Config.memory['portfolioMode'] = true;
+		}
+
+
+		override protected function onAddedToStage(e:Event):void {
+			//Config.WIDTH = stage.stageHeight;
+			//Config.HEIGHT = stage.stageWidth;
+
+			super.onAddedToStage(e);
 		}
 
 		override protected function netInitialize():void {

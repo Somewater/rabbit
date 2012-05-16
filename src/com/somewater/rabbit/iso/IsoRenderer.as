@@ -249,7 +249,7 @@ package com.somewater.rabbit.iso
 		{
 			if(_visible == false)
 				return;
-			
+
 			if(!_displayObject)
 			{
 				if(slug)

@@ -10,14 +10,6 @@
   {
     public function AIRActionScript()
     {
-      var win:NativeWindow =
-        new NativeWindow(new NativeWindowInitOptions());
-      win.activate();
-      win.addEventListener(Event.CLOSE, function():void {
-        NativeApplication.nativeApplication.exit(0);
-      });
-
-      win.stage.addChild(this);
 
       stage.scaleMode = StageScaleMode.NO_SCALE;
       stage.align = StageAlign.TOP_LEFT;
