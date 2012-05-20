@@ -1,0 +1,3 @@
+-cp src 
+-cpp bin/Test.exe
+-main hellespontus.SocketServerBase

@@ -1,0 +1,4 @@
+-cp src
+hellespontus.SSCommand
+hellespontus.SocketMessage
+-swf bin/hellespontus.swc

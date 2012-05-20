@@ -1,5 +1,5 @@
 package hellespontus;
-import neko.net.Socket;
+import sys.net.Socket;
 
 /**
  * ...
@@ -13,4 +13,8 @@ typedef SocketClient =
 	var room:RoomController;
 	
 	var main:Bool;
+
+	var userId:String;
+
+	var netId:Int;
 }
