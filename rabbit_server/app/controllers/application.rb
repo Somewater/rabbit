@@ -57,6 +57,10 @@ class Application
 					[200, { "Content-Type" => "text/html" }, [response]]
 				end
 			rescue =>ex
+				if ex.is_a?(Mysql2::Error)
+					logger.error('Mysql Error. Server restart')
+					`touch #{ROOT}/tmp/restart.txt`
+				end
 				logger.error "#{ex} : #{ex.backtrace.join(?\n)}\n\tFROM REQUEST: #{request.path}\n#{request.params}"
 				[200, { "Content-Type" => "text/html" }, DEVELOPMENT || true ? \
 							["E_FATAL<pre>#{ex} \n#{ex.backtrace.join(?\n)}"]	: ["E_FATAL"]]
