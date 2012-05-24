@@ -53,6 +53,23 @@ namespace :standalone do
 		puts "******************************\n\tWARNING LOCALE = #{ENV['LOCALE']}\n******************************" if ENV['LOCALE'] != 'en'
 		puts "******************************\n\tWARNING SITELOCK NOT ASSIGNED\n******************************" unless ENV['SITELOCK']
 	end
+	
+	desc 'Compile to rabbit.asflash.ru'
+	task :asflash do
+		ENV['SITELOCK'] = "asflash.ru"
+		ENV['LOCALE'] = 'en'
+		ENV['USE_MXMLC'] = 'true'
+		ENV['LOADERNAME'] = 'GAMMRabbitLoader'
+		Rake::Task['flash:configurate_compiler'].execute()
+		Rake::Task['standalone:compile_config'].execute()
+		Rake::Task['standalone:compile_lang'].execute()
+		$debug = false
+		Rake::Task['flash:compile'].execute()
+		Rake::Task['flash:encode'].execute()
+		Rake::Task['flash:compile'].execute({:filename => 'GAMMRabbitLoader'})
+		puts "******************************\n\tWARNING LOCALE = #{ENV['LOCALE']}\n******************************" if ENV['LOCALE'] != 'en'
+		puts "******************************\n\tWARNING SITELOCK NOT ASSIGNED\n******************************" unless ENV['SITELOCK']
+	end
 
 	desc "Compile xml_pack from asflash.ru"
 	task :compile_xml_pack => 'flash:configurate_compiler' do
