@@ -123,7 +123,7 @@ package com.somewater.rabbit.application {
 
 		private function onPowerupCliced(event:PowerupEvent):void {
 			wishPowerupId = 0;
-			if(UserProfile.instance.hasItem(event.powerup.id))
+			if(UserProfile.instance.hasItem(event.powerup.id) || Config.game.level.number == 1)
 			{
 				// просто используем что есть
 				userPowerup(event.powerup);
@@ -147,8 +147,11 @@ package com.somewater.rabbit.application {
 		private function userPowerup(powerup:PowerupDef):void
 		{
 			Config.game.usePowerup(powerup.template);
-			UserProfile.instance.deleteItem(powerup.id);
-			AppServerHandler.instance.useItem(powerup.id);// todo: обрабатывать оибку применения паверапа
+			if(Config.game.level.number > 1)
+			{
+				UserProfile.instance.deleteItem(powerup.id);
+				AppServerHandler.instance.useItem(powerup.id);// todo: обрабатывать оибку применения паверапа
+			}
 		}
 
 		private function onShopEventClosed(event:Event):void {

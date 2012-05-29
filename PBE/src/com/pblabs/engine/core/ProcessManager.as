@@ -88,6 +88,7 @@ package com.pblabs.engine.core
 		 */
 		public var optimizeModeCounter:int = -1;
 		private function get optimizeMode():Boolean{return optimizeModeCounter > 2;}
+		public function get age():int{return optimizeModeCounter;}
         
         /**
          * The scale at which time advances. If this is set to 2, the game

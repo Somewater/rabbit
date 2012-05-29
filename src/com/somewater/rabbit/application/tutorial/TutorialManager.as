@@ -67,7 +67,8 @@ package com.somewater.rabbit.application.tutorial {
 	 */
 	public class TutorialManager{
 
-		public static const TIME_WAITING:int = 8000;
+		public static const TIME_WAITING:int = 10000;
+		public static const USE_TIMEOUT:Boolean = true;// использовать завершение шагов туториала по таймауту
 
 		public static const AFTER_LEVEL_STEP:int = 8;// 8й шаг тьюториала (считая по массиву STEPS) наступает, елси игрок прошел левел 1
 
@@ -81,15 +82,16 @@ package com.somewater.rabbit.application.tutorial {
 										,TutorialStep3
 										,TutorialStep4
 										,TutorialStep5
+										,TutorialStepPowerups
 										,TutorialStep6
-										,TutorialStep7
-										,TutorialStep8
+										,TutorialStepPause
+										,TutorialStepDiagonal
 										/*,TutorialStep9
 										,TutorialStep10
 										,TutorialStep11
 										,TutorialStep12
 										,TutorialStep13*/
-										,TutorialStep14
+
 									 ];
 
 		private var tickTimer:Timer;
@@ -159,6 +161,9 @@ package com.somewater.rabbit.application.tutorial {
 		 * @param event
 		 */
 		private function onTick(event:TimerEvent):void {
+			if(!Config.game.isTicking && !(currentStep is TutorialStepPause || currentStep is TutorialStepPowerups))
+				return;
+
 			if(currentStep)
 			{
 				currentStep.tick();

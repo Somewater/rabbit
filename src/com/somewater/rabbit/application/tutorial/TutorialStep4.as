@@ -42,7 +42,7 @@ package com.somewater.rabbit.application.tutorial {
 			// прошло 5 секунды или здоровье кролика менее 1
 			// (значит, он столкнулся с ежом, надо переходить к следующему шагу - про ежа)
 			return messageShowed &&
-					(messageAccepted || (getTimer() - stepStartTime) > TutorialManager.TIME_WAITING || TutorialManager.modile.health < 1);
+					(messageAccepted || (TutorialManager.USE_TIMEOUT && (getTimer() - stepStartTime) > TutorialManager.TIME_WAITING));
 		}
 	}
 }

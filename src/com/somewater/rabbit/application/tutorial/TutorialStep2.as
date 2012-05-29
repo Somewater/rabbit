@@ -21,7 +21,10 @@ package com.somewater.rabbit.application.tutorial {
 			if(!messageShowed)
 			{
 				// "Используй кнопки-стрелки _L чтобы управлять кроликом"
-				TutorialManager.instance.gameMessage('TUTORIAL_USE_CURSOR_KEYS', null, 'tutorial.TutorialCoursorKeys');
+				if(Config.application.mouseInput)
+					TutorialManager.instance.gameMessage('TUTORIAL_USE_MOUSE', null, 'tutorial.TutorialMouseInput');
+				else
+					TutorialManager.instance.gameMessage('TUTORIAL_USE_CURSOR_KEYS', null, 'tutorial.TutorialCoursorKeys');
 				messageShowed = true;
 			}
 		}

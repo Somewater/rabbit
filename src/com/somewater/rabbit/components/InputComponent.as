@@ -94,7 +94,7 @@ package com.somewater.rabbit.components
 		override protected function onAdd():void
 		{
 			super.onAdd();			
-			PBE.inputManager.addEventListener(MouseEvent.MOUSE_DOWN, onSceneClick);
+			PBE.mainStage.addEventListener(MouseEvent.CLICK, onSceneClick);
 			PBE.inputManager.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			PBE.inputManager.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 			
@@ -108,7 +108,7 @@ package com.somewater.rabbit.components
 		override protected function onRemove():void
 		{
 			super.onRemove();			
-			PBE.inputManager.removeEventListener(MouseEvent.MOUSE_DOWN, onSceneClick);
+			PBE.mainStage.removeEventListener(MouseEvent.CLICK, onSceneClick);
 			PBE.inputManager.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			PBE.inputManager.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 			
@@ -118,15 +118,16 @@ package com.somewater.rabbit.components
 		
 		protected function onSceneClick(e:MouseEvent):void
 		{		
-			return;
-			
-			if(clickResult == null)
+			if(PBE.processManager.isTicking && this.owner != null && PBE.processManager.age > 5)
 			{
-				clickResult = IsoRenderer.screenToIso(new Point(PBE.mainStage.mouseX, PBE.mainStage.mouseY));
-				clickResult.x = int(clickResult.x);
-				clickResult.y = int(clickResult.y);
+				var tile:Point = IsoRenderer.screenToIso(new Point(PBE.mainStage.mouseX - PBE.scene.position.x,
+																   PBE.mainStage.mouseY - PBE.scene.position.y));
+				tile.x = int(tile.x);
+				tile.y = int(tile.y);
 				
-				onTick(0);
+				listenSuspended = true;
+				owner.setProperty(destinationRef, tile);
+				listenSuspended = false;
 			}
 		}
 		

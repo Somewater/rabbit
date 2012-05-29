@@ -155,8 +155,8 @@ package com.somewater.rabbit.creature
 		{
 			//super.onTick(deltaTime);
 			
-			if(lastCheckHasGuests || age++ % 2 == 0)
-			{
+			//if(lastCheckHasGuests || age++ % 2 == 0)
+			//{
 				// каждый десятый тик делаем проверку
 				box.x = _position.x;
 				box.y = _position.y;
@@ -216,7 +216,7 @@ package com.somewater.rabbit.creature
 							changeSide(RandomizeUtil.rnd > 0.5 ? 1 : -1);// нарушаем баланс
 					}
 				}
-			}
+			//}
 		}
 		
 		

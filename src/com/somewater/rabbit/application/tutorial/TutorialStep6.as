@@ -40,7 +40,7 @@ package com.somewater.rabbit.application.tutorial {
 		{
 			// прошло 8 секунды
 			return messageShowed &&
-					(messageAccepted || (getTimer() - stepStartTime) > TutorialManager.TIME_WAITING);
+					(messageAccepted || (TutorialManager.USE_TIMEOUT && (getTimer() - stepStartTime) > TutorialManager.TIME_WAITING));
 		}
 	}
 }

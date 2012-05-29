@@ -54,9 +54,15 @@ package com.somewater.rabbit.components
 		
 		protected function onTileReached(e:Event):void
 		{
+			searchHarvest();
+		}
+
+
+		protected function searchHarvest():void
+		{
 			// самое время посомтреть, нет ли в новом тайле морковочки
 			var harvestSpatials:Array = [];
-			
+
 			var newTile:Point = IsoSpatial(owner.lookupComponentByName("Spatial")).tile;
 			tempQueryRectangle.x = newTile.x;
 			tempQueryRectangle.y = newTile.y

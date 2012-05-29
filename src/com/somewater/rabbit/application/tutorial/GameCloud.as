@@ -5,6 +5,7 @@ package com.somewater.rabbit.application.tutorial {
 
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
+	import flash.events.MouseEvent;
 	import flash.geom.Point;
 
 	public class GameCloud extends Sprite implements ITutorialMessage{
@@ -19,6 +20,11 @@ package com.somewater.rabbit.application.tutorial {
 			addChild(cloud);
 
 			Config.loader.tutorial.addChild(this);
+			addEventListener(MouseEvent.CLICK, onClick, false, 1000);
+		}
+
+		private function onClick(event:MouseEvent):void {
+			event.stopPropagation();
 		}
 
 		public function clear():void {

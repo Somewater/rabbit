@@ -12,7 +12,7 @@ package com.somewater.rabbit.application.tutorial {
 	import flash.geom.Point;
 	import flash.utils.getTimer;
 
-	public class TutorialStep7 extends TutorialStepBase{
+	public class TutorialStepPause extends TutorialStepBase{
 
 		private var messageShowed:Boolean = false;
 		private var message2Showed:Boolean = false;
@@ -21,7 +21,7 @@ package com.somewater.rabbit.application.tutorial {
 		private var stepStartTime:uint = 0;
 		private var pauseWindowShowed:Boolean = false;
 
-		public function TutorialStep7() {
+		public function TutorialStepPause() {
 		}
 
 		override public function execute():void {
@@ -63,7 +63,7 @@ package com.somewater.rabbit.application.tutorial {
 		override public function completed():Boolean
 		{
 			// окно паузы показалось и скрылось, либо прошло уже дофига времени
-			return this.pauseWindow == null && (pauseWindowShowed || (getTimer() - stepStartTime) > TutorialManager.TIME_WAITING * 4);
+			return this.pauseWindow == null && (pauseWindowShowed || (TutorialManager.USE_TIMEOUT && (getTimer() - stepStartTime) > TutorialManager.TIME_WAITING * 4));
 		}
 
 		private function get pauseWindow():PauseMenuWindow

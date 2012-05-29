@@ -10,14 +10,14 @@ package com.somewater.rabbit.application.tutorial {
 	/**
 	 * Заключительный шаг
 	 */
-	public class TutorialStep14 extends TutorialStepBase{
+	public class TutorialStepPowerups extends TutorialStepBase{
 		private var messageShowed:Boolean = false;
 		private var stepStartTime:uint;
 		private var powerupEventListenerCreated:Boolean = false;
 		private var powerupEvent:Boolean = false;
 
 
-		public function TutorialStep14() {
+		public function TutorialStepPowerups() {
 		}
 
 		override public function tick():void {
@@ -41,11 +41,16 @@ package com.somewater.rabbit.application.tutorial {
 					if(gameGuiRef.powerupPanel.isOpened())
 					{
 						TutorialManager.instance.clearMessages();
-						TutorialManager.instance.highlightGui(gameGuiRef.powerupPanel.myPowerups.getPowerupIcon());
+						TutorialManager.instance.highlightGui(gameGuiRef.powerupPanel.myPowerups.getPowerupIcon(TutorialManager.modile.health < 1 ? 0 : 1));
 					}
 					else
 					{
 						TutorialManager.instance.highlightGui(gameGuiRef.powerupIndicator);
+						// проверить, что у юзера есть павеапы здоровья и ускорения, при необходимости выдать парочку
+						gameGuiRef.powerupPanel.myPowerups.pushFreePowerup(0);
+						gameGuiRef.powerupPanel.myPowerups.pushFreePowerup(1);
+						gameGuiRef.powerupPanel.myPowerups.pushFreePowerup(2);
+						gameGuiRef.powerupPanel.myPowerups.pushFreePowerup(3);
 					}
 					if(!powerupEventListenerCreated)
 					{
@@ -66,7 +71,7 @@ package com.somewater.rabbit.application.tutorial {
 		{
 			// прошло 5 или была нажата кнопка Accept
 			return messageShowed &&
-					((getTimer() - stepStartTime) > TutorialManager.TIME_WAITING * 3 || powerupEvent);
+					((TutorialManager.USE_TIMEOUT && (getTimer() - stepStartTime) > TutorialManager.TIME_WAITING * 3) || powerupEvent);
 		}
 
 		override public function clear():void {

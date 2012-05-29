@@ -88,7 +88,8 @@ package com.somewater.rabbit.application.tutorial {
 			{
 				buttonNext = new OrangeButton()
 				buttonNext.label = Lang.t('TUTORIAL_NEXT_BTN_LABEL');
-				buttonNext.addEventListener(MouseEvent.CLICK, onAcceptClicked);
+				contentHolder.useHandCursor = contentHolder.buttonMode = true;
+				addEventListener(MouseEvent.CLICK, onAcceptClicked);
 				buttonNext.x = ((photoBorder ? photoBorder.x + photoBorder.width : textField.x + textField.width) - buttonNext.width) * 0.5;
 				buttonNext.y = (photoBorder ? Math.max(photoBorder.y + photoBorder.height, textField.y + textField.height) : textField.y + textField.height) + 10;
 				contentHolder.addChild(buttonNext);
@@ -137,7 +138,7 @@ package com.somewater.rabbit.application.tutorial {
 			if(buttonNext)
 			{
 				buttonNext.clear();
-				buttonNext.removeEventListener(MouseEvent.CLICK, onAcceptClicked);
+				removeEventListener(MouseEvent.CLICK, onAcceptClicked);
 			}
 		}
 

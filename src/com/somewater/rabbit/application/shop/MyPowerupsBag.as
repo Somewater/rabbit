@@ -105,9 +105,15 @@ package com.somewater.rabbit.application.shop {
 			return HEIGHT;
 		}
 
-		public function getPowerupIcon(index:int = 0):ItemIcon
+		public function getPowerupIcon(index:int):ItemIcon
 		{
 			return icons[index];
+		}
+
+		public function pushFreePowerup(index:int):void
+		{
+			var ic:ItemIcon = icons[index];
+			ic.quantity = Math.max(int(UserProfile.instance.items[ic.item.id]), 1);
 		}
 	}
 }

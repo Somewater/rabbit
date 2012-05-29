@@ -231,10 +231,11 @@ package
 			addPropertyListener('music', onMusicVolumeChanged);
 			addPropertyListener('soundEnabled', onSoundVolumeChanged);
 			addPropertyListener('sound', onSoundVolumeChanged);
+			addPropertyListener('mouseInput', onMouseInputChanged);
 
 			addEventListener(GameModuleEvent.FRIEND_VISIT_REWARD_HARVESTED, onFriendVisitRewardHarvested);
 
-			loadAudioSettings();
+			loadSettings();
 
 			gaTracker = new GATracker(Config.loader as DisplayObject, 'UA-29834261-1', 'AS3', false);
 			while(Config.pendingStats.length)
@@ -629,17 +630,22 @@ package
 		}
 		
 		private var _music:Number = 0.7;
+		public var musicFader:Number = 1;
 		public function set music(value:Number):void
 		{
 			if(_music != value)
 			{
 				_music = value;
-				dispatchPropertyChange("music");
+				dispatchMusicChange();
 			}
 		}
 		public function get music():Number
 		{
-			return _music;	
+			return _music * musicFader;
+		}
+		private function dispatchMusicChange():void
+		{
+			dispatchPropertyChange("music");
 		}
 		
 		private var _musicEnabled:Boolean = true;
@@ -668,6 +674,19 @@ package
 		public function get soundEnabled():Boolean
 		{
 			return _soundEnabled;	
+		}
+
+		private var _mouseInput:Boolean = true;
+		public function set mouseInput(value:Boolean):void {
+			if(_mouseInput != value)
+			{
+				_mouseInput = value;
+				dispatchPropertyChange("mouseInput");
+			}
+		}
+
+		public function get mouseInput():Boolean {
+			return _mouseInput;
 		}
 		
 		
@@ -790,6 +809,13 @@ package
 			saveAudioSettings();
 		}
 
+		private function onMouseInputChanged():void {
+			if(!settingsLoadingFlag)
+			{
+				Config.loader.set('inputSettings', {'mouseInput': this.mouseInput});
+			}
+		}
+
 		private function onSoundComplete(event:Event):void
 		{
 			var sd:SoundData;
@@ -824,7 +850,7 @@ package
 			}
 		}
 
-		private function loadAudioSettings():void
+		private function loadSettings():void
 		{
 			settingsLoadingFlag = true;
 			var settings:Object = Config.loader.get('audioSettings');
@@ -834,6 +860,11 @@ package
 				this.musicEnabled = settings['musicEnabled'];
 				this.sound = settings['sound'];
 				this.soundEnabled = settings['soundEnabled'];
+			}
+			settings = Config.loader.get('inputSettings');
+			if(settings)
+			{
+				this.mouseInput = settings['mouseInput'];
 			}
 			settingsLoadingFlag = false;
 		}
@@ -941,20 +972,22 @@ package
 					return;// не нужно плавного перехода, если и так играет что надо
 
 				TweenLite.killTweensOf(this, true);
-				TweenLite.to(this, fastFade ? 0.3 : 0.8, {music: 0,
+				TweenLite.to(this, fastFade ? 0.3 : 0.8, {musicFader: 0,
 					onComplete:startMusicFadeInImmediately,
-					onCompleteParams: [musicName, fastFade, this.music]});
+					onCompleteParams: [musicName, fastFade],
+					onUpdate: dispatchMusicChange
+				});
 			}
 			else
 			{
-				startMusicFadeInImmediately(musicName, fastFade, this.music);
-				this.music = 0;
+				this.musicFader = 0;
+				startMusicFadeInImmediately(musicName, fastFade);
 			}
 		}
 
-		private function startMusicFadeInImmediately(musicName:String, fastFade:Boolean, volume:Number):void
+		private function startMusicFadeInImmediately(musicName:String, fastFade:Boolean):void
 		{
-			TweenLite.to(this, fastFade ? 0.3 : 0.8, {music: volume});
+			TweenLite.to(this, fastFade ? 0.3 : 0.8, {musicFader: 1, onUpdate: dispatchMusicChange});
 			play(musicName, SoundTrack.MUSIC);
 		}
 	}

@@ -11,9 +11,18 @@ package com.somewater.rabbit.components {
 	public class HeroHarvesterComponent extends HarvesterComponent{
 
 		private var positionRef:PropertyReference;
+		private var age:int;
 
 		public function HeroHarvesterComponent() {
 			positionRef = new PropertyReference('@Spatial.position');
+			super();
+			registerForTicks = true;
+		}
+
+
+		override public function analyze():void {
+			if(_owner != null && age++ % 3 == 0)
+				searchHarvest();
 		}
 
 		/**
