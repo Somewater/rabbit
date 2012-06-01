@@ -688,7 +688,11 @@ package
 		public function get mouseInput():Boolean {
 			return _mouseInput;
 		}
-		
+
+		public function get allowKeyboard():Boolean
+		{
+			return true;
+		}
 		
 		private function addGlobalListeners(stage:Stage):void
 		{

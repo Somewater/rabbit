@@ -40,6 +40,7 @@ package com.pblabs.engine.core
             PBE.mainStage.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
             PBE.mainStage.addEventListener(MouseEvent.MOUSE_OVER,  onMouseOver);
             PBE.mainStage.addEventListener(MouseEvent.MOUSE_OUT,   onMouseOut);
+			PBE.mainStage.addEventListener(MouseEvent.CLICK,   onMouseClick);
             
             // Add ourselves with the highest priority, so that our update happens at the beginning of the next tick.
             // This will keep objects processing afterwards as up-to-date as possible when using keyJustPressed() or keyJustReleased()
@@ -223,6 +224,11 @@ package com.pblabs.engine.core
         }
 
         private function onMouseWheel(event:MouseEvent):void
+        {
+            dispatchEvent(event);
+        }
+
+		private function onMouseClick(event:MouseEvent):void
         {
             dispatchEvent(event);
         }

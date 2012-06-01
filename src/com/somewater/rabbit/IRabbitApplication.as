@@ -59,6 +59,8 @@ package com.somewater.rabbit
 		function set mouseInput(value:Boolean):void
 		function get mouseInput():Boolean
 
+		function get allowKeyboard():Boolean
+
 		function createTextField(font:String = null,color:* = null,size:int = 12,bold:Boolean = false,multiline:Boolean = false, selectable:Boolean = false,input:Boolean = false,align:String = "left",bitmapText:Boolean = false):TextField
 
 		function translate(key:String, args:Object = null):String
