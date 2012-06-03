@@ -6,6 +6,7 @@ package com.somewater.rabbit.decor {
 	import com.pblabs.engine.entity.PropertyReference;
 	import com.pblabs.rendering2D.DisplayObjectRenderer;
 	import com.somewater.rabbit.iso.IsoCameraController;
+	import com.somewater.rabbit.iso.IsoMover;
 	import com.somewater.rabbit.iso.IsoRenderer;
 	import com.somewater.rabbit.iso.IsoSpatial;
 	import com.somewater.rabbit.iso.scene.IsoSpatialManager;
@@ -15,6 +16,7 @@ package com.somewater.rabbit.decor {
 	import flash.display.Graphics;
 
 	import flash.display.Shape;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 
@@ -29,8 +31,16 @@ package com.somewater.rabbit.decor {
 
 		private var shape:Shape;
 		private var heroSpatialRef:IsoSpatial;
+		private var heroMoverRef:IsoMover;
 		private var shiftPoint:Point = new Point();
 		private var tempPoint:Point = new Point();
+
+		private var levelSize:Point = new Point(1,1);
+
+		private var mouseTileVisible:Boolean = false;
+		private var mouseTile:Point = new Point(int.MIN_VALUE, int.MIN_VALUE);
+		private var destinationTileVisible:Boolean = false;
+		private var destinationTile:Point = new Point(int.MIN_VALUE, int.MIN_VALUE);
 
 		public function BackgroundRenderer() {
 			super();
@@ -43,7 +53,7 @@ package com.somewater.rabbit.decor {
 		override protected function onAdd():void {
 			super.onAdd();
 
-			IsoCameraController.getInstance().addCallback(onCameraMoved);
+			//IsoCameraController.getInstance().addCallback(onCameraMoved);
 
 			var levelWidth:int = IsoSpatialManager.instance.width;
 			var levelHeight:int = IsoSpatialManager.instance.height;
@@ -59,7 +69,24 @@ package com.somewater.rabbit.decor {
 			}
 
 			Config.application.addPropertyListener('mouseInput', onMouseInputChanged);
+			InitializeManager.bindRestartLevel(onLevelRestart);
 			onMouseInputChanged();
+			registerForUpdates = true;
+		}
+
+		private function onLevelRestart():void {
+			levelSize.x = Config.game.level.width;
+			levelSize.y = Config.game.level.height;
+		}
+
+		override public function onFrame(elapsed:Number):void {
+			if(heroSpatialRef == null)
+				findHeroSpatialRef();
+
+			if(heroSpatialRef != null)
+			{
+				registerForUpdates = false;
+			}
 		}
 
 		private function onMouseInputChanged():void {
@@ -67,58 +94,116 @@ package com.somewater.rabbit.decor {
 			{
 				// показывать указатели на кролика
 				PBE.inputManager.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
-				PBE.inputManager.addEventListener(MouseEvent.CLICK, onMouseClick);
+				PBE.mainStage.addEventListener(Event.MOUSE_LEAVE, onMouseOut);
 			}
 			else
 			{
 				// не показывать указатели, убить листенеры
-				shape.graphics.clear();
-
-				PBE.inputManager.removeEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
-				PBE.inputManager.removeEventListener(MouseEvent.CLICK, onMouseClick);
+				clearGraphic();
+				clearListeners();
 			}
 		}
 
-		private function onMouseClick(event:MouseEvent):void {
-			var tile:Point = IsoRenderer.screenToIso(new Point(PBE.mainStage.mouseX - PBE.scene.position.x,
-															   PBE.mainStage.mouseY - PBE.scene.position.y));
-			tile.x = int(tile.x);
-			tile.y = int(tile.y);
-			drawRect(tile, 0xFF0000);
+		private function onMouseOut(event:Event):void {
+			mouseTileVisible = false;
+			update();
 		}
 
 		private function onMouseMove(event:MouseEvent):void {
-			var tile:Point = IsoRenderer.screenToIso(new Point(PBE.mainStage.mouseX - PBE.scene.position.x,
-															   PBE.mainStage.mouseY - PBE.scene.position.y));
-			tile.x = int(tile.x);
-			tile.y = int(tile.y);
-			shape.graphics.clear();
-			drawRect(tile, 0x0000FF);
+			if(heroSpatialRef == null)
+				return;
+
+			var tempPoint:Point = this.tempPoint;
+			tempPoint.x = PBE.mainStage.mouseX - PBE.scene.position.x;
+			tempPoint.y = PBE.mainStage.mouseY - PBE.scene.position.y;
+			IsoRenderer.screenToIso(tempPoint);
+			tempPoint.x = int(tempPoint.x);
+			tempPoint.y = int(tempPoint.y);
+
+			// проверить, лежит ли позиция в пределах игрового поля
+			var mustBeVisible:Boolean = tempPoint.x >= 0 && tempPoint.x < levelSize.x
+									 && tempPoint.y >= 0 && tempPoint.y < levelSize.y
+									 && PBE.processManager.isTicking;
+
+			if(mouseTileVisible != mustBeVisible || tempPoint.x != mouseTile.x || tempPoint.y != mouseTile.y)
+			{
+				mouseTileVisible = mustBeVisible;
+				mouseTile.x = tempPoint.x;
+				mouseTile.y = tempPoint.y;
+				update();
+			}
+
+		}
+
+		private function onHeroDestinationChanged(event:Event):void {
+			var destination:Point = heroMoverRef.destination;
+			if(
+				(destination == null && destinationTileVisible)
+				||
+				(destination != null && (!destinationTileVisible ||
+						(int(destination.x) != int(destinationTile.x) || int(destination.y) != int(destinationTile.y))))
+			)
+			{
+				if(destination == null || !PBE.processManager.isTicking)
+				{
+					destinationTileVisible = false;
+				}
+				else
+				{
+					destinationTileVisible = true;
+					destinationTile.x = int(destination.x);
+					destinationTile.y = int(destination.y);
+				}
+				update();
+			}
 		}
 
 		override protected function onRemove():void {
 			super.onRemove();
 
-			IsoCameraController.getInstance().removeCallback(onCameraMoved);
-
+			//IsoCameraController.getInstance().removeCallback(onCameraMoved);
+			clearListeners();
 			heroSpatialRef = null;
+			heroMoverRef = null;
+			var hero:IEntity = PBE.lookupEntity('Hero');
+			if(hero)
+			{
+				hero.eventDispatcher.addEventListener(IsoMover.DESTINATION_CHANGED, onHeroDestinationChanged)
+			}
+			clearGraphic();
+			InitializeManager.unbindRestartLevel(onLevelRestart);
+		}
+
+		private function clearListeners():void
+		{
+			PBE.inputManager.removeEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
+			PBE.mainStage.removeEventListener(Event.MOUSE_LEAVE, onMouseOut);
+		}
+
+		private function clearGraphic():void
+		{
+			shape.graphics.clear();
+		}
+
+		private function update():void
+		{
+			clearGraphic();
+
+			if(mouseTileVisible)
+				drawRect(mouseTile, 0xeeFFee);
+			if(destinationTileVisible)
+				drawRect(destinationTile, 0x2222AA);
 		}
 
 		private function drawRect(tile:Point, color:uint):void
 		{
-			if(heroSpatialRef == null)
-				findHeroSpatialRef();
-
-			if(heroSpatialRef == null)
-				return;
-
 			tempPoint.x = tile.x;
 			tempPoint.y = tile.y;
 
 			IsoRenderer.isoToScreen(tempPoint);
 
 			var g:Graphics = shape.graphics;
-			g.beginFill(color);
+			g.beginFill(color, 0.3);
 			g.drawRect(tempPoint.x, tempPoint.y,  Config.TILE_WIDTH, Config.TILE_HEIGHT);
 		}
 
@@ -130,7 +215,11 @@ package com.somewater.rabbit.decor {
 		private function findHeroSpatialRef():void {
 			var hero:IEntity = PBE.lookupEntity('Hero');
 			if(hero)
+			{
 				heroSpatialRef = hero.lookupComponentByName('Spatial') as IsoSpatial;
+				heroMoverRef = hero.lookupComponentByName('Mover') as IsoMover;
+				hero.eventDispatcher.addEventListener(IsoMover.DESTINATION_CHANGED, onHeroDestinationChanged)
+			}
 		}
 	}
 }

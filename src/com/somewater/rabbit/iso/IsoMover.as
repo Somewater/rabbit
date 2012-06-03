@@ -22,6 +22,7 @@ package com.somewater.rabbit.iso
 		public static const DESTINATION_ERROR:String = "destinationError";
 		public static const TILE_CHANGED:String = "tileChanged";
 		public static const TILE_REACHED:String = "tileReached";
+		public static const DESTINATION_CHANGED:String = "destinationChanged";
 		
 		public static const SIGNAL_TILE_CHANGED:String = "signal.tileChanged";
 		
@@ -151,8 +152,8 @@ package com.somewater.rabbit.iso
 			if(_destination && clearCallbacksFlag)
 			{
 				dispatchDestination(false);// уведомить, что ранее определенная destination не будет достигнута
-			}
-			
+			}else
+				owner.eventDispatcher.dispatchEvent(new Event(IsoMover.DESTINATION_CHANGED));
 			destinationExchange = false;
 			
 			if(_destination)
@@ -428,6 +429,7 @@ package com.somewater.rabbit.iso
 				onDestinatedError = null;
 			}
 			owner.eventDispatcher.dispatchEvent(new Event(success?DESTINATION_SUCCESS:DESTINATION_ERROR));
+			owner.eventDispatcher.dispatchEvent(new Event(IsoMover.DESTINATION_CHANGED));
 			callback && callback();
 		}
 		
@@ -453,6 +455,8 @@ package com.somewater.rabbit.iso
 		override protected function onRemove():void
 		{
 			initiateVars();
+			if(_destination)
+				owner.eventDispatcher.dispatchEvent(new Event(IsoMover.DESTINATION_CHANGED));// мы ее уже не достигнем :(
 			super.onRemove();
 		}
 		

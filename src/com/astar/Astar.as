@@ -65,7 +65,7 @@ package com.astar
 		/**
 		 * The diagonal factor is multiplied with the moving cost when moving in a diagonal fashion.
 		 */
-		public static const DIAGONAL_FACTOR : Number = 1.4;
+		public static var DIAGONAL_FACTOR : Number = 1.4;
 
 		/**
 		 * The standard cost for a tile. If a tile has no cost set (the tile does not implement the ICost interface), this value is used. 
