@@ -108,31 +108,55 @@ package com.somewater.rabbit.creature
 		public function hook(tile:BasicTile, spatial:IsoSpatial, startTile:Point):Boolean
 		{
 			//return (~getOccupyMask(tile.x, tile.y) & spatial.passMask) == spatial.passMask;
-			var verticalMovement:Boolean = int(startTile.y - tile.y) != 0;// кто то движется через бревно поперек, а не вдоль
 			var mask:uint;
-			if(sideMode == 0)
+			if(spatial.cleverPatFinding)
 			{
-				// mask = verticalMovement?occupyMask:partialOccupyMask// раньше авновесное бревно было полностью проходимо
-
-				// если бревно в равновесии, оно полностью проходимо для персонажей на бревне и непроходимо для любых других
-				var travellerRenderComponent:IEntityComponent = spatial.owner ? spatial.owner.lookupComponentByName('Render') : null;
-				mask = travellerRenderComponent && guestsIsoRenderers.indexOf(travellerRenderComponent) != -1 ? partialOccupyMask : occupyMask;
+				// вычисляем проходимость бревна на основе высот:
+				// 1 - можно взобраться/спуститься с любого тайла
+				// 2 - можно взобраться с 1 (подняться) или 3 (спуститься),
+				// 3 - можно возобраться с 2
+				var positionX:int = int(_position.x);
+				var localX:int = tile.x - positionX;//позиция tile в координатах бревна
+				var tileHeight:int =  		localX == 1 ? 2 : (1 - localX == sideMode ? 2 : sideMode == 0 ? 2 : 1);
+				var startTileHeight:int = 0;
+				if(startTile.y == int(_position.y))
+				{
+					localX = startTile.x - positionX;
+					if(localX > -1 && localX < 3)
+						startTileHeight = localX == 1 ? 2 : (localX - 1 == sideMode ? 2 : sideMode == 0 ? 2 : 1);
+				}
+				mask = tileHeight - startTileHeight > 1 ? occupyMask : partialOccupyMask;
 			}
 			else
 			{
-				// позиции запрашиваемого тайла в локальных координатах бревна
-				var x:int = tile.x - int(_position.x);
-				
-				if(x == 1)
-					// середина проходима, если на бревне кто-то есть
-					mask = verticalMovement?occupyMask:partialOccupyMask;
-					// края проходимы/непроходимы в зависимости от положения бревна 
-				else if((x == 0 && sideMode == -1) || (x == 2 && sideMode == 1))
-					mask = partialOccupyMask
+				var verticalMovement:Boolean = int(startTile.y - tile.y) != 0;// кто то движется через бревно поперек, а не вдоль
+
+				if(sideMode == 0)
+				{
+					// mask = verticalMovement?occupyMask:partialOccupyMask// раньше авновесное бревно было полностью проходимо
+
+					// если бревно в равновесии, оно полностью проходимо для персонажей на бревне и непроходимо для любых других
+					var travellerRenderComponent:IEntityComponent = spatial.owner ? spatial.owner.lookupComponentByName('Render') : null;
+					mask = travellerRenderComponent && guestsIsoRenderers.indexOf(travellerRenderComponent) != -1 ? partialOccupyMask : occupyMask;
+				}
 				else
-					mask = occupyMask;
+				{
+					// позиции запрашиваемого тайла в локальных координатах бревна
+					var x:int = tile.x - int(_position.x);
+
+					if(x == 1)
+						// середина проходима, если на бревне кто-то есть
+						mask = verticalMovement?occupyMask:partialOccupyMask;
+						// края проходимы/непроходимы в зависимости от положения бревна
+					else if((x == 0 && sideMode == -1) || (x == 2 && sideMode == 1))
+						mask = partialOccupyMask
+					else
+						mask = occupyMask;
+				}
 			}
-			return (~mask & spatial.passMask) == spatial.passMask;
+
+			var passMask:int = spatial.passMask;
+			return (~mask & passMask) == passMask;
 		}
 		
 		override protected function onAdd():void

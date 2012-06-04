@@ -129,7 +129,7 @@ package com.somewater.rabbit.application.windows
 		{
 			close();
 			
-			Config.game.finishLevel(LevelInstanceDef.DUMMY_FATAL_LEVEL, true);
+			Config.game.finishLevel(LevelInstanceDef.DUMMY_FATAL_LEVEL);
 			Config.application.startPage("main_menu");
 		}
 
@@ -137,7 +137,7 @@ package com.somewater.rabbit.application.windows
 		{
 			close();
 
-			Config.game.finishLevel(LevelInstanceDef.DUMMY_FATAL_LEVEL, true);
+			Config.game.finishLevel(LevelInstanceDef.DUMMY_FATAL_LEVEL);
 			Config.application.startPage("levels");
 		}
 		

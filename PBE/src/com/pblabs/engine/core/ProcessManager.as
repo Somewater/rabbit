@@ -87,9 +87,10 @@ package com.pblabs.engine.core
 		 * Тикать всех подряд, не проводить оптимизацию
 		 */
 		public var optimizeModeCounter:int = -1;
+		public var continiousTickCounter:int = 0;
+		public var totalTickCounter:int = 0;
 		private function get optimizeMode():Boolean{return optimizeModeCounter > 2;}
-		public function get age():int{return optimizeModeCounter;}
-        
+
         /**
          * The scale at which time advances. If this is set to 2, the game
          * will play twice as fast. A value of 0.5 will run the
@@ -170,6 +171,7 @@ package com.pblabs.engine.core
             lastTime = -1.0;
             elapsed = 0.0;
             PBE.mainStage.addEventListener(Event.ENTER_FRAME, onFrame);
+			continiousTickCounter = 0;
             started = true;
         }
         
@@ -187,6 +189,7 @@ package com.pblabs.engine.core
             }
             
             started = false;
+			continiousTickCounter = 0;
             PBE.mainStage.removeEventListener(Event.ENTER_FRAME, onFrame);
         }
 		
@@ -498,6 +501,8 @@ package com.pblabs.engine.core
 				// не оборачиваем в try-catch, чтобы воочию видет environment ошибки
 				advance(deltaTime);
 				lastTime = currentTime;
+				continiousTickCounter++;
+				totalTickCounter++;
 				return;
 			}
 			// advance(deltaTime);
@@ -510,6 +515,8 @@ package com.pblabs.engine.core
             
             // Note new last time.
             lastTime = currentTime;
+			continiousTickCounter++;
+			totalTickCounter++;
         }
         
         protected function advance(deltaTime:Number, suppressSafety:Boolean = false):void

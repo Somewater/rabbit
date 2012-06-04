@@ -47,6 +47,12 @@ package com.somewater.rabbit.iso
 		 * 		причем наличие других объектов в тайле игнорируется
 		 */
 		public var occupyMaskRule:uint;
+
+		/**
+		 * Флаг указывает, что персонаж будет находить путь оптимальным способом
+		 * - уметь ходить по бревнам и учитывать, что бревно перевентеся
+		 */
+		public var cleverPatFinding:Boolean = false;
 		
 		
 		public function IsoSpatial()

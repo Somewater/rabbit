@@ -26,6 +26,9 @@
 		</component>
 		<component name="Render" type="com.somewater.rabbit.components.ProxyIsoRenderer">
 		</component>
+		<component name="Spatial">
+			<cleverPatFinding>true</cleverPatFinding>
+		</component>
 	</entity>
 	
 	

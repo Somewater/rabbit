@@ -213,11 +213,7 @@ package com.somewater.rabbit.managers
 		{
 			var level:LevelDef = app.level;
 			
-			if(lastLevelGroup && PBE.nameManager.lookup(lastLevelGroup))
-				PBGroup(PBE.nameManager.lookup(lastLevelGroup)).destroy();
-
-			if(lastLevelManagers && PBE.nameManager.lookup(lastLevelManagers))
-				PBGroup(PBE.nameManager.lookup(lastLevelManagers)).destroy();
+			clearLevel();
 			
 			IsoSpatialManager.instance.setSize(level.width, level.height);
 			
@@ -329,6 +325,14 @@ package com.somewater.rabbit.managers
 			}
 			else
 				throw new Error("Level #" + level.id + " instantiation error. Wrong type of group field");
+		}
+
+		public static function clearLevel():void {
+			if(lastLevelGroup && PBE.nameManager.lookup(lastLevelGroup))
+				PBGroup(PBE.nameManager.lookup(lastLevelGroup)).destroy();
+
+			if(lastLevelManagers && PBE.nameManager.lookup(lastLevelManagers))
+				PBGroup(PBE.nameManager.lookup(lastLevelManagers)).destroy();
 		}
 	}
 }

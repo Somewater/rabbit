@@ -5,6 +5,7 @@ package com.somewater.rabbit.decor {
 	import com.pblabs.engine.entity.IEntity;
 	import com.pblabs.engine.entity.PropertyReference;
 	import com.pblabs.rendering2D.DisplayObjectRenderer;
+	import com.somewater.rabbit.PathBits;
 	import com.somewater.rabbit.iso.IsoCameraController;
 	import com.somewater.rabbit.iso.IsoMover;
 	import com.somewater.rabbit.iso.IsoRenderer;
@@ -110,7 +111,7 @@ package com.somewater.rabbit.decor {
 		}
 
 		private function onMouseMove(event:MouseEvent):void {
-			if(heroSpatialRef == null)
+			if(heroSpatialRef == null || PBE.processManager.continiousTickCounter < 2)
 				return;
 
 			var tempPoint:Point = this.tempPoint;
@@ -190,9 +191,13 @@ package com.somewater.rabbit.decor {
 			clearGraphic();
 
 			if(mouseTileVisible)
-				drawRect(mouseTile, 0xeeFFee);
+			{
+				// ориентировочно определяем, проходим ли тайл:
+				var tileAvailable:Boolean = (IsoSpatialManager.instance.mapPath.getTileAt(mouseTile).mask & PathBits.GRASS) > 0
+				drawRect(mouseTile, tileAvailable ? 0xeeFFee : 0xFF5555);
+			}
 			if(destinationTileVisible)
-				drawRect(destinationTile, 0x2222AA);
+				drawRect(destinationTile, 0x5555FF);
 		}
 
 		private function drawRect(tile:Point, color:uint):void
@@ -203,6 +208,7 @@ package com.somewater.rabbit.decor {
 			IsoRenderer.isoToScreen(tempPoint);
 
 			var g:Graphics = shape.graphics;
+			g.lineStyle(1, color);
 			g.beginFill(color, 0.3);
 			g.drawRect(tempPoint.x, tempPoint.y,  Config.TILE_WIDTH, Config.TILE_HEIGHT);
 		}

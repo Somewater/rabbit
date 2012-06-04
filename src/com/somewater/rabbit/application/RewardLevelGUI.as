@@ -4,6 +4,7 @@ package com.somewater.rabbit.application {
 	import com.somewater.rabbit.Sounds;
 	import com.somewater.rabbit.application.shop.MyMoneyBag;
 	import com.somewater.rabbit.storage.Config;
+	import com.somewater.rabbit.storage.LevelInstanceDef;
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.storage.Lang;
 	import com.somewater.text.Hint;
@@ -52,6 +53,7 @@ package com.somewater.rabbit.application {
 
 		private function onLeftButtonClick(event:MouseEvent):void {
 			Config.application.play(Sounds.ALPHA_BUTTON_CLICK, SoundTrack.INTERFACE, true);
+			Config.game.finishLevel(LevelInstanceDef.DUMMY_FATAL_LEVEL);
 			Config.application.startPage('main_menu');
 		}
 

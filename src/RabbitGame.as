@@ -117,18 +117,12 @@ package
 		 * @param supressBack не открывать страницу "Уровни". Предполагается, что вызывающая
 		 * 					  функция сама распорядится поведением, после конца уровня 
 		 */
-		public function finishLevel(event:LevelInstanceDef, supressLevelsPageTransition:Boolean = false):void
+		public function finishLevel(event:LevelInstanceDef):void
 		{
 			Config.gameModuleActive = false;
 			PBE.processManager.stop();
 			PBE.processManager.clear();
-			
-			// асинхронный вызов функци, т.к. иначе не дотикают неокторые контроллеры в processManager
-			// (он остановится не мгновенно, а доведет до конца текущий тик)
-			if(!supressLevelsPageTransition)
-				Config.callLater(function():void{
-					Config.application.startPage("levels");
-				});
+			InitializeManager.clearLevel()
 		}
 		
 		

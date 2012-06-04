@@ -89,7 +89,7 @@ package com.somewater.rabbit.iso.scene
 				instance = this;
 			
 			astar = new Astar();
-			Astar.DIAGONAL_FACTOR = 2.001;// т.е. диагналь дороже, чем движение по прямой
+			Astar.DIAGONAL_FACTOR = 2.0;// т.е. диагналь дороже, чем движение по прямой
 			astarPathAnalyzer = new IsoAnalyzer();
 			astar.addAnalyzer(astarPathAnalyzer);
 			

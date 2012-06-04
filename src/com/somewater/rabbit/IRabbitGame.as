@@ -28,7 +28,7 @@ package com.somewater.rabbit
 		/**
 		 * Закончить игру и переключиться на страницу уровней в приложении
 		 */
-		function finishLevel(event:LevelInstanceDef, supressLevelsPageTransition:Boolean = false):void
+		function finishLevel(event:LevelInstanceDef):void
 		
 		/**
 		 * Уровень, который включен в игре в данный момент

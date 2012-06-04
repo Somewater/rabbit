@@ -69,10 +69,14 @@ package com.somewater.rabbit.application {
 
 		private function onHoleClicked(user:GameUser, event:CustomizeEvent):void {
 			if(user.itsMe())
+			{
+				Config.game.pause();
 				new ShopWindow(ShopModule.CUSTOMIZE_DEFAULT_TAB).closeFunc = function(...args):Boolean{
+					Config.game.start();
 					customizeHole(user, event.clip);
 					return true;
 				};
+			}
 		}
 
 		public function customizeHole(user:ICustomizable, holeClip:MovieClip):void {

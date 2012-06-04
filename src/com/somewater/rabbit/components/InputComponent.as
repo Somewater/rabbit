@@ -13,7 +13,8 @@ package com.somewater.rabbit.components
 	import com.somewater.rabbit.iso.IsoMover;
 	import com.somewater.rabbit.iso.IsoRenderer;
 	import com.somewater.rabbit.iso.scene.IsoSpatialManager;
-	
+	import com.somewater.rabbit.storage.Config;
+
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -118,7 +119,7 @@ package com.somewater.rabbit.components
 		
 		protected function onSceneClick(e:MouseEvent):void
 		{		
-			if(PBE.processManager.isTicking && this.owner != null && PBE.processManager.age > 5)
+			if(Config.gameModuleActive && this.owner != null && PBE.processManager.continiousTickCounter > 2)
 			{
 				var tile:Point = IsoRenderer.screenToIso(new Point(PBE.mainStage.mouseX - PBE.scene.position.x,
 																   PBE.mainStage.mouseY - PBE.scene.position.y));
