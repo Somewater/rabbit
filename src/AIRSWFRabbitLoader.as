@@ -1,4 +1,5 @@
 package {
+	import com.pblabs.engine.debug.Stats;
 	import com.somewater.rabbit.IRabbitApplication;
 	import com.somewater.rabbit.loader.StandaloneRabbitLoaderBase;
 	import com.somewater.rabbit.net.LocalServerHandler;
@@ -32,6 +33,7 @@ package {
 			//Config.HEIGHT = stage.stageWidth;
 
 			super.onAddedToStage(e);
+			stage.addChild(new Stats());
 		}
 
 		override protected function netInitialize():void {

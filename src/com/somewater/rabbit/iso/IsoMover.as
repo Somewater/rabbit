@@ -289,8 +289,6 @@ package com.somewater.rabbit.iso
 			
 			var ratio:Number = ($speed * $speed) / (dx * dx + dy * dy);
 			
-			var modulo:Number = Math.abs(dx) + Math.abs(dy);
-			
 			if(ratio < 0.999)// KLUDGE только если необходимо существенно уменьшить dx,dy
 			{
 				ratio = Math.sqrt(ratio);
