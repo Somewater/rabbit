@@ -81,7 +81,7 @@ package com.pblabs.engine.core
          * and you will constantly get the "too many ticks per frame" warning,
          * if you have disableSlowWarning set to false.</p>
          */
-        public static const MAX_TICKS_PER_FRAME:int = 5;
+        public static const MAX_TICKS_PER_FRAME:int = CONFIG::air ? 2 : 5;
 
 		/**
 		 * Тикать всех подряд, не проводить оптимизацию
@@ -536,8 +536,9 @@ package com.pblabs.engine.core
             // Add time to the accumulator.
             elapsed += deltaTime;
 
-			var unvisibleEntities:Dictionary = new Dictionary();
-			var untickedEntities:Dictionary = new Dictionary();
+			var unvisibleEntities:Array = [];
+			var untickedEntities:Array = [];
+			var own:Entity;
 			if(optimizeMode)
 			{
 				CONFIG::debug
@@ -557,13 +558,12 @@ package com.pblabs.engine.core
 				var maxYPos:int = maxYPosVisible + PADDING;
 
 				// для удаленив визуальных артефактов
-				minXPosVisible -= 1;
-				maxXPosVisible += 1;
-				maxYPosVisible += 1;
+				//minXPosVisible -= 1;
+				//maxXPosVisible += 1;
+				//maxYPosVisible += 1;
 
 				var ticker:TickedComponent;
 				var render:DisplayObjectRenderer;
-				var own:Entity;
 
 				for each(own in this.entities)
 				{
@@ -577,14 +577,14 @@ package com.pblabs.engine.core
 					if(!own.noSleep && (minX > maxXPos || minY > maxYPos || maxX < minXPos || maxY < minYPos))
 					{
 						// не тикается и невидим
-						untickedEntities[own] = true;
-						unvisibleEntities[own] = true;
+						untickedEntities[own.uid] = true;
+						unvisibleEntities[own.uid] = true;
 						continue;
 					}
 					if(minX > maxXPosVisible || minY > maxYPosVisible || maxX < minXPosVisible || maxY < minYPosVisible)
 					{
 						// невидим (но тикается)
-						unvisibleEntities[own] = true;
+						unvisibleEntities[own.uid] = true;
 					}
 
 					// тикается и видим
@@ -640,7 +640,8 @@ package com.pblabs.engine.core
 
 					ticker = object.listener;
 
-					if(untickedEntities[ticker._owner])
+					own = ticker._owner;
+					if(own == null || untickedEntities[own.uid])
 						continue;
 
 					CONFIG::debug
@@ -718,12 +719,13 @@ package com.pblabs.engine.core
 
 				render = object.listener;
 				var dor:DisplayObject = render._displayObject;
-				if(unvisibleEntities[render._owner])
+				own = render._owner;
+				if(own == null || unvisibleEntities[own.uid])
 				{
-					CONFIG::debug
-					{
-						continue;
-					}
+//					CONFIG::debug
+//					{
+//						continue;
+//					}
 					if(dor)
 						dor.visible = false;
 					continue;

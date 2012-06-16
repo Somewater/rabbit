@@ -8,6 +8,7 @@ package
 	import com.pblabs.engine.entity.PropertyReference;
 	import com.pblabs.rendering2D.SceneAlignment;
 	import com.pblabs.rendering2D.SimpleSpatialComponent;
+	import com.somewater.display.blitting.BlitManager;
 	import com.somewater.rabbit.IRabbitGame;
 	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.application.commands.RestartLevelCommand;
@@ -29,14 +30,18 @@ package
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
+	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.rabbit.util.RandomizeUtil;
+	import com.somewater.rabbit.xml.XmlController;
 	import com.somewater.storage.Lang;
 	
 	import flash.display.Loader;
+	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	import flash.events.IOErrorEvent;
+	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
@@ -44,12 +49,15 @@ package
 	import flash.system.LoaderContext;
 	import flash.system.Security;
 	import flash.text.TextField;
+	import flash.utils.Timer;
 
 	import nl.demonsters.debugger.MonsterDebugger;
 	
 	[SWF(width="810", height="550", backgroundColor="#FFFFFF", frameRate="30")]
 	public class RabbitGame extends Sprite implements IRabbitGame
 	{
+
+		private var PROGRESS_RATIO:Number;
 		
 		public static var instance:RabbitGame;
 		
@@ -64,6 +72,13 @@ package
 		
 		private var _level:LevelDef;
 		public function get level():LevelDef{ return _level; }
+
+		/**
+		 * Таймер обеспечивает апдейт прогрессбара каждую секунду во время блиттинга
+		 * (бывают ситуации, когда сам блит менеджер диспатчит апдейт
+		 * реже чем раз в секунду - длинная анимация персонажа)
+		 */
+		private var blitProgressUpdater:Timer;
 		
 		public function RabbitGame()
 		{
@@ -71,6 +86,8 @@ package
 				throw new Error("Must be only one. And his name a Rabbit!");
 			
 			Config.game = instance = this;
+
+			PROGRESS_RATIO = Config.blitting ? 0.2 : 0.5;
 			
 			graphics.beginFill(0x85B53D);
 			graphics.drawRect(0,0,810,650);
@@ -152,7 +169,7 @@ package
 				Config.application.fatalError(Lang.t("ERROR_LOADING_ASSETS"));
 			}, function(value:Number):void{
 				// progress
-				Config.application.showSlash(value * 0.5);
+				Config.application.showSlash(value * PROGRESS_RATIO);
 			});
 		}
 		
@@ -178,13 +195,13 @@ package
 				// on complete
 				for(var name:String in xmls)
 					add(xmls[name], name);
-				recreateLevel();
+				blitSlugs();
 			}, function():void{
 				// on error
 				Config.application.fatalError(Lang.t("ERROR_LOADING_XMLS"));
 			},function(value:Number):void{
 				// on progress
-				Config.application.showSlash(0.5 + value * 0.5);
+				Config.application.showSlash(PROGRESS_RATIO + value * PROGRESS_RATIO);
 			});
 			
 			function add(xml:*, name:String):void
@@ -198,10 +215,70 @@ package
 			}
 		}
 		
-		
-		
-		private function recreateLevel():void
+		private function blitSlugs():void
 		{
+			if(Config.blitting)
+			{
+				var movieBySlug:Object = XmlController.instance.getLevelSlugs(_level);
+				var slugs:Array = [];
+				var slug:String;
+				for(slug in movieBySlug)
+					slugs.push(slug);
+
+				var uniqMovieBySlug:Object = {};// не создаем одно и то же дважды
+				for each(slug in slugs)
+					if(!BlitManager.instance.slugRegistered(slug))
+					{
+						var mc:MovieClip = Lib.createMC(slug);
+						CONFIG::air
+						{
+							// добавляем мувик на сцену, куда нить подальше в угол. ПОтому что иначе AIR косячит жутко
+							mc.x = -500;
+							mc.y = -500;
+							mc.visible = false;
+							Config.stage.addChildAt(mc, 0);
+						}
+						uniqMovieBySlug[slug] = mc;
+					}
+
+				BlitManager.instance.addEventListener(Event.COMPLETE, recreateLevel);
+				//BlitManager.instance.addEventListener(Event.CHANGE, onBlittingProgress);
+				clearBlitUpdater();
+				blitProgressUpdater = new Timer(2000);
+				blitProgressUpdater.addEventListener(TimerEvent.TIMER, onBlittingProgress);
+				blitProgressUpdater.start();
+
+				BlitManager.instance.prepare(uniqMovieBySlug, true)
+				recreateLevel();
+			}else{
+				recreateLevel();
+			}
+		}
+
+		private function clearBlitUpdater():void
+		{
+			if(blitProgressUpdater)
+			{
+				blitProgressUpdater.removeEventListener(TimerEvent.TIMER, onBlittingProgress);
+				blitProgressUpdater.stop();
+				blitProgressUpdater = null;
+			}
+		}
+
+		private function onBlittingProgress(event:Event):void {
+			var lastProgress:Number = PROGRESS_RATIO * 2;
+			Config.application.showSlash(lastProgress + BlitManager.instance.progress * (1 - lastProgress));
+		}
+		
+		private function recreateLevel(event:Event = null):void
+		{
+			if(Config.blitting)
+			{
+				clearBlitUpdater();
+				BlitManager.instance.removeEventListener(Event.CHANGE, onBlittingProgress);
+				BlitManager.instance.removeEventListener(Event.COMPLETE, recreateLevel);
+			}
+
 			include 'com/somewater/rabbit/include/Sitelock.as';
 			InitializeManager.restartLevel();
 			

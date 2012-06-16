@@ -5,6 +5,8 @@ package com.somewater.rabbit.iso
 	import com.pblabs.engine.debug.Logger;
 	import com.pblabs.engine.entity.PropertyReference;
 	import com.pblabs.rendering2D.DisplayObjectRenderer;
+	import com.somewater.display.blitting.BlittedBitmap;
+	import com.somewater.display.blitting.IBlitted;
 	import com.somewater.rabbit.States;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Lib;
@@ -88,8 +90,8 @@ package com.somewater.rabbit.iso
 		public var correctX:Number = 0;
 		public var correctY:Number = 0;
 
-		public var _clip:MovieClip;
-		
+		protected var blit:IBlitted;
+
 		public function set direction(value:int):void
 		{
 			if(value == 0)
@@ -131,21 +133,13 @@ package com.somewater.rabbit.iso
 		 */
 		protected var _currentState:String = "empty";
 		protected var _currentDirection:int;
-		protected var _currentFrameMax:int;
-		protected var _currentFrame:int;
-		
+
 		/**
 		 * аккумулирует дробные кол-ва кадров, на которые стоило передвинуть анимацию
 		 * измеряется в кол-ве кадров
 		 */
 		protected var _timeAccumulator:Number = 0;
-		
-		/**
-		 * вложенный клип второго уровня (frame of stateClip)
-		 * содержит визуальную линейку анимации, соответствующую заданному стейту, заданному направлению
-		 */
-		protected var directionClip:MovieClip;
-		
+
 		/**
 		 * Момент последнего обновления кадра анимации, в миллисекундан считая со старта флешки
 		 * ( = PBE.virtualTime в момент присвоения)
@@ -163,6 +157,12 @@ package com.somewater.rabbit.iso
 		 * персонажа
 		 */
 		public var slug:String = null;
+
+		/**
+		 * В виде строки через запятую, имена других ассетов, которые нужны для функционирования текущего
+		 * (например, будка для собаки)
+		 */
+		public var slugs:String;
 		
 		/**
 		 * Флаг, содержащий число используемых в клипе direction-ов,
@@ -184,6 +184,8 @@ package com.somewater.rabbit.iso
 		 * (равно как и работу рендера)
 		 */
 		protected var _visible:Boolean = true;
+
+		public var useMovieClip:Boolean = false;
 		
 		CONFIG::debug
 		{
@@ -197,33 +199,7 @@ package com.somewater.rabbit.iso
 			
 			_size = new Point();
 		}
-		
-		public function set clip(value:MovieClip):void
-		{
-			if (value === displayObject)
-				return;
-			
-			var labels:Array = value.currentLabels;
-			stateToIndex = [];
-			for(var i:int = 0;i<labels.length;i++)
-			{
-				stateToIndex[labels[i].name] = labels[i].frame;
-				if(i == 0)
-					state = labels[i].name
-			}
 
-			_clip = value;
-			displayObject = value;
-			_clipDirty = true;
-		}
-		
-		/*public function get clip():MovieClip
-		{
-			return _displayObject as MovieClip;
-		}*/
-		
-		
-		
 		public function set visible(value:Boolean):void
 		{
 			if(_visible == value)
@@ -252,15 +228,19 @@ package com.somewater.rabbit.iso
 
 			if(!_displayObject)
 			{
-				if(slug)
-					clip = Lib.createMC(slug);
+				if(Config.blitting && !useMovieClip)
+					blit = new BlittedBitmap();
+				else
+					blit = new IsoMovieClipAnimator();
+				blit.initialize(this.slug);
+				this.displayObject = blit.displayObject;
+				_clipDirty = true;
 			}
 			
 			if(_clipDirty)
 			{
 				// проинициировать все свойства, т.к. кип компонента был заменен (или впервые добавлен)
-				onClipAdded(_clip);
-				onClipInited(_clip);
+				onClipInited();
 				_clipDirty = false;
 			}
 
@@ -270,7 +250,7 @@ package com.somewater.rabbit.iso
 
 			if(state == _currentState && (!_useDirection || __direction == _currentDirection))
 			{
-				if(_currentFrameMax > 1 && frameTime)
+				if(/*_currentFrameMax > 1 &&*/ frameTime)
 				{
 					updateFrame((PBE.processManager.virtualTime - _clipLastUpdate) * 0.001 * frameRate);
 					_clipLastUpdate = PBE.processManager.virtualTime;
@@ -307,40 +287,21 @@ package com.somewater.rabbit.iso
 		
 		public function updareStateAndDirection():void
 		{
-			_clip.removeEventListener("frameConstructed", onFrameConstructed);
-			_clip.addEventListener("frameConstructed", onFrameConstructed);
-			
-			directionClip = null;
 			_currentState = null;
 			_currentDirection = -1;			
-			_currentFrameMax = -1;
-			_currentFrame = -1;
-			
+
 			// для изюавления от глюка при изменении state, direction до отработки ф-ции
 			var wishState:String = state;
 			var wishDirection:int = __direction;
 			
-			var frameIndex:* = stateToIndex[state];
-			if(frameIndex == null)
-			{
-				throw new Error('Undefined state "' + state + '"');
-			}
-			if(_useDirection != 1)
-				frameIndex = frameIndex + __direction - 1;
-			// KLUDGE: -1 т.к.  __direction >= 1 (таков принцип вычисления), 
+			// KLUDGE: -1 т.к.  __direction >= 1 (таков принцип вычисления),
 			// а frameIndex уже содержит начальный кадр (frameIndex>=1)
-			
-			_clip.gotoAndStop(frameIndex);
-			function onFrameConstructed(e:Event):void
-			{
-				e.currentTarget.removeEventListener(e.type, arguments.callee);
-				directionClip = usePseudoMc(e.currentTarget.getChildAt(0));
-				directionClip.stop();
-				_currentState = wishState;
-				_currentDirection = wishDirection;
-				_currentFrame = 0;
-				_currentFrameMax = directionClip.totalFrames;
-			}
+			blit.goto(wishState, wishDirection - 1);// вычитаем "-1" т.к. в блиттере используется direction=0..
+
+
+			// считаем, что перестановка прошла мгновенно (если из кэша, то так оно и есть)
+			_currentState = wishState;
+			_currentDirection = wishDirection;
 		}
 		
 		
@@ -376,9 +337,9 @@ package com.somewater.rabbit.iso
 				// переcтавляем на "1" (на следующий) кадр, даже если incInt > 1. 
 				// Иначе пропускаются кадры в коротких анимациях, что приводит (для коротких анимаций) к глюкам
 				// TODO: исходя из вышеописанного, может быть по разному обрабатывать короткие и длинные анимации?
-				_currentFrame = (_currentFrame + 1/*incInt*/) % _currentFrameMax;
-				directionClip.gotoAndStop(_currentFrame + 1);
-				
+				//_currentFrame = (_currentFrame + 1/*incInt*/) % _currentFrameMax;
+				blit.next(1);
+
 				// TODO: не самай элегантный способ заставить кролика "прыжками" перемещаться по экрану
 				//var newSpeed:Number = (_currentFrameMax > 1? (_currentFrame / (_currentFrameMax - 1) * 2) : 1) * 3 + 2;
 				//owner.setProperty(new PropertyReference("@Spatial.speed"), newSpeed);
@@ -531,25 +492,10 @@ package com.somewater.rabbit.iso
 			_transformDirty = false;
 		}
 		
-		
-		/**
-		 * Инициализация вновь добавленного клипа
-		 */
-		protected function onClipAdded(mc:MovieClip, branch:int = 0):void
-		{
-			mc.stop();
-			for(var i:int = 0;i<mc.numChildren;i++)
-			{
-				var child:MovieClip = mc.getChildAt(i) as MovieClip;
-				if(child)
-					onClipAdded(child, branch + 1);
-			}
-		}
-
 		/**
 		 * Клип добавлен и обработан (например, рекурсивно остановлено воспроизведение)
 		 */
-		protected function onClipInited(mc:MovieClip):void
+		protected function onClipInited():void
 		{
 
 		}
@@ -579,5 +525,17 @@ package com.somewater.rabbit.iso
 			point.x /= TILE_SIZE_X;
 			return point;
 		}
+	}
+}
+
+import com.somewater.display.blitting.MovieClipAnimator;
+import com.somewater.rabbit.storage.Lib;
+
+class IsoMovieClipAnimator extends MovieClipAnimator
+{
+
+	override public function initialize(slug:String):void {
+		movie = Lib.createMC(slug);
+		super.initialize(slug)
 	}
 }

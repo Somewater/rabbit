@@ -7,6 +7,7 @@ package com.somewater.rabbit.managers
 	import com.pblabs.engine.entity.IEntity;
 	import com.pblabs.engine.entity.PropertyReference;
 	import com.pblabs.rendering2D.SceneAlignment;
+	import com.somewater.display.blitting.BlitManager;
 	import com.somewater.rabbit.components.CowardComponent;
 	import com.somewater.rabbit.components.HeelProtectorComponent;
 	import com.somewater.rabbit.components.HeroHarvesterComponent;
@@ -102,8 +103,8 @@ package com.somewater.rabbit.managers
 			app = _app;
 			
 			restartLevelCallbacks = [];
-			
-			new MonsterDebugger(_app);
+
+			BlitManager.instance = new BlitManager();
 			
 			Config.init();
 

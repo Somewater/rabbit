@@ -15,6 +15,8 @@ package com.somewater.rabbit.components
 	import com.somewater.rabbit.iso.scene.IsoSpatialManager;
 	import com.somewater.rabbit.storage.Config;
 
+	import flash.display.DisplayObject;
+
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -82,6 +84,12 @@ package com.somewater.rabbit.components
 		 */
 		private var lastInputDirection:int;
 
+		/**
+		 * Смещение игрового модуля относительно стейджа
+		 * (обычно [0,0], но для android это не так)
+		 */
+		private var gameOffset:Point;
+
 		
 		public function InputComponent()
 		{
@@ -90,6 +98,7 @@ package com.somewater.rabbit.components
 			tileRef = new PropertyReference("@Spatial.tile");
 			destinationRef = new PropertyReference("@Mover.destination");
 			rendererDirectionRef = new PropertyReference("@Render.direction");
+			gameOffset = new Point((Config.loader as DisplayObject).x, (Config.loader as DisplayObject).y);
 		}
 		
 		override protected function onAdd():void
@@ -121,8 +130,8 @@ package com.somewater.rabbit.components
 		{		
 			if(Config.gameModuleActive && this.owner != null && PBE.processManager.continiousTickCounter > 2)
 			{
-				var tile:Point = IsoRenderer.screenToIso(new Point(PBE.mainStage.mouseX - PBE.scene.position.x,
-																   PBE.mainStage.mouseY - PBE.scene.position.y));
+				var tile:Point = IsoRenderer.screenToIso(new Point(PBE.mainStage.mouseX - gameOffset.x - PBE.scene.position.x,
+																   PBE.mainStage.mouseY - gameOffset.y - PBE.scene.position.y));
 				tile.x = int(tile.x);
 				tile.y = int(tile.y);
 				

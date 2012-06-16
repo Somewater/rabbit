@@ -1,5 +1,6 @@
 package com.somewater.rabbit.components {
 	import com.somewater.rabbit.iso.IsoRenderer;
+	import com.somewater.rabbit.storage.Config;
 
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
@@ -15,7 +16,6 @@ package com.somewater.rabbit.components {
 	public class ProxyIsoRenderer extends IsoRenderer{
 
 		public var holder:Sprite;
-		public var asset:MovieClip;
 
 		public function ProxyIsoRenderer() {
 		}
@@ -25,14 +25,20 @@ package com.somewater.rabbit.components {
 		 * @param value
 		 */
 		override public function set displayObject(value:DisplayObject):void {
-			if(holder == null)
+			if(Config.blitting)
 			{
-				holder = new Sprite();
-				asset = value as MovieClip;
-				holder.addChild(value);
+				holder = value as Sprite;
 			}
 			else
-				throw new Error('Asset already added');
+			{
+				if(holder == null)
+				{
+					holder = new Sprite();
+					holder.addChild(value);
+				}
+				else
+					throw new Error('Asset already added');
+			}
 
 			super.displayObject = holder;
 		}

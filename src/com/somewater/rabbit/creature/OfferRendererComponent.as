@@ -1,5 +1,8 @@
 package com.somewater.rabbit.creature {
+	import com.somewater.display.blitting.BlitManager;
+	import com.somewater.display.blitting.MovieState;
 	import com.somewater.rabbit.iso.IsoRenderer;
+	import com.somewater.rabbit.storage.Config;
 
 	import flash.display.FrameLabel;
 
@@ -10,10 +13,20 @@ package com.somewater.rabbit.creature {
 		}
 
 
-		override protected function onClipInited(mc:MovieClip):void {
-			// переставляем анимацию на один из стейтов
-			var selectedState:FrameLabel = mc.currentLabels[int(Math.random() * mc.currentLabels.length)];
- 			this.state = selectedState.name;
+		override protected function onClipInited():void {
+			if(Config.blitting)
+			{
+				var states:Array = BlitManager.instance.getStates(this.slug);
+				var state:MovieState = states[int(Math.random() * states.length)];
+				this.state = state.name;
+			}
+			else
+			{
+				// переставляем анимацию на один из стейтов
+				var selectedState:FrameLabel = (this.displayObject as MovieClip).currentLabels[int(Math.random() *
+															(this.displayObject as MovieClip).currentLabels.length)];
+ 				this.state = selectedState.name;
+			}
 		}
 	}
 }

@@ -210,6 +210,9 @@
 		</component>
 		<component name="LeadRender" type="com.somewater.rabbit.components.LeadRendererComponent">
 		</component>
+		<component name="Render">
+			<slugs>rabbit.KennelActor</slugs>
+		</component>
 	</template>
 
 	<!-- SPECIAL TUTORIAL WEAK DOG -->

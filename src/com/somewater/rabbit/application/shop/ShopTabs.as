@@ -93,6 +93,7 @@ class Tab extends Sprite implements IClear
 
 		background = Lib.createMC(backTypeSelected ? 'interface.ShopTabElement_orange' : 'interface.ShopTabElement_green');
 		HitArea = background.getChildByName('HitArea') as Sprite;
+		HitArea.scaleY = 1.5;
 		selectBack = background.getChildByName('select');
 		textField = new EmbededTextField(Config.FONT_SECONDARY, 0x124D18, 12, true, false, false, false, 'center');
 		textField.width = ShopTabs.TAB_WIDTH;

@@ -15,9 +15,11 @@ package com.somewater.rabbit.loader
 	import com.somewater.storage.LocalDb;
 	
 	import flash.display.DisplayObject;
+	import flash.display.Graphics;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
 	import flash.display.MovieClip;
+	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
@@ -26,6 +28,7 @@ package com.somewater.rabbit.loader
 	import flash.events.ProgressEvent;
 	import flash.net.URLRequest;
 	import flash.system.ApplicationDomain;
+	import flash.system.Capabilities;
 	import flash.system.LoaderContext;
 	import flash.system.Security;
 	import flash.system.SecurityDomain;
@@ -195,9 +198,39 @@ package com.somewater.rabbit.loader
 				_basePath = loaderInfo.url.substr(0, loaderInfo.url.lastIndexOf("/") + 1);
 			
 			removeEventListener(e.type, onAddedToStage);
-			
-			stage.align = StageAlign.TOP_LEFT;
-			stage.scaleMode = StageScaleMode.NO_SCALE;
+
+			if(CONFIG::air)
+			{
+				stage.align = StageAlign.TOP_LEFT;
+				stage.scaleMode = StageScaleMode.NO_SCALE;
+
+				var sw:int = Capabilities.screenResolutionX//stage.stageWidth
+				var sh:int = Capabilities.screenResolutionY//stage.stageHeight
+
+				var x:int = this.x = int((sw - Config.WIDTH) * 0.5);
+				var y:int = this.y = int((sh - Config.HEIGHT) * 0.5);
+				// также создаем экран, чтобы не видеть что делается вне прямоугольника игры
+				if(x > 0 || y > 0)
+				{
+					var g:Graphics = (stage.addChild(new Sprite()) as Sprite).graphics;
+					g.beginFill(0);
+					if(x > 0)
+					{
+						g.drawRect(0, y, x, Config.HEIGHT);
+						g.drawRect(x + Config.WIDTH, y, x, Config.HEIGHT);
+					}
+					if(y > 0)
+					{
+						g.drawRect(0, 0, x * 2 + Config.WIDTH, y);
+						g.drawRect(0, y + Config.HEIGHT, x * 2 + Config.WIDTH, y);
+					}
+				}
+			}
+			else
+			{
+				stage.align = StageAlign.TOP_LEFT;
+				stage.scaleMode = StageScaleMode.NO_SCALE;
+			}
 			stage.showDefaultContextMenu = false;
 			
 			CONFIG::debug

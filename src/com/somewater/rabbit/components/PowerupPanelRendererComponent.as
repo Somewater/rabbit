@@ -55,7 +55,7 @@ package com.somewater.rabbit.components
 		protected function createDisplayObject():void
 		{
 			var mainRender:ProxyIsoRenderer = owner.lookupComponentByName('Render') as ProxyIsoRenderer;
-			if(mainRender._clip == null)
+			if(mainRender.holder == null)
 			{
 				think(refresh, Config.FRAME_RATE);
 				return;//  пока что не можем создать

@@ -170,13 +170,43 @@ package com.somewater.rabbit.xml {
 		return descriptionByName;
 	}
 
+	public function getLevelSlugs(level:LevelDef):Object
+	{
+		var slugs:Object = {};
+		map(level, function(template:XML, objectReference:XML):Boolean{
+			iterateComponents(template, function(component:XML):Boolean{
+				if(String(component.@name) == "Render")
+				{
+					slugs[String(component.slug)] = null
+					var slugsStr:String = String(component.slugs)
+					if(slugsStr && slugsStr.length)
+					{
+						for each(var s:String in slugsStr.split(','))
+							slugs[s] = null;
+					}
+					return true
+				}
+				return false;
+			})
+			return false;// на самоом деле нам нужен просто итератор а не map. Не заставляем делать модели EntityDef
+		});
+		return slugs;
+	}
+
 	/**
 	 * Создает полное описание темплейтов и следующие дополнительные атрибуты:
 	 * @templates = "RabbitBase,Animal,Iso" все темплейты, использованные в построении данного (заканчивая базовым)
 	 */
 	private function createDescription():void
 	{
-		var xml:XML = Config.loader.getXML("Description");
+		description = [];
+		descriptionByName = new Dictionary();
+		createDescriptionXml(Config.loader.getXML("Description"));
+		createDescriptionXml(Config.loader.getXML("Rewards"));
+	}
+
+	private function createDescriptionXml(xml:XML):void
+	{
 		var xmlArray:Array = [];
 		var allDescription:Array = [];
 		var child:XML;
@@ -194,9 +224,6 @@ package com.somewater.rabbit.xml {
 			allDescription[name].@name = name;
 			//trace("TEMPLATE " + name + ":\n" + description[name] + "\n\n");
 		}
-
-		description = [];
-		descriptionByName = new Dictionary();
 
 		for (name in allDescription) {
 			var template:XML = allDescription[name];

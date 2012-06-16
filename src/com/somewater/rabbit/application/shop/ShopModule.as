@@ -139,7 +139,7 @@ package com.somewater.rabbit.application.shop {
 
 			if(shopTabs.selectedTab != POWERUPS_TAB) {
 				customizePreviewPanel.visible = true;
-				customizePreviewPanel.show([]);// только согласно покупкам юзера
+				customizePreviewPanel.show([]);
 			} else {
 				customizePreviewPanel.visible = false;
 			}
@@ -165,6 +165,9 @@ package com.somewater.rabbit.application.shop {
 			}
 
 			lastSelectedTab = shopTabs.selectedTab
+
+			if(shopTabs.selectedTab != POWERUPS_TAB)
+				customizePreviewPanel.show(basket.items);
 		}
 
 		public function clear():void {

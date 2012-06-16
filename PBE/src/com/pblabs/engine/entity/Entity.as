@@ -27,9 +27,13 @@ package com.pblabs.engine.entity
      */
     public class Entity extends PBObject implements IEntity
     {
+		private static var uidCounter:int = 0;
+		public var uid:int;
+
 		public function Entity()
 		{
 			_hash = PBE.templateManager.getIndividualHash();
+			uid = ++uidCounter;
 		}
 
         public function get deferring():Boolean

@@ -14,6 +14,8 @@ package com.somewater.rabbit.decor {
 	import com.somewater.rabbit.managers.InitializeManager;
 	import com.somewater.rabbit.storage.Config;
 
+	import flash.display.DisplayObject;
+
 	import flash.display.Graphics;
 
 	import flash.display.Shape;
@@ -42,6 +44,12 @@ package com.somewater.rabbit.decor {
 		private var mouseTile:Point = new Point(int.MIN_VALUE, int.MIN_VALUE);
 		private var destinationTileVisible:Boolean = false;
 		private var destinationTile:Point = new Point(int.MIN_VALUE, int.MIN_VALUE);
+
+		/**
+		 * Смещение игрового модуля относительно стейджа
+		 * (обычно [0,0], но для android это не так)
+		 */
+		private var gameOffset:Point;
 
 		public function BackgroundRenderer() {
 			super();
@@ -73,6 +81,8 @@ package com.somewater.rabbit.decor {
 			InitializeManager.bindRestartLevel(onLevelRestart);
 			onMouseInputChanged();
 			registerForUpdates = true;
+
+			gameOffset = new Point((Config.loader as DisplayObject).x, (Config.loader as DisplayObject).y);
 		}
 
 		private function onLevelRestart():void {
@@ -115,8 +125,8 @@ package com.somewater.rabbit.decor {
 				return;
 
 			var tempPoint:Point = this.tempPoint;
-			tempPoint.x = PBE.mainStage.mouseX - PBE.scene.position.x;
-			tempPoint.y = PBE.mainStage.mouseY - PBE.scene.position.y;
+			tempPoint.x = PBE.mainStage.mouseX - gameOffset.x - PBE.scene.position.x;
+			tempPoint.y = PBE.mainStage.mouseY - gameOffset.y - PBE.scene.position.y;
 			IsoRenderer.screenToIso(tempPoint);
 			tempPoint.x = int(tempPoint.x);
 			tempPoint.y = int(tempPoint.y);

@@ -161,8 +161,8 @@ package com.pblabs.engine
             // Set the stage alignment and scalemode
             // We do this to be consistent between CS4/Flex apps, if you want stage alignment
             // and scale mode to be different just set these values after you call PBE.startup.
-            mainClass.stage.align = StageAlign.TOP_LEFT;
-            mainClass.stage.scaleMode = StageScaleMode.NO_SCALE;
+            //mainClass.stage.align = StageAlign.TOP_LEFT;
+            //mainClass.stage.scaleMode = StageScaleMode.NO_SCALE;
             
             // Welcome message.
             Logger.print(PBE, _versionDetails.toString());
