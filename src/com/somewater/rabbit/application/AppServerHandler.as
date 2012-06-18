@@ -329,7 +329,8 @@ package com.somewater.rabbit.application {
 			for each(id in toJsonSafety(json['customize']))
 			{
 				var customize:CustomizeDef = ItemDef.byId(parseInt(id)) as CustomizeDef;
-				gameUser.setCustomize(customize);
+				if(customize)
+					gameUser.setCustomize(customize);
 			}
 
 			if(json['roll'])

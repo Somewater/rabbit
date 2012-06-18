@@ -54,5 +54,9 @@ package com.somewater.rabbit
 		function usePowerup(templateName:String):void
 
 		function createFriendVisitReward():void
+
+		function startPrepareBlitting():void
+
+		function stopPrepareBlitting():void
 	}
 }

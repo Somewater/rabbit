@@ -1,4 +1,5 @@
 package com.somewater.display.blitting {
+	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 
@@ -27,7 +28,7 @@ package com.somewater.display.blitting {
 		private var prepareSlugsQueueOriginalLength:int;
 		private var processors:Array = [];
 
-		private var deferredProcessorsBySlug:Array = [];
+		protected var deferredProcessorsBySlug:Array = [];
 
 		public function BlitManager() {
 		}
@@ -43,7 +44,7 @@ package com.somewater.display.blitting {
 				for(slug in movieBySlug)
 					if(!processedIndexBySlug[slug])
 					{
-						var dc:DeferredBlitProcessor = new DeferredBlitProcessor(slug, movieBySlug[slug], cacheBy, lengthBy);
+						var dc:DeferredBlitProcessor = createProcessor(slug, movieBySlug[slug]) as DeferredBlitProcessor;
 						processedIndexBySlug[slug] = 'deferred';
 						deferredProcessorsBySlug[slug] = dc;
 					}
@@ -64,6 +65,11 @@ package com.somewater.display.blitting {
 				for (var i:int = 0; i < prepareSlugsQueueOriginalLength; i++)
 					processNextMovieBySlug();
 			}
+		}
+
+		protected function createProcessor(slug:String, movie:MovieClip):BlitProcessorBase
+		{
+			return new DeferredBlitProcessor(slug, movie, cacheBy, lengthBy);
 		}
 
 		public function get progress():Number
@@ -138,162 +144,11 @@ package com.somewater.display.blitting {
 	}
 }
 
-import com.somewater.display.blitting.BlitData;
+import com.somewater.display.blitting.BlitProcessorBase;
 import com.somewater.display.blitting.MovieState;
 
-import flash.display.BitmapData;
-
-import flash.display.DisplayObject;
-import flash.display.FrameLabel;
 import flash.display.MovieClip;
 import flash.events.Event;
-import flash.geom.Matrix;
-import flash.geom.Rectangle;
-
-class BlitProcessorBase
-{
-	public var slug:String;
-	public var movie:MovieClip;
-	public var statesByName:Array;// hash of MovieState
-	public var states:Array;
-
-	protected var movieByStateDirection:MovieClip;
-	protected var inProcessFlag:Boolean = true;
-	protected var currentMovieState:String = null;
-	protected var currentMovieDirection:int = -1;
-	protected var currentMovieFrame:int = -1;
-
-	public function BlitProcessorBase(slug:String, movie:MovieClip)
-	{
-		this.slug = slug;
-		this.movie = movie;
-		movie.play();
-
-		// вычисляем и запоминаем структуру мувика
-		statesByName = [];
-		states = [];
-		var s:MovieState;
-		for each(var l:FrameLabel in movie.currentLabels)
-		{
-			s = new MovieState();
-			s.name = l.name;
-			s.startFrame = l.frame;
-			states.push(s);
-			statesByName[s.name] = s;
-		}
-
-		states.sortOn('startFrame', Array.NUMERIC);
-
-		for (var i:int = 0; i < states.length; i++) {
-			s = states[i];
-			if(i != states.length - 1)
-				s.endFrame = MovieState(states[i + 1]).startFrame - 1;
-			else
-				s.endFrame = movie.totalFrames;
-
-			var directions:int = s.startFrame - s.endFrame + 1;
-			s.directionLength = []
-			for (var j:int = 0; j < directions; j++)
-				s.directionLength[j] = 0;
-		}
-	}
-
-	protected function processCurrentMovie():BlitData
-	{
-		var bd:BlitData = new BlitData();
-		var dor:DisplayObject = movieByStateDirection;
-		var rotated:Boolean = dor.transform.matrix.a == -1;
-		var bounds:Rectangle = dor.getBounds(dor);
-		var bmp:BitmapData = new BitmapData(Math.ceil(bounds.width), Math.ceil(bounds.height), true, 0);
-		//var m:Matrix = new Matrix(1, 0, 0, 1, -bounds.x, -bounds.y);
-		var m:Matrix = new Matrix(rotated?-1:1, 0, 0, 1, (rotated?bounds.x + bounds.width:-bounds.x), -bounds.y);
-		bmp.draw(dor, m);
-		bd.bmp = bmp;
-		bd.offsetX = -m.tx + dor.x;
-		bd.offsetY = -m.ty + dor.y;
-		bd.hash = currentMovieState + ':' + currentMovieDirection + ':' + currentMovieFrame;
-		return bd;
-	}
-
-	/**
-	 * Обеспечивает возможность не делать кадры direction для персонажей, которые их не имеют
-	 * а вместо них помещать само изображение персонажа в нужном стейте
-	 */
-	protected function usePseudoMc(child:DisplayObject):MovieClip
-	{
-		var mc:MovieClip =  child as MovieClip;
-		if(mc)
-			return mc;
-		mc = new MovieClip();
-		child.parent.addChildAt(mc, child.parent.getChildIndex(child));
-		mc.addChild(child);
-		return mc;
-	}
-
-	public function clear():void
-	{
-		stopMovie(movie)
-		movie = null;
-		stopMovie(movieByStateDirection);
-		movieByStateDirection = null;
-	}
-
-	private function stopMovie(mc:MovieClip):void
-	{
-		mc.stop();
-		var l:int = mc.numChildren;
-		for (var i:int = 0; i < l; i++) {
-			var ch:MovieClip = mc.getChildAt(i) as MovieClip;
-			if(ch != null)
-				stopMovie(ch);
-		}
-	}
-
-	protected function stateDirectionToFrame(state:String, direction:int):int
-	{
-		return MovieState(statesByName[state]).startFrame + direction;
-	}
-
-	protected function gotoStateDirection(state:String, direction:int):void {
-		currentMovieState = state;
-		currentMovieDirection = direction;
-		movie.removeEventListener("frameConstructed", onStateFrameConstructed);
-		movie.addEventListener("frameConstructed", onStateFrameConstructed);
-
-		inProcessFlag = true;
-		movie.gotoAndStop(stateDirectionToFrame(state, direction));
-	}
-
-	protected function onStateFrameConstructed(e:Event):void {
-		e.currentTarget.removeEventListener(e.type, arguments.callee);
-		//stopMovie(movie);
-		movieByStateDirection = usePseudoMc(e.currentTarget.getChildAt(0));
-		movieByStateDirection.stop();
-		currentMovieFrame = -1;// нельзя быть уверенным, на какой кадр мы перешли
-
-		var s:MovieState = statesByName[currentMovieState];
-		if(!s.directionLength[currentMovieDirection])
-			s.directionLength[currentMovieDirection] = movieByStateDirection.totalFrames;
-
-		inProcessFlag = false;
-	}
-
-	protected function gotoFrame(frame:int):void
-	{
-		currentMovieFrame = frame;
-		movieByStateDirection.removeEventListener("frameConstructed", onFrameConstructed);
-		movieByStateDirection.addEventListener("frameConstructed", onFrameConstructed);
-		inProcessFlag = true;
-		movieByStateDirection.gotoAndStop(frame);
-	}
-
-	protected function onFrameConstructed(event:Event):void {
-		event.currentTarget.removeEventListener(event.type, arguments.callee);
-		//stopMovie(movie);
-		inProcessFlag = false;
-		processCurrentMovie();
-	}
-}
 
 class BlitProcessor extends BlitProcessorBase
 {
@@ -382,130 +237,5 @@ class BlitProcessor extends BlitProcessorBase
 		prepareMovieState = null;
 		onComplete = null;
 		onError = null;
-	}
-}
-
-class DeferredBlitProcessor extends BlitProcessorBase
-{
-	/**
-	 * Запоминаем запросы к процессору, которые еще не были обработаны и поставлены в очередь
-	 */
-	private var requests:Array = [];
-
-	private var processedRequestFrame:int;
-	private var processedRequestCallback:Function;
-
-	private var cacheByRef:Array;
-	private var lengthByRef:Array;
-
-	public function DeferredBlitProcessor(slug:String, movie:MovieClip, cacheBy:Array, lengthBy:Array)
-	{
-		super(slug, movie);
-		cacheByRef = cacheBy;
-		lengthByRef = lengthBy;
-	}
-
-	/**
-	 * Асинхронно передает колбэку BlitData требуемого состояния анимации
-	 */
-	public function getBlitData(state:String, direction:int, frame:int, callback:Function):void
-	{
-		var shortHash:String = this.slug + ":" + state + ":" + direction;
-		if(lengthByRef[shortHash])
-			frame = frame % int(lengthByRef[shortHash]);
-
-		var cache:BlitData = cacheByRef[this.slug + ":" + state + ':' + direction + ':' + frame];
-		if(cache != null)
-		{
-			callback(cache);
-			if(processedRequestCallback == null && requests.length)
-				next();
-			return;
-		}
-
-		if(processedRequestCallback == null /*|| processedRequestCallback == callback*/)
-		{
-			processedRequestCallback = callback;
-
-			if(currentMovieState == state && currentMovieDirection == direction)
-			{
-				// только кадр
-				if(currentMovieFrame == frame)
-				{
-					processCurrentMovie();
-				}
-				else
-				{
-					gotoFrame(frame);
-				}
-			}
-			else
-			{
-				processedRequestFrame = frame;
-				gotoStateDirection(state, direction);
-			}
-		}
-		else
-		{
-			// сперва удаляем все вхождения с тем же колбэком
-			var i:int = 0;
-			while(i < requests.length)
-			{
-				var r:Array = requests[i];
-				if(r[3] == callback)
-					requests.splice(i, 1);
-				else
-					i++;
-			}
-			requests.push([state, direction, frame, callback]);
-		}
-	}
-
-	override protected function onStateFrameConstructed(e:Event):void {
-		e.currentTarget.removeEventListener(e.type, arguments.callee);
-		super.onStateFrameConstructed(e);
-
-		// записать в менеджер инфорацию насчет общей продолжительности анимации
-		var hash:String = slug + ":" + currentMovieState + ':' + currentMovieDirection;
-		if(!lengthByRef[hash])
-			lengthByRef[hash] = movieByStateDirection.totalFrames;
-
-		if(processedRequestFrame == currentMovieFrame)
-		{
-			processCurrentMovie();
-		}
-		else
-		{
-			gotoFrame(processedRequestFrame);
-		}
-	}
-
-	override protected function processCurrentMovie():BlitData {
-		//trace('[RENDER] (' + movie.currentFrame + '/' + movieByStateDirection.currentFrame +') state=' + currentMovieState + ' dir=' + currentMovieDirection + ' frame=' + currentMovieFrame);
-		var bd:BlitData = super.processCurrentMovie();
-
-		// добавить в кэш
-		cacheByRef[slug + ":" + currentMovieState + ':' + currentMovieDirection + ':' + currentMovieFrame] = bd;
-
-		processedRequestCallback(bd);
-		processedRequestCallback = null;
-
-		if(requests.length)
-			next();
-		return bd;
-	}
-
-	private function next():void
-	{
-		getBlitData.apply(this, requests.shift());
-	}
-
-	override public function clear():void {
-		super.clear();
-
-		cacheByRef = null;
-		lengthByRef = null;
-		processedRequestCallback = null;
-		requests = null;
 	}
 }

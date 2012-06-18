@@ -240,9 +240,16 @@ package
 			gaTracker = new GATracker(Config.loader as DisplayObject, 'UA-29834261-1', 'AS3', false);
 			while(Config.pendingStats.length)
 				stat(Config.pendingStats.shift());
+
+			CONFIG::air{
+				initializeManagersAIR();
+			}
+
 		}
 
-		
+		CONFIG::air{
+			include 'com/somewater/rabbit/include/AIRManagers.as';
+		}
 		
 		public function runInitalizeResponses():void
 		{
@@ -320,6 +327,9 @@ package
 				var cl:Class = itemClassesHash[customizeData['class']]
 				var item:ItemDef = new cl(customizeData);
 			}
+
+			Config.blitting
+				Config.callLater(Config.game.startPrepareBlitting, null, 2);
 		}
 
 		public function addLevel(level:LevelDef):void
@@ -508,32 +518,38 @@ package
 			currentPage = Config.game as DisplayObject;
 			_content.addChild(currentPage);
 			Config.gameModuleActive = true;
+			if(Config.blitting)
+				Config.game.stopPrepareBlitting();
 			gameStartedCompletely = false;
-			
-			if(!__gameAlreadyRun)
-			{
-				Config.game.run(onGameInited);
-				__gameAlreadyRun = true;
-			}
-			else
-				onGameInited();
+
+			Config.callLater(function():void{
+				if(!__gameAlreadyRun)
+				{
+					Config.game.run(onGameInited);
+					__gameAlreadyRun = true;
+				}
+				else
+					onGameInited();
+			}, null, __gameAlreadyRun || !Config.blitting ? 1 : 3);// больше времени, чтобы подготовка блиттига успела отработать
+
 			
 			function onGameInited():void
 			{
 				include 'com/somewater/rabbit/include/Sitelock.as';
-				Config.game.startLevel(level, onGameStarted);
+				Config.game.startLevel(level, function():void{
+					var guiClass:Class = LEVELS_GUI[level.type];
+					if(guiClass)
+					{
+						_gameGUI = new guiClass()
+						_content.addChild(_gameGUI);
+					}
+					Config.callLater(onGameStarted, null, 2);
+				});
 				
 			}
 			function onGameStarted():void
 			{
 				hideSplash();
-
-				var guiClass:Class = LEVELS_GUI[level.type];
-				if(guiClass)
-				{
-					_gameGUI = new guiClass()
-					_content.addChild(_gameGUI);
-				}
 
 				if(level.type == LevelDef.TYPE)
 				{

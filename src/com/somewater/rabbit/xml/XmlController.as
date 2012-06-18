@@ -193,6 +193,22 @@ package com.somewater.rabbit.xml {
 		return slugs;
 	}
 
+	public function getSlugByTemplateName(name:String):String
+	{
+		var slug:String = null;
+		var template:XML = getDescriptionByName()[name];
+		if(template)
+			iterateComponents(template, function(component:XML):Boolean{
+				if(String(component.@name) == "Render")
+				{
+					slug = String(component.slug);
+					return true;
+				}
+				return false;
+			})
+		return slug;
+	}
+
 	/**
 	 * Создает полное описание темплейтов и следующие дополнительные атрибуты:
 	 * @templates = "RabbitBase,Animal,Iso" все темплейты, использованные в построении данного (заканчивая базовым)

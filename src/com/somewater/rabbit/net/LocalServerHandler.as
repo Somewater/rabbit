@@ -23,7 +23,8 @@ package com.somewater.rabbit.net {
 		private var config:Object;
 
 		private const METHOD_TO_HANDLER:Object = {
-				'init':initHandler
+				'stat':stat
+				,'init':initHandler
 				,'levels/complete':levelComplete
 				,'rewards/move':moveReward
 				,'tutorial/inc':incrementTutorial
@@ -31,6 +32,7 @@ package com.somewater.rabbit.net {
 				,'money/buy':buyMoney
 				,'items/purchase':purchaseItems
 				,'items/use':useItem
+				,'customize/purchase':purchaseCustomizeItems
 			};
 
 		public function LocalServerHandler(config:Object) {
@@ -162,6 +164,17 @@ package com.somewater.rabbit.net {
 			user.save();
 		}
 
+		private function getCustomizeItems():Object
+		{
+			return user.get('customize');
+		}
+
+		private function setCustomizeItems(items:Object):void
+		{
+			user.set('customize', items);
+			user.save();
+		}
+
 		//////////////////////////////////////////////////////////
 		//                                  		            //
 		//				METHODS IMPLEMENTATION					//
@@ -280,6 +293,30 @@ package com.somewater.rabbit.net {
 			items[data['item_id']] = quantity;
 			setUserItems(items);
 			return {success: true, quantity: quantity};
+		}
+
+		protected function stat(data:Object):Object{
+			return {success: true}
+		}
+
+		protected function purchaseCustomizeItems(data:Object):Object
+		{
+			var items:Object = {};
+			var el:String;
+			for each(el in (data['purchase'] as String).split(','))
+			{
+				var pair:Array = el.split(':');
+				items[pair[0]] = int(pair[1]);
+			}
+			var userMoney:int = int(user.get('money')) - int(data['prise']);
+			if(userMoney < 0)
+				return {error:'E_NO_MONEY'}
+			user.set('money', userMoney);
+			var userCustomize:Object = getCustomizeItems();
+			for(el in items)
+				userCustomize[el] = items[el];
+			setCustomizeItems(userCustomize);
+			return {success: 1, user:userToJson()};
 		}
 	}
 }

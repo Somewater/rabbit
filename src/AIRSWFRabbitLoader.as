@@ -6,8 +6,13 @@ package {
 	import com.somewater.rabbit.storage.Config;
 
 	import flash.display.DisplayObject;
+	import flash.display.Graphics;
+	import flash.display.Sprite;
+	import flash.display.StageAlign;
+	import flash.display.StageScaleMode;
 
 	import flash.events.Event;
+	import flash.system.Capabilities;
 	import flash.utils.getDefinitionByName;
 
 	[Frame(factoryClass="com.somewater.rabbit.loader.EnPreloader")]
@@ -23,6 +28,36 @@ package {
 			Config.memory['portfolioMode'] = true;
 		}
 
+
+		override protected function configurateStage():void {
+			stage.align = StageAlign.TOP_LEFT;
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+
+			var sw:int = stage.stageWidth
+			var sh:int = stage.stageHeight
+
+			Config.WIDTH = Math.min(12,int(sw / Config.TILE_WIDTH)) * Config.TILE_WIDTH;
+			Config.HEIGHT = Math.min(14,int(sh / Config.TILE_HEIGHT)) * Config.TILE_HEIGHT;
+
+			var x:int = this.x = int((sw - Config.WIDTH) * 0.5);
+			var y:int = this.y = int((sh - Config.HEIGHT) * 0.5);
+			// также создаем экран, чтобы не видеть что делается вне прямоугольника игры
+			if(x > 0 || y > 0)
+			{
+				var g:Graphics = (stage.addChild(new Sprite()) as Sprite).graphics;
+				g.beginFill(0);
+				if(x > 0)
+				{
+					g.drawRect(0, y, x, Config.HEIGHT);
+					g.drawRect(x + Config.WIDTH, y, x, Config.HEIGHT);
+				}
+				if(y > 0)
+				{
+					g.drawRect(0, 0, x * 2 + Config.WIDTH, y);
+					g.drawRect(0, y + Config.HEIGHT, x * 2 + Config.WIDTH, y);
+				}
+			}
+		}
 
 		override protected function createSpecificPaths():void {
 			super.createSpecificPaths();

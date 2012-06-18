@@ -9,6 +9,7 @@ package
 	import com.pblabs.rendering2D.SceneAlignment;
 	import com.pblabs.rendering2D.SimpleSpatialComponent;
 	import com.somewater.display.blitting.BlitManager;
+	import com.somewater.display.blitting.PreparativeBlitManager;
 	import com.somewater.rabbit.IRabbitGame;
 	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.application.commands.RestartLevelCommand;
@@ -90,7 +91,7 @@ package
 			PROGRESS_RATIO = Config.blitting ? 0.2 : 0.5;
 			
 			graphics.beginFill(0x85B53D);
-			graphics.drawRect(0,0,810,650);
+			graphics.drawRect(0,0,Config.WIDTH,Config.HEIGHT);
 
 			try{
 			Security.allowDomain("*");
@@ -156,7 +157,7 @@ package
 		
 		private function loadAssets():void
 		{
-			Config.application.showSlash(0);
+			//Config.application.showSlash(0);
 
 			var swfs:Array = [];
 			swfs = swfs.concat(_level.additionSwfs);
@@ -169,7 +170,7 @@ package
 				Config.application.fatalError(Lang.t("ERROR_LOADING_ASSETS"));
 			}, function(value:Number):void{
 				// progress
-				Config.application.showSlash(value * PROGRESS_RATIO);
+				//Config.application.showSlash(value * PROGRESS_RATIO);
 			});
 		}
 		
@@ -249,10 +250,9 @@ package
 				blitProgressUpdater.start();
 
 				BlitManager.instance.prepare(uniqMovieBySlug, true)
-				recreateLevel();
-			}else{
-				recreateLevel();
 			}
+
+			recreateLevel();
 		}
 
 		private function clearBlitUpdater():void
@@ -415,6 +415,26 @@ package
 			entity.owningGroup = PBE.lookup(InitializeManager.lastLevelGroup) as PBGroup;
 			entity.setProperty(new PropertyReference('@Spatial.position'), new Point(x,  y))
 			return entity;
+		}
+
+		public function startPrepareBlitting():void
+		{
+			var movies:Array = [];
+			var mainCharacters:Array = ['Hero', 'Hedgehog', 'Dog', 'Bush', 'Carrot', 'Crow'];
+			var slug:String;
+			for each(var character:String in mainCharacters)
+			{
+				slug = XmlController.instance.getSlugByTemplateName(character);
+				movies.push({slug: slug, movie:Lib.createMC(slug)});
+			}
+			if(BlitManager.instance == null)
+				BlitManager.instance = new PreparativeBlitManager();
+			(BlitManager.instance as PreparativeBlitManager).startPrepare(movies);
+		}
+
+		public function stopPrepareBlitting():void
+		{
+			(BlitManager.instance as PreparativeBlitManager).onStop();
 		}
 	}
 }

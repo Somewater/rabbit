@@ -4,6 +4,7 @@
 	<name>Hopper2</name>
     <versionNumber>0.1</versionNumber>
     <filename>Hopper2</filename>
+	<supportedProfiles>mobileDevice</supportedProfiles>
     <initialWindow>
         <content>AIRSWFRabbitLoader.swf</content>
         <visible>true</visible> 
