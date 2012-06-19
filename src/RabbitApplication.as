@@ -191,7 +191,7 @@ package
 			var splashBar_x_diff:Number = (Config.WIDTH - splashBar.width) * 0.5 - splashBar.x;
 			splashBar.x += splashBar_x_diff;
 			splashIcon.x += splashBar_x_diff + 60;
-			splashIcon.y = (Config.HEIGHT - splashIcon.height) * 0.5 - 50;
+			splashIcon.y = (Config.HEIGHT - splashIcon.height) * 0.5 - 40;
 			splashBar.y = splashIcon.y + splashIcon.height + 40;
 			var blurScreen:Sprite = new Sprite();
 			blurScreen.graphics.beginFill(0, 0.09);

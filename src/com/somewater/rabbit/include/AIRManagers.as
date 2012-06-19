@@ -11,20 +11,23 @@ private function initializeManagersAIR():void
 function fl_OptionsMenuHandler(e:KeyboardEvent):void {
 	if(e.keyCode == 0x01000016)//Keyboard.BACK)
 	{
-//		if(Config.gameModuleActive)
-//		{
-//			Config.game.finishLevel(LevelInstanceDef.DUMMY_FATAL_LEVEL);
-//			Config.application.startPage("main_menu");
-//			e.preventDefault();
-//			e.stopImmediatePropagation();
-//		}
-//		else if(!((Config.application as RabbitApplication).currentPage is MainMenuPage))
-//		{
-//			Config.application.startPage("main_menu");
-//			e.preventDefault();
-//			e.stopImmediatePropagation();
-//		}
-//		else
+		if(Config.gameModuleActive)
+		{
+			Config.game.pause();
+			Config.callLater(function():void{
+				Config.game.finishLevel(LevelInstanceDef.DUMMY_FATAL_LEVEL);
+				Config.application.startPage("main_menu");
+			});
+			e.preventDefault();
+			e.stopImmediatePropagation();
+		}
+		else if(!((Config.application as RabbitApplication).currentPage is MainMenuPage))
+		{
+			Config.application.startPage("main_menu");
+			e.preventDefault();
+			e.stopImmediatePropagation();
+		}
+		else
 			NativeApplication.nativeApplication.exit(0);
 	}
 }

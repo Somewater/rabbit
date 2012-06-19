@@ -12,7 +12,6 @@ package com.somewater.display.blitting {
 
 		private var preparationActive:Boolean = false;
 		private var prepareSlugs:Array;
-		private var t:uint;
 
 		public function PreparativeBlitManager() {
 		}
@@ -34,8 +33,6 @@ package com.somewater.display.blitting {
 			prepare(movieBySlug, true);
 
 			prepareNextSlug();
-
-			t = getTimer();
 		}
 
 		override protected function createProcessor(slug:String, movie:MovieClip):BlitProcessorBase {

@@ -33,7 +33,7 @@ package com.somewater.controller
 			instance.popUpGround = popUpGround;
 			instance.splash = splash;
 			var logoBounds:Rectangle = splash.getChildByName("logo").getBounds(splash.getChildByName("logo"));
-			instance.splashLogoInitialPosY = (Config.WIDTH - logoBounds.height) * 0.5 - logoBounds.y - 100;
+			instance.splashLogoInitialPosY =  splash.getChildByName("logo").y;
 			
 			hideSplash();
 			
