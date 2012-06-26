@@ -198,7 +198,7 @@ package com.somewater.rabbit.debug {
 				onGamePause();
 
 			// вешаем кое-какие хоткеи
-			Config.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown)
+			//Config.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown)
 		}
 
 		private function onKeyDown(event:KeyboardEvent):void {
@@ -214,7 +214,7 @@ package com.somewater.rabbit.debug {
 		/**
 		 * Начать тикать всё, что нуждается в тиканье, даже если игра на паузе
 		 */
-		private function onGamePause():void
+		public function onGamePause():void
 		{
 			if(!Config.stage.hasEventListener(Event.ENTER_FRAME))
 				Config.stage.addEventListener(Event.ENTER_FRAME, onTickDuringPause);
@@ -247,7 +247,10 @@ package com.somewater.rabbit.debug {
 				{
 					var components:Array = entity.lookupComponentsByType(DisplayObjectRenderer);
 					for each(var renderer:DisplayObjectRenderer in components)
+					{
 						renderer.onFrame(deltaTime);
+						renderer.displayObject.visible = true;
+					}
 				}
 				else
 					forDelete.push(entity);

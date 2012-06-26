@@ -76,7 +76,7 @@
 			
 			private function onSlideButtonCLick():void
 			{
-				slidePanelHidden = !slidePanelHidden;
+				Config.editorActive = !(slidePanelHidden = !slidePanelHidden);
 				if(slidePanelHidden)
 				{
 					controlPanel.x = 0;

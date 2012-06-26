@@ -14,6 +14,7 @@ package com.somewater.rabbit.xml {
 
 	private var description:Array;
 	private var descriptionByName:Dictionary;
+	private var descriptionForEditor:Dictionary;
 	private var calculateRewardSizeCache:Array = [];
 
 	public static function get instance():XmlController
@@ -170,6 +171,12 @@ package com.somewater.rabbit.xml {
 		return descriptionByName;
 	}
 
+	public function getDescriptionByEditor():Dictionary {
+		if(!descriptionForEditor)
+			createDescription();
+		return descriptionForEditor;
+	}
+
 	public function getLevelSlugs(level:LevelDef):Object
 	{
 		var slugs:Object = {};
@@ -217,11 +224,12 @@ package com.somewater.rabbit.xml {
 	{
 		description = [];
 		descriptionByName = new Dictionary();
-		createDescriptionXml(Config.loader.getXML("Description"));
-		createDescriptionXml(Config.loader.getXML("Rewards"));
+		descriptionForEditor = new Dictionary();
+		createDescriptionXml(Config.loader.getXML("Description"), true);
+		createDescriptionXml(Config.loader.getXML("Rewards"), false);
 	}
 
-	private function createDescriptionXml(xml:XML):void
+	private function createDescriptionXml(xml:XML, forEditor:Boolean):void
 	{
 		var xmlArray:Array = [];
 		var allDescription:Array = [];
@@ -247,6 +255,8 @@ package com.somewater.rabbit.xml {
 			if(name.length > 8 && name.substr(name.length - 8).toLowerCase() == 'template') continue;
 			description.push(template);
 			descriptionByName[name] = template;
+			if(forEditor)
+				descriptionForEditor[name] = template;
 		}
 	}
 

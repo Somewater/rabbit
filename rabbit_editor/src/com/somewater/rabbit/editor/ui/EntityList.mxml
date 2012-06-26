@@ -20,7 +20,7 @@
 		private function init():void {
 			level = data as LevelDef;
 			var group:XML = level.group;
-			var descriptionByName:Dictionary = XmlController.instance.getDescriptionByName();
+			var descriptionByName:Dictionary = XmlController.instance.getDescriptionByEditor();
 			for each(var objectReference:XML in group.*) {
 				var template:XML = descriptionByName[String(objectReference.@name)];
 				var icon:EntityInstanceIcon = new EntityInstanceIcon();

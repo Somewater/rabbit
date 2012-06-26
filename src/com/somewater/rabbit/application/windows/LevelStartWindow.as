@@ -1,6 +1,7 @@
 package com.somewater.rabbit.application.windows {
 import com.somewater.controller.PopUpManager;
 import com.somewater.rabbit.application.GameGUI;
+	import com.somewater.rabbit.debug.EditorModule;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.Lib;
@@ -50,7 +51,7 @@ import com.somewater.rabbit.application.GameGUI;
 			{
 				// если это окно стартовало, значит надо запаузить игру.
 				// Однако, даем игре тикнуть 2 раза, чтобы инициализовались все менеджеры
-				Config.callLater(setPause, null, 1);
+				setPause();
 			}
 
 			startStat['last_level'] = level.number;
@@ -146,7 +147,15 @@ import com.somewater.rabbit.application.GameGUI;
 
 
 		override protected function onWindowClosed(e:Event = null):void {
-			Config.game.start();
+			if(!Config.editorActive)
+				Config.game.start();
+			else
+			{
+				CONFIG::debug
+				{
+					EditorModule.instance.onGamePause();
+				}
+			}
 		}
 	}
 }

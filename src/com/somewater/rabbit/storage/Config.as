@@ -41,6 +41,7 @@ package com.somewater.rabbit.storage
 		 * (если игра на паузе, все равно true)
 		 */
 		public static var gameModuleActive:Boolean = false;
+		public static var editorActive:Boolean = false;
 
 		/**
 		 * Производить блиттинг

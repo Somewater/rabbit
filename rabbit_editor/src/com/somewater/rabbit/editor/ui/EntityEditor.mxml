@@ -20,7 +20,6 @@
 		import mx.controls.Alert;
 
 		private var level:LevelDef
-		private var description:Array;
 		private var editorModuleChangeListener:Boolean = false;
 		private var selectedTemplate:XML;
 		private var escLIstener:Boolean = false;
@@ -28,7 +27,7 @@
 
 		private function init():void {
 			level = data as LevelDef;
-			description = XmlController.instance.getDescription();
+			var description:Dictionary = XmlController.instance.getDescriptionByEditor();
 			var descriptionKeys:Array = [];
 			var key:String;
 			for (key in description)
