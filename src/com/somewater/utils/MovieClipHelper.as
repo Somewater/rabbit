@@ -7,7 +7,6 @@
  */
 package com.somewater.utils {
 	import flash.display.MovieClip;
-	import flash.geom.Rectangle;
 
 	public class MovieClipHelper {
 		public function MovieClipHelper() {

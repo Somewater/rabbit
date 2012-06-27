@@ -7,9 +7,7 @@
 	<mx:Script>
 		<![CDATA[
 		import com.pblabs.engine.entity.IEntity;
-		import com.pblabs.engine.entity.PropertyReference;
 		import com.somewater.rabbit.editor.events.EntitySelectedEvent;
-		import com.somewater.rabbit.iso.IsoSpatial;
 		import com.somewater.rabbit.xml.XmlController;
 		import com.somewater.rabbit.events.EditorEvent;
 		import com.somewater.rabbit.storage.Config;
@@ -104,8 +102,9 @@
 			var entity:IEntity = event.data as IEntity;
 			// <objectReference name="Crow" x="8" y="8"/>
 			var child:XML = <objectReference/>
-			child.@x = entity.getProperty(new PropertyReference("@Spatial.tile.x"));
-			child.@y = entity.getProperty(new PropertyReference("@Spatial.tile.y"))
+			var p:Point = Config.game.entityToTile(entity);
+			child.@x = p.x;
+			child.@y = p.y;
 			child.@name = selectedTemplate.@name;
 			child.@hash = entity.hash;
 			var group:XML = ControlPanel.instance.level.group;
@@ -136,7 +135,7 @@
 			var group:XML = ControlPanel.instance.level.group;
 			try
 			{
-				var spatialPos:Point = (entity.lookupComponentByName("Spatial") as IsoSpatial).tile;
+				var spatialPos:Point = Config.game.entityToTile(entity);
 				var ref:XML = XML(group.descendants("objectReference").(@hash == entity.hash)[0]);
 				ref.@x = spatialPos.x;
 				ref.@y = spatialPos.y;

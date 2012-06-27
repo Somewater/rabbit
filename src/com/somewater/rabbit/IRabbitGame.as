@@ -5,6 +5,7 @@ package com.somewater.rabbit
 	import com.somewater.rabbit.storage.LevelInstanceDef;
 	
 	import flash.events.IEventDispatcher;
+	import flash.geom.Point;
 
 	/**
 	 * Его реализует игровой модуль игры, предоставляя api
@@ -58,5 +59,7 @@ package com.somewater.rabbit
 		function startPrepareBlitting():void
 
 		function stopPrepareBlitting():void
+
+		function entityToTile(entity:*):Point;
 	}
 }

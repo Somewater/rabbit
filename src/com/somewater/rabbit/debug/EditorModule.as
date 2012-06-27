@@ -5,6 +5,7 @@ package com.somewater.rabbit.debug {
 	import com.pblabs.engine.entity.IEntity;
 	import com.pblabs.engine.entity.PropertyReference;
 	import com.pblabs.rendering2D.DisplayObjectRenderer;
+	import com.somewater.display.blitting.BlitManager;
 	import com.somewater.rabbit.events.EditorEvent;
 	import com.somewater.rabbit.iso.IsoCameraController;
 	import com.somewater.rabbit.iso.IsoRenderer;
@@ -12,6 +13,7 @@ package com.somewater.rabbit.debug {
 	import com.somewater.rabbit.iso.scene.IsoSpatialManager;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Lib;
+	import com.somewater.rabbit.xml.XmlController;
 	import com.somewater.utils.MovieClipHelper;
 
 	import flash.display.Bitmap;
@@ -199,6 +201,16 @@ package com.somewater.rabbit.debug {
 
 			// вешаем кое-какие хоткеи
 			//Config.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown)
+
+			var descriptionByName:Dictionary = XmlController.instance.getDescriptionByEditor();
+			var clips:Array = [];
+			for each(var template:XML in descriptionByName) {
+				var slug:String = template..slug;
+				if(slug && slug.length)
+					clips[slug] = Lib.createMC(slug);
+			}
+
+			BlitManager.instance.prepare(clips);
 		}
 
 		private function onKeyDown(event:KeyboardEvent):void {

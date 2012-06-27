@@ -42,6 +42,7 @@ package com.somewater.rabbit.storage
 		 */
 		public static var gameModuleActive:Boolean = false;
 		public static var editorActive:Boolean = false;
+		public static var editorOver:Boolean = false;
 
 		/**
 		 * Производить блиттинг

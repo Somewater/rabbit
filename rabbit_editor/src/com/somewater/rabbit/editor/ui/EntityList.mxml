@@ -6,9 +6,7 @@
 		creationComplete="init();" implements="com.somewater.control.IClear">
 	<mx:Script>
 		<![CDATA[
-		import com.pblabs.engine.entity.IEntity;
 		import com.somewater.rabbit.editor.events.EntitySelectedEvent;
-		import com.somewater.rabbit.iso.IsoRenderer;
 		import com.somewater.rabbit.storage.Config;
 		import com.somewater.rabbit.storage.LevelDef;
 		import com.somewater.rabbit.xml.XmlController;

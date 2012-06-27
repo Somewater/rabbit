@@ -96,7 +96,7 @@ package com.somewater.rabbit.iso
 		
 		private function onMouseDown(e:MouseEvent):void
 		{
-			if(Config.gameModuleActive && (!Config.application.mouseInput || Config.editorActive))
+			if(Config.gameModuleActive && (!Config.application.mouseInput || (Config.editorActive && !Config.editorOver)))
 			{
 				PBE.inputManager.removeEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
 				PBE.inputManager.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);

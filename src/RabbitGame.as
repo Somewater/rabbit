@@ -436,5 +436,10 @@ package
 		{
 			(BlitManager.instance as PreparativeBlitManager).onStop();
 		}
+
+		public function entityToTile(entity:*):Point {
+			var e:IEntity = entity as IEntity;
+			return (e.lookupComponentByName("Spatial") as IsoSpatial).tile;
+		}
 	}
 }

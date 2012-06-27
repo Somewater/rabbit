@@ -13,8 +13,8 @@
 		verticalAlign="top"
 		horizontalAlign="left"
 
-		rollOver="alpha=1"
-		rollOut="alpha=0.4"
+		rollOver="alpha=1; Config.editorOver = true"
+		rollOut="alpha=0.4; Config.editorOver = false"
 		>
 	<mx:Script>
 		<![CDATA[
