@@ -9,6 +9,7 @@ gem 'rspec', :require => "spec"
 gem 'harleytt-ansitags', '>= 0.1.5'
 gem 'vkontakte'
 gem 'httparty'
+gem 'passenger_monit'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
