@@ -105,7 +105,6 @@ class Application
 					UpdateFriendStorageController.new(request).call
 				when 'friends/visit'
 					FriendVisitRewardController.new(request).call
-
 				when "levels.xml"
 					LevelXmlGenerator.generate(request['release'])
 					#LevelsAdminController.generate_xml_file(request['release'])
@@ -128,6 +127,8 @@ class Application
 					content = ''
 					Lang.all.each{|l| content << "#{l.key}=#{l.get(:ru)}\n#{l.key}=#{l.get(:en)}\n\n"}
 					[200,{"Content-Type" => "text/plain; charset=UTF-8"},content]
+				when /^payment\/\w+/
+					NetApi.by_net(method.match(/^payment\/(?<net>\w+)/)[:net]).payment(request)
 				else
 					Hello.new.call request
 			end

@@ -13,6 +13,10 @@ package com.somewater.arrow {
 
 	public class ArrowVkcom extends ArrowBase{
 
+		private static const ON_REQUEST_SUCCESS:String = 'onRequestSuccess';
+		private static const ON_REQUEST_ERROR:String = 'onRequestError';
+		private static const ON_ORDER_SUCCESS:String = 'onOrderSuccess';
+		private static const ON_ORDER_ERROR:String = 'onOrderError';
 		/**
 		 * Которые стоят изначально (т.е. без проставления пермишнов)
 		 */
@@ -114,32 +118,23 @@ package com.somewater.arrow {
 		}
 
 		private var paymentCallSession:uint;
-		override public function pay(quantity:Object, onSuccess:Function, onFailure:Function, params:Object = null):void {
-			var socialMoney:Number = int(quantity);
-			if(balanceLoading)
-				return;
-			else{
-				balanceLoading = true;
-				call("getUserBalance", null, function(response:ArrowEvent):void{
-					balanceLoading = false;
-					if(Number(response.response.response) * 0.01 != balance)
-						onBalanceChanged({"balance": Number(response.response.response)});
-					if(balance < socialMoney){
-						var session:uint = paymentCallSession = getTimer();
-						addEventListener(ArrowEvent.BALANCE_CHANGED, function(e:ArrowEvent):void{
-							removeEventListener(response.type, arguments.callee);
-							if(paymentCallSession == session && balance >= socialMoney)
-								onSuccess();
-						});
-						VK.callMethod("showPaymentBox",(socialMoney - balance));
-					}else{
-						onSuccess();
-					}
-				}, function(error:ArrowEvent):void{
-					balanceLoading = false;
-					onFailure();
-				});
+		override public function pay(netMoney:Object, onSuccess:Function, onFailure:Function, params:Object = null):void {
+			params ||= {};
+			var methodParams:Object = {};
+			if(params['item']) {
+				methodParams['type'] = 'item';
+				methodParams['item'] = params['item'];
+			} else {
+				methodParams['type'] = 'votes';
+				methodParams['votes'] = netMoney;
 			}
+			addEventListener(ON_ORDER_SUCCESS, function(event:Event):void {
+				onSuccess && onSuccess();
+			});
+			addEventListener(ON_ORDER_ERROR, function(event:Event):void {
+				onFailure && onFailure();
+			});
+			VK.callMethod('showOrderBox', methodParams);
 		}
 
 		override public function posting(user:SocialUser = null, title:String = null, message:String = null, image:* = null, imageUrl:String = null, data:String = null, onComplete:Function = null, onError:Function = null, additionParams:Object = null):void {

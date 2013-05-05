@@ -1,8 +1,18 @@
+# encoding: utf-8
+
 class VkApi < NetApi
 	
 	def authorized?(uid, key, params = nil)
 		Digest::MD5.hexdigest(CONFIG["vkontakte"]["app_id"].to_s + '_' + uid.to_s + '_' + CONFIG["vkontakte"]["secure_key"]) == key.to_s
 	end
+
+	# проверка авторизации обращения сервера соц. сети
+	def request_authorized?(params)
+		sig = params['sig']
+		return false unless sig
+		str = params.select{|k,v| k.to_s != 'sig' }.sort{|a,b| a.first <=> b.first }.map{|a| a.first.to_s + '=' + a.last.to_s }.join('')
+		Digest::MD5.hexdigest(str + CONFIG["vkontakte"]["secure_key"].to_s) == sig
+	end  
 
 	def self.id
 		2
@@ -41,6 +51,50 @@ class VkApi < NetApi
 			$!
 		end
 	end
+
+	def payment(request)
+		return error_response(10) unless request_authorized?(request.params)
+		if request.params['notification_type'] == 'get_item' ||
+				(!PRODUCTION && request.params['notification_type'] == 'get_item_test')
+			{:response => get_item_info(request.params['item'], request.params['lang'].to_s[0,2])}.to_json
+		elsif request.params['notification_type'] == 'order_status_change' ||
+				(!PRODUCTION && request.params['notification_type'] == 'order_status_change_test')
+			raise FormatError, "Unsupported status #{request.params['status']}" unless request.params['status'] == 'chargeable'
+			order_id = request.params['order_id'].to_i
+			raise FormatError, "order_id not assigned = #{request.params['order_id']}" if order_id <= 0
+			app_order_id = order_status_change(request.params['receiver_id'], request.params['item'], request.params['item_price'].to_i).to_i
+			{:response => {:order_id => order_id, :app_order_id => app_order_id}}.to_json
+		else
+			error_response(11, "Unsupported notification type #{request.params['notification_type']}")
+		end
+	rescue Exception => error
+		GameServer.logger.warn "payment error: #{error}\n#{error.backtrace.join(?\n)}"
+		return error_response(1, error.to_s)
+	end
+
+	# @param item:String выдать информацию о товаре на основе строкового идентификатора
+	# @return hash {title: String, price: Int[, photo_url: String, item_id: Int, expiration: Int]}
+	def get_item_info item, lang
+		#raise UnimplementedError, "Implement vk api method get_item_info"
+		money = CONFIG[self.name.to_s]["netmoney_to_money"][item.to_i]
+		{:title => "Круглики", :price => item.to_i}
+	end
+
+	# Осуществить покупку товара
+	# @param item:String идентификатор товара
+	# @return Int уникальный номер заказа в системе
+	def order_status_change receiver_id, item, net_price
+		#raise UnimplementedError, "Implement vk api method order_status_change"
+		user = User.find_by_uid(receiver_id)
+		netmoney_to_money = CONFIG[self.name.to_s]["netmoney_to_money"]
+		raise "Current net unsupport billing" unless netmoney_to_money && netmoney_to_money[net_price.to_i]
+		money = netmoney_to_money[net_price.to_i]
+		t = Transaction.create_from(user, money, net_price).save
+		t.save
+		user.money += money
+		user.save
+		t.id
+	end
 	
 	def secure_vk
 		unless @secure_vk
@@ -56,4 +110,8 @@ class VkApi < NetApi
 		end
 		@secure_vk
 	end
+
+	def error_response(id, msg = nil, critical = true)
+		{:error => {:error_code => id.to_i, :error_msg => msg.to_s, :critical => !!critical}}.to_json
+	end	
 end
