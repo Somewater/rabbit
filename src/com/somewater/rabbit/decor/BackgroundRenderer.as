@@ -159,7 +159,7 @@ package com.somewater.rabbit.decor {
 				{
 					destinationTileVisible = false;
 				}
-				else
+				else if(heroMoverRef.destinationType == IsoMover.DEST_TYPE_MOUSE)
 				{
 					destinationTileVisible = true;
 					destinationTile.x = int(destination.x);

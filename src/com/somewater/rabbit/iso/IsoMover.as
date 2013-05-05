@@ -26,12 +26,16 @@ package com.somewater.rabbit.iso
 		
 		public static const SIGNAL_TILE_CHANGED:String = "signal.tileChanged";
 		
+		public static const DEST_TYPE_MOUSE:String = 'mouse';
+		public static const DEST_TYPE_KEY:String = 'key';
+		
 		private var tempOffsetPos:Point = new Point();// точка для осуществления смены свойства position без создания нового экземпляра точки
 		
 		/**
 		 * Куда пытается двигаться персонаж. null если никуда (в т.ч. обнулять, если не удалось дойти)
 		 */
 		protected var _destination:Point;
+		public var destinationType:String;
 		protected var _destinationPath:Array;// массив последовательных точек от position до destination (ответ astar)
 		
 		/**

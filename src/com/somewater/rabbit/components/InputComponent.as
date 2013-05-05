@@ -43,6 +43,7 @@ package com.somewater.rabbit.components
 		
 		private var tileRef:PropertyReference;
 		private var destinationRef:PropertyReference;
+		private var destinationTypeRef:PropertyReference;
 		private var rendererDirectionRef:PropertyReference;
 		
 		/**
@@ -97,6 +98,7 @@ package com.somewater.rabbit.components
 			
 			tileRef = new PropertyReference("@Spatial.tile");
 			destinationRef = new PropertyReference("@Mover.destination");
+			destinationTypeRef = new PropertyReference("@Mover.destinationType");
 			rendererDirectionRef = new PropertyReference("@Render.direction");
 			gameOffset = new Point((Config.loader as DisplayObject).x, (Config.loader as DisplayObject).y);
 		}
@@ -136,6 +138,7 @@ package com.somewater.rabbit.components
 				tile.y = int(tile.y);
 				
 				listenSuspended = true;
+				owner.setProperty(destinationTypeRef, IsoMover.DEST_TYPE_MOUSE);
 				owner.setProperty(destinationRef, tile);
 				listenSuspended = false;
 			}
@@ -338,6 +341,7 @@ package com.somewater.rabbit.components
 					lastKeyResult = keyResult;
 					//trace("input tile=" + tile + "	(dest=" + owner.getProperty(destinationRef) + ")");
 					listenSuspended = true;
+					owner.setProperty(destinationTypeRef, IsoMover.DEST_TYPE_KEY);
 					owner.setProperty(destinationRef, tile);
 					listenSuspended = false;
 				}
