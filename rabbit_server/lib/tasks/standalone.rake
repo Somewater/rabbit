@@ -53,7 +53,7 @@ namespace :standalone do
 		puts "******************************\n\tWARNING LOCALE = #{ENV['LOCALE']}\n******************************" if ENV['LOCALE'] != 'en'
 		puts "******************************\n\tWARNING SITELOCK NOT ASSIGNED\n******************************" unless ENV['SITELOCK']
 	end
-	
+
 	desc 'Compile to rabbit.asflash.ru'
 	task :asflash do
 		ENV['SITELOCK'] = "asflash.ru"
@@ -73,7 +73,13 @@ namespace :standalone do
 
 	desc "Compile xml_pack from asflash.ru"
 	task :compile_xml_pack => 'flash:configurate_compiler' do
-		raise "TODO"
+    begin
+      levels_file = get_site_file('levels.xml', "tmp_levels.xml")
+      FileUtils.mv(levels_file, "#{ROOT}/bin-debug/Levels.xml")
+      Rake::Task['flash:compile'].execute({:filename => 'xml_pack'})
+    ensure
+      File.delete(levels_file) rescue nil
+    end
 	end
 
 	desc "Compile config.txt from asflash.ru"

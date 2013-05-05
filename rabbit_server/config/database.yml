@@ -6,6 +6,7 @@ production:
   password: love4meand663
   encoding: utf8
   reconnect: true
+  pool: 20
 
 development:
   adapter: mysql2

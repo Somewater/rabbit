@@ -6,12 +6,13 @@ package
 	import com.somewater.rabbit.net.LocalServerHandler;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.social.SocialUser;
-	
+
 	import flash.events.Event;
 
 	/**
 	 * Эмуляция работы сервера и сошл. апи
 	 */
+	[Frame(factoryClass="com.somewater.rabbit.loader.Preloader")]
 	[SWF(width="810", height="650", backgroundColor="#FFFFFF", frameRate="30")]
 	public class LocalRabbitLoader extends RabbitLoaderBase
 	{
@@ -19,13 +20,13 @@ package
 		{
 			super();
 		}
-		
-		
+
+
 		override protected function netInitialize():void
 		{
 			onNetInitializeComplete()
 		}
-		
+
 		override protected function createSpecificPaths():void
 		{
 			swfs = {
@@ -63,17 +64,17 @@ package
 		//		S O C I A L     A P I    I M P L E M E N T A T I O N 	//
 		//																//
 		//////////////////////////////////////////////////////////////////
-		
+
 		override public function get hasUserApi():Boolean { return true; }
-		
+
 		override public function get hasFriendsApi():Boolean { return true; }
-		
+
 		override public function getFriends():Array
 		{
 			recreateFakeUsers();
 			return fakeFriends.slice();
 		}
-		
+
 		override public function getAppFriends():Array
 		{
 			recreateFakeUsers();
@@ -83,27 +84,27 @@ package
 					arr.push(fakeFriends[i]);
 			return arr;
 		}
-		
+
 		override public function getUser():SocialUser
 		{
 			recreateFakeUsers();
 			return user;
 		}
-		
+
 		override public function showInviteWindow():void
 		{
 			recreateFakeUsers();
 			trace("[SOCIAL] Invite window opened");
 			Config.stat(Stat.FRIENDS_INVITED);
 		}
-		
+
 		override public function pay(quantity:Object, onSuccess:Function, onFailure:Function, params:Object = null):void
 		{
 			recreateFakeUsers();
 			trace("[SOCIAL] payment: " + quantity);
 			onFailure && onFailure();
 		}
-		
+
 		override public function getUsers(uids:Array, onComplete:Function, onError:Function):void
 		{
 			recreateFakeUsers();
@@ -128,13 +129,13 @@ package
 					return;
 				}
 			}
-			
+
 			onComplete && onComplete(arr);
 		}
-		
+
 		private var fakeFriends:Array;
 		private var user:SocialUser;
-		
+
 		private function recreateFakeUsers():void
 		{
 			if(fakeFriends == null)
@@ -146,9 +147,9 @@ package
 				user.sex = "male";
 				user.firstName = "Павел";
 				user.lastName = "Найденов";
-				
+
 				fakeFriends = [	];
-				
+
 				fakeFriends[0] = new SocialUser();
 				fakeFriends[0].id = '1';
 				fakeFriends[0].photos = ["http://cs11005.vkontakte.ru/u245894/a_e4b26ec1.jpg"];
@@ -160,7 +161,7 @@ package
 				fakeFriends[0].sex = "female";
 				fakeFriends[0].firstName = "Inna";
 				fakeFriends[0].lastName = "Glazynova";
-				
+
 				fakeFriends[1] = new SocialUser();
 				fakeFriends[1].id = '2';
 				fakeFriends[1].photos = ["http://cs10618.vkontakte.ru/u1516396/a_5c77938b.jpg"];
@@ -172,7 +173,7 @@ package
 				fakeFriends[1].sex = "male";
 				fakeFriends[1].firstName = "Иван";
 				fakeFriends[1].lastName = "Тарапунов";
-				
+
 				fakeFriends[2] = new SocialUser();
 				fakeFriends[2].id = '3';
 				fakeFriends[2].photos = ["http://cs9637.vkontakte.ru/u1516396/128032186/x_14767d8e.jpg"];
@@ -184,7 +185,7 @@ package
 				fakeFriends[2].sex = "male";
 				fakeFriends[2].firstName = "Олек";
 				fakeFriends[2].lastName = "Козельцев";
-				
+
 				fakeFriends[3] = new SocialUser();
 				fakeFriends[3].id = '4';
 				fakeFriends[3].photos = ["http://cs11005.vkontakte.ru/u245894/a_e4b26ec1.jpg"];
@@ -196,7 +197,7 @@ package
 				fakeFriends[3].sex = "female";
 				fakeFriends[3].firstName = "Сюзанна";
 				fakeFriends[3].lastName = "Семенова";
-				
+
 				fakeFriends[4] = new SocialUser();
 				fakeFriends[4].id = '5';
 				fakeFriends[4].photos = ["http://cs11005.vkontakte.ru/u245894/a_e4b26ec1.jpg"];
@@ -208,7 +209,7 @@ package
 				fakeFriends[4].sex = "female";
 				fakeFriends[4].firstName = "Авелина";
 				fakeFriends[4].lastName = "Петровна";
-				
+
 				fakeFriends[5] = new SocialUser();
 				fakeFriends[5].id = '6';
 				fakeFriends[5].photos = ["http://cs11005.vkontakte.ru/u245894/a_e4b26ec1.jpg"];
@@ -220,7 +221,7 @@ package
 				fakeFriends[5].sex = "male";
 				fakeFriends[5].firstName = "Антон";
 				fakeFriends[5].lastName = "Сорокин";
-				
+
 				fakeFriends[6] = new SocialUser();
 				fakeFriends[6].id = '7';
 				fakeFriends[6].photos = ["http://cs11005.vkontakte.ru/u245894/a_e4b26ec1.jpg"];
@@ -232,7 +233,7 @@ package
 				fakeFriends[6].sex = "male";
 				fakeFriends[6].firstName = "Иннокентий";
 				fakeFriends[6].lastName = "Подлжаев";
-				
+
 				fakeFriends[7] = new SocialUser();
 				fakeFriends[7].id = '8';
 				fakeFriends[7].photos = ["http://cs11005.vkontakte.ru/u245894/a_e4b26ec1.jpg"];
@@ -244,7 +245,7 @@ package
 				fakeFriends[7].sex = "female";
 				fakeFriends[7].firstName = "Елизавета";
 				fakeFriends[7].lastName = "Карлова";
-				
+
 				fakeFriends[8] = new SocialUser();
 				fakeFriends[8].id = '9';
 				fakeFriends[8].photos = ["http://cs11005.vkontakte.ru/u245894/a_e4b26ec1.jpg"];
@@ -256,7 +257,7 @@ package
 				fakeFriends[8].sex = "female";
 				fakeFriends[8].firstName = "Ангелина";
 				fakeFriends[8].lastName = "Протопопова";
-				
+
 				fakeFriends[9] = new SocialUser();
 				fakeFriends[9].id = '10';
 				fakeFriends[9].photos = ["http://cs11005.vkontakte.ru/u245894/a_e4b26ec1.jpg"];

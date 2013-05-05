@@ -8,6 +8,7 @@ bin-debug/Levels.xml
 .flexProperties
 .idea
 *.iml
+.bashrc
 
 */.actionScriptProperties
 */.project
