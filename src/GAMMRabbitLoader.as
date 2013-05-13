@@ -12,8 +12,13 @@ package {
 
 		include 'com/somewater/rabbit/include/EnPreloaderAsset.as';
 
+		private var customPreloader:*;
+		override public function getPreloader():* {
+			return customPreloader;
+		}
+
 		public function GAMMRabbitLoader(preloader:*) {
-			this.preloader = preloader;
+			this.customPreloader = preloader;
 			super();
 			Config.memory['hideTop'] = true;
 			Config.memory['portfolioMode'] = true;

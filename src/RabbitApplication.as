@@ -180,7 +180,7 @@ package
 			var splashHolder:Sprite = new Sprite();
 			splashHolder.graphics.beginFill(0, 0.3);
 			splashHolder.graphics.drawRect(0, 0, Config.WIDTH, Config.HEIGHT);
-			var splashIcon:DisplayObject = Lib.createMC('preloader.LogoRabbit');
+			var splashIcon:DisplayObject = new Config.loader.getClassByName('preloader.LogoRabbit');
 			splashIcon.name = 'logo';
 			var splashBar:MovieClip = Lib.createMC('interface.PreloaderBar');
 			splashBar.name = 'bar';

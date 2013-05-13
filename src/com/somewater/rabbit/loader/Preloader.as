@@ -1,4 +1,7 @@
 package com.somewater.rabbit.loader {
+import flash.display.DisplayObject;
+import flash.display.DisplayObjectContainer;
+import flash.display.Loader;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.Sprite;

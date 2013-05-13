@@ -13,6 +13,22 @@ namespace :standalone do
 		Rake::Task['flash:compile'].execute({:filename => 'FGLRabbitLoader'})
 		puts "******************************\n\tWARNING LOCALE = #{ENV['LOCALE']}\n******************************" if ENV['LOCALE'] != 'en'
 		puts "******************************\n\tWARNING SITELOCK NOT ASSIGNED\n******************************" unless ENV['SITELOCK']
+  end
+
+	desc 'Compile Mochi'
+	task :mochi do
+		ENV['SITELOCK'] = "*"
+		ENV['LOCALE'] = 'en'
+		ENV['USE_MXMLC'] = 'true'
+		ENV['LOADERNAME'] = 'MochiRabbitLoader'
+		Rake::Task['flash:configurate_compiler'].execute()
+		Rake::Task['standalone:compile_config'].execute()
+		Rake::Task['standalone:compile_lang'].execute()
+		Rake::Task['flash:compile'].execute()
+		Rake::Task['flash:encode'].execute()
+		Rake::Task['flash:compile'].execute({:filename => 'MochiRabbitLoader'})
+		puts "******************************\n\tWARNING LOCALE = #{ENV['LOCALE']}\n******************************" if ENV['LOCALE'] != 'en'
+		puts "******************************\n\tWARNING SITELOCK NOT ASSIGNED\n******************************" unless ENV['SITELOCK']
 	end
 
 	desc 'Compile AIR'
@@ -110,7 +126,7 @@ namespace :standalone do
 	def get_site_file(urn, local_filename, base_path = nil)
 		require "httparty"
 		base_path = (ENV['BASE_PATH'] ? ENV['BASE_PATH'] : 'http://rabbit.asflash.ru/') unless base_path
-		response = HTTParty.get(base_path.to_s + urn.to_s)
+		response = HTTParty.get(base_path.to_s + urn.to_s).body
 		full_local_filename = "#{ROOT}/tmp/#{local_filename}"
 		File.open(full_local_filename,'w') {|f| f.write(response) }
 		full_local_filename

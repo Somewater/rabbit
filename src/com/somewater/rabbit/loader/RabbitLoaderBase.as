@@ -34,7 +34,7 @@ package com.somewater.rabbit.loader
 	import flash.system.SecurityDomain;
 	import flash.utils.getQualifiedClassName;
 
-	public class RabbitLoaderBase extends Sprite implements IRabbitLoader
+	public class RabbitLoaderBase extends MovieClip implements IRabbitLoader
 	{
 		
 		protected var swfLoader:Loader;
@@ -127,6 +127,7 @@ package com.somewater.rabbit.loader
 
 			filePaths['Config'] = "/config.txt?net=" + this.net;
 
+			preloader = getPreloader();
 			if(preloader == null)
 			{
 				var pcl:Class = getClassByName('preloader.Preloader');
@@ -152,6 +153,8 @@ package com.somewater.rabbit.loader
 			
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
+		
+		public function getPreloader():*{ return null; }
 		
 		public function get flashVars():Object{	return _flashVars	}
 		

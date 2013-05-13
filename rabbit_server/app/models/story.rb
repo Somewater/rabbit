@@ -1,5 +1,5 @@
 class Story < ActiveRecord::Base
-	set_table_name :stories
+	self.table_name = :stories
 
 	def to_xml
 "<story id=\"#{id}\">

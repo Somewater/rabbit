@@ -1,3 +1,3 @@
 class Notify < ActiveRecord::Base
-	set_table_name :notifyes
+	self.table_name = :notifyes
 end
