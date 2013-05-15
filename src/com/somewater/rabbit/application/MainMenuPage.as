@@ -6,7 +6,8 @@ package com.somewater.rabbit.application
 	import com.somewater.rabbit.application.commands.StartNextLevelCommand;
 	import com.somewater.rabbit.application.tutorial.TutorialLevelDef;
 	import com.somewater.rabbit.application.tutorial.TutorialManager;
-	import com.somewater.rabbit.storage.Config;
+import com.somewater.rabbit.storage.Config;
+import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Config;
@@ -70,19 +71,12 @@ package com.somewater.rabbit.application
 
 				if(!Config.memory['hideTop'])
 				{
-					topLink = new EmbededTextField(Config.FONT_SECONDARY, 0x31B1E8, 16, true);
-					topLink.x = friendBar.x;
-					topLink.y = friendBar.y - 35;
-					addChild(topLink);
-					topLink.addEventListener(MouseEvent.CLICK, onTopLinkClick);
-					topLink.addEventListener(MouseEvent.ROLL_OVER, onLinkOver)
-					topLink.addEventListener(MouseEvent.ROLL_OUT, onLinkOut)
-					topLink.htmlText = "<a href='event:'>"+Lang.t('USERS_TOP')+"</a>";
-					topLink.mouseEnabled = true;
-					topLink.underline = true;
+					createTopLink();
 				}
 
 				addChild(friendBar);
+			} else if(Config.memory['showTopButton']){
+				createTopLink();
 			}
 
 			// +2 к количеству кнопок, т.к. учитываются контролы аудио (примерно как 2 кнопки по высоте)
@@ -142,6 +136,25 @@ package com.somewater.rabbit.application
 			copyrightBtn.x = Config.WIDTH - copyrightBtn.width - copyrightBtn.y;
 			copyrightBtn.addEventListener(MouseEvent.CLICK, onCopyrightClicked);
 			addChild(copyrightBtn)
+		}
+		
+		private function createTopLink():void {
+			topLink = new EmbededTextField(Config.FONT_SECONDARY, 0x31B1E8, 16, true);
+			addChild(topLink);
+			topLink.addEventListener(MouseEvent.CLICK, onTopLinkClick);
+			topLink.addEventListener(MouseEvent.ROLL_OVER, onLinkOver)
+			topLink.addEventListener(MouseEvent.ROLL_OUT, onLinkOut)
+			topLink.htmlText = "<a href='event:'>"+Lang.t('USERS_TOP')+"</a>";
+			topLink.mouseEnabled = true;
+			topLink.underline = true;
+			
+			if(friendBar){
+				topLink.x = friendBar.x;
+				topLink.y = friendBar.y - 35;
+			} else {
+				topLink.x = 30;
+				topLink.y = Config.HEIGHT - topLink.textHeight - 30;
+			}
 		}
 
 		override public function clear():void
@@ -204,7 +217,10 @@ package com.somewater.rabbit.application
 		}
 
 		private function onTopLinkClick(event:MouseEvent = null):void {
-			Config.application.startPage("top");
+			if(Config.memory['customTop'])
+				Config.memory['customTop'](UserProfile.instance);
+			else
+				Config.application.startPage("top");
 		}
 
 		private function onCopyrightClicked(event:MouseEvent = null):void {

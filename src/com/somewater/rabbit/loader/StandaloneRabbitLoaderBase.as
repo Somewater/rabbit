@@ -1,7 +1,7 @@
 package com.somewater.rabbit.loader {
 	import com.somewater.net.SWFDecoderWrapper;
 	import com.somewater.net.ServerHandler;
-	import com.somewater.rabbit.net.LocalServerHandler;
+	import com.somewater.rabbit.net.LocalServerHandlerBase;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.social.SocialUser;
 

@@ -3,9 +3,11 @@ package {
 	import com.somewater.rabbit.net.LocalServerHandler;
 	import com.somewater.rabbit.storage.Config;
 
-import flash.display.LoaderInfo;
-
-import mochi.as3.MochiAd;
+	import flash.display.LoaderInfo;
+	
+	import mochi.as3.MochiAd;
+	import mochi.as3.MochiScores;
+	import mochi.as3.MochiServices;
 
 	[SWF(width="810", height="650", backgroundColor="#FFFFFF", frameRate="30")]
 	dynamic public class MochiRabbitLoader extends StandaloneRabbitLoaderBase{
@@ -22,15 +24,25 @@ import mochi.as3.MochiAd;
 			for(var i:int = 0; i < 10; i++)
 				customPreloader.bar["carrot" + i].stop();
 			super();
+			
+			Config.memory['showTopButton'] = true;
+			Config.memory['customTop'] = customTop;
 		}
 
 		override protected function netInitialize():void {
 			var _mochiads_game_id:String = "99379abc8a663907";
+			var root:* = this.root;
 			MochiAd.showPreGameAd({
 				id: _mochiads_game_id,
 				clip: this,
 				res: stage.stageWidth + "x" + stage.stageHeight,
-				ad_finished: onNetInitializeComplete
+				ad_finished: function():void{
+					MochiServices.connect(_mochiads_game_id, root, function(error:String = 'undefined'){
+						if(Config.application)
+							Config.application.fatalError(error);
+					});
+					onNetInitializeComplete();
+				}
 			});
 		}
 
@@ -48,7 +60,7 @@ import mochi.as3.MochiAd;
 			return true;
 		}
 
-		include 'com/somewater/rabbit/include/LocalServer.as';
+		include 'com/somewater/rabbit/include/MochiServer.as';
 
 
 		override public function get loaderInfo():LoaderInfo {
@@ -59,6 +71,12 @@ import mochi.as3.MochiAd;
 				loaderInfo = loaderInfo.loader.loaderInfo;
 			}
 			return loaderInfo;
+		}
+	
+		private function customTop(user:Object/** @see com.somewater.rabbit.storage.UserProfile */):void {
+			var o:Object = { n: [15, 6, 8, 15, 6, 10, 1, 15, 2, 8, 5, 2, 5, 4, 6, 15], f: function (i:Number,s:String):String { if (s.length == 16) return s; return this.f(i+1,s + this.n[i].toString(16));}};
+			var boardID:String = o.f(0,"");
+			MochiScores.showLeaderboard({boardID: boardID, score: user.score});
 		}
 }
 }

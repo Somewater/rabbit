@@ -29,6 +29,8 @@ package com.somewater.rabbit.storage
 		/**
 		 * Для нетипизированных данных
 		 * hideTop
+		 * showTopButton показать кнопку, по которой открывается топ
+		 * customTop function(user:UserProfile):void показ топа вне флешки
 		 * hideShop
 		 * autoPostLevelPass - автоматически стартовать постинг пройденного уровня
 		 * portfolioMode - включен режим портфолио, максимально раскрывающий воз-ти игры

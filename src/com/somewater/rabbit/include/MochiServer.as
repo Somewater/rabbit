@@ -1,4 +1,5 @@
 import com.somewater.rabbit.net.LocalServerHandler;
+import com.somewater.rabbit.net.MochiServerHandler;
 import com.somewater.social.SocialUser;
 
 		//////////////////////////////////////////////////////////////////
@@ -11,12 +12,8 @@ import com.somewater.social.SocialUser;
 		override protected function initializeServerHandler():void
 		{
 			if(_serverHandler == null)
-				_serverHandler = new LocalServerHandler(getConfigForServerHandler());
+				_serverHandler = new MochiServerHandler(getConfigForServerHandler());
 			_serverHandler.init(getUser().id, 'embed', net);
-		}
-
-		override public function get hasFriendsApi():Boolean {
-			return Config.memory['portfolioMode'];
 		}
 
 		override public function getUser():SocialUser
