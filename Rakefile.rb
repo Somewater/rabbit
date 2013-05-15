@@ -8,7 +8,7 @@
 # USE_MXMLC форсированно применять mxmlc, а не fcshctl-mxmlc
 
 ROOT = File.dirname( File.expand_path( __FILE__ ) )
-WIN_OS = RUBY_PLATFORM['mswin'] || RUBY_PLATFORM['mingw'] || RUBY_PLATFORM['cygwin']
+WIN_OS = RUBY_PLATFORM.to_s =~ /(mingw|cygwin|mswin)/
 $:.unshift("#{ROOT}/lib/tasks")
 Dir["#{ROOT}/rabbit_server/lib/tasks/*.rake"].sort.each { |x| import x }
 require 'rake'

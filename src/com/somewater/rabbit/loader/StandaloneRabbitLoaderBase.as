@@ -152,6 +152,7 @@ package com.somewater.rabbit.loader {
 			SWFDecoderWrapper.load(new data(), function(decodedDO:*):void{
 				if(decodedDO == null) throw new Error('WTF', 1034);
 				addDecodedFile(name, decodedDO);
+				trace("[STANDALONE DECODING COMPLETE] filename " + name);
 				standaloneFilesInProcess -= 1;
 			}, function():void{
 				CONFIG::debug

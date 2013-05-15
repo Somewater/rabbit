@@ -1,4 +1,7 @@
 package com.somewater.rabbit.net {
+import mochi.as3.MochiServices;
+import mochi.as3.MochiSocial;
+
 public class MochiServerHandler extends LocalServerHandlerBase{
 	public function MochiServerHandler(config:Object) {
 		super(config);
@@ -21,7 +24,16 @@ public class MochiServerHandler extends LocalServerHandlerBase{
 		return {success: true}
 	}
 	private function initHandler(data:Object):Object {
-		return {success: true}
+		MochiServices.id
+		var userData:Object = userToJson();
+		var response:Object {
+			"rewards":[] // показать окно, что такие-то реварды получены off-line (без сервера такое маловозмоно :))
+			,"unixtime":new Date().time * 0.001
+			,"user":userData
+			,"friends":[]
+		};
+		data.callback(response);
+		return null;
 	}
 	private function levelComplete(data:Object):Object {
 		return {success: true}

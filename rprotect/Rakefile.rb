@@ -2,6 +2,7 @@ $debug = ENV['DEBUG'] ? ENV['DEBUG'].to_s == 'true' || ENV['DEBUG'].to_s == '1':
 
 task :environment do
 	ROOT = File.expand_path('../',  __FILE__)
+  WIN_OS = RUBY_PLATFORM.to_s =~ /(mingw|cygwin|mswin)/
 end
 
 desc "Compile library"

@@ -205,7 +205,7 @@ package com.somewater.social
 			if(info["bdate"]){
 				var a:Array = info["bdate"].split(".");
 				var d:Date = new Date(Number(a[2] == null?new Date().fullYear:a[2]), Number(a[1]) - 1, Number(a[0]));
-				socialUser.bdate = d.time * 0.001;
+				socialUser.birthday = d;
 			}
 			return socialUser;
 		}
