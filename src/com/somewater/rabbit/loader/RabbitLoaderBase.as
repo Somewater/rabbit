@@ -817,6 +817,10 @@ package com.somewater.rabbit.loader
 			LocalDb.instance.set(key, data);
 		}
 
+		public function save():void {
+			LocalDb.instance.save();
+		}
+
 		public function get hasNavigateToHomepage():Boolean {
 			return false;
 		}

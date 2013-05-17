@@ -1,65 +1,33 @@
 package com.somewater.rabbit.net {
-import mochi.as3.MochiServices;
-import mochi.as3.MochiSocial;
+import com.adobe.serialization.json.JSON;
+import com.somewater.rabbit.IRabbitLoader;
+import com.somewater.storage.ILocalDb;
+import com.somewater.storage.LocalDb;
 
-public class MochiServerHandler extends LocalServerHandlerBase{
-	public function MochiServerHandler(config:Object) {
+import mochi.as3.MochiUserData;
+
+public class MochiServerHandler extends LocalServerHandler{
+
+	private var loader:IRabbitLoader;
+
+	public function MochiServerHandler(config:Object, loader:IRabbitLoader) {
+		trace("CONFIG: " + JSON.encode(config))
 		super(config);
-		METHOD_TO_HANDLER = {
-			'stat':stat
-			,'init':initHandler
-			,'levels/complete':levelComplete
-			,'rewards/move':moveReward
-			,'tutorial/inc':incrementTutorial
-			,'offer/add':addOffer
-			,'money/buy':buyMoney
-			,'items/purchase':purchaseItems
-			,'items/use':useItem
-			,'customize/purchase':purchaseCustomizeItems
-			,'top':top
-		};
+		this.loader = loader;
+		METHOD_TO_HANDLER['top'] = top;
 	}
-	
-	private function stat(data:Object):Object {
+
+	override protected function createLocalDb(name:String):ILocalDb {
+		MochiUserData
+		return super.createLocalDb(name);
+	}
+
+	override protected function stat(data:Object):Object{
+		// TODO
 		return {success: true}
 	}
-	private function initHandler(data:Object):Object {
-		MochiServices.id
-		var userData:Object = userToJson();
-		var response:Object {
-			"rewards":[] // показать окно, что такие-то реварды получены off-line (без сервера такое маловозмоно :))
-			,"unixtime":new Date().time * 0.001
-			,"user":userData
-			,"friends":[]
-		};
-		data.callback(response);
-		return null;
-	}
-	private function levelComplete(data:Object):Object {
-		return {success: true}
-	}
-	private function moveReward(data:Object):Object {
-		return {success: true}
-	}
-	private function incrementTutorial(data:Object):Object {
-		return {success: true}
-	}
-	private function addOffer(data:Object):Object {
-		return {success: true}
-	}
-	private function buyMoney(data:Object):Object {
-		return {success: true}
-	}
-	private function purchaseItems(data:Object):Object {
-		return {success: true}
-	}
-	private function useItem(data:Object):Object {
-		return {success: true}
-	}
-	private function purchaseCustomizeItems(data:Object):Object {
-		return {success: true}
-	}
-	private function top(data:Object):Object {
+	protected function top(data:Object):Object {
+		// TODO
 		return {success: true}
 	}
 }

@@ -3,5 +3,7 @@ package com.somewater.storage {
 		function get(key:String):Object
 
 		function set(key:String, data:Object):void
+
+		function save():void;
 	}
 }

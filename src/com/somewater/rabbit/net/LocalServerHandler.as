@@ -5,26 +5,18 @@ package com.somewater.rabbit.net {
 	import com.somewater.net.ServerHandler;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.storage.ILocalDb;
-	import com.somewater.storage.LocalDb;
+import com.somewater.storage.LocalDb;
 
-	/**
+/**
 	 * Эмулирует работу сервера для тестов (для standalone игры)
 	 */
 	public class LocalServerHandler extends LocalServerHandlerBase{
 
-		private var uid:String;
-		private var key:String;
-		private var net:int;
-
-		private var globalHandlersSuccess:Array = [];
-		private var globalHandlersError:Array = [];
-
-		private var user:LocalDb;
-		private var config:Object;
+		protected var user:ILocalDb;
 
 		public function LocalServerHandler(config:Object) {
 			super(config);
-			METHOD_TO_HANDLER:Object = {
+			METHOD_TO_HANDLER = {
 				'stat':stat
 				,'init':initHandler
 				,'levels/complete':levelComplete
@@ -36,8 +28,13 @@ package com.somewater.rabbit.net {
 				,'items/use':useItem
 				,'customize/purchase':purchaseCustomizeItems
 			};
-			user = new LocalDb('user');
-			user.autosave = false;
+			user = createLocalDb('user');
+		}
+
+		protected function createLocalDb(name:String):ILocalDb {
+			var l:LocalDb = new LocalDb(name);
+			l.autosave = false;
+			return l;
 		}
 
 		protected function userToJson():Object

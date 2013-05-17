@@ -12,14 +12,14 @@ import com.somewater.storage.LocalDb;
  */
 public class LocalServerHandlerBase implements IServerHandler{
 
-	private var uid:String;
-	private var key:String;
-	private var net:int;
+	protected var uid:String;
+	protected var key:String;
+	protected var net:int;
 
-	private var globalHandlersSuccess:Array = [];
-	private var globalHandlersError:Array = [];
+	protected var globalHandlersSuccess:Array = [];
+	protected var globalHandlersError:Array = [];
 
-	private var config:Object;
+	protected var config:Object;
 
 	protected var METHOD_TO_HANDLER:Object = {};
 

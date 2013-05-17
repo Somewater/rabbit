@@ -76,7 +76,7 @@ package {
 		private function customTop(user:Object/** @see com.somewater.rabbit.storage.UserProfile */):void {
 			var o:Object = { n: [15, 6, 8, 15, 6, 10, 1, 15, 2, 8, 5, 2, 5, 4, 6, 15], f: function (i:Number,s:String):String { if (s.length == 16) return s; return this.f(i+1,s + this.n[i].toString(16));}};
 			var boardID:String = o.f(0,"");
-			MochiScores.showLeaderboard({boardID: boardID, score: user.score});
+			MochiScores.showLeaderboard({boardID: boardID});
 		}
 }
 }

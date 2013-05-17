@@ -12,7 +12,7 @@ import com.somewater.social.SocialUser;
 		override protected function initializeServerHandler():void
 		{
 			if(_serverHandler == null)
-				_serverHandler = new MochiServerHandler(getConfigForServerHandler());
+				_serverHandler = new MochiServerHandler(getConfigForServerHandler(), this);
 			_serverHandler.init(getUser().id, 'embed', net);
 		}
 

@@ -64,5 +64,9 @@ package com.somewater.rabbit.storage {
 				data[String(match[1])] = String(match[2]);
 			}
 		}
+
+		public function save():void {
+			throw new Error('Runtime config editing not implemented');
+		}
 	}
 }
