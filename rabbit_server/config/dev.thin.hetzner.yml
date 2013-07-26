@@ -1,0 +1,17 @@
+---
+servers: 3
+user: pav
+group: pav
+chdir: /data/srv/RABBITS/dev
+environment: development
+address: 0.0.0.0
+port: 5800
+timeout: 30
+log: log/thin.log
+pid: tmp/pids/thin.pid
+max_conns: 1024
+max_persistent_conns: 100
+require: []
+wait: 30
+daemonize: true
+tag: dev-rabbit
