@@ -26,7 +26,7 @@ class Application
 		end
 
 		def connect_to(database, &block)
-      return if WIN_OS
+      return # TODO: postgres dont support db change in migrations
 			if DB_CONF[database]
 				if block_given?
 					prev_db = APP_ENV
