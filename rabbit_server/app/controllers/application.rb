@@ -126,6 +126,8 @@ class Application
 					[200,{"Content-Type" => "text/plain; charset=UTF-8"},content]
 				when /^payment\/\w+/
 					NetApi.by_net(method.match(/^payment\/(?<net>\w+)/)[:net]).payment(request)
+				when ""
+					[302,{"Content-Type" => "text/plain; charset=UTF-8", "Location" => (request.host == 'localhost' ? "/files/index.html" : "/index.html") }, '']
 				else
 					Hello.new.call request
 			end
