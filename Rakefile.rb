@@ -43,7 +43,7 @@ namespace :flash do
 
 	desc 'Configurate compiler keys'
 	task :configurate_compiler do
-	compiler = ENV['USE_MXMLC'] || `which fcshctl-mxmlc`.size == 0 ? 'mxmlc' : 'fcshctl-mxmlc'
+	compiler = ENV['USE_MXMLC'] || ENV['MXMLC'] || `which fcshctl-mxmlc`.size == 0 ? (ENV['MXMLC'] || 'mxmlc') : 'fcshctl-mxmlc'
 	compiler = '/home/pav/bin/sdks/4.5.0/bin/amxmlc' if $air
 
 	MXMLC_COMMON_COMMANDLINE_ARGS="#{compiler} \

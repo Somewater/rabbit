@@ -1,6 +1,5 @@
 production:
-  adapter: mysql2
-  host: 127.0.0.1
+  adapter: postgresql
   database: rabbit
   username: rabbit
   password: love4meand663
@@ -9,17 +8,15 @@ production:
   pool: 20
 
 development:
-  adapter: mysql2
-  host: 127.0.0.1
-  database: rabbit_development
+  adapter: postgresql
+  database: rabbit
   username: rabbit
   password: love4meand663
   encoding: utf8
   reconnect: true
 
 test:
-  adapter: mysql2
-  host: 127.0.0.1
+  adapter: postgresql
   database: rabbit_test
   username: rabbit
   password: love4meand663
@@ -27,8 +24,7 @@ test:
   reconnect: true
 
 stat:
-  adapter: mysql2
-  host: 127.0.0.1
+  adapter: postgresql
   database: rabbit_stat
   username: rabbit
   password: love4meand663

@@ -109,26 +109,26 @@ ActiveRecord::Schema.define(:version => 21) do
   end
 
   create_table "users", :force => true do |t|
-    t.integer  "net",                                                           :null => false
-    t.string   "uid",                                                           :null => false
+    t.integer  "net",                            :null => false
+    t.string   "uid",                            :null => false
     t.string   "first_name"
     t.string   "last_name"
     t.text     "level_instances"
     t.text     "rewards"
-    t.integer  "score",                                          :default => 0
-    t.integer  "money",                                          :default => 0
-    t.integer  "level",                                          :default => 1
-    t.decimal  "roll",            :precision => 10, :scale => 0, :default => 0
-    t.integer  "friends_invited",                                :default => 0
-    t.integer  "postings",                                       :default => 0
+    t.integer  "score",           :default => 0
+    t.integer  "money",           :default => 0
+    t.integer  "level",           :default => 1
+    t.decimal  "roll"
+    t.integer  "friends_invited", :default => 0
+    t.integer  "postings",        :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "day_counter",                                    :default => 0
-    t.integer  "tutorial",                                       :default => 0
+    t.integer  "day_counter",     :default => 0
+    t.integer  "tutorial",        :default => 0
     t.text     "offer_instances"
-    t.integer  "offers",                                         :default => 0
+    t.integer  "offers",          :default => 0
     t.text     "customize"
-    t.integer  "stars",                                          :default => 0
+    t.integer  "stars",           :default => 0
     t.string   "items"
     t.string   "locale"
   end

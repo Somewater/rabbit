@@ -45,6 +45,8 @@ Dir["#{SERVER_ROOT}/app/{controllers,models}/super/*.rb"].sort.each { |x| requir
 Dir["#{SERVER_ROOT}/app/{controllers,models}/*.rb"].sort.each { |x| require x }
 Dir["#{SERVER_ROOT}/app/{controllers,models}/**/*.rb"].sort.each { |x| require x }
 
+require "#{SERVER_ROOT}/lib/win_fix.rb" if WIN_OS
+
 ActiveRecord::Base.logger = Application.logger
 RAILS_ROOT = SERVER_ROOT
 RAILS_DEFAULT_LOGGER = Application.logger
