@@ -26,6 +26,7 @@ class Application
 		end
 
 		def connect_to(database, &block)
+			yield()
       return # TODO: postgres dont support db change in migrations
 			if DB_CONF[database]
 				if block_given?

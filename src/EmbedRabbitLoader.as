@@ -17,7 +17,7 @@ package
 	[SWF(width="810", height="650", backgroundColor="#FFFFFF", frameRate="30")]
 	public class EmbedRabbitLoader extends RabbitLoaderBase
 	{
-		include 'com/somewater/rabbit/include/EnPreloaderAsset.as';
+		include 'com/somewater/rabbit/include/RuPreloaderAsset.as';
 
 		public function EmbedRabbitLoader()
 		{
