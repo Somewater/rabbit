@@ -9,6 +9,7 @@ bin-debug/Levels.xml
 .idea
 *.iml
 .bashrc
+settings.bat
 
 */.actionScriptProperties
 */.project
