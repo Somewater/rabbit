@@ -159,13 +159,13 @@ namespace :srv do
 
 	desc "Upload swfs"
 	task :upload => 'flash:encode' do
+		server_path = "pav@atlantor.ru:/data/srv/RABBITS/dev/bin-debug"
 		if WIN_OS
-			WIN_OS_ROOT = '/c/Work/Gamedev/RabbitGame'
-			%x[scp #{WIN_OS_ROOT}/bin-debug/*.swf root@asflash.ru:/srv/www/rabbit.asflash.ru/bin-debug/]
-			%x[scp #{WIN_OS_ROOT}/bin-debug/assets/*.swf root@asflash.ru:/srv/www/rabbit.asflash.ru/bin-debug/assets/]
+			%x[scp bin-debug/*.swf #{server_path}/]
+			%x[scp bin-debug/assets/*.swf #{server_path}/assets]
 		else
-			scp = Execution.new("scp -v #{ROOT}/bin-debug/*.swf root@asflash.ru:/srv/www/rabbit.asflash.ru/bin-debug/", /debug1\: Exit status 0/);
-			scp = Execution.new("scp -v #{ROOT}/bin-debug/assets/*.swf root@asflash.ru:/srv/www/rabbit.asflash.ru/bin-debug/assets/", /debug1\: Exit status 0/);
+			scp = Execution.new("scp -v #{ROOT}/bin-debug/*.swf #{server_path}", /debug1\: Exit status 0/);
+			scp = Execution.new("scp -v #{ROOT}/bin-debug/assets/*.swf #{server_path}/assets", /debug1\: Exit status 0/);
 		end
 	end
 	
