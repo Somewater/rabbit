@@ -230,7 +230,53 @@ namespace :srv do
 	desc "Cron hourly job"
 	task :hourly => :environment do
 		TopManager.instance.write_files()
-	end
+  end
+
+  desc "Copy levels from xml"
+  task :copy_levels, [:xml_url, :delete_current] => :environment do |task, args|
+    require 'open-uri'
+    require 'nokogiri'
+    author = ENV['user'].to_s
+    xml = open(args[:xml_url]).read
+    noko = Nokogiri::XML(xml)
+
+    if args[:delete_current].to_s.downcase =~ /(yes|true|on)/
+      Level.delete_all
+      Story.delete_all
+    end
+
+    stories_counter = 0
+    levels_counter = 0
+
+    noko.at_css('stories').css('story').each do |story|
+      number = story.at_css('number').content.to_i
+      story_model = Story.where(:number => number).first || Story.new(:number => number)
+      story_model.name = story.at_css('name').content
+      story_model.description = story.at_css('description').content
+      story_model.image = story.at_css('image').content
+      story_model.start_level = story.at_css('start_level').content.to_i
+      story_model.end_level = story.at_css('end_level').content.to_i
+      story_model.enabled = story.at_css('enabled').content == 'true'
+      story_model.save
+      stories_counter += 1
+    end
+    noko.at_css('levels').css('level').each do |level|
+      number = level.at_css('number').content.to_i
+      level_hash = {
+                    'description' => level.at_css('description').content,
+                    'width' => level.at_css('width').content.to_i,
+                    'height' => level.at_css('height').content.to_i,
+                    'image' => level.at_css('image').content,
+                    'author' => level.at_css('author').content,
+                    'conditions' => level.at_css('conditions').to_s,
+                    'group' => level.at_css('group').to_s
+                   }
+      Level.create_level(number, level_hash, author)
+      levels_counter += 1
+    end
+
+    puts "Levels created: #{levels_counter}, stories processed: #{stories_counter}"
+  end
 end
 
 

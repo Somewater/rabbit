@@ -84,5 +84,25 @@ class Level < ActiveRecord::Base
 				added[lvl.number] = true
 			end
 		end
-	end
+  end
+
+  def self.create_level(number, level_hash, author)
+    # Левел с максимальной версией
+    head_level = Level.find(:first, :conditions => "number = #{number}", :order => "version desc")
+    version = (head_level ? head_level.version + 1 : 0)
+    level = Level.new({
+                          :number => number,
+                          :description => level_hash['description'],
+                          :version => version,
+                          :width => level_hash['width'],
+                          :height => level_hash['height'],
+                          :image => level_hash['image'],
+                          :author => (level_hash['author'] == nil || level_hash['author'].size == 0 || level_hash['author'] == 'nobody'? author : level_hash['author']),
+                          :conditions => level_hash['conditions'],
+                          :group => level_hash['group']
+                      })
+    level.save
+    Level.clear_cache()
+    level
+  end
 end
