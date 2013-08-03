@@ -17,7 +17,7 @@ package com.somewater.rabbit.iso.scene
 			graphics.beginFill(0, 0);
 			graphics.drawRect(0, 0, w, h);
 			
-			CONFIG::debug
+			if(Config.memory['drawTileGrid'])
 			{
 				graphics.lineStyle(1, 0x00FF00, 0.2);
 				var i:Number;

@@ -33,6 +33,11 @@ package com.somewater.rabbit.application.tutorial {
 			this.x = x;
 			this.y = y;
 
+			if(onAccept == null){
+				mouseEnabled = false;
+				mouseChildren = false;
+			}
+
 			/*if((Config.application as RabbitApplication).currentPage
 				&& (Config.application as RabbitApplication).currentPage is PageBase
 				&& PageBase((Config.application as RabbitApplication).currentPage).logo)

@@ -21,6 +21,11 @@ package com.somewater.rabbit.application.tutorial {
 
 			Config.loader.tutorial.addChild(this);
 			addEventListener(MouseEvent.CLICK, onClick, false, 1000);
+
+			if(onAccept == null){
+				mouseEnabled = false;
+				mouseChildren = false;
+			}
 		}
 
 		private function onClick(event:MouseEvent):void {
