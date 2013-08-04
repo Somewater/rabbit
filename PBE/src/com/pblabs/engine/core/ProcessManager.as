@@ -545,22 +545,24 @@ package com.pblabs.engine.core
 				{
 					Profiler.enter("Check visible entities");
 				}
-				const PADDING:int = 2;
+				const TICK_PADDING:int = 2;
+				const VISIBLE_PADDING:int = 1;// должен быть меньше TICK_PADDING
 				var camera:IsoCameraController = IsoCameraController.getInstance();
 
 				var minXPosVisible:int = camera.x;
 				var minYPosVisible:int = camera.y;
 				var maxXPosVisible:int = Math.ceil(camera.x + Config.T_WIDTH);
 				var maxYPosVisible:int = Math.ceil(camera.y + Config.T_HEIGHT);
-				var minXPos:int = minXPosVisible - PADDING;
-				var minYPos:int = minYPosVisible - PADDING;
-				var maxXPos:int = maxXPosVisible + PADDING;
-				var maxYPos:int = maxYPosVisible + PADDING;
+				var minXPos:int = minXPosVisible - TICK_PADDING;
+				var minYPos:int = minYPosVisible - TICK_PADDING;
+				var maxXPos:int = maxXPosVisible + TICK_PADDING;
+				var maxYPos:int = maxYPosVisible + TICK_PADDING;
 
 				// для удаленив визуальных артефактов
-				//minXPosVisible -= 1;
-				//maxXPosVisible += 1;
-				//maxYPosVisible += 1;
+				minXPosVisible -= VISIBLE_PADDING;
+				minYPosVisible -= VISIBLE_PADDING;
+				maxXPosVisible += VISIBLE_PADDING;
+				maxYPosVisible += VISIBLE_PADDING;
 
 				var ticker:TickedComponent;
 				var render:DisplayObjectRenderer;
@@ -578,7 +580,6 @@ package com.pblabs.engine.core
 					{
 						// не тикается и невидим
 						untickedEntities[own.uid] = true;
-						unvisibleEntities[own.uid] = true;
 						continue;
 					}
 					if(minX > maxXPosVisible || minY > maxYPosVisible || maxX < minXPosVisible || maxY < minYPosVisible)

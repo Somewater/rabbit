@@ -9,7 +9,7 @@
 		HERO
 
 	-->
-	<entity name="Hero" template="RabbitBase">
+	<entity name="Hero" template="RabbitBase" tick="always">
 		<component name="Data" type="com.somewater.rabbit.components.HeroDataComponent" />
 		<component type="com.somewater.rabbit.components.InputComponent" name="Input"/>
 		<component type="com.somewater.rabbit.creature.HeroIsoMover" name="Mover"/>
