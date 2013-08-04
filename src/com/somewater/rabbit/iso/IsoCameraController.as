@@ -22,7 +22,7 @@ package com.somewater.rabbit.iso
 	public class IsoCameraController extends PBObject implements ITickedObject
 	{
 
-		private static const DISALLOW_MAP_MOVE_MS:int = 30;
+		private static const DISALLOW_MAP_MOVE_MS:int = 50;
 		private static const HERO_SHOW_DELAY_MS:int = 60;
 		public static const DEFAULT_SPEED:Number = 0.5;
 		private static const HERO_SHOW_SPEED_COEF:Number = 0.5;
