@@ -68,8 +68,8 @@ package com.somewater.display.blitting {
 			var m:Matrix = new Matrix(rotated?-1:1, 0, 0, 1, (rotated?bounds.x + bounds.width:-bounds.x), -bounds.y);
 			bmp.draw(dor, m);
 			bd.bmp = bmp;
-			bd.offsetX = -m.tx + dor.x;
-			bd.offsetY = -m.ty + dor.y;
+			bd.offsetX = -m.tx + Math.round(dor.x);
+			bd.offsetY = -m.ty + Math.round(dor.y);
 			bd.hash = currentMovieState + ':' + currentMovieDirection + ':' + currentMovieFrame;
 			return bd;
 		}
