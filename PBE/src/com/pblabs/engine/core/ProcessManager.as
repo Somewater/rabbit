@@ -875,7 +875,7 @@ package com.pblabs.engine.core
 			if(component is TickedComponent)
 			{
 				own = component.owner;
-				if(own.noSleep)
+				if(!own || own.noSleep)
 					return false;
 			}
 			else if(component is DisplayObjectRenderer)
