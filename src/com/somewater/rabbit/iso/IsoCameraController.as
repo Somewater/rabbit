@@ -21,7 +21,16 @@ package com.somewater.rabbit.iso
 	 */
 	public class IsoCameraController extends PBObject implements ITickedObject
 	{
-		
+
+		private static const DISALLOW_MAP_MOVE_MS:int = 30;
+		private static const HERO_SHOW_DELAY_MS:int = 60;
+		public static const DEFAULT_SPEED:Number = 0.5;
+		private static const HERO_SHOW_SPEED_COEF:Number = 0.5;
+		private static const HERO_FIRST_SHOW_SPEED_COEF:Number = 1;
+		public static const MAX_SPEED:Number = 0.3;
+		public static const MAX_ACCELERATION:Number = 0.02;
+		private static const MAP_MOVE_PADDING:int = 180;
+
 		private static var instance:IsoCameraController;
 
 		/**
@@ -121,10 +130,10 @@ package com.somewater.rabbit.iso
 			}
 
 			// трекинг на героя
-			if(trackTileRules.length == 0){
-				if(trackTileRulesEmptyTime++ > 100){
+			var trackOnlyHeroShow:Boolean = trackTileRules.length == 1 && trackTileRules[0].type == TrackTileRule.HERO_SHOWING;
+			if(trackOnlyHeroShow || trackTileRules.length == 0){
+				if(trackOnlyHeroShow || trackTileRulesEmptyTime++ > HERO_SHOW_DELAY_MS){
 					addHeroTracking(false);
-					trackTileRulesEmptyTime = 0;
 				}
 			} else {
 				trackTileRulesEmptyTime = 0;
@@ -210,7 +219,7 @@ package com.somewater.rabbit.iso
 					removeAllTrackRules();
 					var tileRule:TrackTileRule = new TrackTileRule(TrackTileRule.HERO_DAMAGE, trackingObjectPoint);
 					addTrackRule(tileRule);
-					disallowMapMoveTime = 100;
+					disallowMapMoveTime = DISALLOW_MAP_MOVE_MS;
 				}
 			}
 		}
@@ -218,15 +227,14 @@ package com.somewater.rabbit.iso
 		private function checkMapMoveTracking():void {
 			var mouseX:int = PBE.mainStage.mouseX;
 			var mouseY:int = PBE.mainStage.mouseY;
-			const PADDING:int = 100;
 			var speedX:Number;
 			var speedY:Number;
 
-			speedX = speedByValues(mouseX, 0, PADDING);
-			if(speedX == 0) speedX = speedByValues(mouseX, Config.WIDTH, Config.WIDTH - PADDING);
+			speedX = speedByValues(mouseX, 0, MAP_MOVE_PADDING);
+			if(speedX == 0) speedX = speedByValues(mouseX, Config.WIDTH, Config.WIDTH - MAP_MOVE_PADDING);
 
-			speedY = speedByValues(mouseY, 0, PADDING);
-			if(speedY == 0) speedY = speedByValues(mouseY, Config.HEIGHT, Config.HEIGHT - PADDING);
+			speedY = speedByValues(mouseY, 0, MAP_MOVE_PADDING);
+			if(speedY == 0) speedY = speedByValues(mouseY, Config.HEIGHT, Config.HEIGHT - MAP_MOVE_PADDING);
 
 			if(speedX != 0 || speedY != 0){
 				var scenePos:Point = position.clone();
@@ -235,8 +243,8 @@ package com.somewater.rabbit.iso
 				scenePos.y += (speedY > 0 ? MAX_LEVEL_SIZE : (speedY < 0 ? -MAX_LEVEL_SIZE : 0));
 				roundLevelSize(scenePos);
 				var tileRule:TrackTileRule = new TrackTileRule(TrackTileRule.MAP_MOVING, scenePos);
-				tileRule.accX = sign(speedX) * TrackTileRule.MAX_ACCELERATION;
-				tileRule.accY = sign(speedY) * TrackTileRule.MAX_ACCELERATION;
+				tileRule.accX = sign(speedX) * IsoCameraController.MAX_ACCELERATION;
+				tileRule.accY = sign(speedY) * IsoCameraController.MAX_ACCELERATION;
 				tileRule.speedX = 0;
 				tileRule.speedY = 0;
 				tileRule.speedXY = true;
@@ -254,9 +262,9 @@ package com.somewater.rabbit.iso
 																		TrackTileRule.HERO_SHOWING,
 																		trackingObjectPoint);
 				if(first)
-					tileRule.speed *= 1;
+					tileRule.speed *= HERO_FIRST_SHOW_SPEED_COEF;
 				else
-					tileRule.speed *= 0.25;
+					tileRule.speed *= HERO_SHOW_SPEED_COEF;
 				addTrackRule(tileRule);
 			}
 		}
@@ -410,6 +418,8 @@ package com.somewater.rabbit.iso
 	}
 }
 
+import com.somewater.rabbit.iso.IsoCameraController;
+
 import flash.geom.Point;
 
 class TrackTileRule{
@@ -418,12 +428,9 @@ class TrackTileRule{
 	public static const HERO_SHOWING:int = 1;
 	public static const FIRST_HERO_SHOWING:int = 30;
 
-	public static const MAX_SPEED:Number = 0.3;
-	public static const MAX_ACCELERATION:Number = 0.01;
-
 	public var type:int;
 	public var tile:Point;
-	public var speed:Number = 1;
+	public var speed:Number;
 	public var accX:Number;
 	public var accY:Number;
 	public var speedX:Number;
@@ -432,6 +439,7 @@ class TrackTileRule{
 	public var priority:int = 1;
 
 	public function TrackTileRule(type:int, tile:Point){
+		this.speed = IsoCameraController.DEFAULT_SPEED;
 		this.type = type;
 		this.tile = tile;
 		this.priority = this.type;
@@ -453,17 +461,17 @@ class TrackTileRule{
 		if(accX){
 			speedX += accX;
 			if(speedX > 0){
-				if(speedX > TrackTileRule.MAX_SPEED) speedX = TrackTileRule.MAX_SPEED;
+				if(speedX > IsoCameraController.MAX_SPEED) speedX = IsoCameraController.MAX_SPEED;
 			}else{
-				if(-speedX > TrackTileRule.MAX_SPEED) speedX = -TrackTileRule.MAX_SPEED;
+				if(-speedX > IsoCameraController.MAX_SPEED) speedX = -IsoCameraController.MAX_SPEED;
 			}
 		}
 		if(accY){
 			speedY += accY;
 			if(speedY > 0){
-				if(speedY > TrackTileRule.MAX_SPEED) speedY = TrackTileRule.MAX_SPEED;
+				if(speedY > IsoCameraController.MAX_SPEED) speedY = IsoCameraController.MAX_SPEED;
 			}else{
-				if(-speedY > TrackTileRule.MAX_SPEED) speedY = -TrackTileRule.MAX_SPEED;
+				if(-speedY > IsoCameraController.MAX_SPEED) speedY = -IsoCameraController.MAX_SPEED;
 			}
 		}
 	}
