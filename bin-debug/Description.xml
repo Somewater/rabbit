@@ -226,7 +226,7 @@
 
 			DOG
 	-->
-	<template name="Dog" template="AnimalBase">
+	<template name="Dog" template="AnimalBase" tick="always">
 		<component name="Mover">
 			<speed>2.7</speed>
 		</component>
@@ -372,7 +372,7 @@
 		HEDGEHOG
 	
 	-->
-	<template name="Hedgehog" template="AnimalBase">
+	<template name="Hedgehog" template="AnimalBase" tick="always">
 		<component name="Mover">
 			<speed>1.7</speed>
 		</component>
