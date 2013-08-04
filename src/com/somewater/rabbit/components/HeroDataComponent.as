@@ -2,6 +2,7 @@ package com.somewater.rabbit.components
 {
 	import com.somewater.rabbit.SoundTrack;
 	import com.somewater.rabbit.Sounds;
+	import com.somewater.rabbit.events.HeroHealthEvent;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.util.AnimationHelper;
 
@@ -23,7 +24,7 @@ package com.somewater.rabbit.components
 		 * Какая скорость может быть максимальной
 		 */
 		public var maxSpeed:Number = 8;
-		
+
 		public function HeroDataComponent()
 		{
 			super();
@@ -63,6 +64,9 @@ package com.somewater.rabbit.components
 				{
 					Config.application.play(Sounds.DAMAGE, SoundTrack.GAME_DAMAGE);
 					AnimationHelper.instance.blink((owner.lookupComponentByName('Render') as ProxyIsoRenderer).displayObject, 0, 0.8);
+				}
+				if(_owner){
+					_owner.eventDispatcher.dispatchEvent(new HeroHealthEvent(_health, value));
 				}
 				_health = value;
 				if(_health <= 0 && _owner)

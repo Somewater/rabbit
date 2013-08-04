@@ -6,9 +6,13 @@ package com.somewater.rabbit.iso
 	import com.pblabs.engine.core.ITickedObject;
 	import com.pblabs.engine.core.PBObject;
 	import com.pblabs.engine.debug.Logger;
+	import com.somewater.rabbit.events.HeroHealthEvent;
 	import com.somewater.rabbit.iso.scene.IsoSpatialManager;
+	import com.somewater.rabbit.managers.InitializeManager;
 	import com.somewater.rabbit.storage.Config;
-	
+
+	import flash.events.Event;
+
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	
@@ -19,12 +23,7 @@ package com.somewater.rabbit.iso
 	{
 		
 		private static var instance:IsoCameraController;
-		
-		/**
-		 * Какова sensivity при перетаскивании мышкой 
-		 */
-		public var MOVE_MULTI:int = 3;
-		
+
 		/**
 		 * Сколько тайлов должно остаться объекту слежки до края,
 		 * чтобы сцена начала передвигаться
@@ -36,33 +35,30 @@ package com.somewater.rabbit.iso
 		 * (для того, чтобы экран "не скакал", когда trackObject постоянно идет в его край)
 		 */
 		public var RESERVE:int = 2;
-		
-		private var USE_RESERVE:int = 1;
-		
-		
+
 		/**
 		 * Объекь, за которым передвигается экран
 		 */
 		public var trackObject:IsoSpatial;
-
-		/**
-		 * Отцентровать относительно trackObject мгновенно, а не плавно
-		 */
-		public var centreTrackObjectImmediately:Boolean = false;
-		
-		
-		
-		/**
-		 * Флаг означает, что сцена анимируется в данный момен, 
-		 * поэтому пересчет координат производить нельзя
-		 */
-		private var tweeningFlag:Boolean = false;
-		private var tween:Point;
 		
 		/**
 		 * Листенеры на изменение позиции сцены (движение камеры)
 		 */
 		private var cameraMoveListeners:Array = [];
+
+		/**
+		 * Мышка в пределах игрового поля
+		 */
+		private var mouseOnScreen:Boolean = false;
+
+		/**
+		 * Вначала навести каму на героя, чтобы продемострировать игроку его положение на уровне
+		 */
+		public var centreOnHero:Boolean = false;
+
+		private var trackTileRules:Vector.<TrackTileRule>;
+		private var trackTileRulesEmptyTime:int = 0;
+		private var disallowMapMoveTime:int = 0;
 		
 		public function IsoCameraController()
 		{
@@ -81,55 +77,28 @@ package com.somewater.rabbit.iso
 			initialize("Camera");
 			
 			PBE.processManager.addTickedObject(this, 1);
-			
-			PBE.inputManager.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
-			PBE.inputManager.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
-			PBE.mainStage.addEventListener(MouseEvent.ROLL_OUT, onMouseUp);
+
+			PBE.inputManager.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
+			PBE.mainStage.addEventListener(Event.MOUSE_LEAVE, onMouseOut);
+			InitializeManager.bindRestartLevel(onLevelRestarted);
+
+			trackTileRules = new Vector.<TrackTileRule>();
 		}
 		
-		
-		// значение PBE.scene.position на момент начала перетаскивания
-		private var mouseScenePos:Point;
-		
-		// координата мышки на момент начала перетаскивания
-		private var mouseStartPos:Point = new Point();
-		
-		private function onMouseDown(e:MouseEvent):void
+		private function onMouseOut(e:Event):void
 		{
-			if(Config.gameModuleActive && (!Config.application.mouseInput || (Config.editorActive && !Config.editorOver)))
-			{
-				PBE.inputManager.removeEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
-				PBE.inputManager.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
-				tweeningFlag = true;
-				mouseScenePos = PBE.scene.position;
-				mouseStartPos.x = PBE.mainStage.mouseX;
-				mouseStartPos.y = PBE.mainStage.mouseY;
-				
-				if(tween)
-					tween = null;
+			if(mouseOnScreen){
+				mouseOnScreen = false;
+				removeTrackRule(TrackTileRule.MAP_MOVING)
 			}
 		}
 		
-		
-		private function onMouseUp(e:MouseEvent):void
-		{
-			if(Config.gameModuleActive)
-			{
-				PBE.inputManager.removeEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
-				
-				// привязать экран к тайлам
-				var p:Point = position;
-				p.x = Math.round(p.x);
-				p.y = Math.round(p.y);
-				setPositionAnimated(p);
-				
-				tweeningFlag = false;
-				mouseScenePos = null;
-			}
-		}
-		
-		private var mouseMoveTempPos:Point = new Point();
 		private function onMouseMove(e:MouseEvent):void
+		{
+			mouseOnScreen = true;
+		}
+		
+		public function onTick(deltaTime:Number):void
 		{
 			var gameIsTicking:Boolean = Config.game.isTicking;
 			CONFIG::debug
@@ -137,128 +106,200 @@ package com.somewater.rabbit.iso
 				if(Config.editor)
 					gameIsTicking = gameIsTicking || PBE.mainStage != null;
 			}
-			if(gameIsTicking && mouseStartPos)
-			{
-				var dx:Number = PBE.mainStage.mouseX - mouseStartPos.x;
-				var dy:Number = PBE.mainStage.mouseY - mouseStartPos.y;
-				
-				mouseMoveTempPos.x = mouseScenePos.x + dx * MOVE_MULTI;
-				mouseMoveTempPos.y = mouseScenePos.y + dy * MOVE_MULTI;
-				
-				if(mouseMoveTempPos.x > 0)
-					mouseMoveTempPos.x = 0;
-				else if(mouseMoveTempPos.x < -IsoSpatialManager.instance.width * Config.TILE_WIDTH + Config.WIDTH)
-					mouseMoveTempPos.x = -IsoSpatialManager.instance.width * Config.TILE_WIDTH + Config.WIDTH;
-				
-				if(mouseMoveTempPos.y > Config.HORIZONT_HEIGHT * Config.TILE_HEIGHT)
-					mouseMoveTempPos.y = Config.HORIZONT_HEIGHT * Config.TILE_HEIGHT;
-				if(mouseMoveTempPos.y < - IsoSpatialManager.instance.height * Config.TILE_HEIGHT +  Config.HEIGHT)
-					mouseMoveTempPos.y = - IsoSpatialManager.instance.height * Config.TILE_HEIGHT + Config.HEIGHT;
-				
-				if(Point.distance(PBE.scene.position, mouseMoveTempPos) < 100)
-				{
-					PBE.scene.position = mouseMoveTempPos;
-					dispatchCameraMoving(mouseMoveTempPos);
-				}
-				
-				USE_RESERVE = 0;
-			}
-		}
-		
-		public function onTick(deltaTime:Number):void
-		{
-			if(tweeningFlag)
-			{
-				if(tween)
-					onTween();
+			if(!gameIsTicking)
 				return;
-			}
-			
-			if(trackObject)
-			{
-				if(trackObject.isRegistered == false)
-				{
-					trackObject = null;
-					return;
-				}
-				
-				var objPos:Point = trackObject.tile;
-				var movePos:Point = position;
-				var scenePos:Point = movePos.clone();
-				
-				if(objPos.x - scenePos.x < PADDING)
-					movePos.x = objPos.x - PADDING - USE_RESERVE * RESERVE;
-				else if((scenePos.x + Config.T_WIDTH) - objPos.x < PADDING + 1)
-					movePos.x = objPos.x - Config.T_WIDTH + PADDING + 1 + USE_RESERVE * RESERVE;
-				
-				if(objPos.y - scenePos.y < PADDING)
-					movePos.y = objPos.y - PADDING - USE_RESERVE * RESERVE;
-				else if((scenePos.y + Config.T_HEIGHT) - objPos.y < PADDING + 1)
-					movePos.y = objPos.y - Config.T_HEIGHT + PADDING + 1 + USE_RESERVE * RESERVE;
-				
-				
-				// обеспечить, чтобы экран не сдвинулся за пределы границ карты
-				if(movePos.x < 0)
-					movePos.x = 0;
-				else if(movePos.x > IsoSpatialManager.instance.width - Config.T_WIDTH)
-					movePos.x = IsoSpatialManager.instance.width - Config.T_WIDTH;				
-				if(movePos.y < -Config.HORIZONT_HEIGHT)
-					movePos.y = -Config.HORIZONT_HEIGHT;
-				else if(movePos.y > IsoSpatialManager.instance.height - Config.T_HEIGHT)
-					movePos.y = IsoSpatialManager.instance.height - Config.T_HEIGHT;
-				
-				if(movePos.equals(scenePos))
-					return;
-				
-				USE_RESERVE = 1;
 
-				if(centreTrackObjectImmediately)
-				{
-					centreTrackObjectImmediately = false;
-					position = movePos;
+			applyTrackRules();
+
+			// трекинг на перемотку карты
+			if(mouseOnScreen && disallowMapMoveTime-- <= 0)
+				checkMapMoveTracking();
+
+			if(centreOnHero){
+				addHeroTracking(true);
+				centreOnHero = false;
+			}
+
+			// трекинг на героя
+			if(trackTileRules.length == 0){
+				if(trackTileRulesEmptyTime++ > 100){
+					addHeroTracking(false);
+					trackTileRulesEmptyTime = 0;
 				}
-				else
-					setPositionAnimated(movePos);
+			} else {
+				trackTileRulesEmptyTime = 0;
 			}
 		}
-		
-		
-		
-		private function setPositionAnimated(newPosition:Point):void
-		{			
+
+		private function applyTrackRules():void {
 			var scenePos:Point = position;
-			
-			if(scenePos.equals(newPosition))
-				return;
-			
-			tweeningFlag = true;
-			var dist:Number = Math.sqrt(Math.pow(scenePos.x - newPosition.x, 2) + Math.pow(scenePos.y - newPosition.y, 2)); 
-			
-			tween = newPosition;
-			//TweenLite.to(this, 0.1 + Math.max(0.2,Math.min(0,Math.log(dist)/10)),
-			//	{"x":newPosition.x, "y":newPosition.y, "onComplete": tweenOff, "ease": com.greensock.easing.Linear.easeIn});
-		}
-		
-		
-
-		private var tmpPositionPoint:Point = new Point()
-		private function onTween():void
-		{
-			var position:Point = this.position;
-			tmpPositionPoint.x = tween.x * 0.3 + position.x * 0.7;
-			tmpPositionPoint.y = tween.y * 0.3 + position.y * 0.7;
-
-			if(Math.abs(tmpPositionPoint.x - position.x) < 0.05 && Math.abs(tmpPositionPoint.y - position.y) < 0.05)
-			{
-				this.position = tween;
-				tweeningFlag = false;
-				tween = null;
+			while(trackTileRules.length > 0){
+				var tileRule:TrackTileRule = trackTileRules[0];
+				var tile:Point = tileRule.tile;
+				if(scenePos.equals(tile)){
+					trackTileRules.shift();
+					continue;
+				}
+				var dx:Number = tile.x - scenePos.x;
+				var dy:Number = tile.y - scenePos.y;
+				if(tileRule.speedXY){
+					if(dx)
+						scenePos.x += (dx < 0 ? -dx : dx) > (tileRule.speedX < 0 ? -tileRule.speedX : tileRule.speedX) ?
+								tileRule.speedX : dx;
+					if(dy)
+						scenePos.y += (dy < 0 ? -dy : dy) > (tileRule.speedY < 0 ? -tileRule.speedY : tileRule.speedY) ?
+								tileRule.speedY : dy;
+					tileRule.updateSpeed();
+				} else {
+					var speed:Number = tileRule.speed;
+					if(dx)
+						scenePos.x += (dx < 0 ? -dx : dx) > speed ? speed * (dx < 0 ? -1 : 1) : dx;
+					if(dy)
+						scenePos.y += (dy < 0 ? -dy : dy) > speed ? speed * (dy < 0 ? -1 : 1) : dy;
+				}
+				this.position = scenePos;
+				break;
 			}
-			else
-				this.position = tmpPositionPoint;
 		}
-		
-		
+
+		private function addTrackRule(tileRule:TrackTileRule):void {
+			var i:int;
+			var r:TrackTileRule;
+			if(tileRule.type){
+				for(i = 0; i < trackTileRules.length; i++){
+					if(trackTileRules[i].type == tileRule.type){
+						if(trackTileRules[i].canChange(tileRule))
+							trackTileRules[i] = tileRule;
+						return;
+					}
+				}
+			}
+			for(i = 0; i < trackTileRules.length; i++){
+				r = trackTileRules[i];
+				if(r.priority < tileRule.priority){
+					trackTileRules.splice(i, 0, tileRule);
+					return;
+				}
+			}
+			trackTileRules.push(tileRule);
+		}
+
+		private function removeTrackRule(type:int):void {
+			for(var i:int = 0; i < trackTileRules.length; i++){
+				if(trackTileRules[i].type == type){
+					trackTileRules.splice(i, 1);
+					return;
+				}
+			}
+		}
+
+		private function removeAllTrackRules():void {
+			trackTileRules = new Vector.<TrackTileRule>();
+		}
+
+		private function onLevelRestarted():void {
+			centreOnHero = true;
+			trackObject._owner.eventDispatcher.addEventListener(HeroHealthEvent.HERO_DAMAGE_EVENT, onHeroDamage, false, 0, true);
+			removeAllTrackRules();
+		}
+
+		private function onHeroDamage(event:HeroHealthEvent):void {
+			if(event.isDamage){
+				var trackingObjectPoint:Point = trackObjectCameraPos();
+				if(trackingObjectPoint){
+					removeAllTrackRules();
+					var tileRule:TrackTileRule = new TrackTileRule(TrackTileRule.HERO_DAMAGE, trackingObjectPoint);
+					addTrackRule(tileRule);
+					disallowMapMoveTime = 100;
+				}
+			}
+		}
+
+		private function checkMapMoveTracking():void {
+			var mouseX:int = PBE.mainStage.mouseX;
+			var mouseY:int = PBE.mainStage.mouseY;
+			const PADDING:int = 100;
+			var speedX:Number;
+			var speedY:Number;
+
+			speedX = speedByValues(mouseX, 0, PADDING);
+			if(speedX == 0) speedX = speedByValues(mouseX, Config.WIDTH, Config.WIDTH - PADDING);
+
+			speedY = speedByValues(mouseY, 0, PADDING);
+			if(speedY == 0) speedY = speedByValues(mouseY, Config.HEIGHT, Config.HEIGHT - PADDING);
+
+			if(speedX != 0 || speedY != 0){
+				var scenePos:Point = position.clone();
+				const MAX_LEVEL_SIZE = 10000;
+				scenePos.x += (speedX > 0 ? MAX_LEVEL_SIZE : (speedX < 0 ? -MAX_LEVEL_SIZE : 0));
+				scenePos.y += (speedY > 0 ? MAX_LEVEL_SIZE : (speedY < 0 ? -MAX_LEVEL_SIZE : 0));
+				roundLevelSize(scenePos);
+				var tileRule:TrackTileRule = new TrackTileRule(TrackTileRule.MAP_MOVING, scenePos);
+				tileRule.accX = sign(speedX) * TrackTileRule.MAX_ACCELERATION;
+				tileRule.accY = sign(speedY) * TrackTileRule.MAX_ACCELERATION;
+				tileRule.speedX = 0;
+				tileRule.speedY = 0;
+				tileRule.speedXY = true;
+				removeTrackRule(TrackTileRule.HERO_SHOWING);
+				addTrackRule(tileRule);
+			} else {
+				removeTrackRule(TrackTileRule.MAP_MOVING);
+			}
+		}
+
+		private function addHeroTracking(first:Boolean):void {
+			var trackingObjectPoint:Point = trackObjectCameraPos();
+			if(trackingObjectPoint){
+				var tileRule:TrackTileRule = new TrackTileRule(first ? 	TrackTileRule.FIRST_HERO_SHOWING :
+																		TrackTileRule.HERO_SHOWING,
+																		trackingObjectPoint);
+				if(first)
+					tileRule.speed *= 1;
+				else
+					tileRule.speed *= 0.25;
+				addTrackRule(tileRule);
+			}
+		}
+
+		/**
+		 * Позиция камеры, в тайлах, чтобы отслеживаемый объект был в области видимости
+		 * (с минимальным передвижением камеры относительно текущего состояния)
+		 * @return null, если центровка на персонажа не требуется (персонажа нет или он в поле зрения)
+		 */
+		private function trackObjectCameraPos():Point {
+			if(!trackObject) return null;
+			var objPos:Point = trackObject.tile;
+			var movePos:Point = position;
+			var scenePos:Point = movePos.clone();
+
+			const USE_RESERVE:int = 1;
+			if(objPos.x - scenePos.x < PADDING)
+				movePos.x = objPos.x - PADDING - USE_RESERVE * RESERVE;
+			else if((scenePos.x + Config.T_WIDTH) - objPos.x < PADDING + 1)
+				movePos.x = objPos.x - Config.T_WIDTH + PADDING + 1 + USE_RESERVE * RESERVE;
+
+			if(objPos.y - scenePos.y < PADDING)
+				movePos.y = objPos.y - PADDING - USE_RESERVE * RESERVE;
+			else if((scenePos.y + Config.T_HEIGHT) - objPos.y < PADDING + 1)
+				movePos.y = objPos.y - Config.T_HEIGHT + PADDING + 1 + USE_RESERVE * RESERVE;
+
+			roundLevelSize(movePos);
+
+			return movePos.equals(scenePos) ? null : movePos;
+		}
+
+		private function roundLevelSize(tilePos:Point):void {
+			// обеспечить, чтобы экран не сдвинулся за пределы границ карты
+			if(tilePos.x < 0)
+				tilePos.x = 0;
+			else if(tilePos.x > IsoSpatialManager.instance.width - Config.T_WIDTH)
+				tilePos.x = IsoSpatialManager.instance.width - Config.T_WIDTH;
+			if(tilePos.y < -Config.HORIZONT_HEIGHT)
+				tilePos.y = -Config.HORIZONT_HEIGHT;
+			else if(tilePos.y > IsoSpatialManager.instance.height - Config.T_HEIGHT)
+				tilePos.y = IsoSpatialManager.instance.height - Config.T_HEIGHT;
+		}
+
 		private var tempPos:Point = new Point();
 		public function get x():Number
 		{
@@ -346,6 +387,84 @@ package com.somewater.rabbit.iso
 			var x:int = this.x;
 			var y:int = this.y;
 			return pos.x >= x && pos.x <= x + Config.T_WIDTH && pos.y >= y && pos.y <= y + Config.T_HEIGHT;
+		}
+
+		private static function speedByValues(value:int, limit:int, startTracking:int):Number{
+			if(limit < startTracking){
+				if(value < startTracking){
+					if(value < limit) value = limit;
+					return - (startTracking - value) / (startTracking - limit);
+				}
+			}else{
+				if(value > startTracking){
+					if(value > limit) value = limit;
+					return (value - startTracking) / (limit - startTracking);
+				}
+			}
+			return 0;
+		}
+
+		private static function sign(value:Number):int {
+			return value > 0 ? 1 : (value < 0 ? -1 : 0);
+		}
+	}
+}
+
+import flash.geom.Point;
+
+class TrackTileRule{
+	public static const HERO_DAMAGE:int = 10;
+	public static const MAP_MOVING:int = 5;
+	public static const HERO_SHOWING:int = 1;
+	public static const FIRST_HERO_SHOWING:int = 30;
+
+	public static const MAX_SPEED:Number = 0.3;
+	public static const MAX_ACCELERATION:Number = 0.01;
+
+	public var type:int;
+	public var tile:Point;
+	public var speed:Number = 1;
+	public var accX:Number;
+	public var accY:Number;
+	public var speedX:Number;
+	public var speedY:Number;
+	public var speedXY:Boolean = false;
+	public var priority:int = 1;
+
+	public function TrackTileRule(type:int, tile:Point){
+		this.type = type;
+		this.tile = tile;
+		this.priority = this.type;
+	}
+
+	public function canChange(t:TrackTileRule):Boolean {
+		if(type == TrackTileRule.MAP_MOVING){
+			if(
+					(this.accX > 0 ? 1 : (this.accX < 0 ? -1 : 0 )) == (t.accX > 0 ? 1 : (t.accX < 0 ? -1 : 0 ))
+					&&
+					(this.accY > 0 ? 1 : (this.accY < 0 ? -1 : 0 )) == (t.accY > 0 ? 1 : (t.accY < 0 ? -1 : 0 ))
+					)
+				return false;
+		}
+		return true;
+	}
+
+	public function updateSpeed():void {
+		if(accX){
+			speedX += accX;
+			if(speedX > 0){
+				if(speedX > TrackTileRule.MAX_SPEED) speedX = TrackTileRule.MAX_SPEED;
+			}else{
+				if(-speedX > TrackTileRule.MAX_SPEED) speedX = -TrackTileRule.MAX_SPEED;
+			}
+		}
+		if(accY){
+			speedY += accY;
+			if(speedY > 0){
+				if(speedY > TrackTileRule.MAX_SPEED) speedY = TrackTileRule.MAX_SPEED;
+			}else{
+				if(-speedY > TrackTileRule.MAX_SPEED) speedY = -TrackTileRule.MAX_SPEED;
+			}
 		}
 	}
 }

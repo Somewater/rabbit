@@ -237,7 +237,6 @@ package com.somewater.rabbit.managers
 			if(hero)
 			{
 				IsoCameraController.getInstance().trackObject = hero.getProperty(new PropertyReference("@Spatial"));
-				IsoCameraController.getInstance().centreTrackObjectImmediately = true;
 			}
 			else
 			{

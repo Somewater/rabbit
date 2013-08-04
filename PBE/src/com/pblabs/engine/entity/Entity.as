@@ -63,12 +63,12 @@ package com.pblabs.engine.entity
             
             _deferring = value;
         }
-        
+
         public function get eventDispatcher():IEventDispatcher
         {
             return _eventDispatcher;
         }
-        
+
         public override function initialize(name:String = null, alias:String = null):void
         {            
             // Pass control up.
@@ -729,7 +729,7 @@ package com.pblabs.engine.entity
         protected var _components:Dictionary = new Dictionary();
         protected var _tempPropertyInfo:PropertyInfo = new PropertyInfo();
         protected var _deferredComponents:Array = new Array();
-        protected var _eventDispatcher:EventDispatcher = new EventDispatcher();
+        public var _eventDispatcher:EventDispatcher = new EventDispatcher();
 
 		public var spatialRef:IsoSpatial;
 		public var noSleep:Boolean = false;// ентити не спит, даже если находится за пределами видимости
