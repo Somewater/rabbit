@@ -16,8 +16,6 @@ package com.somewater.rabbit.storage
 		public var suspendBinding:Boolean = false;// изменения не диспатс\чатся при установленном флаге (полезно при замене большого кол-ва данных)
 		public static const CHANGE_USER_DATA:String = "changeUserData";
 		
-		public var timeDelta:Number = 0;// разница между временем на сервере и клиенте, секунд: timeDelta = {клиент} - {сервер}, таким образом {клиент} = {сервер} + timeDelta
-		
 		private var listeners:Array = new Array();
 		
 		private var dispatcher:EventDispatcher;
@@ -27,6 +25,9 @@ package com.somewater.rabbit.storage
 		private var _tutorial:int = -1;
 
 		private var _items:Array = [];
+
+		private var _energy:int = 0;
+		private var _energyLastGain:Date;
 
 		/**
 		 * Разница между временем на клиенте и сервере, в миллисекундах
@@ -312,6 +313,37 @@ package com.somewater.rabbit.storage
 		{
 			super.setCustomize(customize);
 			dispatchChange();
+		}
+
+		public function getEnergy(recalc:Boolean = true):int {
+			if(recalc && _energy <= 0 && canGainEnergy()){
+				return ConfManager.instance.getNumber('ENERGY_MAX');
+			}else
+				return _energy;
+		}
+
+		public function canSpendEnergy(value:int = 1):Boolean {
+			return _energy - value > 0 || canGainEnergy();
+		}
+
+		private function canGainEnergy():Boolean {
+			return !_energyLastGain || _energyLastGain.time == 0 ||
+				(_energyLastGain.time + ConfManager.instance.getNumber('ENERGY_GAIN_INTERVAL') * 1000) < serverUnixTime();
+		}
+
+		public function spendEnergy(value:int = 1):void {
+			if(!canSpendEnergy(value))
+				throw new Error("Not enough energy");
+			if(_energy - value < 0 && canGainEnergy()){
+				_energy = ConfManager.instance.getNumber('ENERGY_MAX')
+				_energyLastGain = new Date(serverUnixTime());
+			}
+			_energy -= value;
+		}
+
+		public function setEnergyData(energy:int, lastGain:Date):void {
+			_energy = energy;
+			_energyLastGain = lastGain;
 		}
 	}
 }

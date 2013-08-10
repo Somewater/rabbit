@@ -5,6 +5,8 @@ class LevelsController < BaseUserController
 
 	# прогнать левел инстанс через server_logic и выдать ответ клиенту
 	def process
+		raise LogicError, "Not enough energy" unless @user.has_energy!
+
 		client_rewards = @json['levelInstance']['rewards']
 		@json['levelInstance']['rewards'] = [] # подменяем реварды на пустой массив, чтобы ServerLogic начинал с пустого массива
 		level_instance = LevelInstance.new(@json['levelInstance'])
@@ -27,6 +29,8 @@ class LevelsController < BaseUserController
         end
 			end
 		end
+
+		@user.renewal_energy()
 
 		@response['levelInstance'] = level_instance.to_json
 		@response['user'] = @user.to_json

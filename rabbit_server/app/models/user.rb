@@ -151,6 +151,32 @@ class User < ActiveRecord::Base
 		customize[type.to_s] || 0
 	end
 
+	def debit_energy(value = 1)
+		return false unless has_energy!(value)
+		self.energy -= value
+		true
+	end
+
+	def has_energy!(min_value = 1)
+		less_energy = self.energy - min_value < 0
+		return false if less_energy && !can_gain_energy?
+		if less_energy
+			renewal_energy()
+		end
+		true
+	end
+
+	def can_gain_energy?
+		energy_time_buffer = 60
+		!self.energy_last_gain ||
+				(self.energy_last_gain + PUBLIC_CONFIG['ENERGY_GAIN_INTERVAL']) < Application.time + energy_time_buffer
+	end
+
+	def renewal_energy()
+		self.energy = PUBLIC_CONFIG['ENERGY_MAX']
+		self.energy_last_gain = Application.time
+	end
+
 	# спецально для выдачи инфы о друге, только важнейшая информация, не включающая сериализованные поля "level_instances", "rewards"
 	def to_short_json
 		hash = {};
@@ -178,6 +204,8 @@ class User < ActiveRecord::Base
 		hash['roll'] = self.roll
 		hash['tutorial'] = self.tutorial
 		hash['items'] = @items ? @items.map{|k,v|"#{k}:#{v}"}.join(',') : self['items']
+		hash['energy'] = self.energy.to_i
+		hash['energy_last_gain'] = self.energy_last_gain.to_i
 		hash
 	end
 

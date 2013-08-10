@@ -77,6 +77,8 @@ class Application
 					InitializeController.new(request).call
 				when "levels/complete"
 					LevelsController.new(request).call
+				when "levels/fail"
+					LevelsFailController.new(request).call
 				when "levels/manage"
 					LevelsManageController.new(request).call
 				when "rewards/move"

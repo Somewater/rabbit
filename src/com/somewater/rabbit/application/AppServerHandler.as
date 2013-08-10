@@ -345,6 +345,7 @@ package com.somewater.rabbit.application {
 				for each(var pair:String in itemsArr)
 					if(pair.length)
 						UserProfile.instance.addItem(pair.split(':')[0], pair.split(':')[1]);
+				UserProfile.instance.setEnergyData(json['energy'], new Date(json['energy_last_gain'] * 1000));
 			}
 
 			return gameUser;

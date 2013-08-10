@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 21) do
+ActiveRecord::Schema.define(:version => 22) do
 
   create_table "admins", :force => true do |t|
     t.string   "login",                           :null => false
@@ -29,6 +29,15 @@ ActiveRecord::Schema.define(:version => 21) do
   end
 
   add_index "confs", ["name"], :name => "index_confs_on_name", :unique => true
+
+  create_table "errors", :force => true do |t|
+    t.string  "title"
+    t.text    "content"
+    t.text    "resolution"
+    t.string  "images"
+    t.integer "resolved",   :default => 0
+    t.string  "author"
+  end
 
   create_table "friend_storages", :force => true do |t|
     t.string  "uid",      :null => false
@@ -83,6 +92,14 @@ ActiveRecord::Schema.define(:version => 21) do
     t.datetime "updated_at"
   end
 
+  create_table "stats", :force => true do |t|
+    t.string  "name",                 :null => false
+    t.integer "time",                 :null => false
+    t.integer "value", :default => 0
+  end
+
+  add_index "stats", ["name", "time"], :name => "index_stats_on_name_and_time", :unique => true
+
   create_table "stories", :force => true do |t|
     t.integer "number",                         :null => false
     t.string  "name"
@@ -109,28 +126,30 @@ ActiveRecord::Schema.define(:version => 21) do
   end
 
   create_table "users", :force => true do |t|
-    t.integer  "net",                            :null => false
-    t.string   "uid",                            :null => false
+    t.integer  "net",                             :null => false
+    t.string   "uid",                             :null => false
     t.string   "first_name"
     t.string   "last_name"
     t.text     "level_instances"
     t.text     "rewards"
-    t.integer  "score",           :default => 0
-    t.integer  "money",           :default => 0
-    t.integer  "level",           :default => 1
+    t.integer  "score",            :default => 0
+    t.integer  "money",            :default => 0
+    t.integer  "level",            :default => 1
     t.decimal  "roll"
-    t.integer  "friends_invited", :default => 0
-    t.integer  "postings",        :default => 0
+    t.integer  "friends_invited",  :default => 0
+    t.integer  "postings",         :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "day_counter",     :default => 0
-    t.integer  "tutorial",        :default => 0
+    t.integer  "day_counter",      :default => 0
+    t.integer  "tutorial",         :default => 0
     t.text     "offer_instances"
-    t.integer  "offers",          :default => 0
+    t.integer  "offers",           :default => 0
     t.text     "customize"
-    t.integer  "stars",           :default => 0
+    t.integer  "stars",            :default => 0
     t.string   "items"
     t.string   "locale"
+    t.integer  "energy",           :default => 0
+    t.datetime "energy_last_gain"
   end
 
   add_index "users", ["uid", "net"], :name => "index_users_on_uid_and_net", :unique => true
