@@ -23,6 +23,7 @@ package com.somewater.rabbit.iso
 		public static const TILE_CHANGED:String = "tileChanged";
 		public static const TILE_REACHED:String = "tileReached";
 		public static const DESTINATION_CHANGED:String = "destinationChanged";
+		public static const MOVING_STARTED:String = "movingStarted";
 		
 		public static const SIGNAL_TILE_CHANGED:String = "signal.tileChanged";
 		
@@ -207,6 +208,8 @@ package com.somewater.rabbit.iso
 					_destinationPath[i] = new PathItem(tile, position);
 				}
 				checkFirstPathPoint();
+				if(_destinationPath.length > 0)
+					_owner._eventDispatcher.dispatchEvent(new Event(MOVING_STARTED))
 			}else{
 				_destination = null;
 				setRenderState(false);

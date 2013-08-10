@@ -22,10 +22,11 @@ package com.somewater.rabbit.iso
 	public class IsoCameraController extends PBObject implements ITickedObject
 	{
 
-		private static const DISALLOW_MAP_MOVE_MS:int = 50;
+		private static const DISALLOW_MAP_MOVE_MS:int = 5;
 		private static const HERO_SHOW_DELAY_MS:int = 60;
 		public static const DEFAULT_SPEED:Number = 0.5;
 		private static const HERO_SHOW_SPEED_COEF:Number = 0.5;
+		private static const MOVING_HERO_SHOW_SPEED_COEF:Number = 0.5;
 		private static const HERO_FIRST_SHOW_SPEED_COEF:Number = 1;
 		public static const MAX_SPEED:Number = 0.3;
 		public static const MAX_ACCELERATION:Number = 0.02;
@@ -64,6 +65,8 @@ package com.somewater.rabbit.iso
 		 * Вначала навести каму на героя, чтобы продемострировать игроку его положение на уровне
 		 */
 		public var centreOnHero:Boolean = false;
+
+		private var trackObjectIsMoved:Boolean = false;
 
 		private var trackTileRules:Vector.<TrackTileRule>;
 		private var trackTileRulesEmptyTime:int = 0;
@@ -121,19 +124,19 @@ package com.somewater.rabbit.iso
 			applyTrackRules();
 
 			// трекинг на перемотку карты
-			if(mouseOnScreen && disallowMapMoveTime-- <= 0)
+			if(mouseOnScreen && !trackObjectIsMoved && disallowMapMoveTime-- <= 0)
 				checkMapMoveTracking();
 
 			if(centreOnHero){
-				addHeroTracking(true);
+				addHeroTracking(1);
 				centreOnHero = false;
 			}
 
 			// трекинг на героя
 			var trackOnlyHeroShow:Boolean = trackTileRules.length == 1 && trackTileRules[0].type == TrackTileRule.HERO_SHOWING;
 			if(trackOnlyHeroShow || trackTileRules.length == 0){
-				if(trackOnlyHeroShow || trackTileRulesEmptyTime++ > HERO_SHOW_DELAY_MS){
-					addHeroTracking(false);
+				if(trackOnlyHeroShow || trackObjectIsMoved || trackTileRulesEmptyTime++ > HERO_SHOW_DELAY_MS){
+					addHeroTracking(trackObjectIsMoved ? 3 : 2);
 				}
 			} else {
 				trackTileRulesEmptyTime = 0;
@@ -209,6 +212,8 @@ package com.somewater.rabbit.iso
 		private function onLevelRestarted():void {
 			centreOnHero = true;
 			trackObject._owner.eventDispatcher.addEventListener(HeroHealthEvent.HERO_DAMAGE_EVENT, onHeroDamage, false, 0, true);
+			trackObject._owner.eventDispatcher.addEventListener(IsoMover.MOVING_STARTED, onHeroMovingStarted, false, 0, true);
+			trackObject._owner.eventDispatcher.addEventListener(IsoMover.DESTINATION_CHANGED, onHeroMovingStopped, false, 0, true);
 			removeAllTrackRules();
 		}
 
@@ -221,6 +226,19 @@ package com.somewater.rabbit.iso
 					addTrackRule(tileRule);
 					disallowMapMoveTime = DISALLOW_MAP_MOVE_MS;
 				}
+			}
+		}
+
+		private function onHeroMovingStarted(event:Event):void {
+			if(!trackObjectIsMoved && !Config.memory.disableCameraTracking){
+				trackObjectIsMoved = true;
+				removeTrackRule(TrackTileRule.MAP_MOVING);
+			}
+		}
+
+		private function onHeroMovingStopped(event:Event):void {
+			if(trackObjectIsMoved){
+				trackObjectIsMoved = false;
 			}
 		}
 
@@ -255,16 +273,24 @@ package com.somewater.rabbit.iso
 			}
 		}
 
-		private function addHeroTracking(first:Boolean):void {
+		/**
+		 * @param type
+		 *        1 TrackTileRule.FIRST_HERO_SHOWING
+		 *        2 TrackTileRule.HERO_SHOWING, при длительном отсутствии движений камеры
+		 *        3 TrackTileRule.HERO_SHOWING, при перемещении персонажа
+		 */
+		private function addHeroTracking(type:int):void {
 			var trackingObjectPoint:Point = trackObjectCameraPos();
 			if(trackingObjectPoint){
-				var tileRule:TrackTileRule = new TrackTileRule(first ? 	TrackTileRule.FIRST_HERO_SHOWING :
+				var tileRule:TrackTileRule = new TrackTileRule(type == 1 ? 	TrackTileRule.FIRST_HERO_SHOWING :
 																		TrackTileRule.HERO_SHOWING,
 																		trackingObjectPoint);
-				if(first)
+				if(type == 1)
 					tileRule.speed *= HERO_FIRST_SHOW_SPEED_COEF;
-				else
+				else if(type == 2)
 					tileRule.speed *= HERO_SHOW_SPEED_COEF;
+				else
+					tileRule.speed *= MOVING_HERO_SHOW_SPEED_COEF;
 				addTrackRule(tileRule);
 			}
 		}

@@ -36,6 +36,7 @@ package com.somewater.rabbit.storage
 		 * portfolioMode - включен режим портфолио, максимально раскрывающий воз-ти игры
 		 * 'lang_pack' - нераспарсенный словарь ключей
 		 * drawTileGrid - рисовать сетку тайлов
+		 * disableCameraTracking - отключить автоматическое слежение камеры за персонажем
 		 */
 		public static var memory:Object = {};
 		
