@@ -3,6 +3,7 @@ package com.somewater.rabbit.application.windows {
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
 	import com.somewater.rabbit.storage.Lib;
+	import com.somewater.rabbit.storage.UserProfile;
 	import com.somewater.storage.Lang;
 
 	import flash.events.Event;
@@ -44,7 +45,12 @@ package com.somewater.rabbit.application.windows {
 
 		override protected function onWindowClosed(e:Event = null):void {
 			// стартуем тот же уровень, что был в игре на момент старта окна
-			Config.application.startGame(level);
+			if(UserProfile.instance.canSpendEnergy()){
+				UserProfile.instance.spendEnergy();
+				Config.application.startGame(level);
+			}else{
+				Config.application.message("NEED_MORE_ENERGY_ERROR");
+			}
 		}
 	}
 }

@@ -335,10 +335,16 @@ package com.somewater.rabbit.storage
 			if(!canSpendEnergy(value))
 				throw new Error("Not enough energy");
 			if(_energy - value < 0 && canGainEnergy()){
-				_energy = ConfManager.instance.getNumber('ENERGY_MAX')
-				_energyLastGain = new Date(serverUnixTime());
+				gainEnergy();
 			}
 			_energy -= value;
+		}
+
+		public function gainEnergy():void{
+			if(!canGainEnergy())
+				throw new Error("Can't gain energy");
+			_energy = ConfManager.instance.getNumber('ENERGY_MAX')
+			_energyLastGain = new Date(serverUnixTime());
 		}
 
 		public function setEnergyData(energy:int, lastGain:Date):void {

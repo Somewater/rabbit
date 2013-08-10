@@ -191,8 +191,14 @@ package com.somewater.rabbit.application
 		private function onLevelClick(e:Event):void
 		{
 			var level:LevelDef = (e.currentTarget as LevelIcon).data;
-			if(UserProfile.instance.canPlayWithLevel(level) || Config.memory['portfolioMode'])
-				Config.application.startGame(level);
+			if(UserProfile.instance.canPlayWithLevel(level) || Config.memory['portfolioMode']){
+				if(UserProfile.instance.canSpendEnergy()){
+					UserProfile.instance.spendEnergy();
+					Config.application.startGame(level);
+				}else{
+					Config.application.message("NEED_MORE_ENERGY_ERROR");
+				}
+			}
 		}
 		
 		private function onLeftButtonClick(e:Event):void

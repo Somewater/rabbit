@@ -13,6 +13,8 @@ package com.somewater.rabbit {
 
 		public static const LEVEL_PASSED:String = 'level_passed';// уровень пройден
 
+		public static const LEVEL_FAILED:String = 'level_failed';// уровень пройден
+
 		public static const FRIENDS_INVITED:String = 'friends_invited';// кнопка "пригласи друзей" нажата
 
 		public static const POSTING:String = 'posting';// завершен какой-либо постинг

@@ -30,7 +30,12 @@ package com.somewater.rabbit.application.commands {
 			if((currentPassedLevel == null || UserProfile.instance.levelNumber - 1 == currentPassedLevel.number)
 					&& nextLevelDef != null // и еще есть непройденные уровни
 					&& nextLevelDef.story && nextLevelDef.story.enabled) // уровень относится к активированной истории
-				Config.application.startGame(Config.application.getLevelByNumber(UserProfile.instance.levelNumber));
+				if(UserProfile.instance.canSpendEnergy()){
+					UserProfile.instance.spendEnergy();
+					Config.application.startGame(Config.application.getLevelByNumber(UserProfile.instance.levelNumber));
+				}else{
+					Config.application.message("NEED_MORE_ENERGY_ERROR");
+				}
 			// иначе переходим в меню уровней
 			else
 				Config.application.startPage('levels');

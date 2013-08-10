@@ -92,6 +92,27 @@ package com.somewater.rabbit.application {
 				}, onError, null, {'secure': true})
 		}
 
+		public function onLevelFailed(user:GameUser, levelInstance:LevelInstanceDef, onComplete:Function = null, onError:Function = null):void
+		{
+			handler.call('levels/fail', {'levelInstance':levelInstanceToJson(levelInstance, {})},
+					function(response:Object):void{
+						// проверяем user и levelInstance на синхронность с текущими
+						if(!Config.memory['portfolioMode'] && response['levelInstance']['succes'] == false /*||
+						 arrayElementsIdentical(response['levelInstance']['rewards'] || [], levelInstance.rewards) == false*/)
+						{
+							// произошла рассинхронизация сервера и клиента
+							Config.application.fatalError('Level !pass error')
+							onError && onError(response);
+						}
+						else
+						{
+							jsonToGameUser(response['user'], user);
+							Config.stat(Stat.LEVEL_FAILED);
+							onComplete && onComplete(response);
+						}
+					}, onError, null, {'secure': true})
+		}
+
 		public function onPosting(gameUser:GameUser, onComplete:Function = null, onError:Function = null):void
 		{
 			handler.call('posting/complete', {'roll': int(gameUser.getRoll() * 1000000)},

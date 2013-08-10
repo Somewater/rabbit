@@ -371,8 +371,12 @@ package
 			if(levelInstance.levelDef.type == LevelDef.TYPE || levelInstance.levelDef.type == TutorialLevelDef.TYPE)
 			{
 				ServerLogic.addRewardsToLevelInstance(UserProfile.instance, levelInstance);
-				if(levelInstance.success)
+				if(levelInstance.success){
+					UserProfile.instance.gainEnergy()
 					AppServerHandler.instance.onLevelPassed(UserProfile.instance, levelInstance);
+				}else{
+					AppServerHandler.instance.onLevelFailed(UserProfile.instance, levelInstance);
+				}
 			}
 
 			TutorialManager.instance.restart(null);
