@@ -52,10 +52,12 @@ class AllSpec
 
 		before :each do
 			@user = User.new({:uid => '1', :level => 2})
+			@start_test_time = Time.new
+			Application.instance_variable_set('@time', @start_test_time.dup)
 		end
 		
 		after :each do
-			
+			Application.time.should be_within(1).of(@start_test_time)
 		end
 		
 		describe "Server logic" do
@@ -273,6 +275,27 @@ class AllSpec
 					@levelInstance.rewards.clear
 				end
 			end
+
+			it "После прохождения следующего доступного уровня, энергия на максимум" do
+				@user.energy = 0
+				@user.level = 2
+				@level.number = 2
+				server_logic_process()
+				@user.energy.should == PUBLIC_CONFIG['ENERGY_MAX']
+			end
+
+			it "После прохождегния одного из предыдущих (но не последнего) уровней, энергия не меняется" do
+				@user.energy = 0
+				@user.level = 3
+				@level.number = 2
+				server_logic_process()
+				@user.energy.should == 0
+			end
+
+			it "Нельзя закомплитить уровень, команда старта которого не была отправлена" do
+				pending()
+			end
+
 		end
 		
 		describe "Security" do
@@ -379,7 +402,12 @@ class AllSpec
 				end
 				@user.update_attributes({:rewards => {}, :level_instances => {}, :day_counter => 0})
 				@user.save
+				@original_app_time = Application.time
 				Application.instance_variable_set('@time', Time.new)
+			end
+
+			after :each do
+				Application.instance_variable_set('@time', @original_app_time)
 			end
 
 			def request(hash)
@@ -868,6 +896,13 @@ class AllSpec
 				@storage.rewarded = []
 				@storage.friends = []
 				@storage.save
+
+				@original_app_time = Application.time
+				Application.instance_variable_set('@time', Time.new)
+			end
+
+			after :each do
+				Application.instance_variable_set('@time', @original_app_time)
 			end
 
 			def request(friend_id)
@@ -931,6 +966,111 @@ class AllSpec
 
 				response = request(@friend.uid)
 				response['success'].should be_false
+			end
+		end
+
+		describe "Energy" do
+			before(:each) do
+				@user.energy = 0
+				@user.energy_last_gain = nil
+			end
+
+			it "Энергия не выдается, если не проставлен флаг" do
+				@user.energy_last_gain = Time.new - PUBLIC_CONFIG['ENERGY_GAIN_INTERVAL']
+				@user.energy_with_gain().should > 0
+				@user.energy.should == 0
+				@user.energy_with_gain(true).should > 0
+				@user.energy.should > 0
+				@user.energy_with_gain().should == @user.energy
+			end
+
+			it "Энергия выдается в размере прошедших этапов выдачи" do
+				times = 3
+				@user.energy_last_gain = Time.new - PUBLIC_CONFIG['ENERGY_GAIN_INTERVAL'] * times
+				@user.energy_with_gain().should == times
+			end
+
+			it "Энергия выдается не более, чем макс. значение" do
+				@user.energy_last_gain = Time.now - PUBLIC_CONFIG['ENERGY_GAIN_INTERVAL'] * PUBLIC_CONFIG['ENERGY_MAX'] * 2
+				@user.energy_with_gain().should == PUBLIC_CONFIG['ENERGY_MAX']
+			end
+
+			it "Энергия не выдается, если время еще не наступило" do
+				@user.energy_last_gain = Time.now - 1
+				@user.energy_with_gain().should == 0
+			end
+
+			it "После выдачи энергии, следующее время выдачи считать с текущего момента" do
+				@user.energy_last_gain = Time.new - PUBLIC_CONFIG['ENERGY_GAIN_INTERVAL']
+				@user.energy_with_gain(true).should > 0
+				@user.energy_last_gain.should be_within(3).of(Time.new)
+			end
+
+			it "После использования энергии (если был максимум) с этого момента начинается таймер выдачи" do
+				@user.energy = PUBLIC_CONFIG['ENERGY_MAX']
+				@user.energy_last_gain = Time.new - 10
+				@user.debit_energy().should be_true
+				@user.energy_last_gain.should be_within(3).of(Time.new)
+			end
+
+			it "Нельзя использовать энергию, если ее не хватает" do
+				@user.energy_last_gain = Time.new
+				@user.debit_energy().should be_false
+			end
+
+			it "Можно использовать энергию, если ее не хватает, но с учетом выдачи ее достаточно" do
+				@user.energy_last_gain = Time.new - PUBLIC_CONFIG['ENERGY_GAIN_INTERVAL']
+				@user.debit_energy().should be_true
+			end
+
+			context "Прохождение уровней" do
+
+				def level_start(levelNumber)
+					data = {'net' => @user.net,'uid' => @user.uid, 'levelNumber' => levelNumber}
+					execute_request(data, LevelsStartController)
+				end
+
+				it "Старт туториального уровня не снимает энергию" do
+					pending()
+				end
+
+				it "Старт ранее пройденного уровня списывает энергию" do
+					@user.energy = 1
+					@user.level = 3
+					level_start(2)
+					@user.energy.should == 0
+				end
+
+				it "Старт впервые пройденного уровня списывает энергию" do
+					@user.energy = 1
+					@user.level = 2
+					level_start(2)
+					@user.energy.should == 0
+				end
+
+				it "Нельзя стартовать уровень, если нет энергии" do
+					@user.energy = 0
+					@user.level = 2
+					lambda{
+						level_start(2)
+					}.should raise_error(/Energy already ended/)
+				end
+
+				it "Можно стартовать уровень, если энергия на нуле, но подошло время выдачи новой" do
+					@user.energy = 0
+					@user.energy_last_gain = Time.new - PUBLIC_CONFIG['ENERGY_GAIN_INTERVAL']
+					@user.level = 2
+					level_start(2)
+					@user.energy.should == 0
+				end
+
+				it "Нельзя стартовать уровень, недоступный по уровню игрока" do
+					@user.energy = 1
+					@user.level = 1
+					lambda{
+						level_start(2)
+					}.should raise_error(/Need 2 user level/)
+				end
 			end
 		end
 	end

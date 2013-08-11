@@ -372,10 +372,7 @@ package
 			{
 				ServerLogic.addRewardsToLevelInstance(UserProfile.instance, levelInstance);
 				if(levelInstance.success){
-					UserProfile.instance.gainEnergy()
 					AppServerHandler.instance.onLevelPassed(UserProfile.instance, levelInstance);
-				}else{
-					AppServerHandler.instance.onLevelFailed(UserProfile.instance, levelInstance);
 				}
 			}
 
@@ -560,7 +557,8 @@ package
 				{
 					levelStartMessage(level);
 					Config.stat(Stat.LEVEL_STARTED);
-
+					UserProfile.instance.spendEnergy();
+					AppServerHandler.instance.onLevelStarted(UserProfile.instance, level);
 					OfferManager.instance.onLevelStarted(level);
 				}
 				else if(level.type == RewardLevelDef.TYPE)

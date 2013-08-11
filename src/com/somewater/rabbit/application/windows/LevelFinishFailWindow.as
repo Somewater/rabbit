@@ -46,7 +46,6 @@ package com.somewater.rabbit.application.windows {
 		override protected function onWindowClosed(e:Event = null):void {
 			// стартуем тот же уровень, что был в игре на момент старта окна
 			if(UserProfile.instance.canSpendEnergy()){
-				UserProfile.instance.spendEnergy();
 				Config.application.startGame(level);
 			}else{
 				Config.application.message("NEED_MORE_ENERGY_ERROR");

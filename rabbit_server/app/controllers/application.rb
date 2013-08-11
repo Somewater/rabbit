@@ -44,7 +44,7 @@ class Application
 		end
 
 		def time
-			@time = Time.new unless @time
+			@time = Time.new.freeze unless @time
 			@time
 		end
 
@@ -75,10 +75,10 @@ class Application
 					Stat.inc(request['name']); '{"result":"ok"}'
 				when "init"
 					InitializeController.new(request).call
+				when "levels/start"
+					LevelsStartController.new(request).call
 				when "levels/complete"
 					LevelsController.new(request).call
-				when "levels/fail"
-					LevelsFailController.new(request).call
 				when "levels/manage"
 					LevelsManageController.new(request).call
 				when "rewards/move"

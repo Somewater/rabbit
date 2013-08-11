@@ -158,23 +158,37 @@ class User < ActiveRecord::Base
 	end
 
 	def has_energy!(min_value = 1)
-		less_energy = self.energy - min_value < 0
-		return false if less_energy && !can_gain_energy?
-		if less_energy
-			renewal_energy()
+		if self.energy_with_gain() - min_value < 0
+			false
+		else
+			energy_with_gain(true)
+			true
 		end
-		true
 	end
 
-	def can_gain_energy?
+	def energy_with_gain(set_values = false)
 		energy_time_buffer = 60
-		!self.energy_last_gain ||
-				(self.energy_last_gain + PUBLIC_CONFIG['ENERGY_GAIN_INTERVAL']) < Application.time + energy_time_buffer
+		energy_var = self.energy
+		energy_last_gain_var = self.energy_last_gain
+		while energy_var < PUBLIC_CONFIG['ENERGY_MAX'] && (energy_last_gain_var.nil? ||
+						(energy_last_gain_var + PUBLIC_CONFIG['ENERGY_GAIN_INTERVAL']) < Application.time + energy_time_buffer)
+			if energy_last_gain_var.nil?
+				energy_last_gain_var = Application.time.dup
+			else
+				energy_last_gain_var += PUBLIC_CONFIG['ENERGY_GAIN_INTERVAL']
+			end
+			energy_var += 1
+		end
+		if set_values
+			self.energy = energy_var
+			self.energy_last_gain = Application.time.dup
+		end
+		energy_var
 	end
 
-	def renewal_energy()
+	def gain_energy()
 		self.energy = PUBLIC_CONFIG['ENERGY_MAX']
-		self.energy_last_gain = Application.time
+		self.energy_last_gain = Application.time.dup
 	end
 
 	# спецально для выдачи инфы о друге, только важнейшая информация, не включающая сериализованные поля "level_instances", "rewards"

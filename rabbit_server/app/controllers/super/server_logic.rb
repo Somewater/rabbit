@@ -71,7 +71,10 @@ class ServerLogic
 			# *** LEVEL INCREMENT (увеличть левел)
 			if(lastLevelInstance == nil)
 				# stub, на сервере действительно пишется в базу
-				user.level = levelInstance.levelDef.number + 1 if user.level < levelInstance.levelDef.number + 1
+				if user.level < levelInstance.levelDef.number + 1
+					user.level = levelInstance.levelDef.number + 1
+					user.gain_energy()
+				end
 			else
 				# присвоив новому макс. значения
 				levelInstance.data = {'c' => [lastLevelInstance.carrotHarvested, levelInstance.carrotHarvested].max,

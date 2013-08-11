@@ -17,7 +17,6 @@ package com.somewater.rabbit.application.commands
 			Config.game.finishLevel(LevelInstanceDef.DUMMY_FATAL_LEVEL);
 
 			if(UserProfile.instance.canSpendEnergy()){
-				UserProfile.instance.spendEnergy();
 				Config.application.startGame(level);
 			}else{
 				Config.application.message("NEED_MORE_ENERGY_ERROR");

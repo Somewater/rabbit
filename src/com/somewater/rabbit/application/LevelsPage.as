@@ -193,7 +193,6 @@ package com.somewater.rabbit.application
 			var level:LevelDef = (e.currentTarget as LevelIcon).data;
 			if(UserProfile.instance.canPlayWithLevel(level) || Config.memory['portfolioMode']){
 				if(UserProfile.instance.canSpendEnergy()){
-					UserProfile.instance.spendEnergy();
 					Config.application.startGame(level);
 				}else{
 					Config.application.message("NEED_MORE_ENERGY_ERROR");

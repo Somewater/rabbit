@@ -6,7 +6,8 @@ package com.somewater.rabbit.application {
 	import com.somewater.rabbit.storage.RewardDef;
 	import com.somewater.rabbit.storage.RewardInstanceDef;
 	import com.somewater.rabbit.storage.RewardLevelDef;
-	import com.somewater.rabbit.xml.XmlController;
+import com.somewater.rabbit.storage.UserProfile;
+import com.somewater.rabbit.xml.XmlController;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -21,7 +22,7 @@ package com.somewater.rabbit.application {
 		 * @param levelInstance
 		 * @return массив выданных ревардов (array of RewardInstanceDef)
 		 */
-		public static function addRewardsToLevelInstance(user:GameUser, levelInstance:LevelInstanceDef):Array
+		public static function addRewardsToLevelInstance(user:UserProfile, levelInstance:LevelInstanceDef):Array
 		{
 			var reward:RewardDef;
 			var selectedReward:RewardDef;
@@ -104,8 +105,12 @@ package com.somewater.rabbit.application {
 			// *** LEVEL INCREMENT (увеличть левел)
 			if(lastLevelInstance == null)
 			{
-				// stub, на сервере действительно пишется в базу
-				//user.levelNumber = levelInstance.levelDef.number;
+				if(user.levelNumber < levelInstance.levelDef.number + 1){
+					// stub, на сервере действительно пишется в базу
+					//user.levelNumber = levelInstance.levelDef.number + 1;
+
+					user.gainEnergy();
+				}
 			}
 			else
 			{
