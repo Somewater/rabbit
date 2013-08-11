@@ -6,7 +6,8 @@ package com.somewater.rabbit.iso
 	import com.pblabs.engine.core.ITickedObject;
 	import com.pblabs.engine.core.PBObject;
 	import com.pblabs.engine.debug.Logger;
-	import com.somewater.rabbit.events.HeroHealthEvent;
+import com.somewater.rabbit.events.CameraMoveEvent;
+import com.somewater.rabbit.events.HeroHealthEvent;
 	import com.somewater.rabbit.iso.scene.IsoSpatialManager;
 	import com.somewater.rabbit.managers.InitializeManager;
 	import com.somewater.rabbit.storage.Config;
@@ -30,7 +31,7 @@ package com.somewater.rabbit.iso
 		private static const HERO_FIRST_SHOW_SPEED_COEF:Number = 1;
 		public static const MAX_SPEED:Number = 0.3;
 		public static const MAX_ACCELERATION:Number = 0.02;
-		private static const MAP_MOVE_PADDING:int = 180;
+		private static const MAP_MOVE_PADDING:int = 90;
 		private static const TRACK_OBJECT_MOVING_DELAY:int = 10;
 
 		private static var instance:IsoCameraController;
@@ -153,6 +154,8 @@ package com.somewater.rabbit.iso
 				var tile:Point = tileRule.tile;
 				if(scenePos.equals(tile)){
 					trackTileRules.shift();
+					if(tileRule.type == TrackTileRule.MAP_MOVING)
+						dispatchMapMoveEvent();
 					continue;
 				}
 				var dx:Number = tile.x - scenePos.x;
@@ -185,10 +188,16 @@ package com.somewater.rabbit.iso
 					if(trackTileRules[i].type == tileRule.type){
 						if(trackTileRules[i].canChange(tileRule))
 							trackTileRules[i] = tileRule;
+						if(tileRule.type == TrackTileRule.MAP_MOVING)
+							dispatchMapMoveEvent(tileRule);
 						return;
 					}
 				}
 			}
+
+			if(tileRule.type == TrackTileRule.MAP_MOVING)
+				dispatchMapMoveEvent(tileRule);
+
 			for(i = 0; i < trackTileRules.length; i++){
 				r = trackTileRules[i];
 				if(r.priority < tileRule.priority){
@@ -203,6 +212,8 @@ package com.somewater.rabbit.iso
 			for(var i:int = 0; i < trackTileRules.length; i++){
 				if(trackTileRules[i].type == type){
 					trackTileRules.splice(i, 1);
+					if(type == TrackTileRule.MAP_MOVING)
+						dispatchMapMoveEvent();
 					return;
 				}
 			}
@@ -210,6 +221,7 @@ package com.somewater.rabbit.iso
 
 		private function removeAllTrackRules():void {
 			trackTileRules = new Vector.<TrackTileRule>();
+			dispatchMapMoveEvent();
 		}
 
 		private function onLevelRestarted():void {
@@ -428,6 +440,15 @@ package com.somewater.rabbit.iso
 			var x:int = this.x;
 			var y:int = this.y;
 			return pos.x >= x && pos.x <= x + Config.T_WIDTH && pos.y >= y && pos.y <= y + Config.T_HEIGHT;
+		}
+
+		private function dispatchMapMoveEvent(tileRule:TrackTileRule = null):void {
+			var direction:int = 0;
+			if(tileRule){
+				direction |= tileRule.accX == 0 ? 0 : (tileRule.accX > 0 ? CameraMoveEvent.RIGHT : CameraMoveEvent.LEFT);
+				direction |= tileRule.accY == 0 ? 0 : (tileRule.accY > 0 ? CameraMoveEvent.DOWN : CameraMoveEvent.UP);
+			}
+			Config.game.dispatchEvent(new CameraMoveEvent(direction));
 		}
 
 		private static function speedByValues(value:int, limit:int, startTracking:int):Number{

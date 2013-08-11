@@ -5,7 +5,9 @@ package com.somewater.rabbit.application
 	import com.somewater.rabbit.SoundTrack;
 	import com.somewater.rabbit.Sounds;
 	import com.somewater.rabbit.application.windows.PauseMenuWindow;
-	import com.somewater.rabbit.storage.Config;
+import com.somewater.rabbit.events.CameraMoveEvent;
+import com.somewater.rabbit.storage.Config;
+import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.storage.Lang;
 	import com.somewater.text.EmbededTextField;
@@ -44,6 +46,11 @@ package com.somewater.rabbit.application
 		public var carrotMin:int;
 
 		private var carrotGUISwitched:int = 0;
+
+		private var cameraArrowLeft:Sprite;
+		private var cameraArrowRight:Sprite;
+		private var cameraArrowUp:Sprite;
+		private var cameraArrowDown:Sprite;
 		
 		public function GameGUI()
 		{
@@ -119,6 +126,31 @@ package com.somewater.rabbit.application
 			powerupPanel.y = statPanel.y;
 			addChild(powerupPanel);
 
+			const CAMERA_ARROW_PADDING:int = 15;
+			cameraArrowLeft = Lib.createMC('interface.CameraArrowLeft');
+			cameraArrowLeft.mouseChildren = cameraArrowLeft.mouseEnabled = false;
+			cameraArrowLeft.x = CAMERA_ARROW_PADDING;
+			cameraArrowLeft.y = (Config.HEIGHT - cameraArrowLeft.height) * 0.5;
+			addChild(cameraArrowLeft);
+			cameraArrowRight = Lib.createMC('interface.CameraArrowRight');
+			cameraArrowRight.mouseChildren = cameraArrowRight.mouseEnabled = false;
+			cameraArrowRight.x = Config.WIDTH - cameraArrowRight.width - CAMERA_ARROW_PADDING;
+			cameraArrowRight.y = (Config.HEIGHT - cameraArrowRight.height) * 0.5;
+			addChild(cameraArrowRight);
+			cameraArrowUp = Lib.createMC('interface.CameraArrowUp');
+			cameraArrowUp.mouseChildren = cameraArrowUp.mouseEnabled = false;
+			cameraArrowUp.x = Math.min(powerupPanel.x - cameraArrowUp.width - CAMERA_ARROW_PADDING, (Config.WIDTH - cameraArrowUp.width) * 0.5);
+			cameraArrowUp.y = powerupPanel.y;
+			addChild(cameraArrowUp);
+			cameraArrowDown = Lib.createMC('interface.CameraArrowDown');
+			cameraArrowDown.mouseChildren = cameraArrowDown.mouseEnabled = false;
+			cameraArrowDown.x = (Config.WIDTH - cameraArrowDown.width) * 0.5;
+			cameraArrowDown.y = Config.HEIGHT - cameraArrowDown.height - CAMERA_ARROW_PADDING;
+			addChild(cameraArrowDown);
+
+			cameraArrowLeft.visible = cameraArrowRight.visible = cameraArrowDown.visible = cameraArrowUp.visible = false;
+			Config.game.addEventListener(CameraMoveEvent.CAMERA_MOVE_EVENT, onCameraMove, false, 0, true);
+
 			Config.application.addPropertyListener('game.switch', onGameSwitched);
 		}
 
@@ -176,6 +208,8 @@ package com.somewater.rabbit.application
 			Hint.removeHint(statPanel.getChildByName('timeHintArea'));
 			Hint.removeHint(statPanel.getChildByName('healthHintArea'));
 			Hint.removeHint(statPanel.getChildByName('scoreRatingHintArea'));
+
+			Config.game.removeEventListener(CameraMoveEvent.CAMERA_MOVE_EVENT, onCameraMove);
 
 			Config.application.removePropertyListener('game.switch', onGameSwitched);
 		}
@@ -329,6 +363,14 @@ package com.somewater.rabbit.application
 		public function get powerupIndicator():DisplayObject
 		{
 			return powerupPanel.getOpenBtn();
+		}
+
+		private function onCameraMove(event:CameraMoveEvent):void {
+			var dir:int = event.direction;
+			cameraArrowLeft.visible = dir & CameraMoveEvent.LEFT;
+			cameraArrowRight.visible = dir & CameraMoveEvent.RIGHT;
+			cameraArrowDown.visible = dir & CameraMoveEvent.DOWN;
+			cameraArrowUp.visible = dir & CameraMoveEvent.UP;
 		}
 	}
 }
