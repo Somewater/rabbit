@@ -31,6 +31,7 @@ package com.somewater.rabbit.iso
 		public static const MAX_SPEED:Number = 0.3;
 		public static const MAX_ACCELERATION:Number = 0.02;
 		private static const MAP_MOVE_PADDING:int = 180;
+		private static const TRACK_OBJECT_MOVING_DELAY:int = 10;
 
 		private static var instance:IsoCameraController;
 
@@ -67,6 +68,7 @@ package com.somewater.rabbit.iso
 		public var centreOnHero:Boolean = false;
 
 		private var trackObjectIsMoved:Boolean = false;
+		private var trackObjectIsMovedDelayTimer:int = 0;
 
 		private var trackTileRules:Vector.<TrackTileRule>;
 		private var trackTileRulesEmptyTime:int = 0;
@@ -124,7 +126,7 @@ package com.somewater.rabbit.iso
 			applyTrackRules();
 
 			// трекинг на перемотку карты
-			if(mouseOnScreen && !trackObjectIsMoved && disallowMapMoveTime-- <= 0)
+			if(mouseOnScreen && !this.trackObjectIsMoved && disallowMapMoveTime-- <= 0)
 				checkMapMoveTracking();
 
 			if(centreOnHero){
@@ -134,6 +136,7 @@ package com.somewater.rabbit.iso
 
 			// трекинг на героя
 			var trackOnlyHeroShow:Boolean = trackTileRules.length == 1 && trackTileRules[0].type == TrackTileRule.HERO_SHOWING;
+			var trackObjectIsMoved:Boolean = this.trackObjectIsMoved && this.trackObjectIsMovedDelayTimer-- < 0;
 			if(trackOnlyHeroShow || trackTileRules.length == 0){
 				if(trackOnlyHeroShow || trackObjectIsMoved || trackTileRulesEmptyTime++ > HERO_SHOW_DELAY_MS){
 					addHeroTracking(trackObjectIsMoved ? 3 : 2);
@@ -211,6 +214,9 @@ package com.somewater.rabbit.iso
 
 		private function onLevelRestarted():void {
 			centreOnHero = true;
+			trackObjectIsMoved = false;
+			trackObjectIsMovedDelayTimer = 0;
+			disallowMapMoveTime = 0;
 			trackObject._owner.eventDispatcher.addEventListener(HeroHealthEvent.HERO_DAMAGE_EVENT, onHeroDamage, false, 0, true);
 			trackObject._owner.eventDispatcher.addEventListener(IsoMover.MOVING_STARTED, onHeroMovingStarted, false, 0, true);
 			trackObject._owner.eventDispatcher.addEventListener(IsoMover.DESTINATION_CHANGED, onHeroMovingStopped, false, 0, true);
@@ -232,6 +238,7 @@ package com.somewater.rabbit.iso
 		private function onHeroMovingStarted(event:Event):void {
 			if(!trackObjectIsMoved && !Config.memory.disableCameraTracking){
 				trackObjectIsMoved = true;
+				trackObjectIsMovedDelayTimer = TRACK_OBJECT_MOVING_DELAY;
 				removeTrackRule(TrackTileRule.MAP_MOVING);
 			}
 		}

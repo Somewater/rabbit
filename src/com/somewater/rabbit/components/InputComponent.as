@@ -106,7 +106,7 @@ package com.somewater.rabbit.components
 		override protected function onAdd():void
 		{
 			super.onAdd();			
-			PBE.mainStage.addEventListener(MouseEvent.CLICK, onSceneClick);
+			PBE.mainStage.addEventListener(MouseEvent.MOUSE_DOWN, onSceneClick);
 			PBE.inputManager.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			PBE.inputManager.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 			
