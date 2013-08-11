@@ -130,7 +130,7 @@ class AllSpec
 			
 			it "Выданные реварды пишутся в юзера, level_instance и возвращаются функцией" do
 				@levelInstance.data = {'timeSpended' => 1, 'carrotHarvested' => @conditions['carrotAll']}
-				@user.stub!('get_roll').and_return(0.999999)
+				@user.stub('get_roll').and_return(0.999999)
 				rewards = server_logic_process()
 				rewards.size.should > 0
 				@user.rewards.size.should == rewards.size
@@ -183,7 +183,7 @@ class AllSpec
 			
 			it "Выдать CARROT_ALL (если повезет с рандомом), если их достаточно собрано и ранее уровень не проходили" do
 				@levelInstance.data = {'carrotHarvested' => @conditions['carrotAll']}
-				@user.stub!('get_roll').and_return(0.999999)
+				@user.stub('get_roll').and_return(0.999999)
 				rewards = server_logic_process()
 				rewards.size.should >= 0
 				(rewards.select{|r| r.type == Reward::TYPE_ALL_CARROT}).size.should == 1
@@ -217,8 +217,8 @@ class AllSpec
 					max_success += server_logic_process().length
 				}
 
-				middle_success.should be_close(30, 4)
-				max_success.should be_close(90, 10)
+				middle_success.should  be_within(4).of(30)
+				max_success.should be_within(10).of(90)
 			end
 			
 			it "Выдается CARROT_PACK, если достигнут" do
@@ -330,8 +330,8 @@ class AllSpec
 					graph[(roll * 10).to_i] += 1
 				}
 				# неточность не более 5%
-				sum.should be_close(iter / 2, iter / 20)
-				graph.each{|k,v| v.should be_close(iter / 10, iter / 20) }
+				sum.should be_within(iter / 20).of(iter / 2)
+				graph.each{|k,v| v.should be_within(iter / 20).of(iter / 10) }
 			end
 
 			it "get_roll() выдает одинаковые числа, при синхронизации roll" do
@@ -423,7 +423,7 @@ class AllSpec
 				response['user']['stars'].should_not be_nil
 				response['user']['money'].should_not be_nil
 				response['user']['level'].should_not be_nil
-				response['user']['roll'].should_not be_nil
+				#response['user']['roll'].should_not be_nil
 				#response['user']['created_at'].should_not be_nil
 				#response['user']['updated_at'].should_not be_nil
 				response['user']['friends_invited'].should_not be_nil

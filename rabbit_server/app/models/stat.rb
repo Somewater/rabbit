@@ -4,8 +4,13 @@ class Stat < ActiveRecord::Base
 	
 	# set value
 	def self.[]=(name, value)
-	  # only for MySQL
-		self.count_by_sql(["INSERT INTO stats SET name=?, time=#{self.time}, value=? ON DUPLICATE KEY UPDATE value=?",name,value,value])
+		time = self.time
+		stat = Stat.find(:first, :conditions => ["name=? AND time=?", name, time])
+		unless stat
+			stat = Stat.new(:name => name, :time => time, :value => 0)
+		end
+		stat.value = value
+		stat.save
 	end
 	
 	# get value
@@ -20,8 +25,13 @@ class Stat < ActiveRecord::Base
 	
 	# increment value
 	def self.inc(name, diff = 1)
-		# only for MySQL
-		self.count_by_sql(["INSERT INTO stats SET name=?, time=#{self.time}, value=? ON DUPLICATE KEY UPDATE value=value+?",name,diff,diff])
+		time = self.time
+		stat = Stat.find(:first, :conditions => ["name=? AND time=?", name, time])
+		unless stat
+			stat = Stat.new(:name => name, :time => time, :value => 0)
+		end
+		stat.value += diff
+		stat.save
 	end
 	
 	# names = array of string
