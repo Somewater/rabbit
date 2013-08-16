@@ -49,6 +49,7 @@ import com.somewater.rabbit.storage.Config;
 		private var topLink:EmbededTextField;
 		private var sponsorLogo:DisplayObject;
 		private var copyrightBtn:OrangeButton;
+		private var energyIndicator:EnergyIndicator;
 		
 		public function MainMenuPage()
 		{
@@ -136,6 +137,12 @@ import com.somewater.rabbit.storage.Config;
 			copyrightBtn.x = Config.WIDTH - copyrightBtn.width - copyrightBtn.y;
 			copyrightBtn.addEventListener(MouseEvent.CLICK, onCopyrightClicked);
 			addChild(copyrightBtn)
+
+			energyIndicator = new EnergyIndicator();
+			energyIndicator.y = DisplayObject(buttons[0]).y;
+			energyIndicator.x = 40;
+			energyIndicator.addEventListener(MouseEvent.CLICK, onEnergyIndicatorClick);
+			addChild(energyIndicator);
 		}
 		
 		private function createTopLink():void {
@@ -173,6 +180,8 @@ import com.somewater.rabbit.storage.Config;
 			}
 			if(copyrightBtn)
 				copyrightBtn.removeEventListener(MouseEvent.CLICK, onCopyrightClicked);
+			energyIndicator.clear();
+			energyIndicator.removeEventListener(MouseEvent.CLICK, onEnergyIndicatorClick);
 		}
 		
 		override protected function createGround():void
@@ -279,6 +288,10 @@ import com.somewater.rabbit.storage.Config;
 
 		private function onLinkOver(event:MouseEvent):void {
 			EmbededTextField(event.currentTarget).underline = false;
+		}
+
+		private function onEnergyIndicatorClick(event:MouseEvent):void {
+			Config.application.message("TODO: energy ind clicked");
 		}
 	}
 }

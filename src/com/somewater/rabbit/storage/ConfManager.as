@@ -38,7 +38,7 @@ package com.somewater.rabbit.storage {
 
 		public function getNumber(key:String):Number
 		{
-			return data[key] as Number;
+			return Number(data[key]);
 		}
 
 		public function getString(key:String):String

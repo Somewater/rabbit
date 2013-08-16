@@ -331,6 +331,22 @@ package com.somewater.rabbit.storage
 				(_energyLastGain.time + ConfManager.instance.getNumber('ENERGY_GAIN_INTERVAL') * 1000) < serverUnixTime();
 		}
 
+		// ms
+		public function gainEnergyTimeLeft():int {
+			if(!_energyLastGain || _energyLastGain.time == 0)
+				return 0;
+			var gainTime:int = (_energyLastGain.time + ConfManager.instance.getNumber('ENERGY_GAIN_INTERVAL') * 1000);
+			var now:int = serverUnixTime();
+			if(gainTime > now)
+				return gainTime - now;
+			else
+				return 0;
+		}
+
+		public function energyIsFull():Boolean {
+			return _energy == ConfManager.instance.getNumber('ENERGY_MAX');
+		}
+
 		public function spendEnergy(value:int = 1):void {
 			if(!canSpendEnergy(value))
 				throw new Error("Not enough energy");
@@ -338,6 +354,7 @@ package com.somewater.rabbit.storage
 				gainEnergy();
 			}
 			_energy -= value;
+			dispatchChange();
 		}
 
 		public function gainEnergy():void{
@@ -345,11 +362,13 @@ package com.somewater.rabbit.storage
 				throw new Error("Can't gain energy");
 			_energy = ConfManager.instance.getNumber('ENERGY_MAX')
 			_energyLastGain = new Date(serverUnixTime());
+			dispatchChange();
 		}
 
 		public function setEnergyData(energy:int, lastGain:Date):void {
 			_energy = energy;
 			_energyLastGain = lastGain;
+			dispatchChange();
 		}
 	}
 }

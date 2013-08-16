@@ -267,3 +267,6 @@ ITEM_NAME_POWERUP_SPEED=Ускорение
 ITEM_DESC_POWERUP_SPEED=Кроль на 10 секунд получает способность передвигаться в 2 раза быстрее. Нельзя применить более двух ускорений одновременно
 ITEM_NAME_POWERUP_TIME=Дополнительное время
 ITEM_DESC_POWERUP_TIME=Кроль получает еще 10 секунд до окончания уровня
+
+TIME_IS_FULL=
+NEED_MORE_ENERGY_ERROR=Не хватает жизней для продолжения
