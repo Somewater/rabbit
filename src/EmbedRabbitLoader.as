@@ -54,7 +54,7 @@ package
 
 			CONFIG::debug
 			{
-				swfs["Editor"] = {priority:1, preload:true, url:"RabbitEditor.swf"};
+				//swfs["Editor"] = {priority:1, preload:true, url:"RabbitEditor.swf"};
 			}
 
 			//if(!CONFIG::debug)
