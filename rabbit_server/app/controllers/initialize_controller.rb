@@ -29,6 +29,8 @@ class InitializeController < BaseUserController
 	end
 
 	def process
+		refresh_energy()
+
 		user = (@response['user'] ||= {})
 		user.merge!(@user.to_json)
 
@@ -95,5 +97,14 @@ class InitializeController < BaseUserController
 			end
 		end
 		@user.clear_all_flags()
+	end
+
+	# выдать энергию
+	def refresh_energy()
+		if(@user.energy_last_gain)
+			@user.energy_with_gain(true)
+		else
+			@user.gain_energy()
+		end
 	end
 end

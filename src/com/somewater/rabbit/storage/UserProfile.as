@@ -6,8 +6,10 @@ package com.somewater.rabbit.storage
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
+import flash.events.TimerEvent;
+import flash.utils.Timer;
 
-	[Event(name="changeUserData", type="com.somewater.rabbit.storage.UserProfile")]
+[Event(name="changeUserData", type="com.somewater.rabbit.storage.UserProfile")]
 	
 	public class UserProfile extends GameUser implements IEventDispatcher
 	{
@@ -28,6 +30,7 @@ package com.somewater.rabbit.storage
 
 		private var _energy:int = 0;
 		private var _energyLastGain:Date;
+		private var energyGainTimer:Timer;
 
 		/**
 		 * Разница между временем на клиенте и сервере, в миллисекундах
@@ -47,6 +50,9 @@ package com.somewater.rabbit.storage
 			dispatcher = new EventDispatcher();
 			
 			instance = this;
+
+			energyGainTimer = new Timer(1000, 1);
+			energyGainTimer.addEventListener(TimerEvent.TIMER, onEnergyGainTimer);
 		}
 
 		override public function itsMe():Boolean {
@@ -323,7 +329,7 @@ package com.somewater.rabbit.storage
 		}
 
 		public function canSpendEnergy(value:int = 1):Boolean {
-			return _energy - value > 0 || canGainEnergy();
+			return _energy - value >= 0 || canGainEnergy();
 		}
 
 		private function canGainEnergy():Boolean {
@@ -362,13 +368,48 @@ package com.somewater.rabbit.storage
 				throw new Error("Can't gain energy");
 			_energy = ConfManager.instance.getNumber('ENERGY_MAX')
 			_energyLastGain = new Date(serverUnixTime());
+			refreshEnergyGainTimer();
 			dispatchChange();
 		}
 
 		public function setEnergyData(energy:int, lastGain:Date):void {
 			_energy = energy;
 			_energyLastGain = lastGain;
+			refreshEnergyGainTimer()
 			dispatchChange();
+		}
+
+		private function refreshEnergyGainTimer():void {
+			if(_energyLastGain && _energyLastGain.time > 0){
+				var newEnergyLastGain:Number = _energyLastGain.time;
+				var now:Number = serverUnixTime();
+				var newEnergyValue:int = _energy;
+				while(newEnergyLastGain < now && newEnergyValue < ConfManager.instance.getNumber('ENERGY_MAX')){
+					newEnergyValue += 1;
+					if(newEnergyValue >= ConfManager.instance.getNumber('ENERGY_MAX'))
+						newEnergyLastGain = now;
+					else
+						newEnergyLastGain += ConfManager.instance.getNumber('ENERGY_GAIN_INTERVAL') * 1000;
+				}
+				_energy = newEnergyValue;
+				_energyLastGain = new Date(newEnergyLastGain);
+
+				if(!energyIsFull()){
+					energyGainTimer.delay = gainEnergyTimeLeft();
+					energyGainTimer.repeatCount = 1;
+					energyGainTimer.reset();
+					energyGainTimer.start();
+				}
+			} else if(_energy < ConfManager.instance.getNumber('ENERGY_MAX')){
+				gainEnergy();
+			}
+		}
+
+		private function onEnergyGainTimer(event:Event):void {
+			energyGainTimer.stop();
+			if(canGainEnergy()){
+				gainEnergy();
+			}
 		}
 	}
 }

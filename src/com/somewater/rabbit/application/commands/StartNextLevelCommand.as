@@ -1,7 +1,8 @@
 package com.somewater.rabbit.application.commands {
 	import com.somewater.rabbit.application.tutorial.TutorialLevelDef;
 	import com.somewater.rabbit.application.tutorial.TutorialManager;
-	import com.somewater.rabbit.storage.Config;
+import com.somewater.rabbit.application.windows.NeedMoreEnergyWindow;
+import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.UserProfile;
 
@@ -33,7 +34,11 @@ package com.somewater.rabbit.application.commands {
 				if(UserProfile.instance.canSpendEnergy()){
 					Config.application.startGame(Config.application.getLevelByNumber(UserProfile.instance.levelNumber));
 				}else{
-					Config.application.message("NEED_MORE_ENERGY_ERROR");
+					new NeedMoreEnergyWindow(function():void{
+						Config.application.startGame(Config.application.getLevelByNumber(UserProfile.instance.levelNumber));
+					}, function():void {
+						Config.application.startPage("main_menu");
+					})
 				}
 			// иначе переходим в меню уровней
 			else

@@ -101,6 +101,8 @@ class Application
 					UseItemController.new(request).call
 				when 'customize/purchase'
 					BuyUserCustomizeController.new(request).call
+				when 'energy/purchase'
+					BuyEnergyController.new(request).call
 				when 'friends/update'
 					UpdateFriendStorageController.new(request).call
 				when 'friends/visit'

@@ -74,10 +74,10 @@ public class EnergyIndicator extends Sprite implements IClear{
 
 	private static function msToTimeFormat(ms:int):String {
 		var time:int = ms * 0.001;
-		var seconds = time % 60;
+		var seconds:int = time % 60;
 		time = (time - seconds) / 60;
-		var minutes = time % 60;
-		var hours = (time - minutes) / 60;
+		var minutes:int = time % 60;
+		var hours:int = (time - minutes) / 60;
 		if(hours){
 			return [hours, minutes, seconds].join(':')
 		}else if(minutes){

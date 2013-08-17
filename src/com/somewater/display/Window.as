@@ -87,6 +87,10 @@ package com.somewater.display
 				addChild(textField);
 				this.text = text;
 			}
+
+			if(title){
+				this.title = title;
+			}
 		}
 		
 		public function clear():void{

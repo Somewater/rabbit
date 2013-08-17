@@ -6,7 +6,8 @@ package com.somewater.rabbit.application
 	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.application.buttons.StoriesSwitcher;
 	import com.somewater.rabbit.application.tutorial.TutorialManager;
-	import com.somewater.rabbit.storage.Config;
+import com.somewater.rabbit.application.windows.NeedMoreEnergyWindow;
+import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
@@ -195,7 +196,9 @@ package com.somewater.rabbit.application
 				if(UserProfile.instance.canSpendEnergy()){
 					Config.application.startGame(level);
 				}else{
-					Config.application.message("NEED_MORE_ENERGY_ERROR");
+					new NeedMoreEnergyWindow(function():void{
+						Config.application.startGame(level);
+					})
 				}
 			}
 		}

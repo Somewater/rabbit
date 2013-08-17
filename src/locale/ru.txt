@@ -269,4 +269,6 @@ ITEM_NAME_POWERUP_TIME=Дополнительное время
 ITEM_DESC_POWERUP_TIME=Кроль получает еще 10 секунд до окончания уровня
 
 TIME_IS_FULL=
-NEED_MORE_ENERGY_ERROR=Не хватает жизней для продолжения
+NEED_MORE_ENERGY_WND_TITLE=Нужны жизни для продолжения
+BUY_ENERGY_BY=Купить энергию за {money}
+ENERGY_PURCHASE_ERROR=Ошибка покупки энергии

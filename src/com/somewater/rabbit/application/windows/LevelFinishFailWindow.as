@@ -48,7 +48,11 @@ package com.somewater.rabbit.application.windows {
 			if(UserProfile.instance.canSpendEnergy()){
 				Config.application.startGame(level);
 			}else{
-				Config.application.message("NEED_MORE_ENERGY_ERROR");
+				new NeedMoreEnergyWindow(function():void{
+					Config.application.startGame(level);
+				}, function():void {
+					Config.application.startPage("main_menu");
+				})
 			}
 		}
 	}
