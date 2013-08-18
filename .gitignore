@@ -35,3 +35,5 @@ air/*.swf
 air/*.exe
 air/*.air
 air/output/*
+
+ rabbit_server/config/database.yml
