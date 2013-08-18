@@ -23,6 +23,7 @@ package
 	import com.somewater.rabbit.events.ExceptionEvent;
 	import com.somewater.rabbit.iso.IsoCameraController;
 	import com.somewater.rabbit.iso.IsoSpatial;
+	import com.somewater.rabbit.iso.RabbitBlitManager;
 	import com.somewater.rabbit.iso.scene.IsoSpatialManager;
 	import com.somewater.rabbit.iso.scene.SceneView;
 	import com.somewater.rabbit.managers.GameTutorialModule;
@@ -428,7 +429,7 @@ package
 				movies.push({slug: slug, movie:Lib.createMC(slug)});
 			}
 			if(BlitManager.instance == null)
-				BlitManager.instance = new PreparativeBlitManager();
+				BlitManager.instance = createBlitManager();
 			(BlitManager.instance as PreparativeBlitManager).startPrepare(movies);
 		}
 
@@ -440,6 +441,10 @@ package
 		public function entityToTile(entity:*):Point {
 			var e:IEntity = entity as IEntity;
 			return (e.lookupComponentByName("Spatial") as IsoSpatial).tile;
+		}
+
+		public function createBlitManager():BlitManager {
+			return new RabbitBlitManager();
 		}
 	}
 }

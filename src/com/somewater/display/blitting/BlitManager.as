@@ -129,8 +129,18 @@ package com.somewater.display.blitting {
 			var data:BlitData = cacheBy[slug + ':' + state + ':' + direction + ':' + frame];
 			if(data != null)
 				callback(data);
-			else
-				DeferredBlitProcessor(deferredProcessorsBySlug[slug]).getBlitData(state, direction, frame, callback);
+			else{
+				var d:DeferredBlitProcessor = deferredProcessorsBySlug[slug];
+				if(d){
+					d.getBlitData(state, direction, frame, callback);
+				}else{
+					onSlugNotFound(slug, state, direction, frame, callback);
+				}
+			}
+		}
+
+		protected function onSlugNotFound(slug:String, state:String, direction:int, frame:int, callback:Function):void {
+			throw new Error("Override me");
 		}
 
 		public function getLength(slug:String, state:String, direction:int):int

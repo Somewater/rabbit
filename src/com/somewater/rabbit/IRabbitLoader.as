@@ -52,6 +52,7 @@ package com.somewater.rabbit
 		 * (если не задан, базовым считается путь до прелоадера)
 		 */
 		function set basePath(value:String):void
+		function get basePath():String
 		
 		/**
 		 * Установить прогресс прелоадера

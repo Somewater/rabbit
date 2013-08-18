@@ -105,7 +105,8 @@ package com.somewater.rabbit.managers
 			
 			restartLevelCallbacks = [];
 
-			BlitManager.instance = new PreparativeBlitManager();
+			if(!BlitManager.instance)
+				BlitManager.instance = _app.createBlitManager();
 			
 			Config.init();
 

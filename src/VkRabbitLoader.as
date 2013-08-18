@@ -89,18 +89,18 @@ package {
 		{
 			basePath = 'http://vk.rabbit.atlantor.ru/';
 			swfs = {
-						"Game":{priority:-1,preload:true,url:""}
+						"Game":{priority:-1,preload:true,url:"http://app.vk.com/c6087/u245894/9f37501bf6fe07.swf"}
 						,
 						"Application":{priority:int.MIN_VALUE,
-							preload:true,url:""}
-						,"Interface":{preload:true, url:""}
+							preload:true,url:"http://app.vk.com/c6087/u245894/7cf8a80bfe09ce.swf"}
+						,"Interface":{preload:true, url:"http://app.vk.com/c6087/u245894/836c8b3bb538e0.swf"}
 						,"Assets":{preload:true, url:"http://cs302513.vk.com/u245894/477a5644135f26.zip"}
 						,"Rewards":{preload:true, url:"http://cs302513.vk.com/u245894/c38365043b0e29.zip"}
 						,"Images":{preload:true, url:"http://cs305802.vk.com/u245894/95efe3baee86a7.zip"}
 						,"MusicMenu":{url:"http://cs5231.userapi.com/u245894/9f85f9d027e598.zip"}
 						,"MusicGame":{url:"http://cs5231.userapi.com/u245894/16c9f64377d623.zip"}
 						,"Sound":{preload:true, url:"http://cs11458.vk.com/u245894/b1e1ab2e3fa973.zip"}
-						,"Lang":{priority:100, preload:true, url:""}
+						,"Lang":{priority:100, preload:true, url:"http://app.vk.com/c6087/u245894/8661ce1635819c.swf"}
 						,"XmlPack":{preload:true, url:"http://cs302513.vk.com/u245894/cddadf35cd9b56.zip"}
 
 						,"Font":{priority:100, preload:true, url:"http://cs5231.userapi.com/u245894/fe712dd002e7c1.zip"}

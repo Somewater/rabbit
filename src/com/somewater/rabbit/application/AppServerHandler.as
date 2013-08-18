@@ -34,6 +34,8 @@ package com.somewater.rabbit.application {
 		public function initRequest(gameUser:GameUser, onComplete:Function, onError:Function):void
 		{
 			handler = new ServerReceiver(Config.loader.serverHandler, ['init']);
+			if(Config.loader.basePath && Config.loader.basePath.length > 0)
+				handler.base_path = Config.loader.basePath;
 
 			var appFriends:Array = [];
 			var appFriendsIds:Array = [];
@@ -94,6 +96,7 @@ package com.somewater.rabbit.application {
 
 		public function onLevelStarted(user:GameUser, level:LevelDef, onComplete:Function = null, onError:Function = null):void
 		{
+			return; // TODO
 			handler.call('levels/start', {'levelNumber':level.number},
 					function(response:Object):void{
 						if(!Config.memory['portfolioMode'] && response['levelInstance']['succes'] == false)

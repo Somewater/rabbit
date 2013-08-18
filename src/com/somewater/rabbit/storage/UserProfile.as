@@ -334,13 +334,13 @@ import flash.utils.Timer;
 		}
 
 		private function canGainEnergy():Boolean {
-			return !_energyLastGain || _energyLastGain.time == 0 ||
+			return dateIsNull(_energyLastGain) ||
 				(_energyLastGain.time + ConfManager.instance.getNumber('ENERGY_GAIN_INTERVAL') * 1000) < serverUnixTime();
 		}
 
 		// ms
 		public function gainEnergyTimeLeft():int {
-			if(!_energyLastGain || _energyLastGain.time == 0)
+			if(dateIsNull(_energyLastGain))
 				return 0;
 			var gainTime:int = (_energyLastGain.time + ConfManager.instance.getNumber('ENERGY_GAIN_INTERVAL') * 1000);
 			var now:int = serverUnixTime();
@@ -384,7 +384,7 @@ import flash.utils.Timer;
 		}
 
 		private function refreshEnergyGainTimer():void {
-			if(_energyLastGain && _energyLastGain.time > 0){
+			if(!dateIsNull(_energyLastGain)){
 				var newEnergyLastGain:Number = _energyLastGain.time;
 				var now:Number = serverUnixTime();
 				var newEnergyValue:int = _energy;
@@ -412,6 +412,10 @@ import flash.utils.Timer;
 			if(canGainEnergy()){
 				gainEnergy();
 			}
+		}
+
+		private static function dateIsNull(date:Date):Boolean {
+			return !date || date.time == 0 || isNaN(date.time);
 		}
 	}
 }
