@@ -791,7 +791,7 @@ package com.somewater.rabbit.loader
 		
 		/**
 		 * Относительные пути преобразует в абсолютные
-		 * /file => <http://asflash.ru>/file
+		 * /file => <http://atlantor.ru>/file
 		 * file => <base path> + file
 		 */
 		protected function rightFilePath(path:String):String

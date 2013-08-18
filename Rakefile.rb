@@ -4,7 +4,7 @@
 # LOCALE - локаль компиляции языкового конфига
 # BASE_PATH - адрес сервера, с которого берется конфиг
 # DEBUG - компиляция в дебаг-може
-# SITELOCK разрешенный для использования игры сайт, формата "asflash.ru"
+# SITELOCK разрешенный для использования игры сайт, формата "atlantor.ru"
 # USE_MXMLC форсированно применять mxmlc, а не fcshctl-mxmlc
 
 ROOT = File.dirname( File.expand_path( __FILE__ ) )
@@ -137,23 +137,6 @@ namespace :srv do
 		["production.log","development.log","test.log"].each {|file| FileUtils.touch("#{ROOT}/logs/#{file}")}
 		FileUtils.mkdir("#{ROOT}/tmp")
 		["always_restart.txt","restart.txt"].each {|file| FileUtils.touch("#{ROOT}/tmp/#{file}")}
-	end
-
-	desc "Update source and restart server"
-	task :update => 'flash:encode' do
-		`git push`
-		sleep(5) #KLUDGE
-		ssh = Execution.new("ssh root@asflash.ru")
-		puts ssh.cmd "cd rabbit"
-		puts ssh.cmd "git pull", 10
-		puts ssh.cmd "\n"
-		puts ssh.cmd "qlementina27\n"
-		sleep(5)
-		puts ssh.cmd "touch tmp/restart.txt"
-		sleep(1)
-		puts ssh.cmd "exit" rescue "== EXITED =="
-		scp = Execution.new("scp -v #{ROOT}/bin-debug/*.swf root@asflash.ru:/srv/www/rabbit.asflash.ru/bin-debug/", /debug1\: Exit status 0/);
-		scp = Execution.new("scp -v #{ROOT}/bin-debug/assets/*.swf root@asflash.ru:/srv/www/rabbit.asflash.ru/bin-debug/assets/", /debug1\: Exit status 0/);
 	end
 
 	desc "Upload swfs"

@@ -13,7 +13,7 @@ package com.somewater.rabbit.editor.console
     {
         public function Imaginarium()
         {
-            // uploadImage(createBitmap(imagedo, 100, 100), 'http://rabbit.asflash.ru/images/manage', {'foo':'bar'});
+            // uploadImage(createBitmap(imagedo, 100, 100), 'http://rabbit.atlantor.ru/images/manage', {'foo':'bar'});
         }
 
         public static function uploadImage(image:BitmapData, upload_url:String, callback:Function, params:Object = null):void

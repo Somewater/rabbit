@@ -208,7 +208,7 @@ package {
 
 		override protected function createSpecificPaths():void
 		{
-			basePath = 'http://rabbit.asflash.ru/';
+			basePath = 'http://mm.rabbit.atlantor.ru/';
 			swfs = {
 						"Game":{priority:-1,preload:true,url:"http://cs302513.vk.com/u245894/8c8974beab42a3.zip"}
 						,

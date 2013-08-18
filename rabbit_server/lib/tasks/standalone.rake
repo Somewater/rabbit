@@ -70,9 +70,9 @@ namespace :standalone do
 		puts "******************************\n\tWARNING SITELOCK NOT ASSIGNED\n******************************" unless ENV['SITELOCK']
 	end
 
-	desc 'Compile to rabbit.asflash.ru'
-	task :asflash do
-		ENV['SITELOCK'] = "asflash.ru"
+	desc 'Compile to rabbit.atlantor.ru'
+	task :atlantor do
+		ENV['SITELOCK'] = "atlantor.ru"
 		ENV['LOCALE'] = 'en'
 		ENV['USE_MXMLC'] = 'true'
 		ENV['LOADERNAME'] = 'GAMMRabbitLoader'
@@ -87,7 +87,7 @@ namespace :standalone do
 		puts "******************************\n\tWARNING SITELOCK NOT ASSIGNED\n******************************" unless ENV['SITELOCK']
 	end
 
-	desc "Compile xml_pack from asflash.ru"
+	desc "Compile xml_pack from atlantor.ru"
 	task :compile_xml_pack => 'flash:configurate_compiler' do
     begin
       levels_file = get_site_file('levels.xml', "tmp_levels.xml")
@@ -98,7 +98,7 @@ namespace :standalone do
     end
 	end
 
-	desc "Compile config.txt from asflash.ru"
+	desc "Compile config.txt from atlantor.ru"
 	task :compile_config, [:net, :production_too] => 'flash:configurate_compiler' do |task, args|
 		begin
 			net = args[:net].to_i
@@ -110,7 +110,7 @@ namespace :standalone do
 		end
 	end
 
-	desc "Compile language from asflash.ru"
+	desc "Compile language from atlantor.ru"
 	task :compile_lang, [:locale, :production_too] => 'flash:configurate_compiler' do |task, args|
 		begin
 			require "yaml"
@@ -125,7 +125,7 @@ namespace :standalone do
 
 	def get_site_file(urn, local_filename, base_path = nil)
 		require "httparty"
-		base_path = (ENV['BASE_PATH'] ? ENV['BASE_PATH'] : 'http://rabbit.asflash.ru/') unless base_path
+		base_path = (ENV['BASE_PATH'] ? ENV['BASE_PATH'] : 'http://rabbit.atlantor.ru/') unless base_path
 		response = HTTParty.get(base_path.to_s + urn.to_s).body
 		full_local_filename = "#{ROOT}/tmp/#{local_filename}"
 		File.open(full_local_filename,'w') {|f| f.write(response) }

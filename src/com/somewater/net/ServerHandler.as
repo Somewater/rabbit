@@ -17,7 +17,7 @@ package com.somewater.net
 
 	public class ServerHandler implements IServerHandler
 	{
-		protected var _base_path:String = 'http://rabbit.asflash.ru/';
+		protected var _base_path:String = 'http://rabbit.atlantor.ru/';
 
 
 		public  static var instance:ServerHandler;

@@ -43,7 +43,7 @@ package {
 		}
 		override protected function createSpecificPaths():void
 		{
-			basePath = 'http://rabbit.asflash.ru/';
+			basePath = 'http://vk.rabbit.atlantor.ru/';
 			swfs = {
 						"Game":{priority:-1,preload:true,url:"http://cdn9.appsmail.ru/hosting/666052/RabbitGame.swf?cb=8"}
 						,
