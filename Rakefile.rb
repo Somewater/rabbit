@@ -30,7 +30,7 @@ task :vk_environment => :environment do
 	  config.app_secret = "kJ0AVDo3he9GhGlhkmha"
 	  config.format = :json
 	  config.debug = false
-	  config.logger = File.open("#{ROOT}/logs/vkontakte.log", "a") if DEVELOPMENT
+	  config.logger = File.open("#{ROOT}/log/vkontakte.log", "a") if DEVELOPMENT
 	end
 end
 
@@ -133,8 +133,8 @@ desc "Server tasks"
 namespace :srv do
 	desc "Initialize server"
 	task :initialize do
-		FileUtils.mkdir("#{ROOT}/logs")
-		["production.log","development.log","test.log"].each {|file| FileUtils.touch("#{ROOT}/logs/#{file}")}
+		FileUtils.mkdir("#{ROOT}/log")
+		["production.log","development.log","test.log"].each {|file| FileUtils.touch("#{ROOT}/log/#{file}")}
 		FileUtils.mkdir("#{ROOT}/tmp")
 		["always_restart.txt","restart.txt"].each {|file| FileUtils.touch("#{ROOT}/tmp/#{file}")}
 	end
@@ -159,7 +159,7 @@ namespace :srv do
 
 		app = Vkontakte::App::Secure.new
 
-		logger = Logger.new(File.join(ROOT, %W{ logs vkontakte.log}))
+		logger = Logger.new(File.join(ROOT, %W{ log vkontakte.log}))
 		logger.level = Logger::DEBUG
 		logger.formatter = Logger::Formatter.new
 		

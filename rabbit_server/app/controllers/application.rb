@@ -10,7 +10,7 @@ class Application
 
 		def logger
 			unless @logger
-				@logger = Logger.new( DEVELOPMENT ? $stdout : File.join(ROOT, %W{ logs #{APP_ENV}.log}))
+				@logger = Logger.new( DEVELOPMENT ? $stdout : File.join(ROOT, %W{ log #{APP_ENV}.log}))
 				if PRODUCTION
 				  @logger.level = Logger::WARN
 				else

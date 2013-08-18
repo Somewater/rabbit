@@ -103,7 +103,7 @@ class VkApi < NetApi
 				config.app_secret = CONFIG["vkontakte"]["secure_key"]
 				config.format = :json
 				config.debug = !PRODUCTION
-				config.logger = File.open("#{ROOT}/logs/vkontakte.log", "a") if DEVELOPMENT
+				config.logger = File.open("#{ROOT}/log/vkontakte.log", "a") if DEVELOPMENT
 			end
 			
 			@secure_vk = Vkontakte::App::Secure.new
