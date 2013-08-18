@@ -6,6 +6,7 @@ package com.somewater.rabbit.application
 	import com.somewater.rabbit.application.commands.StartNextLevelCommand;
 	import com.somewater.rabbit.application.tutorial.TutorialLevelDef;
 	import com.somewater.rabbit.application.tutorial.TutorialManager;
+import com.somewater.rabbit.application.windows.NeedMoreEnergyWindow;
 import com.somewater.rabbit.storage.Config;
 import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Config;
@@ -17,8 +18,9 @@ import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.UserProfile;
 	import com.somewater.storage.Lang;
 	import com.somewater.text.EmbededTextField;
+import com.somewater.text.Hint;
 
-	import flash.display.DisplayObject;
+import flash.display.DisplayObject;
 
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
@@ -138,11 +140,13 @@ import com.somewater.rabbit.storage.Config;
 			copyrightBtn.addEventListener(MouseEvent.CLICK, onCopyrightClicked);
 			addChild(copyrightBtn)
 
-			energyIndicator = new EnergyIndicator();
-			energyIndicator.y = DisplayObject(buttons[0]).y;
-			energyIndicator.x = 40;
-			energyIndicator.addEventListener(MouseEvent.CLICK, onEnergyIndicatorClick);
-			addChild(energyIndicator);
+			if(UserProfile.instance.levelNumber > 1 || !UserProfile.instance.energyIsFull()){
+				energyIndicator = new EnergyIndicator();
+				energyIndicator.y = DisplayObject(buttons[0]).y;
+				energyIndicator.x = 40;
+				energyIndicator.addEventListener(MouseEvent.CLICK, onEnergyIndicatorClick);
+				addChild(energyIndicator);
+			}
 		}
 		
 		private function createTopLink():void {
@@ -180,8 +184,10 @@ import com.somewater.rabbit.storage.Config;
 			}
 			if(copyrightBtn)
 				copyrightBtn.removeEventListener(MouseEvent.CLICK, onCopyrightClicked);
-			energyIndicator.clear();
-			energyIndicator.removeEventListener(MouseEvent.CLICK, onEnergyIndicatorClick);
+			if(energyIndicator){
+				energyIndicator.clear();
+				energyIndicator.removeEventListener(MouseEvent.CLICK, onEnergyIndicatorClick);
+			}
 		}
 		
 		override protected function createGround():void
@@ -291,7 +297,8 @@ import com.somewater.rabbit.storage.Config;
 		}
 
 		private function onEnergyIndicatorClick(event:MouseEvent):void {
-			Config.application.message("TODO: energy ind clicked");
+			if(!UserProfile.instance.energyIsFull())
+				new NeedMoreEnergyWindow(null, null, Lang.t('BUY_ENERGY_WND_TITLE'));
 		}
 	}
 }

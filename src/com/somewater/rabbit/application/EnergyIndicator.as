@@ -1,7 +1,12 @@
 package com.somewater.rabbit.application {
 import com.somewater.control.IClear;
+import com.somewater.rabbit.storage.Lib;
 import com.somewater.rabbit.storage.UserProfile;
+import com.somewater.storage.Lang;
 import com.somewater.text.EmbededTextField;
+import com.somewater.text.Hint;
+
+import flash.display.DisplayObject;
 
 import flash.display.Sprite;
 import flash.events.Event;
@@ -27,6 +32,14 @@ public class EnergyIndicator extends Sprite implements IClear{
 		refreshTimer.addEventListener(TimerEvent.TIMER, refreshUserData);
 
 		refreshUserData();
+		Hint.bind(this, hint)
+	}
+
+	private function hint():String {
+		if(user.energyIsFull())
+			return Lang.t('ENERGY_HINT_FULL');
+		else
+			return Lang.t('ENERGY_HINT_NO_FULL');
 	}
 
 	public function clear():void {
@@ -34,18 +47,26 @@ public class EnergyIndicator extends Sprite implements IClear{
 		refreshTimer.removeEventListener(TimerEvent.TIMER, refreshUserData);
 		if(refreshTimer.running) refreshTimer.stop();
 		user = null;
+		Hint.removeHint(this);
 	}
 
 	private function createView():void {
-		energyCounter = new EmbededTextField();
+		var core:DisplayObject = Lib.createMC('interface.EnergyIndicator');
+		addChild(core);
+
+		energyCounter = new EmbededTextField(null, 'w', 20, false, false, false, false, 'center');
+		energyCounter.x = 8;
+		energyCounter.y = 10;
+		energyCounter.width = 35;
+		energyCounter.height = 30;
 		addChild(energyCounter);
 
-		energyTimeCounter = new EmbededTextField(null, 'b');
-		energyTimeCounter.x = energyCounter.width + 5;
+		energyTimeCounter = new EmbededTextField(null, 'w', 16, false, false, false, false, 'center');
+		energyTimeCounter.x = 47;
+		energyTimeCounter.y = 13;
+		energyTimeCounter.width = 68;
+		energyTimeCounter.height = 30;
 		addChild(energyTimeCounter);
-
-		graphics.beginFill(0xCCDD00, 0.4);
-		graphics.drawRect(0, 0, energyTimeCounter.x + energyTimeCounter.width, energyTimeCounter.height);
 	}
 
 	private function refreshUserData(event:Event = null):void {
@@ -79,11 +100,17 @@ public class EnergyIndicator extends Sprite implements IClear{
 		var minutes:int = time % 60;
 		var hours:int = (time - minutes) / 60;
 		if(hours){
-			return [hours, minutes, seconds].join(':')
+			return [hours, d(minutes), d(seconds)].join(':')
 		}else if(minutes){
-			return [minutes, seconds].join(':')
+			return [d(minutes), d(seconds)].join(':')
 		}else{
-			return seconds.toString();
+			return d(seconds);
+		}
+		function d(v:int):String {
+			if(v > 9)
+				return v.toString();
+			else
+				return '0' + v.toString();
 		}
 	}
 }

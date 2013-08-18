@@ -43,6 +43,8 @@ import com.somewater.rabbit.storage.Config;
 
 		private var offerStat:OfferStatPanel;
 
+		private var energyIndicator:EnergyIndicator;
+
 		public function LevelsPage()
 		{
 			super();
@@ -119,6 +121,15 @@ import com.somewater.rabbit.storage.Config;
 			leftButton.addEventListener(MouseEvent.CLICK, onLeftButtonClick);
 			Hint.bind(leftButton, Lang.t("BACK_TO_MAIN_MENU"));
 			addChild(leftButton);
+
+			globalScoreHolder.visible = false;
+			if(UserProfile.instance.levelNumber > 1 || !UserProfile.instance.energyIsFull()){
+				energyIndicator = new EnergyIndicator();
+				energyIndicator.y = globalScoreHolder.y;
+				energyIndicator.x = Config.WIDTH - energyIndicator.width - 20;
+				energyIndicator.addEventListener(MouseEvent.CLICK, onEnergyIndicatorClick);
+				addChild(energyIndicator);
+			}
 		}
 
 		private function onStoryChanged(e:Event = null):void {
@@ -187,6 +198,11 @@ import com.somewater.rabbit.storage.Config;
 
 			storiesSwitcher.clear();
 			storiesSwitcher.removeEventListener(StoriesSwitcher.ON_STORY_CHANGED, onStoryChanged);
+
+			if(energyIndicator){
+				energyIndicator.clear();
+				energyIndicator.removeEventListener(MouseEvent.CLICK, onEnergyIndicatorClick);
+			}
 		}
 		
 		private function onLevelClick(e:Event):void
@@ -221,6 +237,11 @@ import com.somewater.rabbit.storage.Config;
 		public function get backButton():DisplayObject
 		{
 			return leftButton;
+		}
+
+		private function onEnergyIndicatorClick(event:MouseEvent):void {
+			if(!UserProfile.instance.energyIsFull())
+				new NeedMoreEnergyWindow(null, null, Lang.t('BUY_ENERGY_WND_TITLE'));
 		}
 	}
 }

@@ -20,8 +20,8 @@ public class NeedMoreEnergyWindow extends Window{
 	private var onBuyed:Function;
 	private var onCancel:Function;
 
-	public function NeedMoreEnergyWindow(onBuyed:Function, onCancel:Function = null) {
-		super(null, Lang.t('NEED_MORE_ENERGY_WND_TITLE'), null, []);
+	public function NeedMoreEnergyWindow(onBuyed:Function, onCancel:Function = null, otherTitle:String = null) {
+		super(null, otherTitle ? otherTitle : Lang.t('NEED_MORE_ENERGY_WND_TITLE'), null, []);
 
 		setSize(400, 250);
 

@@ -312,7 +312,8 @@ import flash.utils.Timer;
 		 */
 		public function serverUnixTime():Number
 		{
-			return new Date().time + msDelta;
+			var d:Date = new Date();
+			return d.time + msDelta;
 		}
 
 		override public function setCustomize(customize:CustomizeDef):void
@@ -359,6 +360,9 @@ import flash.utils.Timer;
 			if(_energy - value < 0 && canGainEnergy()){
 				gainEnergy();
 			}
+			if(_energy >= ConfManager.instance.getNumber('ENERGY_MAX')){
+				_energyLastGain = new Date(serverUnixTime());
+			}
 			_energy -= value;
 			dispatchChange();
 		}
@@ -384,12 +388,10 @@ import flash.utils.Timer;
 				var newEnergyLastGain:Number = _energyLastGain.time;
 				var now:Number = serverUnixTime();
 				var newEnergyValue:int = _energy;
-				while(newEnergyLastGain < now && newEnergyValue < ConfManager.instance.getNumber('ENERGY_MAX')){
+				const ENERGY_GAIN_INTERVAL:int = ConfManager.instance.getNumber('ENERGY_GAIN_INTERVAL') * 1000
+				while(newEnergyLastGain + ENERGY_GAIN_INTERVAL < now && newEnergyValue < ConfManager.instance.getNumber('ENERGY_MAX')){
 					newEnergyValue += 1;
-					if(newEnergyValue >= ConfManager.instance.getNumber('ENERGY_MAX'))
-						newEnergyLastGain = now;
-					else
-						newEnergyLastGain += ConfManager.instance.getNumber('ENERGY_GAIN_INTERVAL') * 1000;
+					newEnergyLastGain += ENERGY_GAIN_INTERVAL;
 				}
 				_energy = newEnergyValue;
 				_energyLastGain = new Date(newEnergyLastGain);

@@ -153,6 +153,7 @@ class User < ActiveRecord::Base
 
 	def debit_energy(value = 1)
 		return false unless has_energy!(value)
+		self.energy_last_gain = Application.time.dup if self.energy >= PUBLIC_CONFIG['ENERGY_MAX']
 		self.energy -= value
 		true
 	end
@@ -178,7 +179,6 @@ class User < ActiveRecord::Base
 				energy_last_gain_var += PUBLIC_CONFIG['ENERGY_GAIN_INTERVAL']
 			end
 			energy_var += 1
-			energy_last_gain_var =  Application.time.dup if energy_var >= PUBLIC_CONFIG['ENERGY_MAX']
 		end
 		if set_values
 			self.energy = energy_var

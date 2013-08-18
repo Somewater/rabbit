@@ -52,7 +52,7 @@ package com.somewater.rabbit.application {
 					if(response && response['user'] && response['user']['new'])
 						Config.stat(Stat.NEW_USER_REGISTERED);
 
-					UserProfile.instance.msDelta = response['unixtime'] - (new Date().time + startRequestTime) / 2;
+					UserProfile.instance.msDelta = response['unixtime'] * 1000 - (new Date().time + startRequestTime) / 2;
 					response['user'] = jsonToGameUser(response['user'], gameUser);
 					var gameUsersFriends:Array = [];
 					for each(var friendJson:Object in response['friends'])
@@ -150,7 +150,7 @@ package com.somewater.rabbit.application {
 						if(response['friend'])
 						{
 							gameUser.visitRewarded = false;
-							gameUser.visitRewardTime = response['next_reward_time'];
+							gameUser.visitRewardTime = response['next_reward_time'] * 1000;
 						}
 						if(isFriend && !response['friend'])// друг давненько не заходил
 							response['needInviteFriendInGame'] = true;
