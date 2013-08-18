@@ -38,6 +38,7 @@ package com.somewater.rabbit.storage
 		 * 'lang_pack' - нераспарсенный словарь ключей
 		 * drawTileGrid - рисовать сетку тайлов
 		 * disableCameraTracking - отключить автоматическое слежение камеры за персонажем
+		 * disableEnergySpend - отключить трату энергии (бесконечное число попыток прох-я уровней)
 		 */
 		public static var memory:Object = {};
 		

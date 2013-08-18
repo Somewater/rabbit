@@ -39,6 +39,7 @@ package {
 		public function VkRabbitLoader() {
 			super();
 			Config.memory['autoPostLevelPass'] = false;
+			Config.memory['disableEnergySpend'] = true;
 		}
 
 		override protected function netInitialize():void
@@ -92,7 +93,7 @@ package {
 						"Game":{priority:-1,preload:true,url:"http://app.vk.com/c6087/u245894/9f37501bf6fe07.swf"}
 						,
 						"Application":{priority:int.MIN_VALUE,
-							preload:true,url:"http://app.vk.com/c6087/u245894/7cf8a80bfe09ce.swf"}
+							preload:true,url:"http://app.vk.com/c6087/u245894/a48ae10fee518a.swf"}
 						,"Interface":{preload:true, url:"http://app.vk.com/c6087/u245894/836c8b3bb538e0.swf"}
 						,"Assets":{preload:true, url:"http://cs302513.vk.com/u245894/477a5644135f26.zip"}
 						,"Rewards":{preload:true, url:"http://cs302513.vk.com/u245894/c38365043b0e29.zip"}

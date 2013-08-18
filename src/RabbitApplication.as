@@ -558,7 +558,6 @@ package
 				{
 					levelStartMessage(level);
 					Config.stat(Stat.LEVEL_STARTED);
-					UserProfile.instance.spendEnergy();
 					AppServerHandler.instance.onLevelStarted(UserProfile.instance, level);
 					OfferManager.instance.onLevelStarted(level);
 				}

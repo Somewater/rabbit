@@ -94,9 +94,11 @@ package com.somewater.rabbit.application {
 				}, onError, null, {'secure': true})
 		}
 
-		public function onLevelStarted(user:GameUser, level:LevelDef, onComplete:Function = null, onError:Function = null):void
+		public function onLevelStarted(user:UserProfile, level:LevelDef, onComplete:Function = null, onError:Function = null):void
 		{
-			return; // TODO
+			if(Config.memory['disableEnergySpend'])
+				return;
+			user.spendEnergy();
 			handler.call('levels/start', {'levelNumber':level.number},
 					function(response:Object):void{
 						if(!Config.memory['portfolioMode'] && response['levelInstance']['succes'] == false)
