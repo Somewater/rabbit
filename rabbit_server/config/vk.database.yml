@@ -1,0 +1,24 @@
+production:
+  adapter: postgresql
+  database: rabbit_vk
+  username: rabbit_vk
+  password: fh38so10ap
+  encoding: utf8
+  reconnect: true
+  pool: 5
+
+development:
+  adapter: postgresql
+  database: rabbit_vk
+  username: rabbit_vk
+  password: fh38so10ap
+  encoding: utf8
+  reconnect: true
+
+stat:
+  adapter: postgresql
+  database: rabbit_vk_stat
+  username: rabbit_vk
+  password: fh38so10ap
+  encoding: utf8
+  reconnect: true
