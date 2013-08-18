@@ -351,7 +351,7 @@ package
 				});
 			var w:Sprite = Config.application.message(text, function(...args):Boolean{
 					// рестарт уровня
-					new RestartLevelCommand().execute();
+					Config.application.restartCurrentGame();
 					return true;
 				}, [Config.application.translate('BUTTON_RESTART_LEVEL')]);
 			w.width = Config.WIDTH * 0.95;

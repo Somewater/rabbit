@@ -24,6 +24,7 @@ package com.somewater.rabbit.storage
 		CONFIG::debug
 		{
 			public static var editor:IRabbitEditor;
+			public static var editorModule:Object;
 		}
 
 		/**

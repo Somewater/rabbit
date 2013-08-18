@@ -1,7 +1,6 @@
 package com.somewater.rabbit.application.windows {
 import com.somewater.controller.PopUpManager;
 import com.somewater.rabbit.application.GameGUI;
-	import com.somewater.rabbit.debug.EditorModule;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.Lib;
@@ -153,7 +152,8 @@ import com.somewater.rabbit.application.GameGUI;
 			{
 				CONFIG::debug
 				{
-					EditorModule.instance.onGamePause();
+					if(Config.editorModule)
+						Config.editorModule.onGamePause();
 				}
 			}
 		}

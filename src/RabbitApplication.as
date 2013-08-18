@@ -27,6 +27,7 @@ package
 	import com.somewater.rabbit.application.RewardManager;
 	import com.somewater.rabbit.application.ServerLogic;
 	import com.somewater.rabbit.application.TopPage;
+	import com.somewater.rabbit.application.commands.RestartLevelCommand;
 	import com.somewater.rabbit.application.tutorial.TutorialLevelDef;
 	import com.somewater.rabbit.application.WindowBackground;
 	import com.somewater.rabbit.application.shop.ShopPage;
@@ -579,6 +580,9 @@ package
 		}
 		private var __gameAlreadyRun:Boolean = false;
 
+		public function restartCurrentGame():void{
+			new RestartLevelCommand().execute();
+		}
 		
 		
 		/**

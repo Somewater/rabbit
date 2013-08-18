@@ -34,22 +34,11 @@ package {
 	[SWF(width="810", height="650", backgroundColor="#FFFFFF", frameRate="30")]
 	public class VkRabbitLoader extends SocialRabbitLoader{
 
-		private var _clickozavr:Clickozavr;
-
-		//[Embed(source="krolik_jo.jpg")]
-		//private var livecardsAd:Class;
-
 		include 'com/somewater/rabbit/include/RuPreloaderAsset.as';
 
 		public function VkRabbitLoader() {
 			super();
 			Config.memory['autoPostLevelPass'] = false;
-		}
-
-		override protected function createLayers():void {
-			super.createLayers();
-
-			//_content.y= _popups.y = _tutorial.y = _tooltips.y = _cursors.y = 150;
 		}
 
 		override protected function netInitialize():void
@@ -58,116 +47,6 @@ package {
 			arrow.addEventListener('wall_view_inline',onWallViewInline);
 			arrow.addEventListener('wall_post_inline',onWallPostInline);
 			onArrowComplete('hjli32ls');
-		}
-
-		override protected function onNetInitializeComplete(...args):void
-		{
-			//var bannerTape: BannerTape = new BannerTape("3298", "791", Config.WIDTH, 1);
-			//stage.addChild(bannerTape);
-
-			/*adLayer.graphics.beginFill(0xFFFFFF);
-			adLayer.graphics.drawRect(0,0,Config.WIDTH, 150);
-			adLayer.graphics.drawRect(0, 150 + Config.HEIGHT, Config.WIDTH, 100)
-
-			_clickozavr = new Clickozavr('637', Config.WIDTH , Config.HEIGHT, adLayer);
-			_clickozavr.addEventListener(ClickozavrEvent.GET_USER_DATA, onClickozavrCanGetUserData);
-			_clickozavr.init([
-			new ContainerInfo(ContainerInfo.WIDE600x150_BAR, (Config.WIDTH - 600) * 0.5, 0)], true);*/
-
-			//var image:DisplayObject = new livecardsAd();// 120 x 800
-			//image.x = 800;
-			//adLayer.addChild(image);
-
-//			var ads:AdAppUtil = new AdAppUtil('370', arrow.flashVars['api_id'], arrow.key,
-//									 arrow.flashVars['api_url'], arrow.flashVars['viewer_id'], arrow.flashVars['secret']);
-//
-//			ads.getAds(onGetAds,"JSON",1);
-//			if(data.user)
-//			{
-//				var ob1:Object = new Object;
-//				ob1.nam = 'uid';
-//				ob1.val = data.user.uid;
-//				var ob2:Object = new Object;
-//				ob2.nam = 'sex';
-//				ob2.val = data.user.sex;
-//				var ob3:Object = new Object;
-//				ob3.nam = 'bdate';
-//				ob3.val = data.user.bdate;
-//				var ob4:Object = new Object;
-//				ob4.nam = 'city';
-//				ob4.val = data.user.city;
-//				var ob5:Object = new Object;
-//				ob5.nam = 'country';
-//				ob5.val = data.user.country;
-//				var arr:Array = new Array(ob1, ob2, ob3, ob4, ob5);
-//				adAppRequest(arr);
-//			}
-//			ads.handler_(null)
-//
-//			function onGetAds(evt:Event):void
-//			{
-//				trace(evt.currentTarget.data);
-//			}
-
-			/*Security.allowDomain('*');
-			var adappLoader:Loader = new Loader();
-			adappLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, onAdAppComplete);
-			adappLoader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, trace);
-			adappLoader.load(new URLRequest('http://adapp.ru/ad_728x90.swf?platform_id=' + '370'),
-					new LoaderContext(true, ApplicationDomain.currentDomain, SecurityDomain.currentDomain))*/
-
-			super.onNetInitializeComplete();
-
-			/*var livecardAdLoader:Loader = new Loader();
-			livecardAdLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, function(event:Event):void{
-				var banner:Sprite = LoaderInfo(event.target).content as Sprite;
-				banner.buttonMode =banner.useHandCursor = true;
-				banner.y = 800;
-				banner.addEventListener(MouseEvent.CLICK, onLivecardAdClick);
-				var sh:Sprite = new Sprite();
-				sh.graphics.beginFill(0,0)
-				sh.graphics.drawRect(0,0,810,150);
-				banner.addChild(sh)
-				Config.loader.addChild(banner);
-			})
-			livecardAdLoader.load(new URLRequest(swfs['LivecardAd'].url), new LoaderContext(true, ApplicationDomain.currentDomain, SecurityDomain.currentDomain))
-			*/
-		}
-
-		private function onLivecardAdClick(event:MouseEvent):void {
-			trace('Livecards click');
-			navigateToURL(new URLRequest('http://vk.com/app1860789'), '_blank');
-			Config.stat(Stat.LIVECARD_AD);
-		}
-
-		private function onAdAppComplete(event:Event):void {
-			var banner:DisplayObject = LoaderInfo(event.currentTarget).content;
-			banner.x = (Config.WIDTH - banner.width) * 0.5;
-			banner.y = 150 + Config.HEIGHT;
-			adLayer.addChild(banner);
-		}
-
-		private function onClickozavrCanGetUserData(event:Event):void {
-			var u:SocialUser = getUser();
-			var sex:String = u.male ? 'male' : 'female';
-
-			var userData:XML = <userinfo id={u.id} sex={sex}></userinfo>;
-			if(u.birthday)
-			{
-				var bdate:Date = u.birthday;
-				userData.@birthday = bdate.date + '.' + (bdate.month + 1) + '.' + bdate.fullYear;
-			}
-
-			if(u.city || u.country)
-			{
-				var location:XML = <location></location>
-				userData.appendChild(location);
-				if(u.city)
-					location.appendChild(<city id={u.cityCode} name={u.city}></city>);
-				if(u.country)
-					location.appendChild(<country id={u.countryCode} name={u.country}></country>);
-			}
-			_clickozavr.getUserData('2', '637', arrow.flashVars['api_id'], userData);
 		}
 
 		private function onWall():void
@@ -208,20 +87,20 @@ package {
 
 		override protected function createSpecificPaths():void
 		{
-			basePath = 'http://mm.rabbit.atlantor.ru/';
+			basePath = 'http://vk.rabbit.atlantor.ru/';
 			swfs = {
-						"Game":{priority:-1,preload:true,url:"http://cs302513.vk.com/u245894/8c8974beab42a3.zip"}
+						"Game":{priority:-1,preload:true,url:""}
 						,
 						"Application":{priority:int.MIN_VALUE,
-							preload:true,url:"http://cs302513.vk.com/u245894/ab64653ba0f568.zip"}
-						,"Interface":{preload:true, url:"http://cs302513.vk.com/u245894/f65de632552772.zip"}
+							preload:true,url:""}
+						,"Interface":{preload:true, url:""}
 						,"Assets":{preload:true, url:"http://cs302513.vk.com/u245894/477a5644135f26.zip"}
 						,"Rewards":{preload:true, url:"http://cs302513.vk.com/u245894/c38365043b0e29.zip"}
 						,"Images":{preload:true, url:"http://cs305802.vk.com/u245894/95efe3baee86a7.zip"}
 						,"MusicMenu":{url:"http://cs5231.userapi.com/u245894/9f85f9d027e598.zip"}
 						,"MusicGame":{url:"http://cs5231.userapi.com/u245894/16c9f64377d623.zip"}
 						,"Sound":{preload:true, url:"http://cs11458.vk.com/u245894/b1e1ab2e3fa973.zip"}
-						,"Lang":{priority:100, preload:true, url:"http://cs302513.vk.com/u245894/2fecc8eccd9223.zip"}
+						,"Lang":{priority:100, preload:true, url:""}
 						,"XmlPack":{preload:true, url:"http://cs302513.vk.com/u245894/cddadf35cd9b56.zip"}
 
 						,"Font":{priority:100, preload:true, url:"http://cs5231.userapi.com/u245894/fe712dd002e7c1.zip"}
@@ -229,7 +108,6 @@ package {
 
 			// only for vk
 			swfs['PostingPopup'] = {'url':'http://cs5231.userapi.com/u245894/5731f86c081b93.zip'}
-			swfs['LivecardAd'] = {'url':'http://cs11130.vk.com/u245894/9ad55940de39f8.zip'}
 		}
 
 		override public function get net():int { return 2; }

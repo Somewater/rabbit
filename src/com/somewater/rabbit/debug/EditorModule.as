@@ -59,6 +59,9 @@ package com.somewater.rabbit.debug {
 				throw new Error("Singletone");
 
 			_instance = this;
+			CONFIG::debug{
+				Config.editorModule = this;
+			}
 		}
 
 		public static function get instance():EditorModule

@@ -33,6 +33,7 @@ package com.somewater.rabbit
 		function startPage(name:String):void
 			
 		function startGame(level:LevelDef = null):void
+		function restartCurrentGame():void
 			
 		// массив всех уровней игры
 		function get levels():Array
