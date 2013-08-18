@@ -90,10 +90,10 @@ package {
 		{
 			basePath = 'http://vk.rabbit.atlantor.ru/';
 			swfs = {
-						"Game":{priority:-1,preload:true,url:"http://app.vk.com/c6087/u245894/9f37501bf6fe07.swf"}
+						"Game":{priority:-1,preload:true,url:"http://app.vk.com/c6087/u245894/3c04d46f3cb3a1.swf"}
 						,
 						"Application":{priority:int.MIN_VALUE,
-							preload:true,url:"http://app.vk.com/c6087/u245894/a48ae10fee518a.swf"}
+							preload:true,url:"http://app.vk.com/c6087/u245894/8bd9960fd1643c.swf"}
 						,"Interface":{preload:true, url:"http://app.vk.com/c6087/u245894/836c8b3bb538e0.swf"}
 						,"Assets":{preload:true, url:"http://cs302513.vk.com/u245894/477a5644135f26.zip"}
 						,"Rewards":{preload:true, url:"http://cs302513.vk.com/u245894/c38365043b0e29.zip"}

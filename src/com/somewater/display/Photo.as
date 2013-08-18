@@ -259,18 +259,9 @@ package com.somewater.display
 			cls();
 			image = new Bitmap(null,"auto",true);
 			try{
-			Bitmap(image).bitmapData = e.target.content.bitmapData;
+				Bitmap(image).bitmapData = e.target.content.bitmapData;
 			}catch(error:Error){
-				if(error.errorID == 2123)// нет кроссдоменов
-				{
-					var nfo:LoaderInfo = LoaderInfo(e.target); 
-					var ba:ByteArray = nfo.bytes;
-					var reloader:Loader = new Loader();					
-					reloader.contentLoaderInfo.addEventListener(Event.COMPLETE, reloaderComplete);	
-					reloader.loadBytes(ba);	
-					return;
-				}else
-					Bitmap(image).bitmapData = new BitmapData(maxWidth?maxWidth:100, maxWidth?maxHeight:100, false, 0xFFFBBA);
+				Bitmap(image).bitmapData = new BitmapData(maxWidth?maxWidth:100, maxWidth?maxHeight:100, false, 0xFFFBBA);
 			}
 			Bitmap(image).smoothing = true;
 			onImageComplete();
