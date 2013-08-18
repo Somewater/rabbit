@@ -14,6 +14,7 @@ package com.somewater.rabbit.application {
 	import com.somewater.rabbit.storage.RewardInstanceDef;
 	import com.somewater.rabbit.storage.UserProfile;
 	import com.somewater.social.SocialUser;
+	import com.somewater.utils.Helper;
 
 	/**
 	 * Прокси между IServerHandler и логикой приложения
@@ -35,7 +36,7 @@ package com.somewater.rabbit.application {
 		{
 			handler = new ServerReceiver(Config.loader.serverHandler, ['init']);
 			if(Config.loader.basePath && Config.loader.basePath.length > 0)
-				handler.base_path = Config.loader.basePath;
+				handler.base_path = Helper.basePath(Config.loader.basePath) + '/';
 
 			var appFriends:Array = [];
 			var appFriendsIds:Array = [];
