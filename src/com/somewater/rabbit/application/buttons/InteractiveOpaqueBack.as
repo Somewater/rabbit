@@ -14,8 +14,8 @@ package com.somewater.rabbit.application.buttons {
 		public var icon:DisplayObject;
 		protected var back:DisplayObject;
 
-		protected var _width:int;
-		protected var _height:int;
+		protected var _width:int = 48;
+		protected var _height:int = 48;
 
 		private var state:int = 0;
 		private var createdState:int = 0;
@@ -29,6 +29,7 @@ package com.somewater.rabbit.application.buttons {
 				}
 			}
 			buttonMode = useHandCursor = true;
+			mouseChildren = false;
 
 			addEventListener(MouseEvent.ROLL_OVER, onOver);
 			addEventListener(MouseEvent.ROLL_OUT, onUp);

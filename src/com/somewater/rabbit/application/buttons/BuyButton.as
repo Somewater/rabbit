@@ -17,6 +17,7 @@ package com.somewater.rabbit.application.buttons {
 
 		override protected function resize():void {
 			super.resize();
+			textField.x -= buyButtonMoneyIcon.width * 0.5;
 			buyButtonMoneyIcon.x = this.textField.x + this.textField.width + 5;
 		}
 	}

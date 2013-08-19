@@ -124,7 +124,7 @@ import com.somewater.rabbit.storage.Config;
 			addChild(pauseSplash);
 
 			powerupPanel = new PowerupsGameGUI(pauseSplash);
-			powerupPanel.x = (offerStat ? offerStat.x : statPanel.x) - 10 - PowerupsGameGUI.WIDTH;
+			powerupPanel.x = playPauseButton.x + playPauseButton.width + 10;
 			powerupPanel.y = statPanel.y;
 			addChild(powerupPanel);
 
@@ -141,7 +141,7 @@ import com.somewater.rabbit.storage.Config;
 			addChild(cameraArrowRight);
 			cameraArrowUp = Lib.createMC('interface.CameraArrowUp');
 			cameraArrowUp.mouseChildren = cameraArrowUp.mouseEnabled = false;
-			cameraArrowUp.x = Math.min(powerupPanel.x - cameraArrowUp.width - CAMERA_ARROW_PADDING, (Config.WIDTH - cameraArrowUp.width) * 0.5);
+			cameraArrowUp.x = (Config.WIDTH - cameraArrowUp.width) * 0.5;
 			cameraArrowUp.y = powerupPanel.y;
 			addChild(cameraArrowUp);
 			cameraArrowDown = Lib.createMC('interface.CameraArrowDown');

@@ -21,20 +21,20 @@ public class NeedMoreEnergyWindow extends Window{
 	private var onCancel:Function;
 
 	public function NeedMoreEnergyWindow(onBuyed:Function, onCancel:Function = null, otherTitle:String = null) {
-		super(null, otherTitle ? otherTitle : Lang.t('NEED_MORE_ENERGY_WND_TITLE'), null, []);
+		super(otherTitle ? otherTitle : Lang.t('NEED_MORE_ENERGY_WND_TITLE'), null, null, []);
 
-		setSize(400, 250);
+		setSize(400, 350);
 
 		this.onBuyed = onBuyed;
 		this.onCancel = onCancel;
 
 		energyIndicator = new EnergyIndicator();
 		energyIndicator.x = (this.width - energyIndicator.width) * 0.5;
-		energyIndicator.y = this.titleField.y + this.titleField.textHeight + 40;
+		energyIndicator.y = this.textField.y + this.textField.textHeight + 40;
 		addChild(energyIndicator);
 
 		buyButton = new BuyButton();
-		buyButton.width = this.width * 0.45;
+		buyButton.width = 200;
 		buyButton.label = Lang.t('BUY_ENERGY_BY', {money: ConfManager.instance.getNumber('ENERGY_COST')});
 		buyButton.enabled = UserProfile.instance.money >= ConfManager.instance.getNumber('ENERGY_COST');
 		buyButton.addEventListener(MouseEvent.CLICK, onBuyClick);

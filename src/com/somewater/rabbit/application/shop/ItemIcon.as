@@ -3,6 +3,7 @@ package com.somewater.rabbit.application.shop {
 	import com.somewater.display.HintedSprite;
 	import com.somewater.display.Photo;
 	import com.somewater.display.SpriteAligner;
+	import com.somewater.rabbit.application.buttons.InteractiveOpaqueBack;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.CustomizeDef;
 	import com.somewater.rabbit.storage.ItemDef;
@@ -65,7 +66,7 @@ package com.somewater.rabbit.application.shop {
 			quantityTF.x = image.width + 10;
 			addChild(quantityTF);
 
-			_background = Lib.createMC('interface.OpaqueBackground');
+			_background = new InteractiveOpaqueBack();//Lib.createMC('interface.OpaqueBackground');
 			_background.y = -2;
 			_background.x = -5;
 			_background.height = HEIGHT;
@@ -82,6 +83,8 @@ package com.somewater.rabbit.application.shop {
 		}
 
 		public function clear():void {
+			if(_background is InteractiveOpaqueBack)
+				(_background as InteractiveOpaqueBack).clear()
 			image = null;
 			item = null;
 			hint = null;
