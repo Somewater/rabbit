@@ -26,6 +26,7 @@ package com.somewater.rabbit.application
 		private const defaultHeight:int = 32;
 		private var _enabled:Boolean = true;
 		protected var _icon:DisplayObject;
+		private var _color:uint = 0xFFFFFF;
 
 		private var downFilter:ColorMatrixFilter;
 		
@@ -35,7 +36,7 @@ package com.somewater.rabbit.application
 			buttonMode = true;
 			_height = defaultHeight;
 			
-			textField = new EmbededTextField(null, 0xFFFFFF, 12, true);
+			textField = new EmbededTextField(null, _color, 12, true);
 			textField.mouseEnabled = false;
 			addChild(textField);
 			
@@ -91,7 +92,7 @@ package com.somewater.rabbit.application
 		override protected function onOut(e:MouseEvent):void
 		{
 			super.onOut(e);
-			textField.color = 0xFFFFFF;
+			textField.color = _color;
 			if(icon)
 				icon.filters = [];
 		}
@@ -99,7 +100,7 @@ package com.somewater.rabbit.application
 		override protected function onOver(e:MouseEvent):void
 		{
 			super.onOver(e);
-			textField.color = 0xFFFFFF;
+			textField.color = _color;
 			if(icon)
 				icon.filters = [];
 		}
@@ -146,6 +147,11 @@ package com.somewater.rabbit.application
 					resize();
 				}
 			}
+		}
+
+		public function set color(value:uint):void {
+			_color = value;
+			textField.color = _color;
 		}
 	}
 }

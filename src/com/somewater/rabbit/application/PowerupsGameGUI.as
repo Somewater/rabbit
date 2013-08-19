@@ -3,6 +3,7 @@ package com.somewater.rabbit.application {
 	import com.somewater.control.IClear;
 	import com.somewater.controller.PopUpManager;
 	import com.somewater.display.Window;
+	import com.somewater.rabbit.application.buttons.InteractiveOpaqueBack;
 	import com.somewater.rabbit.application.shop.MyPowerupsBag;
 	import com.somewater.rabbit.application.shop.PowerupEvent;
 	import com.somewater.rabbit.application.shop.ShopWindow;
@@ -29,7 +30,7 @@ package com.somewater.rabbit.application {
 
 		public var myPowerups:MyPowerupsBag;
 		private var ground:DisplayObject;
-		private var btnHolder:DisplayObject;
+		private var btnHolder:InteractiveOpaqueBack;
 		private var btnHolderPadding:int;
 
 		private var opened:Boolean = false;
@@ -43,10 +44,16 @@ package com.somewater.rabbit.application {
 			this.pauseSplashRef = pauseSplashRef;
 			pauseSplashRef.addEventListener(MouseEvent.CLICK, close);
 
-			ground = Lib.createMC('interface.OpaqueBackground');
-			ground.width = WIDTH;
-			ground.height = HEIGHT;
-			addChild(ground);
+			btnHolder = new InteractiveOpaqueBack(Lib.createMC('interface.PowerupGUIPanelBtn'));
+			btnHolder.iconShiftY = -1;
+			btnHolderPadding = (WIDTH - btnHolder.width) * 0.5;
+			btnHolder.x = 0;
+			btnHolder.y = 0;
+			btnHolder.setSize(48, 48);
+			addChild(btnHolder);
+			ground = btnHolder;
+
+			btnHolder.addEventListener(MouseEvent.CLICK, onBtnClicked);
 
 			myPowerups = new MyPowerupsBag(10, true);
 			myPowerups.x = -myPowerups.width + WIDTH - 5;
@@ -54,15 +61,6 @@ package com.somewater.rabbit.application {
 			myPowerups.addEventListener(PowerupEvent.POWERUP_EVENT, onPowerupCliced);
 			addChild(myPowerups);
 			myPowerups.visible = false;
-
-
-			btnHolder = Lib.createMC('interface.PowerupGUIPanelBtn');
-			//btnHolder.scaleX = -1;
-			btnHolder.x = btnHolderPadding = (WIDTH - btnHolder.width) * 0.5;
-			btnHolder.y = (HEIGHT - btnHolder.height) * 0.5;
-			addChild(btnHolder);
-
-			btnHolder.addEventListener(MouseEvent.CLICK, onBtnClicked);
 
 			UserProfile.bind(onUserDataChanged);
 
@@ -83,6 +81,7 @@ package com.somewater.rabbit.application {
 				//btnHolder.scaleX = 1;
 				var myPowerupsWidth:int = myPowerups.width + 5;
 				TweenLite.to(btnHolder, 0.2, {alpha:0.4, x: (WIDTH - btnHolder.width) * 0.5 - myPowerupsWidth})
+				TweenLite.to(btnHolder.icon, 0.2, {alpha: 0});
 				TweenLite.to(ground, 0.2, {width:WIDTH + myPowerupsWidth, x: -myPowerups.width, onComplete: onPanelOpenComplete});
 			}
 			else
@@ -98,17 +97,24 @@ package com.somewater.rabbit.application {
 			myPowerups.visible = true;
 			myPowerups.alpha = 0;
 			TweenLite.to(myPowerups, 0.2, {alpha: 1});
+			btnHolder.mouseEnabled = false;
+		}
+
+		private function onPanelCloseComplete():void {
+			btnHolder.mouseEnabled = true;
 		}
 
 		private function onPowerupsAnimComplete():void {
 			myPowerups.visible = false;
 			//btnHolder.scaleX = -1;
 			TweenLite.to(btnHolder, 0.2, {alpha:1, x: (WIDTH - btnHolder.width) * 0.5})
-			TweenLite.to(ground, 0.2, {width:WIDTH, x: 0});
+			TweenLite.to(btnHolder.icon, 0.2, {alpha: 1});
+			TweenLite.to(ground, 0.2, {width:WIDTH, x: 0, onComplete: onPanelCloseComplete});
 		}
 
 		public function clear():void {
 			btnHolder.removeEventListener(MouseEvent.CLICK, onBtnClicked);
+			btnHolder.clear();
 			TweenLite.killTweensOf(btnHolder);
 			TweenLite.killTweensOf(ground);
 			TweenLite.killTweensOf(myPowerups);

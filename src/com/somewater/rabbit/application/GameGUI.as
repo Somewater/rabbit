@@ -4,6 +4,7 @@ package com.somewater.rabbit.application
 	import com.somewater.control.IClear;
 	import com.somewater.rabbit.SoundTrack;
 	import com.somewater.rabbit.Sounds;
+	import com.somewater.rabbit.application.buttons.InteractiveOpaqueBack;
 	import com.somewater.rabbit.application.windows.PauseMenuWindow;
 import com.somewater.rabbit.events.CameraMoveEvent;
 import com.somewater.rabbit.storage.Config;
@@ -28,7 +29,7 @@ import com.somewater.rabbit.storage.Config;
 	{
 		public var rightGameGUI:Boolean = true;// флаг для отличия от других GameGUI при нетипизированном использовании
 
-		private var playPauseButton:SimpleButton;
+		private var playPauseButton:InteractiveOpaqueBack;
 		private var statPanel:Sprite;
 		private var timeTF:EmbededTextField;
 		private var carrotTF:EmbededTextField;
@@ -56,7 +57,8 @@ import com.somewater.rabbit.storage.Config;
 		{
 			super();
 			
-			playPauseButton = Lib.createMC("interface.PauseButton");
+			playPauseButton = new InteractiveOpaqueBack(Lib.createMC("interface.PauseButton"));
+			playPauseButton.setSize(48, 48)
 			Hint.bind(playPauseButton, Lang.t('PAUSE'))
 			playPauseButton.x = 15;
 			playPauseButton.y = 15;

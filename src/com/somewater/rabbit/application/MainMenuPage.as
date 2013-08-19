@@ -283,7 +283,7 @@ import flash.display.DisplayObject;
 
 		private function labelToButton(label:String):OrangeButton
 		{
-			var b:OrangeButton = label == 'SHOP_MENU_BTN' ? new GreenButton() : new OrangeButton();
+			var b:OrangeButton = label == 'SHOP_MENU_BTN' ? new BrightGreenButton() : new OrangeButton();
 			b.icon = labelToIcon[label] ? Lib.createMC(labelToIcon[label]) : null;
 			return b
 		}
@@ -304,7 +304,10 @@ import flash.display.DisplayObject;
 }
 
 import com.somewater.rabbit.application.OrangeButton;
+import com.somewater.rabbit.application.buttons.GreenButton;
 import com.somewater.rabbit.storage.Lib;
+
+import flash.display.Sprite;
 
 class CopyrightButton extends OrangeButton
 {
@@ -324,5 +327,17 @@ class CopyrightButton extends OrangeButton
 		{
 			_icon.x = _width * 0.5;
 		}
+	}
+}
+
+class BrightGreenButton extends GreenButton {
+
+	public function BrightGreenButton(){
+		super();
+		this.color = 0x226822;
+	}
+
+	override protected function createGround(type:String):Sprite {
+		return Lib.createMC(this.enabled ? "interface.BrightGreenButton_" + type : 'interface.ShadowOrangeButton_up');
 	}
 }
