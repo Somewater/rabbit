@@ -331,7 +331,7 @@ import flash.utils.Timer;
 		}
 
 		public function canSpendEnergy(value:int = 1):Boolean {
-			return _energy - value >= 0 || canGainEnergy();
+			return _energy - value >= 0;
 		}
 
 		private function canGainEnergy():Boolean {
@@ -358,9 +358,6 @@ import flash.utils.Timer;
 		public function spendEnergy(value:int = 1):void {
 			if(!canSpendEnergy(value))
 				throw new Error("Not enough energy");
-			if(_energy - value < 0 && canGainEnergy()){
-				gainEnergy();
-			}
 			if(_energy >= ConfManager.instance.getNumber('ENERGY_MAX')){
 				_energyLastGain = new Date(serverUnixTime());
 			}
@@ -369,8 +366,6 @@ import flash.utils.Timer;
 		}
 
 		public function gainEnergy():void{
-			if(!canGainEnergy())
-				throw new Error("Can't gain energy");
 			_energy = ConfManager.instance.getNumber('ENERGY_MAX')
 			_energyLastGain = new Date(serverUnixTime());
 			refreshEnergyGainTimer();
