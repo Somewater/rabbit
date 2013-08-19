@@ -267,6 +267,12 @@ import com.somewater.rabbit.events.HeroHealthEvent;
 			var speedX:Number;
 			var speedY:Number;
 
+			// mouse on  gui
+			if(checkMouseOnGui(mouseX, mouseY)){
+				removeTrackRule(TrackTileRule.MAP_MOVING);
+				return;
+			}
+
 			speedX = speedByValues(mouseX, 0, MAP_MOVE_PADDING);
 			if(speedX == 0) speedX = speedByValues(mouseX, Config.WIDTH, Config.WIDTH - MAP_MOVE_PADDING);
 
@@ -290,6 +296,10 @@ import com.somewater.rabbit.events.HeroHealthEvent;
 			} else {
 				removeTrackRule(TrackTileRule.MAP_MOVING);
 			}
+		}
+
+		private function checkMouseOnGui(x:int, y:int):Boolean {
+			return x < 280 && y < 200
 		}
 
 		/**
