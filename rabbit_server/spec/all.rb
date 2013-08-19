@@ -537,6 +537,34 @@ class AllSpec
 				response['friends'].size.should == 1
 				response['friends'][0]['uid'].should == @friend.uid
 			end
+
+			it "Выдается энергия, если пришло время выдачи" do
+				@user.energy = 2
+				@user.energy_last_gain = Time.new - PUBLIC_CONFIG['ENERGY_GAIN_INTERVAL'] - 5
+				@user.save
+				request({'net' => @user.net,'uid' => @user.uid})
+				@user.reload
+				@user.energy.should == 3
+			end
+
+			it "Не выдается энергии более максимального значения" do
+				@user.energy = PUBLIC_CONFIG['ENERGY_MAX']
+				@user.energy_last_gain = Time.new - PUBLIC_CONFIG['ENERGY_GAIN_INTERVAL'] - 5
+				@user.save
+				request({'net' => @user.net,'uid' => @user.uid})
+				@user.reload
+				@user.energy.should == PUBLIC_CONFIG['ENERGY_MAX']
+			end
+
+			it "Энергия на максимум, если дата последней выдачи не задана" do
+				@user.energy = 2
+				@user.energy_last_gain = nil
+				@user.save
+				request({'net' => @user.net,'uid' => @user.uid})
+				@user.reload
+				@user.energy.should == PUBLIC_CONFIG['ENERGY_MAX']
+				@user.energy_last_gain.should_not be_nil
+			end
 		end
 
 		describe LevelsController do
@@ -1000,17 +1028,17 @@ class AllSpec
 				@user.energy_with_gain().should == 0
 			end
 
-			it "После выдачи энергии, следующее время выдачи считать с текущего момента" do
-				@user.energy_last_gain = Time.new - PUBLIC_CONFIG['ENERGY_GAIN_INTERVAL']
+			it "После выдачи энергии, следующее время выдачи соотносится с предыдущим" do
+				@user.energy_last_gain = Time.new - PUBLIC_CONFIG['ENERGY_GAIN_INTERVAL'] - 10.minutes
 				@user.energy_with_gain(true).should > 0
-				@user.energy_last_gain.should be_within(3).of(Time.new)
+				@user.energy_last_gain.should be_within(1).of(Time.new - 10.minutes)
 			end
 
 			it "После использования энергии (если был максимум) с этого момента начинается таймер выдачи" do
 				@user.energy = PUBLIC_CONFIG['ENERGY_MAX']
 				@user.energy_last_gain = Time.new - 10
 				@user.debit_energy().should be_true
-				@user.energy_last_gain.should be_within(3).of(Time.new)
+				@user.energy_last_gain.should be_within(1).of(Time.new)
 			end
 
 			it "Нельзя использовать энергию, если ее не хватает" do
@@ -1025,13 +1053,21 @@ class AllSpec
 
 			context "Прохождение уровней" do
 
+				before :each do
+					@user = get_uniq_user()
+				end
+
 				def level_start(levelNumber)
-					data = {'net' => @user.net,'uid' => @user.uid, 'levelNumber' => levelNumber}
+					@user.save
+					data = {'net' => @user.net,'uid' => @user.uid, 'json' => {'levelNumber' => levelNumber}}
 					execute_request(data, LevelsStartController)
+					@user.reload
 				end
 
 				it "Старт туториального уровня не снимает энергию" do
-					pending()
+					@user.energy = 1
+					level_start(1)
+					@user.energy.should == 1
 				end
 
 				it "Старт ранее пройденного уровня списывает энергию" do
@@ -1070,6 +1106,33 @@ class AllSpec
 					lambda{
 						level_start(2)
 					}.should raise_error(/Need 2 user level/)
+				end
+
+				it "Стартует таймер выдачи энергии, если списали с максимальной" do
+					@user.level = 2
+					@user.energy = PUBLIC_CONFIG['ENERGY_MAX']
+					@user.energy_last_gain = Time.new + 1000
+					level_start(2)
+					@user.energy_last_gain.should be_within(1).of(Time.new)
+				end
+
+				it "Не меняется таймер последенй выдачи, если списали не с максимума" do
+					@user.level = 2
+					@user.energy = 3
+					gain_in_10_min = Time.new - PUBLIC_CONFIG['ENERGY_GAIN_INTERVAL'] + 10.minutes
+					@user.energy_last_gain = gain_in_10_min.dup
+					level_start(2)
+					@user.energy_last_gain.should be_within(1).of(gain_in_10_min)
+				end
+
+				it "Буфер выдачи в несколько секунд" do
+					@user.level = 2
+					@user.energy = 0
+					last_gain = Time.new - PUBLIC_CONFIG['ENERGY_GAIN_INTERVAL'] + 5.seconds
+					@user.energy_last_gain = last_gain.dup
+					level_start(2)
+					@user.energy.should == 0
+					@user.energy_last_gain.should be_within(1).of(last_gain + PUBLIC_CONFIG['ENERGY_GAIN_INTERVAL'])
 				end
 			end
 		end

@@ -5,8 +5,10 @@ class LevelsStartController < BaseUserController
 	def process
 		level_number = json['levelNumber'].to_i
 
-		raise LogicError, "Energy already ended" unless @user.debit_energy()
-		raise LogicError, "Need #{level_number} user level" unless @user.level >= level_number
+		if level_number > 1
+			raise LogicError, "Need #{level_number} user level" unless @user.level >= level_number
+			raise LogicError, "Energy already ended" unless @user.debit_energy()
+		end
 		@response['user'] = @user.to_json
 	end
 end
