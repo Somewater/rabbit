@@ -306,14 +306,18 @@ package com.somewater.rabbit.application {
 		public function sendNeighboursAccepts(friends:Array):void
 		{
 			var friendsIds:Array = [];
-			for each(var f:SocialUser in friends)
+			var uidToSocialUser:Object = {};
+			for each(var f:SocialUser in friends){
 				friendsIds.push(f.id);
+				uidToSocialUser[f.id] = f;
+			}
 			if(friendsIds.length)// если друзей нет, бессмысленно слать запрос
 				handler.call('neighbours/add',{friend_uids: friendsIds.join(',')}, function(response:Object){
 					if(response['success']){
 						if(response['new_friends'])
-							for(var jsonUser:Object in response['new_friends']){
-								var newFriend:GameUser = jsonToGameUser(jsonUser, new GameUser());
+							for each(var jsonUser:Object in response['new_friends']){
+								var newFriend:GameUser = jsonToGameUser(jsonUser,
+										(Config.application as RabbitApplication).createGameUser(uidToSocialUser[jsonUser.uid]));
 								UserProfile.instance.addNeighbour(newFriend);
 							}
 					}

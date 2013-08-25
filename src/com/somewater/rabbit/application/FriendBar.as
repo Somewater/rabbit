@@ -136,6 +136,10 @@ package com.somewater.rabbit.application
 					notAppFriends.splice(i, 1);
 					break;
 				}
+
+			var pos:int = position;
+			_position = -1;
+			position = pos;
 		}
 
 		private function fullAppFriends():void{
