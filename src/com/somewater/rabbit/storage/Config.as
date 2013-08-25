@@ -39,6 +39,7 @@ package com.somewater.rabbit.storage
 		 * drawTileGrid - рисовать сетку тайлов
 		 * disableCameraTracking - отключить автоматическое слежение камеры за персонажем
 		 * disableEnergySpend - отключить трату энергии (бесконечное число попыток прох-я уровней)
+		 * cleanGameScreen - во время игры нет gui и прочих неигровых элементов
 		 */
 		public static var memory:Object = {};
 		

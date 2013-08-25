@@ -154,6 +154,9 @@ import com.somewater.rabbit.storage.Config;
 			Config.game.addEventListener(CameraMoveEvent.CAMERA_MOVE_EVENT, onCameraMove, false, 0, true);
 
 			Config.application.addPropertyListener('game.switch', onGameSwitched);
+
+			if(Config.memory['cleanGameScreen'])
+				this.visible = false
 		}
 
 		public function init():void

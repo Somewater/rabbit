@@ -224,6 +224,8 @@ package
 				loaderHint.x = 0;
 				loaderHint.y = Config.stage.stageHeight - loaderHint.height;
 				Config.stage.addChild(loaderHint);
+				if(Config.memory['cleanGameScreen'])
+					loaderHint.visible = false;
 			}
 			
 			Lang.options['male'] = Config.loader.getUser().male;
@@ -422,17 +424,6 @@ package
 					}
 				}, 10*1000)
 			}
-
-			var sendFriendsInterv:uint = setInterval(function():void{
-				clearInterval(sendFriendsInterv);
-				if(Config.loader.hasFriendsApi)
-				{
-					var friends:Array = [];
-					for each(var f:SocialUser in Config.loader.getAppFriends())
-						friends.push(f);
-					AppServerHandler.instance.sendFriendsStorage(friends);
-				}
-			}, 5000);
 		}
 		
 		private function onInitResponseError(error:Object):void
