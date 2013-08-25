@@ -2,7 +2,7 @@ require "json"
 
 class User < ActiveRecord::Base
 
-	SHORT_SELECT = 'uid, level, score, stars'
+	SHORT_SELECT = 'id, uid, level, score, stars'
 
 	before_save :save_structures
 	has_many :user_friends, :foreign_key => 'user_uid', :primary_key => 'uid'

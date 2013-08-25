@@ -545,26 +545,35 @@ class AllSpec
 				response['neighbours'][0]['uid'].should == @friend.uid
 			end
 
-			it "Инфа о друге не выдается, пока он не сосед (oн послал запрос)" do
+			it "Инфа о друге не выдается, пока он не сосед (нет запросов)" do
 				@friend = get_other_user()
-
-				@user.user_friends.create(:friend_uid => @friend.uid, :accepted => true)
 
 				response = request({'net' => @user.net,'uid' => @user.uid,'json' => {'friendIds' => [@friend.uid],
 																																						 'user' => {'uid' => @user.uid, 'net' => @user.net}}})
 				response['neighbours'].should_not be_nil
-				response['neighbours'].size.should == 1
+				response['neighbours'].size.should == 0
+			end
+
+			it "Инфа о друге не выдается, пока он не сосед (oн послал запрос)" do
+				@friend = get_other_user()
+
+				@user.user_friends.create(:friend_uid => @friend.uid)
+
+				response = request({'net' => @user.net,'uid' => @user.uid,'json' => {'friendIds' => [@friend.uid],
+																																						 'user' => {'uid' => @user.uid, 'net' => @user.net}}})
+				response['neighbours'].should_not be_nil
+				response['neighbours'].size.should == 0
 			end
 
 			it "Инфа о друге не выдается, пока он не сосед (игрок послал запрос)" do
 				@friend = get_other_user()
 
-				@friend.user_friends.create(:friend_uid => @user.uid, :accepted => true)
+				@friend.user_friends.create(:friend_uid => @user.uid)
 
 				response = request({'net' => @user.net,'uid' => @user.uid,'json' => {'friendIds' => [@friend.uid],
 																																						 'user' => {'uid' => @user.uid, 'net' => @user.net}}})
 				response['neighbours'].should_not be_nil
-				response['neighbours'].size.should == 1
+				response['neighbours'].size.should == 0
 			end
 
 			it "Выдается энергия, если пришло время выдачи" do
