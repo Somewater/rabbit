@@ -2,7 +2,11 @@ require "json"
 
 class User < ActiveRecord::Base
 
+	SHORT_SELECT = 'uid, level, score, stars'
+
 	before_save :save_structures
+	has_many :user_friends, :foreign_key => 'user_uid', :primary_key => 'uid'
+	has_many :neighbours, :foreign_key => 'user_uid', :primary_key => 'uid', :class_name => 'UserFriend', :conditions => 'accepted = TRUE'
 
 	# {'0':{'c' => 3, 't' => 45, 'v' => 0, 's' => 1}, ...}
 	def level_instances
@@ -168,7 +172,7 @@ class User < ActiveRecord::Base
 	end
 
 	def energy_with_gain(set_values = false)
-		energy_time_buffer = 60
+		energy_time_buffer = CONFIG['energy']['time_buffer'].to_i
 		energy_var = self.energy
 		energy_last_gain_var = self.energy_last_gain
 		while energy_var < PUBLIC_CONFIG['ENERGY_MAX'] && (energy_last_gain_var.nil? ||
@@ -224,8 +228,12 @@ class User < ActiveRecord::Base
 		hash
 	end
 
-	def self.find_by_uid(uid, net)
-		User.where(:uid => uid.to_s, :net => net.to_i).first
+	def self.find_by_uid(uid, net = nil)
+		if net
+			User.where(:uid => uid.to_s, :net => net.to_i).first
+		else
+			User.where(:uid => uid.to_s).first
+		end
 	end
 
 	# всем ревардам юзера удалить флаг "flag", если таковой имеется

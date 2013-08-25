@@ -30,7 +30,7 @@ class AllSpec
 
 		def get_uniq_user(uid = 1)
 			user = User.find_by_uid(uid.to_i,1)
-			unless(@user)
+			unless(user)
 				user = User.new({:uid => uid.to_s, :net => '1'})
 			end
 			user
@@ -916,14 +916,13 @@ class AllSpec
 
 		describe FriendVisitRewardController do
 			before :each do
-				@user = get_uniq_user
+				UserFriend.delete_all
+
+				@user = get_uniq_user(1)
 				@user.save
 
-				@friend = get_uniq_user()
-				@storage = FriendStorage.find_by_user(@friend) || FriendStorage.create_from(@friend)
-				@storage.rewarded = []
-				@storage.friends = []
-				@storage.save
+				@friend = get_uniq_user(2)
+				@friend.save
 
 				@original_app_time = Application.time
 				Application.instance_variable_set('@time', Time.new)
@@ -937,9 +936,13 @@ class AllSpec
 				execute_secure_request({'net' => @user.net,'uid' => @user.uid, 'json' => {'friend_id' => friend_id}}, FriendVisitRewardController)
 			end
 
-			it "Заслуженный ревард выдается" do
-				@storage.friends = @storage.friends << @user.uid
-				@storage.save
+			def create_friendship()
+				@user.user_friends.create(:friend_uid => @friend.uid, :accepted => true)
+				@friend.user_friends.create(:friend_uid => @user.uid, :accepted => true)
+			end
+
+			it "Заслуженный ревард выдается (первый раз)" do
+				create_friendship()
 
 				inited_money = @user.money
 				response = request(@friend.uid)
@@ -949,9 +952,39 @@ class AllSpec
 				@user.money.should == (inited_money + PUBLIC_CONFIG['VISIT_REWARD_MONEY'].to_i)
 			end
 
+			it "Заслуженный ревард выдается (не первый раз)" do
+				create_friendship()
+				@user.user_friends.where(:friend_uid => @friend.uid).first.update_attribute('last_daily_bonus', Time.at(10))
+
+				inited_money = @user.money
+				response = request(@friend.uid)
+				response['success'].should be_true
+
+				@user.reload
+				@user.money.should == (inited_money + PUBLIC_CONFIG['VISIT_REWARD_MONEY'].to_i)
+			end
+
+			it "Ревард выдается не чаще заданной величины" do
+				create_friendship()
+				@user.user_friends.where(:friend_uid => @friend.uid).first.update_attribute('last_daily_bonus',
+								Time.new - PUBLIC_CONFIG['FRIEND_DAILY_BONUS_INTERVAL'] + CONFIG['friend_daily_bonus']['time_buffer'] + 10) # до реварда 10 сек
+
+				inited_money = @user.money
+				response = request(@friend.uid)
+				response['success'].should be_false
+
+				@user.user_friends.where(:friend_uid => @friend.uid).first.update_attribute('last_daily_bonus',
+								Time.new - PUBLIC_CONFIG['FRIEND_DAILY_BONUS_INTERVAL'] + CONFIG['friend_daily_bonus']['time_buffer'] - 10) # ревард 10 сек как доступен
+
+				response = request(@friend.uid)
+				response['success'].should be_true
+
+				@user.reload
+				@user.money.should == (inited_money + PUBLIC_CONFIG['VISIT_REWARD_MONEY'].to_i)
+			end
+
 			it "Ревард выдается каждый день, единожды" do
-				@storage.friends = @storage.friends << @user.uid
-				@storage.save
+				create_friendship()
 
 				inited_money = @user.money
 				request(@friend.uid)
@@ -981,13 +1014,20 @@ class AllSpec
 
 			it "Нельзя получить ревард не с друга" do
 				lambda{
-					request(get_unexistable_uid)
+					request(@friend.uid)
+				}.should raise_error(LogicError, /User #.+ not friend for #.+/)
+			end
+
+			it "Нельзя получить ревард не с друга (дружба не подтверждена)" do
+				create_friendship()
+				@user.user_friends.where(:friend_uid => @friend.uid).first.update_attribute('accepted', false)
+				lambda{
+					request(@friend.uid)
 				}.should raise_error(LogicError, /User #.+ not friend for #.+/)
 			end
 
 			it "Нельзя получить ревард более одного раза за день" do
-				@storage.friends = @storage.friends << @user.uid
-				@storage.save
+				create_friendship()
 
 				response = request(@friend.uid)
 				response['success'].should be_true
@@ -1134,6 +1174,101 @@ class AllSpec
 					@user.energy.should == 0
 					@user.energy_last_gain.should be_within(1).of(last_gain + PUBLIC_CONFIG['ENERGY_GAIN_INTERVAL'])
 				end
+			end
+		end
+
+		describe "Neighbours" do
+			before :each do
+				UserFriend.delete_all
+
+				@user = get_uniq_user(1)
+				@user.save
+
+				@friend = get_uniq_user(2)
+				@friend.save
+
+				@friend2 = get_uniq_user(3)
+				@friend2.save
+			end
+
+			def create_relation(from, to, accepted = false)
+				from = from.uid if from.is_a?(User)
+				to = to.uid if to.is_a?(User)
+				User.where(:uid => from).first.user_friends.create(:friend_uid => to, :accepted => accepted)
+			end
+
+			def add_neighbours_request(uids, user_id = nil)
+				data = {'net' => @user.net,'uid' => (user_id || @user.uid), 'json' => {'friend_uids' => any_to_uids(Array(uids)).to_a.join(',')}}
+				execute_request(data, AddNeighboursController)
+			end
+
+			def any_to_uids(array)
+				result = []
+				array.each{|any|
+					if any.is_a?(User)
+						result << any.uid
+					elsif any.is_a?(UserFriend)
+						result << any.friend_uid
+					end
+				}
+				result.to_set
+			end
+
+			it "user.neighbours возвращает действительных соседей" do
+				@user.neighbours.should be_empty
+				@user.user_friends.should be_empty
+
+				create_relation(@user, @friend, true)
+				create_relation(@user, @friend2, false)
+
+				any_to_uids(@user.neighbours(true)).should == any_to_uids([@friend])
+				any_to_uids(@user.user_friends(true)).should == any_to_uids([@friend, @friend2])
+			end
+
+			it "Можно добавить более 2-х соседей за раз" do
+				create_relation(@user, @friend) # @friend послал запрос @user
+
+				response = add_neighbours_request([@friend, @friend2])
+				response['new_friends'].size.should == 1
+				response['new_friends'].first['uid'].should == @friend.uid
+
+				any_to_uids(@user.neighbours(true)).should == any_to_uids([@friend])
+				any_to_uids(@friend2.user_friends(true)).should == any_to_uids([@user]) # @friend2 видит запрос в соседи
+			end
+
+			it "Соседство только взаимное" do
+				add_neighbours_request([@friend])
+
+				@user.neighbours(true).should be_empty
+				@user.user_friends(true).should be_empty
+				@friend.neighbours(true).should be_empty
+				any_to_uids(@friend.user_friends(true)).should == any_to_uids([@user]) # запрос
+			end
+
+			it "Добавляются в соседи, если запрос взаимен" do
+				add_neighbours_request([@friend])
+				add_neighbours_request([@user], @friend.uid)
+
+				any_to_uids(@user.neighbours(true)).should == any_to_uids([@friend])
+				any_to_uids(@user.user_friends(true)).should == any_to_uids([@friend])
+			end
+
+			it "Предупреждение, если послать запрос дважды" do
+				response = add_neighbours_request([@friend])
+				response['ignored_friend_ids'].should be_nil
+
+				response = add_neighbours_request([@friend])
+				response['ignored_friend_ids'].should_not be_nil
+				response['ignored_friend_ids'].should == [@friend.uid]
+			end
+
+			it "Предупреждение, если послать запрос действительному соседу" do
+				create_relation(@user, @friend, true)
+				create_relation(@friend, @user, true)
+
+				response = add_neighbours_request([@friend])
+				response['ignored_friend_ids'].should_not be_nil
+				response['ignored_friend_ids'].should == [@friend.uid]
 			end
 		end
 	end

@@ -103,8 +103,8 @@ class Application
 					BuyUserCustomizeController.new(request).call
 				when 'energy/purchase'
 					BuyEnergyController.new(request).call
-				when 'friends/update'
-					UpdateFriendStorageController.new(request).call
+				when 'neighbours/add'
+					AddNeighboursController.new(request).call
 				when 'friends/visit'
 					FriendVisitRewardController.new(request).call
 				when "levels.xml"

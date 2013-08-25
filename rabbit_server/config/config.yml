@@ -19,3 +19,9 @@ mailru:
   app_id: 666052
   secure_key: 5913a8ff0e9374362dd4dc87605c5e55
   netmoney_to_money: {}
+
+energy:
+  time_buffer: 60
+
+friend_daily_bonus:
+  time_buffer: 60

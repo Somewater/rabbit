@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 22) do
+ActiveRecord::Schema.define(:version => 24) do
 
   create_table "admins", :force => true do |t|
     t.string   "login",                           :null => false
@@ -29,25 +29,6 @@ ActiveRecord::Schema.define(:version => 22) do
   end
 
   add_index "confs", ["name"], :name => "index_confs_on_name", :unique => true
-
-  create_table "errors", :force => true do |t|
-    t.string  "title"
-    t.text    "content"
-    t.text    "resolution"
-    t.string  "images"
-    t.integer "resolved",   :default => 0
-    t.string  "author"
-  end
-
-  create_table "friend_storages", :force => true do |t|
-    t.string  "uid",      :null => false
-    t.integer "net",      :null => false
-    t.text    "friends"
-    t.integer "last_day"
-    t.text    "rewarded"
-  end
-
-  add_index "friend_storages", ["uid", "net"], :name => "index_friend_storages_on_uid_and_net", :unique => true
 
   create_table "lang_locales", :force => true do |t|
     t.string "key",    :null => false
@@ -92,14 +73,6 @@ ActiveRecord::Schema.define(:version => 22) do
     t.datetime "updated_at"
   end
 
-  create_table "stats", :force => true do |t|
-    t.string  "name",                 :null => false
-    t.integer "time",                 :null => false
-    t.integer "value", :default => 0
-  end
-
-  add_index "stats", ["name", "time"], :name => "index_stats_on_name_and_time", :unique => true
-
   create_table "stories", :force => true do |t|
     t.integer "number",                         :null => false
     t.string  "name"
@@ -124,6 +97,15 @@ ActiveRecord::Schema.define(:version => 22) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "user_friends", :force => true do |t|
+    t.string   "user_uid",                            :null => false
+    t.string   "friend_uid",                          :null => false
+    t.boolean  "accepted",         :default => false
+    t.datetime "last_daily_bonus"
+  end
+
+  add_index "user_friends", ["user_uid", "friend_uid"], :name => "index_user_friends_on_user_uid_and_friend_uid", :unique => true
 
   create_table "users", :force => true do |t|
     t.integer  "net",                             :null => false

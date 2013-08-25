@@ -309,7 +309,15 @@ package com.somewater.rabbit.application {
 			for each(var f:SocialUser in friends)
 				friendsIds.push(f.id);
 			if(friendsIds.length)// если друзей нет, бессмысленно слать запрос
-				handler.call('friends/update',{friends: friendsIds});
+				handler.call('neighbours/add',{friend_uids: friendsIds.join(',')}, function(response:Object){
+					if(response['success']){
+						if(response['new_friends'])
+							for(var jsonUser:Object in response['new_friends']){
+								var newFriend:GameUser = jsonToGameUser(jsonUser, new GameUser());
+								UserProfile.instance.addAppFriend(newFriend);
+							}
+					}
+				});
 		}
 
 

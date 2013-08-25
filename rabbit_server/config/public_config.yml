@@ -1,4 +1,5 @@
 # интервал в днях между возможностью собирать монетки у друзей
+FRIEND_DAILY_BONUS_INTERVAL: 86400 # day
 VISIT_REWARD_MONEY: 1
 DEFAULT_LOCALE: ru
 ENERGY_GAIN_INTERVAL: 10800
