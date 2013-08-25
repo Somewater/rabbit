@@ -39,7 +39,6 @@ package {
 		public function VkRabbitLoader() {
 			super();
 			Config.memory['autoPostLevelPass'] = false;
-			Config.memory['disableEnergySpend'] = true;
 		}
 
 		override protected function netInitialize():void
@@ -93,15 +92,15 @@ package {
 						"Game":{priority:-1,preload:true,url:"http://app.vk.com/c6087/u245894/3c04d46f3cb3a1.swf"}
 						,
 						"Application":{priority:int.MIN_VALUE,
-							preload:true,url:"http://app.vk.com/c6087/u245894/8bd9960fd1643c.swf"}
-						,"Interface":{preload:true, url:"http://app.vk.com/c6087/u245894/836c8b3bb538e0.swf"}
+							preload:true,url:"http://app.vk.com/c6087/u245894/ab292761c3ee86.swf"}
+						,"Interface":{preload:true, url:"http://app.vk.com/c6087/u245894/e2f52db9be2f33.swf"}
 						,"Assets":{preload:true, url:"http://cs302513.vk.com/u245894/477a5644135f26.zip"}
 						,"Rewards":{preload:true, url:"http://cs302513.vk.com/u245894/c38365043b0e29.zip"}
 						,"Images":{preload:true, url:"http://cs305802.vk.com/u245894/95efe3baee86a7.zip"}
 						,"MusicMenu":{url:"http://cs5231.userapi.com/u245894/9f85f9d027e598.zip"}
 						,"MusicGame":{url:"http://cs5231.userapi.com/u245894/16c9f64377d623.zip"}
 						,"Sound":{preload:true, url:"http://cs11458.vk.com/u245894/b1e1ab2e3fa973.zip"}
-						,"Lang":{priority:100, preload:true, url:"http://app.vk.com/c6087/u245894/8661ce1635819c.swf"}
+						,"Lang":{priority:100, preload:true, url:"http://app.vk.com/c6087/u245894/09ef13d72379fb.swf"}
 						,"XmlPack":{preload:true, url:"http://cs302513.vk.com/u245894/cddadf35cd9b56.zip"}
 
 						,"Font":{priority:100, preload:true, url:"http://cs5231.userapi.com/u245894/fe712dd002e7c1.zip"}
