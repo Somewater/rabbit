@@ -53,7 +53,7 @@ import com.somewater.rabbit.storage.Config;
 			{
 				friendBar = new FriendBar();
 				friendBar.x = 35;
-				friendBar.y = Config.HEIGHT -  FriendBar.HEIGHT - 40;
+				friendBar.y = Config.HEIGHT -  friendBar.HEIGHT - 40;
 				addChild(friendBar);
 			}
 
@@ -70,7 +70,7 @@ import com.somewater.rabbit.storage.Config;
 
 			globalScoreHolder = new Sprite();
 			globalScoreHolder.x = Config.WIDTH > 800 ? 740 : Config.WIDTH - 100 - 10;
-			globalScoreHolder.y = Config.WIDTH > 800 ? 30 : (friendBar ? friendBar.y + (FriendBar.HEIGHT - 80) * 0.5 : Config.HEIGHT - 100);
+			globalScoreHolder.y = Config.WIDTH > 800 ? 30 : (friendBar ? friendBar.y + (friendBar.HEIGHT - 80) * 0.5 : Config.HEIGHT - 100);
 			addChild(globalScoreHolder)
 
 			globalScoreCarrot = Lib.createMC("interface.Carrot");
@@ -176,7 +176,7 @@ import com.somewater.rabbit.storage.Config;
 
 			logo.visible = !TutorialManager.active
 					&& globalScoreHolder.y < Config.WIDTH * 0.5
-					&&(friendBar == null || (friendBar.x + FriendBar.WIDTH + 10 < logo.x))
+					&&(friendBar == null || (friendBar.x + friendBar.WIDTH + 10 < logo.x))
 					&& levelIcons.length < 15;
 		}
 		

@@ -303,7 +303,7 @@ package com.somewater.rabbit.application {
 		 *
 		 * @param friends array of SocialUser
 		 */
-		public function sendFriendsStorage(friends:Array):void
+		public function sendNeighboursAccepts(friends:Array):void
 		{
 			var friendsIds:Array = [];
 			for each(var f:SocialUser in friends)

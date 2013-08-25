@@ -8,6 +8,7 @@ package com.somewater.rabbit.application.commands {
 	import com.somewater.rabbit.storage.RewardDef;
 	import com.somewater.rabbit.storage.RewardInstanceDef;
 	import com.somewater.rabbit.storage.UserProfile;
+	import com.somewater.social.SocialUser;
 	import com.somewater.storage.Lang;
 
 	import flash.display.DisplayObject;
@@ -19,21 +20,22 @@ package com.somewater.rabbit.application.commands {
 
 		private var data:Dictionary;
 
-		public function PostingFriendsInviteCommand(fixionData:*, onComplete:Function, onError:Function)
+		public function PostingFriendsInviteCommand(recipient:SocialUser, onComplete:Function, onError:Function)
 		{
 			this.data = new Dictionary(true);
 			data['onComplete'] = onComplete;
 			data['onError'] = onError;
+			data['recipient'] = recipient;
 		}
 
 		public function execute():void
 		{
-			if(Config.loader.canPost())
+			if(Config.loader.canPost(data['recipient'].id))
 			{
 				var image:DisplayObject = PostingFactory.createFriendsInvitePosting();
 				var imageUrl:String = Config.loader.getFilePath('friends_invite_posting');
 				var postdata:String = Config.loader.serverHandler.toJson({'type':'friends_invite_posting','poster':UserProfile.instance.socialUser.id});
-				Config.loader.posting(UserProfile.instance.socialUser,
+				Config.loader.posting(data['recipient'],
 						Lang.t('POSTING_INVITE_FRIENDS_TITLE'),
 						Lang.t('POSTING_INVITE_FRIENDS_TEXT'), image, imageUrl, postdata,
 								function(...args):void{

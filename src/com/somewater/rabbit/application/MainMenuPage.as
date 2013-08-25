@@ -70,7 +70,7 @@ import flash.display.DisplayObject;
 			{
 				friendBar = new FriendBar();
 				friendBar.x = 35;
-				friendBar.y = Config.HEIGHT -  FriendBar.HEIGHT - 40;
+				friendBar.y = Config.HEIGHT -  friendBar.HEIGHT - 40;
 
 				if(!Config.memory['hideTop'])
 				{
@@ -115,7 +115,7 @@ import flash.display.DisplayObject;
 			addChild(audioControls);
 			
 			if(logo.visible)
-				logo.visible = (friendBar == null || friendBar.x + FriendBar.WIDTH + 10 < logo.x) && logo.x + logo.width < Config.WIDTH;
+				logo.visible = (friendBar == null || friendBar.x + friendBar.WIDTH + 10 < logo.x) && logo.x + logo.width < Config.WIDTH;
 
 			offerStat = new OfferStatPanel(OfferStatPanel.INTERFACE_MODE);
 			offerStat.x = Config.WIDTH - offerStat.width - 15;

@@ -8,15 +8,15 @@ class UserInfoController < BaseUserController
 		@response['info'] = @personage.to_json
 
 		if(@json['friend'])
-			storage = FriendStorage.find_by_user(@personage)
-			if(storage && storage.include?(@user))
+			user_neighbour = @user.neighbours.where(:friend_uid => @personage.uid)
+			if(user_neighbour)
 				@response['friend'] = true
 				# момент следующего сбора, unixtime, по серверу (секунды)
-				if(storage.last_day != Application.time.yday || !storage.rewarded?(@user))
+				if(user_neighbour.last_daily_bonus.nil?)
 					@response['next_reward_time'] = 0 # т.е. уже в момент генерации ответа на сервере, можно было совершить сбор
 				else
 					# очевидно, что на момент генерации ответа, сбор был невозможен, но может быть очень скоро появится такая возможность?
-					@response['next_reward_time'] = (DateTime.now.midnight + 1.day).to_i
+					@response['next_reward_time'] = (user_neighbour.last_daily_bonus + PUBLIC_CONFIG['FRIEND_DAILY_BONUS_INTERVAL']).to_i
 				end
 			else
 				@response['friend'] = false

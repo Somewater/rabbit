@@ -6,9 +6,12 @@ package com.somewater.rabbit.application
 	import com.somewater.display.HintedSprite;
 	import com.somewater.display.Photo;
 	import com.somewater.rabbit.application.commands.OpenRewardLevelCommand;
+	import com.somewater.rabbit.application.windows.NeighboursWindow;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.GameUser;
 	import com.somewater.rabbit.storage.Lib;
+	import com.somewater.rabbit.storage.UserProfile;
+	import com.somewater.social.SocialUser;
 	import com.somewater.storage.Lang;
 	import com.somewater.text.EmbededTextField;
 
@@ -27,14 +30,17 @@ package com.somewater.rabbit.application
 		private var photo:Photo;
 		private var scoreText:EmbededTextField;
 		private var nameText:EmbededTextField;
+		private var btnFooterText:EmbededTextField;
 		
 		/**
 		 * 0 invite
 		 * 1 normal mode
 		 * 2 big mode
+		 * 3 open neighbours wnd
 		 */
 		private var mode:int = -1;
 		private var user:GameUser;
+		private var socialUser:SocialUser;
 		
 		public function FriendIcon()
 		{
@@ -45,12 +51,12 @@ package com.somewater.rabbit.application
 			core.ground_big.visible = false;
 			core.ground_big.alpha = 0;
 			
-			var inviteText:EmbededTextField = new EmbededTextField(null, 0xFFFFFF, 12, true, true, false, false, "center");
-			inviteText.width = 70;
-			inviteText.y = 51;
-			inviteText.text = Lang.t("INVITE_BUTTON_TEXT");
+			btnFooterText = new EmbededTextField(null, 0xFFFFFF, 12, true, true, false, false, "center");
+			btnFooterText.width = 70;
+			btnFooterText.y = 51;
+			btnFooterText.text = Lang.t("INVITE_BUTTON_TEXT");
 			//inviteText.filters = [new DropShadowFilter(2,45,0xA2BA2A,1,0,0)];
-			core.invite.addChild(inviteText);
+			core.invite.addChild(btnFooterText);
 			
 			starText = new EmbededTextField(null, 0xFFFFFF, 12, true,false,false,false,"center");
 			starText.width = 24;
@@ -100,6 +106,16 @@ package com.somewater.rabbit.application
 			{
 				Config.loader.showInviteWindow();	
 			}
+			else if(mode == 3){
+				var notAppFriends:Array = [];
+				var appFriendsIds:Object = {};
+				for each(var g:GameUser in UserProfile.instance.appFriends)
+					appFriendsIds[g.uid] = true;
+				for each(var f:SocialUser in Config.loader.getFriends())
+					if(!appFriendsIds[f.id])
+						notAppFriends.push(f);
+				new NeighboursWindow(notAppFriends, socialUser);
+			}
 			else if(mode == 1 || mode == 2)
 			{
 				new OpenRewardLevelCommand(user).execute()
@@ -128,13 +144,15 @@ package com.somewater.rabbit.application
 			{
 				mode = newMode;
 				core.invite.visible = core.ground.visible = core.star.visible = core.photoGround.visible = core.ground_big.visible = false;
-				
+				core.ears.visible = true;
 				if(mode == 0)
 				{
 					core.invite.visible = true;
 				}
-				else
-				{
+				else if(mode == 3) {
+					core.ears.visible = false;
+					core.ground.visible = core.photoGround.visible = true;
+				} else {
 					core.ground.visible = core.star.visible = core.photoGround.visible = true;
 					TweenMax.killTweensOf(core.ground_big);
 					TweenMax.killTweensOf(core.ears);
@@ -154,11 +172,13 @@ package com.somewater.rabbit.application
 		}
 		
 		
-		public function setUser(user:GameUser):void
+		public function setUser(data:*):void
 		{
-			this.user = user;
-			if(user)
+			this.user = null;
+			this.socialUser = null;
+			if(data && data is GameUser)
 			{
+				this.user = data;
 				photo.source = user is ImaginaryGameUser ? ImaginaryGameUser.getAvatar() : user.socialUser.photoMedium;
 				nameText.text = user.socialUser.name;
 				nameText.y = 15 + (45 - nameText.height) * 0.5
@@ -166,6 +186,11 @@ package com.somewater.rabbit.application
 				scoreText.text = user.stars.toString();
 				setMode(1);
 				hint = Lang.t('FRIEND_BUTTON_HINT');
+			} else if(data && data is SocialUser) {
+				socialUser = data;
+				photo.source = socialUser.photoMedium;
+				hint = Lang.t('ADD_NEIGHBOUR_BUTTON_HINT');
+				setMode(3);
 			}
 			else
 			{

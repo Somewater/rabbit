@@ -60,7 +60,7 @@ import com.somewater.storage.Lang;
 	}
 
 	private function onPostingClicked():void {
-		new MessagePostClose(1, PostingFriendsInviteCommand, function(data:*):void{
+		new MessagePostClose(UserProfile.instance.socialUser, PostingFriendsInviteCommand, function(data:*):void{
 			// юзер запостил приглашение в игру
 		});
 	}
