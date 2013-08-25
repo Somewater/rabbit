@@ -35,10 +35,10 @@ class InitializeController < BaseUserController
 		user.merge!(@user.to_json)
 
 		friendIds = @json['friendIds'] || []
-		@response['friends'] = []
+		@response['neighbours'] = []
 		friendIds.each do |friend_uid|
 			friend = User.find_by_uid(friend_uid, @params['net'])
-			@response['friends'] << friend.to_short_json if friend
+			@response['neighbours'] << friend.to_short_json if friend
 		end
 
 		@response['session'] = true

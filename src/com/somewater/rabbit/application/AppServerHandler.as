@@ -58,12 +58,12 @@ package com.somewater.rabbit.application {
 					UserProfile.instance.msDelta = response['unixtime'] * 1000 - (new Date().time + startRequestTime) / 2;
 					response['user'] = jsonToGameUser(response['user'], gameUser);
 					var gameUsersFriends:Array = [];
-					for each(var friendJson:Object in response['friends'])
+					for each(var friendJson:Object in response['neighbours'])
 					{
 						var gameUserFriend:GameUser = jsonToGameUser(friendJson,
 								RabbitApplication(Config.application).createGameUser(appFriendsById[friendJson['uid']] as SocialUser));
 						gameUsersFriends.push(gameUserFriend);
-						gameUser.addAppFriend(gameUserFriend);
+						gameUser.addNeighbour(gameUserFriend);
 
 					}
 					response['friends'] = gameUsersFriends;
@@ -314,7 +314,7 @@ package com.somewater.rabbit.application {
 						if(response['new_friends'])
 							for(var jsonUser:Object in response['new_friends']){
 								var newFriend:GameUser = jsonToGameUser(jsonUser, new GameUser());
-								UserProfile.instance.addAppFriend(newFriend);
+								UserProfile.instance.addNeighbour(newFriend);
 							}
 					}
 				});

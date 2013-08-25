@@ -1,6 +1,7 @@
 package com.somewater.rabbit.storage
 {
 	import com.somewater.rabbit.application.tutorial.TutorialManager;
+	import com.somewater.rabbit.events.NeighbourAddedEvent;
 	import com.somewater.social.SocialUser;
 	import com.somewater.utils.Helper;
 
@@ -22,7 +23,7 @@ import flash.utils.Timer;
 		private var listeners:Array = new Array();
 		
 		private var dispatcher:EventDispatcher;
-		
+
 		private var roll:uint;
 
 		private var _tutorial:int = -1;
@@ -162,20 +163,22 @@ import flash.utils.Timer;
 			}
 		}
 		
-		private var _appFriends:Array;
-		public function get appFriends():Array
+		private var _neighbours:Array;
+		public function get neighbours():Array
 		{
-			if(_appFriends == null)
-				_appFriends = [];
-			return _appFriends;
+			if(_neighbours == null)
+				_neighbours = [];
+			return _neighbours.slice();
 		}
 
-		override public function addAppFriend(gameUserFriend:GameUser):void
+		override public function addNeighbour(gameUserFriend:GameUser):void
 		{
-			if(_appFriends == null)
-				_appFriends = [];
-			_appFriends.push(gameUserFriend);
+			if(_neighbours == null)
+				_neighbours = [];
+			_neighbours.push(gameUserFriend);
 			dispatchChange();
+			if(!suspendBinding)
+				dispatchEvent(new NeighbourAddedEvent(gameUserFriend.uid));
 		}
 		
 		public function canPlayWithLevel(level:LevelDef):Boolean

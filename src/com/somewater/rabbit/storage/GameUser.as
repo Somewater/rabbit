@@ -174,7 +174,7 @@ package com.somewater.rabbit.storage
 			return _friendsInvited;
 		}
 
-		public function addAppFriend(gameUserFriend:GameUser):void
+		public function addNeighbour(gameUserFriend:GameUser):void
 		{
 			throw new Error('GameUser not implemented addAppFriend');
 		}

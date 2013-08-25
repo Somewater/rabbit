@@ -1,6 +1,7 @@
 package com.somewater.rabbit.application
 {
 	import com.somewater.control.IClear;
+	import com.somewater.rabbit.events.NeighbourAddedEvent;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.GameUser;
 	import com.somewater.rabbit.storage.Lib;
@@ -68,10 +69,8 @@ package com.somewater.rabbit.application
 			rightStuporArrow.scaleX = -1;
 			rightStuporArrow.y = 72;
 			addChild(rightStuporArrow);
-			
-			friends = UserProfile.instance.appFriends.slice();
-			friends.push(ImaginaryGameUser.instance)
-			friends.sortOn("levelNumber", Array.NUMERIC | Array.DESCENDING);
+
+			fullAppFriends();
 
 			notAppFriends = [];
 			var appFriendsUids:Object = {};
@@ -105,6 +104,8 @@ package com.somewater.rabbit.application
 			WIDTH = ground.width = 110 + (ITEMS + 1) * 80;
 			HEIGHT = ground.height = HEIGHT;
 			rightStuporArrow.x = rightArrow.x = WIDTH - 24;
+
+			UserProfile.instance.addEventListener(NeighbourAddedEvent.NEIGHBOUR_ADDED_EVENT, onNeighbourAdded);
 		}
 		
 		public function clear():void
@@ -123,6 +124,24 @@ package com.somewater.rabbit.application
 				refreshAddNeighbourTimer.stop();
 				refreshAddNeighbourTimer = null;
 			}
+
+			UserProfile.instance.removeEventListener(NeighbourAddedEvent.NEIGHBOUR_ADDED_EVENT, onNeighbourAdded);
+		}
+
+		private function onNeighbourAdded(event:NeighbourAddedEvent):void {
+			fullAppFriends();
+
+			for(var i:int = 0;i<notAppFriends.length;i++)
+				if((notAppFriends[i] as SocialUser).id == event.uid){
+					notAppFriends.splice(i, 1);
+					break;
+				}
+		}
+
+		private function fullAppFriends():void{
+			friends = UserProfile.instance.neighbours;
+			friends.push(ImaginaryGameUser.instance)
+			friends.sortOn("levelNumber", Array.NUMERIC | Array.DESCENDING);
 		}
 
 		private function get friendItemsLength():int {

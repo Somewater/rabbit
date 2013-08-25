@@ -396,6 +396,7 @@ class AllSpec
 			end
 
 			before :each do
+				UserFriend.delete_all
 				@user = User.all.first
 				unless(@user)
 					@user = User.new({:uid => '1', :net => '1'})
@@ -521,21 +522,49 @@ class AllSpec
 
 			it "Выдаются друзья юзера" do
 				@friend = get_other_user()
+
+				@friend.user_friends.create(:friend_uid => @user.uid, :accepted => true)
+				@user.user_friends.create(:friend_uid => @friend.uid, :accepted => true)
+
 				response = request({'net' => @user.net,'uid' => @user.uid,'json' => {'friendIds' => [@friend.uid],
 																					 'user' => {'uid' => @user.uid, 'net' => @user.net}}})
-				response['friends'].should_not be_nil
-				response['friends'].size.should == 1
+				response['neighbours'].should_not be_nil
+				response['neighbours'].size.should == 1
 			end
 
 			it "Если запись о друге(друзьях) удалилась из базы, запрос не ломается" do
 				unexistable_uid = get_unexistable_uid()
 				@friend = get_other_user()
+				@friend.user_friends.create(:friend_uid => @user.uid, :accepted => true)
+				@user.user_friends.create(:friend_uid => @friend.uid, :accepted => true)
 
 				response = request({'net' => @user.net,'uid' => @user.uid,'json' => {'friendIds' => [@friend.uid,unexistable_uid],
 																					 'user' => {'uid' => @user.uid, 'net' => @user.net}}})
-				response['friends'].should_not be_nil
-				response['friends'].size.should == 1
-				response['friends'][0]['uid'].should == @friend.uid
+				response['neighbours'].should_not be_nil
+				response['neighbours'].size.should == 1
+				response['neighbours'][0]['uid'].should == @friend.uid
+			end
+
+			it "Инфа о друге не выдается, пока он не сосед (oн послал запрос)" do
+				@friend = get_other_user()
+
+				@user.user_friends.create(:friend_uid => @friend.uid, :accepted => true)
+
+				response = request({'net' => @user.net,'uid' => @user.uid,'json' => {'friendIds' => [@friend.uid],
+																																						 'user' => {'uid' => @user.uid, 'net' => @user.net}}})
+				response['neighbours'].should_not be_nil
+				response['neighbours'].size.should == 1
+			end
+
+			it "Инфа о друге не выдается, пока он не сосед (игрок послал запрос)" do
+				@friend = get_other_user()
+
+				@friend.user_friends.create(:friend_uid => @user.uid, :accepted => true)
+
+				response = request({'net' => @user.net,'uid' => @user.uid,'json' => {'friendIds' => [@friend.uid],
+																																						 'user' => {'uid' => @user.uid, 'net' => @user.net}}})
+				response['neighbours'].should_not be_nil
+				response['neighbours'].size.should == 1
 			end
 
 			it "Выдается энергия, если пришло время выдачи" do
