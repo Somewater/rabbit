@@ -92,7 +92,9 @@ class BaseController
     Сохранение всех инстансов ActiveRecord
 =end
 	def save_data
-		@models_to_save.each{|record| record.save() }
+		ActiveRecord::Base.transaction do
+			@models_to_save.each{|record| record.save() }
+		end
 	end
 
 =begin
