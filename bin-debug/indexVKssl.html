@@ -1,0 +1,203 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script type="text/javascript" src="js/swfobject.js"></script>
+    <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+    <script src="http://vkontakte.ru/js/api/xd_connection.js?2" type="text/javascript"></script>
+    <!--<script type="text/javascript">
+        VK.init(function () {     });
+    </script>-->
+
+<style type="text/css">
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	margin: 0;
+	padding:0;
+}
+
+.info_container {
+	border: 1px solid #c5d8dc;
+	background: #ecf2f4;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	padding: 5px;
+	display: none;
+}
+
+.btn_green {
+	padding: 10px;
+	background-color: #ed812b;
+	color: #fff;
+	font-weight: bold;
+	width: 160px;
+	text-align: center;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-right:10px;
+}
+
+.btn_green:hover {
+	background-color: #e26c1b;
+}
+
+.btn_green a, .white_link {
+	color: #FFF;
+	text-decoration: none;
+}
+
+.btn_green a:hover {
+	text-decoration: underline;
+}
+
+#MainContent {
+	margin-top: 5px;
+}
+</style>
+
+<script type="text/javascript">
+        var UrlVars = window.location.href.substring(window.location.href.indexOf('?') + 1);
+
+        var SocialProxy = (function (vars) {
+
+            var Proxy = function (vars) {
+                this.Me = "";
+
+                var parts = vars.split("&");
+
+                var collection = new Object();
+
+                for (var a = 0; a < parts.length; a++) {
+                    var p = parts[a].split("=");
+                    collection[p[0]] = p[1];
+                }
+
+                if (collection.hasOwnProperty("app_id")) {
+                    this.Me = collection["vid"];
+                }
+
+                if (collection.hasOwnProperty("application_key")) {
+                    this.Me = collection["logged_user_id"];
+                }
+
+                if (collection.hasOwnProperty("api_id")) {
+                    this.Me = collection["viewer_id"];
+                }
+
+            }
+
+
+            return new Proxy(vars);
+
+        })(UrlVars);
+    </script>
+
+
+
+</head>
+<body style="margin: 0px;">
+    <center>    
+	<div id="MainContent" style="widht:820px;height:615px" >
+			<a href="http://www.adobe.com/go/getflash">
+				<img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
+			</a>
+			<p>This page requires Flash Player version 10.2 or higher.</p>
+	</div>
+	<span style="font-weight: bold; font-size: 14px; text-align: center;">Ваш ID:</span> <span id="id_block" style="font-weight: bold; font-size: 14px; text-align: center;"></span> &nbsp;&nbsp;
+    	<span style="font-weight: bold; font-size: 14px; text-align: center;">Версия флеш плеера:</span> <span id="id_player_version" style="font-weight: bold; font-size: 14px; text-align: center;"></span> 
+    </center>
+
+	<script type="text/javascript">
+		jQuery(function(){
+			jQuery("#id_block").text(SocialProxy.Me);
+
+        	});
+		    var oVesion = swfobject.getFlashPlayerVersion();
+		    var aVersion = [oVesion.major, oVesion.minor, oVesion.release];
+		    var sVersion = aVersion.join(".");
+		    jQuery(function () {
+		        jQuery("#id_player_version").text(sVersion);
+	
+	    	});   
+        </script>
+    <br />
+
+    <script type="text/javascript">
+        (function () {
+		 VK.init(function() {
+		     console.log("init");
+		  });
+		
+
+		function onWindowBlur() {
+			$("#MainContent").css("visibility", "hidden");
+			$("#eAdBlock").css("visibility", "hidden");
+		}
+		
+		function onWindowFocus() {
+			$("#MainContent").css("visibility", "visible");
+			$("#eAdBlock").css("visibility", "visible");
+		}
+		
+		function onBalanceChanged(value) {
+		        $("#MainContent").toArray()[0].BalanceUpdate(value);
+		}
+		
+		VK.addCallback("onWindowBlur", onWindowBlur);
+		VK.addCallback("onWindowFocus", onWindowFocus);
+		
+		function onToggleFlash(show) {
+			if(show){
+				$("#MainContent").css("visibility", "visible");
+				$("#eAdBlock").css("visibility", "visible");
+			}else{
+				$("#MainContent").css("visibility", "hidden");
+				$("#eAdBlock").css("visibility", "hidden");
+			}
+		}
+		
+		VK.addCallback("onToggleFlash", onToggleFlash);
+		//VK.addCallback("onBalanceChanged", onBalanceChanged);
+		
+		function onOrderSuccess(value) {
+			console.log("onOrderSuccess qwerty");
+		 	$("#MainContent").toArray()[0].BalanceUpdate(value);
+		}
+		
+		VK.addCallback("onOrderSuccess", onOrderSuccess);
+        })();
+    </script>
+
+    <script type="text/javascript">
+        try{
+            var apiResult = JSON.parse(decodeURIComponent(window.location.href.substring(window.location.href.indexOf('?') + 1)))
+        }catch(error){
+            apiResult = {response: {loader: ""}};
+        }
+        var loaderPath = apiResult.response.loader;
+        if(window.location.protocol.substr(0, 5) == 'https' && loaderPath.substr(0, 5) != 'https'){
+            loaderPath = apiResult.response.secureLoader || ('https' + loaderPath.substr(4));
+        }
+
+        var expressInstalUrl = "expressInstall.swf";
+        var attributes = {};
+        var params = {};
+
+        if (window.location.href.indexOf('?') > 0) flashVars = window.location.href.substring(window.location.href.indexOf('?') + 1);
+        var params = {
+            allowNetworking: "all",
+            allowFullScreen: "true",
+            allowScriptAccess: "always",
+            flashvars: flashVars,
+            wmode:"direct"
+        };
+
+        swfobject.embedSWF(loaderPath, "MainContent", "810", "650", "10.2.0", expressInstalUrl, {}, params, attributes);
+    </script>  
+
+
+ 	
+</body>
+</html>
