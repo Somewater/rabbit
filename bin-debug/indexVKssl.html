@@ -172,7 +172,7 @@ body {
 
     <script type="text/javascript">
         try{
-            var apiResult = JSON.parse(decodeURIComponent(window.location.href.substring(window.location.href.indexOf('?') + 1)))
+            var apiResult = JSON.parse(decodeURIComponent(window.location.href.split('api_result=')[1].split('&')[0]))
         }catch(error){
             apiResult = {response: {loader: ""}};
         }
