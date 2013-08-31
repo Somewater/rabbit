@@ -1,7 +1,9 @@
 package com.somewater.rabbit.loader {
+	import com.somewater.arrow.ArrowEvent;
 	import com.somewater.arrow.ArrowPermission;
 	import com.somewater.net.ServerHandler;
 	import com.somewater.rabbit.Stat;
+	import com.somewater.rabbit.components.HeelProtectorComponent;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.social.ISocialUserStorage;
 	import com.somewater.social.SocialUser;
@@ -9,8 +11,10 @@ package com.somewater.rabbit.loader {
 
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
+	import flash.system.Capabilities;
+	import flash.utils.Timer;
 
-	import ru.evast.integration.IntegrationProxy;
+	import ru.evast.integration.core.IDataAdapter;
 	import ru.evast.integration.core.SocialNetworkTypes;
 	import ru.evast.integration.core.SocialProfileVO;
 
@@ -18,6 +22,7 @@ package com.somewater.rabbit.loader {
 
 		protected var arrow:Object;
 		protected var userStorage:ISocialUserStorage;
+		protected var apiAdapter:IDataAdapter;
 
 		public function EvaRabbitLoader() {
 			super();
@@ -31,33 +36,33 @@ package com.somewater.rabbit.loader {
 
 			var appFriendIds:Array;
 			var friends:Array;
-			var user:SocialProfileVO;
+			var user:SocialUser;
 
-			IntegrationProxy.adapter.GetFriends(false, function(response:Object){
+			apiAdapter.GetFriends(false, function(response:Object){
 				trace("[EVA API] GetFriends");
 				friends = response as Array;
 				parseEvaInitData(user, friends, appFriendIds);
 			})
-			IntegrationProxy.adapter.GetAppFriends(true, function(response:Object){
+			apiAdapter.GetAppFriends(true, function(response:Object){
 				trace("[EVA API] GetAppFriends");
 				appFriendIds = response as Array;
 				parseEvaInitData(user, friends, appFriendIds);
 			})
-			IntegrationProxy.batchLoadProfiles(IntegrationProxy.adapter.Me(), function(response:Object){
+			getUsers([apiAdapter.Me()], function(event:ArrowEvent){
 				trace("[EVA API] batchLoadProfiles");
-				user = response[0] as SocialProfileVO;
+				user = event.response[0] as SocialUser;
 				parseEvaInitData(user, friends, appFriendIds);
-			})
+			}, trace);
 		}
 
-		private function parseEvaInitData(user:SocialProfileVO, friends:Array, appFriendIds:Array):void {
+		private function parseEvaInitData(user:SocialUser, friends:Array, appFriendIds:Array):void {
 			if(user && friends && appFriendIds){
 				var appUserIdsHash:Object = {};
 				var id:String;
 				var s:SocialProfileVO;
 				var su:SocialUser;
 
-				su = SocialProfileVOToSocialUser(user);
+				su = user;
 				su.itsMe = true;
 				userStorage.addSocialUser(su);
 
@@ -96,7 +101,7 @@ package com.somewater.rabbit.loader {
 		override protected function initializeServerHandler():void
 		{
 			_serverHandler = new ServerHandler();
-			_serverHandler.init(IntegrationProxy.adapter.Me(), IntegrationProxy.adapter.GetAuthData(), net);
+			_serverHandler.init(apiAdapter.Me(), apiAdapter.GetAuthData(), net);
 		}
 
 		override public function get flashVars():Object {
@@ -124,7 +129,7 @@ package com.somewater.rabbit.loader {
 
 		override public function getUser():SocialUser
 		{
-			return userStorage.getUser();
+			return userStorage.getPlayer();
 		}
 
 		override public function setUser(user:SocialUser):void {
@@ -134,7 +139,7 @@ package com.somewater.rabbit.loader {
 		override public function showInviteWindow():void
 		{
 			//arrow.showInviteWindow();
-			IntegrationProxy.adapter.InviteFriends(Config.application.translate('INVITE_FRIENDS_API_WND'));
+			apiAdapter.InviteFriends(Config.application.translate('INVITE_FRIENDS_API_WND'));
 			Config.stat(Stat.FRIENDS_INVITED);
 		}
 
@@ -147,7 +152,38 @@ package com.somewater.rabbit.loader {
 		override public function getUsers(uids:Array, onComplete:Function, onError:Function):void
 		{
 			//arrow.getUsers(uids, onComplete, onError);
-			// TODO 2
+			var i:int;
+
+			// посмотреть в users
+			var cache:Array = [];
+			for(i = 0;i<uids.length;i++) {
+			 	var user:SocialUser = userStorage.getUsersById(uids[i]);
+				if(user != null) {
+					cache.push(user);
+					uids.splice(i, 1);
+					i--;
+				}
+			}
+
+			if(uids.length){
+				apiAdapter.GetProfiles(uids.join(','), function(response:Object):void{
+					var socialUsers:Array = [];
+					for each(var s:SocialProfileVO in response){
+						var su:SocialUser = SocialProfileVOToSocialUser(s);
+						socialUsers.push(su);
+						userStorage.addSocialUser(su);
+					}
+					// соединить с cash и передать заинтересованной функции
+					var ev:ArrowEvent = new ArrowEvent(ArrowEvent.REQUEST_SUCCESS);
+					ev.response = socialUsers.concat(cache)
+					onComplete(ev);
+				});
+			}else{
+				// все пользователи получены из кэша
+				var ev:ArrowEvent = new ArrowEvent(ArrowEvent.REQUEST_SUCCESS);
+				ev.response = cache;
+				onComplete(ev);
+			}
 		}
 
 		override public function canPost(type:String = null):Boolean
@@ -165,9 +201,9 @@ package com.somewater.rabbit.loader {
 		override public function posting(user:SocialUser = null, title:String = null, message:String = null, image:* = null, imageUrl:String = null, data:String = null, onComplete:Function = null, onError:Function = null, additionParams:Object = null):void {
 			//arrow.posting(user, title, message, image, imageUrl, data, onComplete, onError, additionParams);
 			if(!user || user.itsMe){
-				IntegrationProxy.adapter.PostToWall(message, imageUrl);
+				apiAdapter.PostToWall(message, imageUrl);
 			} else {
-				IntegrationProxy.adapter.SendNotification(message, user.id, imageUrl);
+				apiAdapter.SendNotification(message, user.id, imageUrl);
 			}
 		}
 
@@ -185,7 +221,7 @@ package com.somewater.rabbit.loader {
 		}
 
 		override public function get referer():String {
-			return IntegrationProxy.adapter.GetReferalId();
+			return apiAdapter.GetReferalId();
 		}
 	}
 }

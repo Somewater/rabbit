@@ -33,7 +33,7 @@ package com.somewater.social {
 			return arr;
 		}
 
-		public function getUser():SocialUser {
+		public function getPlayer():SocialUser {
 			return me;
 		}
 
@@ -44,6 +44,10 @@ package com.somewater.social {
 					result.push(usersById[uids[i]]);
 				}
 			return result;
+		}
+
+		public function getUsersById(id:String):SocialUser {
+			return usersById[id];
 		}
 	}
 }

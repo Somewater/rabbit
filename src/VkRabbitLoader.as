@@ -34,6 +34,7 @@ package {
 	import ru.evast.integration.IntegrationProxy;
 
 	import ru.evast.integration.core.SocialNetworkTypes;
+	import ru.evast.integration.inner.VK.VKInnerAdapter;
 
 
 	[SWF(width="810", height="650", backgroundColor="#FFFFFF", frameRate="30")]
@@ -57,7 +58,9 @@ package {
 //			arrow.addEventListener('wall_post_inline',onWallPostInline);
 //			onArrowComplete('hjli32ls');
 
-			IntegrationProxy.init(flashVars, SocialNetworkTypes.AUTO_DETECT);
+			IntegrationProxy._socialNetworkType = SocialNetworkTypes.VKONTAKTE;
+			apiAdapter = IntegrationProxy._adapter = new VKInnerAdapter();
+			apiAdapter.init(flashVars, DESKTOP_MODE);
 			super.netInitialize();
 		}
 

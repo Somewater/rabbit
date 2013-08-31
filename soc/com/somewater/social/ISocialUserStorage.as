@@ -6,8 +6,10 @@ package com.somewater.social {
 
 		function getAppFriends():Array;
 
-		function getUser():SocialUser;
+		function getPlayer():SocialUser;
 
 		function getUsers(uids:Array):Array;
+
+		function getUsersById(id:String):SocialUser;
 	}
 }
