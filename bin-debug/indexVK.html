@@ -171,7 +171,15 @@ body {
     </script>
 
     <script type="text/javascript">
-        var api_result = JSON.parse(decodeURIComponent(window.api_result || '{"response":{}}'))
+        try{
+            var apiResult = JSON.parse(decodeURIComponent(window.location.href.substring(window.location.href.indexOf('?') + 1)))
+        }catch(error){
+            apiResult = {response: {loader: ""}};
+        }
+        var loaderPath = apiResult.response.loader;
+        if(window.location.protocol.substr(0, 5) == 'https' && loaderPath.substr(0, 5) != 'https'){
+            loaderPath = apiResult.response.secureLoader || ('https' + loaderPath.substr(4));
+        }
 
         var expressInstalUrl = "expressInstall.swf";
         var attributes = {};
@@ -186,7 +194,7 @@ body {
             wmode:"direct"
         };
 
-        swfobject.embedSWF(api_result.response.loader || "http://app.vk.com/c6178/u245894/2ede0a19d4994d.swf", "MainContent", "810", "650", "10.2.0", expressInstalUrl, {}, params, attributes);
+        swfobject.embedSWF(loaderPath, "MainContent", "810", "650", "10.2.0", expressInstalUrl, {}, params, attributes);
     </script>  
 
 
