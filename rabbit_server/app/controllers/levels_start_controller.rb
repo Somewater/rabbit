@@ -10,5 +10,6 @@ class LevelsStartController < BaseUserController
 			raise LogicError, "Energy already ended" unless @user.debit_energy()
 		end
 		@response['user'] = @user.to_json
+		@response['success'] = true
 	end
 end

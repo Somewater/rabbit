@@ -102,7 +102,7 @@ package com.somewater.rabbit.application {
 			user.spendEnergy();
 			handler.call('levels/start', {'levelNumber':level.number},
 					function(response:Object):void{
-						if(!Config.memory['portfolioMode'] && response['levelInstance']['succes'] == false)
+						if(!Config.memory['portfolioMode'] && response['succes'] == false)
 						{
 							// произошла рассинхронизация сервера и клиента
 							Config.application.fatalError('Level !pass error')

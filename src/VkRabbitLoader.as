@@ -9,6 +9,7 @@ package {
 
 	import com.somewater.net.SWFDecoderWrapper;
 	import com.somewater.rabbit.Stat;
+	import com.somewater.rabbit.loader.EvaRabbitLoader;
 	import com.somewater.rabbit.loader.SocialRabbitLoader;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Lib;
@@ -30,12 +31,20 @@ package {
 	import flash.system.SecurityDomain;
 	import flash.utils.getDefinitionByName;
 
+	import ru.evast.integration.IntegrationProxy;
+
+	import ru.evast.integration.core.SocialNetworkTypes;
+
 
 	[SWF(width="810", height="650", backgroundColor="#FFFFFF", frameRate="30")]
-	public class VkRabbitLoader extends SocialRabbitLoader{
+	public class VkRabbitLoader extends EvaRabbitLoader{
 
 		include 'com/somewater/rabbit/include/RuPreloaderAsset.as';
 
+		/*
+		На память:
+		 method=execute&uids={viewer_id}&format=json&v=2.0&code=return{"friends":API.getProfiles({"uids":API.getFriends(),"fields":"uid,first_name,last_name,photo,sex"}),"appFriends":API.getAppFriends(),"user":API.getProfiles({"uids":{viewer_id},"fields":"uid,first_name,last_name,nickname,sex,bdate,photo,photo_medium,photo_big,has_mobile,rate"}),balance:API.getUserBalance(),"groups":API.getGroups(),city:API.getCities({"cids":API.getProfiles({"uids":{viewer_id},"fields":"city"})@.city}),country:API.getCountries({"cids":API.getProfiles({"uids":{viewer_id},"fields":"country"})@.country})};
+		 */
 		public function VkRabbitLoader() {
 			super();
 			Config.memory['autoPostLevelPass'] = false;
@@ -43,10 +52,13 @@ package {
 
 		override protected function netInitialize():void
 		{
-			arrow = new ArrowVkcom();
-			arrow.addEventListener('wall_view_inline',onWallViewInline);
-			arrow.addEventListener('wall_post_inline',onWallPostInline);
-			onArrowComplete('hjli32ls');
+//			arrow = new ArrowVkcom();
+//			arrow.addEventListener('wall_view_inline',onWallViewInline);
+//			arrow.addEventListener('wall_post_inline',onWallPostInline);
+//			onArrowComplete('hjli32ls');
+
+			IntegrationProxy.init(flashVars, SocialNetworkTypes.AUTO_DETECT);
+			super.netInitialize();
 		}
 
 		private function onWall():void
@@ -127,7 +139,10 @@ package {
 		}
 
 		override public function navigateToHomePage(userId:String):void {
-			navigateToURL(new URLRequest("http://" + 'vk.com' + '/id' + userId), '_blank');
+			if(!getCachedUser(userId) || !getCachedUser(userId).homepage)
+				navigateToURL(new URLRequest("http://" + 'vk.com' + '/id' + userId), '_blank');
+			else
+				super.navigateToHomePage(userId);
 		}
 
 		override public function get hasPaymentApi():Boolean {
