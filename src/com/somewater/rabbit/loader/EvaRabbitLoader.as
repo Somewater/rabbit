@@ -150,7 +150,10 @@ package com.somewater.rabbit.loader {
 		override public function pay(quantity:Object, onSuccess:Function, onFailure:Function, params:Object = null):void
 		{
 			//arrow.pay(quantity, onSuccess, onFailure, params);
-			// TODO 1
+			params ||= {}
+			params['onComplete'] = onSuccess;
+			params['onError'] = onFailure;
+			apiAdapter.ShowPayment(int(quantity), null, 0, params);
 		}
 
 		override public function getUsers(uids:Array, onComplete:Function, onError:Function):void

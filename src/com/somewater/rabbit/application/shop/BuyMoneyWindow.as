@@ -68,7 +68,7 @@ package com.somewater.rabbit.application.shop {
 				i++;
 			}
 
-			if(count == 0 || CONFIG::debug)
+			if(count == 0)
 			{
 				// если нет воз-ти покупать кругилки
 				var attentionTF:EmbededTextField = new EmbededTextField(null, 0xDB661B, 20, true, true, false, false, 'center');
