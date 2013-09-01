@@ -68,32 +68,21 @@ class VkApi < NetApi
 			error_response(11, "Unsupported notification type #{request.params['notification_type']}")
 		end
 	rescue Exception => error
-		GameServer.logger.warn "payment error: #{error}\n#{error.backtrace.join(?\n)}"
+		Application.logger.warn "payment error: #{error}\n#{error.backtrace.join(?\n)}"
 		return error_response(1, error.to_s)
 	end
 
 	# @param item:String выдать информацию о товаре на основе строкового идентификатора
 	# @return hash {title: String, price: Int[, photo_url: String, item_id: Int, expiration: Int]}
 	def get_item_info item, lang
-		#raise UnimplementedError, "Implement vk api method get_item_info"
-		money = CONFIG[self.name.to_s]["netmoney_to_money"][item.to_i]
-		{:title => "Круглики", :price => item.to_i}
+		raise UnimplementedError, "Implement vk api method get_item_info"
 	end
 
 	# Осуществить покупку товара
 	# @param item:String идентификатор товара
 	# @return Int уникальный номер заказа в системе
 	def order_status_change receiver_id, item, net_price
-		#raise UnimplementedError, "Implement vk api method order_status_change"
-		user = User.find_by_uid(receiver_id)
-		netmoney_to_money = CONFIG[self.name.to_s]["netmoney_to_money"]
-		raise "Current net unsupport billing" unless netmoney_to_money && netmoney_to_money[net_price.to_i]
-		money = netmoney_to_money[net_price.to_i]
-		t = Transaction.create_from(user, money, net_price).save
-		t.save
-		user.money += money
-		user.save
-		t.id
+		raise UnimplementedError, "Implement vk api method order_status_change"
 	end
 	
 	def secure_vk

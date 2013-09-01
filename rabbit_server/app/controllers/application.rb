@@ -130,7 +130,7 @@ class Application
 					Lang.all.each{|l| content << "#{l.key}=#{l.get(:ru)}\n#{l.key}=#{l.get(:en)}\n\n"}
 					[200,{"Content-Type" => "text/plain; charset=UTF-8"},content]
 				when /^payment\/\w+/
-					NetApi.by_net(method.match(/^payment\/(?<net>\w+)/)[:net]).payment(request)
+					NetApi.by_net_name(method.match(/^payment\/(?<net>\w+)/)[:net]).payment(request)
 				when ""
 					[302,{"Content-Type" => "text/plain; charset=UTF-8", "Location" => (request.host == 'localhost' ? "/files/index.html" : "/index.html") }, '']
 				else

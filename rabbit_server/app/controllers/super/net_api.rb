@@ -2,6 +2,7 @@ class NetApi
 	
 	# классы по net:int
 	@@by_net = {}
+	@@by_net_name = {}
 	
 	# массив классов, еще не добавленных в @@by_net
 	@@unsorted_queue = []
@@ -61,13 +62,18 @@ class NetApi
 	def self.by_net(net)
 		# сначала пройтись по @@unsorted_queue
 		if(@@unsorted_queue.size > 0)
-			@@unsorted_queue.each do |clazz|
-				@@by_net[clazz.id] = clazz.new	
-			end
-			@@unsorted_queue = []
+			process_unsorted_queue
 		end
 		net = 1 if (net.to_s =~ /local\:\w+/)
 		@@by_net[net.to_i]
+	end
+
+	def self.by_net_name(name)
+		# сначала пройтись по @@unsorted_queue
+		if(@@unsorted_queue.size > 0)
+			process_unsorted_queue
+		end
+		@@by_net_name[name.to_s]
 	end
 
 	# для всех вариантов аргумента выдает массив стрингов id-шников
@@ -85,5 +91,21 @@ class NetApi
 				[arg.to_s]
 			end
 		end
+	end
+
+	def self.process_unsorted_queue
+		@@unsorted_queue.each do |clazz|
+			next if @@by_net[clazz.id]
+			instance = clazz.new
+			@@by_net[clazz.id.to_i] = instance
+			@@by_net_name[instance.name.to_s] = instance
+		end
+		@@unsorted_queue = []
+	end
+
+	def self.register(clazz)
+		instance = clazz.new
+		@@by_net[clazz.id.to_i] = instance
+		@@by_net_name[instance.name.to_s] = instance
 	end
 end
