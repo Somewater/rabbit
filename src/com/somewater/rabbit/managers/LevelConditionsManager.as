@@ -195,7 +195,9 @@ package com.somewater.rabbit.managers
 				
 				if(levelCompletedSuccesfully)
 				{
-					finishLevel(true, LevelInstanceDef.LEVEL_SUCCESS_FINISH);
+					if(Config.application.canCompleteLevel()){
+						finishLevel(true, LevelInstanceDef.LEVEL_SUCCESS_FINISH);
+					}
 				}
 			}
 			

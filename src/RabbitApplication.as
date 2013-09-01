@@ -505,6 +505,10 @@ package
 					level = Config.application.levels[0];
 			}
 
+			if(level.type == LevelDef.TYPE && level.number == 1){
+				level = new TutorialLevelDef();
+			}
+
 			clearContent();
 			showSlash(-1);
 			playMusicFadeIn(level.type == RewardLevelDef.TYPE ? Sounds.MUSIC_MENU : Sounds.MUSIC_GAME);
@@ -1006,6 +1010,10 @@ package
 		{
 			TweenLite.to(this, fastFade ? 0.3 : 0.8, {musicFader: 1, onUpdate: dispatchMusicChange});
 			play(musicName, SoundTrack.MUSIC);
+		}
+
+		public function canCompleteLevel():Boolean{
+			return !TutorialManager.instance.running;
 		}
 	}
 }

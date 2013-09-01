@@ -71,5 +71,7 @@ package com.somewater.rabbit
 		function get gameGUI():DisplayObject
 
 		function stat(name:String):void
+
+		function canCompleteLevel():Boolean;
 	}
 }

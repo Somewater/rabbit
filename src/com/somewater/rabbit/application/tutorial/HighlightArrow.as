@@ -16,6 +16,8 @@ package com.somewater.rabbit.application.tutorial {
 
 			mouseEnabled = false;
 			mouseChildren = false;
+			arrow.mouseEnabled = false;
+			arrow.mouseChildren = false;
 		}
 
 		public function clear():void {

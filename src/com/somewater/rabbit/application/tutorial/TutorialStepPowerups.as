@@ -45,6 +45,7 @@ package com.somewater.rabbit.application.tutorial {
 					}
 					else
 					{
+						TutorialManager.instance.setCorrection(0, 20);
 						TutorialManager.instance.highlightGui(gameGuiRef.powerupIndicator);
 						// проверить, что у юзера есть павеапы здоровья и ускорения, при необходимости выдать парочку
 						gameGuiRef.powerupPanel.myPowerups.pushFreePowerup(0);

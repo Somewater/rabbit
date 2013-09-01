@@ -74,7 +74,7 @@ package com.somewater.rabbit.application.tutorial {
 
 		private static var _instance:TutorialManager;
 
-		private var running:Boolean;
+		public var running:Boolean;
 		private const YOUNG_AGE:int = 1;// первые 2 секнуды тьюториал не стартует, он "ждет"
 		internal var STEPS:Array = [
 										/*TutorialStep1
@@ -103,6 +103,9 @@ package com.somewater.rabbit.application.tutorial {
 		private var highlightedToArrow:Dictionary = new Dictionary();
 
 		internal var tickedClouds:Array = [];
+
+		private var correctionX:int;
+		private var correctionY:int;
 
 		/**
 		 * Ссылка на окно, которое было октрыто на момент старта последнего месседжа
@@ -139,6 +142,7 @@ package com.somewater.rabbit.application.tutorial {
 		public function startStep(step:int):void {
 			if(currentStep)
 				currentStep.clear();
+			correctionX = correctionY = 0;
 			clearAllStuff();
 			currentStep = null;
 			var cl:Class = STEPS[step];
@@ -190,7 +194,7 @@ package com.somewater.rabbit.application.tutorial {
 				tickTimer.addEventListener(TimerEvent.TIMER, onTick);
 				tickTimer.start();
 
-				arrowRepositTimer = new Timer(200);
+				arrowRepositTimer = new Timer(30);
 				arrowRepositTimer.addEventListener(TimerEvent.TIMER, refrestarrowPosition);
 				arrowRepositTimer.start();
 			}
@@ -354,8 +358,8 @@ package com.somewater.rabbit.application.tutorial {
 		private var tmpArrowPoint:Point = new Point();
 		private function positionArrow(arrow:HighlightArrow, target:DisplayObject):void
 		{
-			tmpArrowPoint.x = target.width * 0.5;
-			tmpArrowPoint.y = target.height * 0.5;
+			tmpArrowPoint.x = target.width * 0.5 + correctionX;
+			tmpArrowPoint.y = target.height * 0.5 + correctionY;
 			tmpArrowPoint = target.localToGlobal(tmpArrowPoint);
 
 			tmpArrowPoint = arrow.parent.globalToLocal(tmpArrowPoint);
@@ -422,6 +426,11 @@ package com.somewater.rabbit.application.tutorial {
 			{
 				startStep(-1);
 			}
+		}
+
+		public function setCorrection(x:int, y:int):void {
+			this.correctionX = x;
+			this.correctionY = y;
 		}
 	}
 }

@@ -37,8 +37,10 @@ package com.somewater.rabbit.application.tutorial {
 			{
 				TutorialManager.instance.gameMessage('TUTORIAL_PAUSE_HINT', onAccepted);
 				var gameGuiRef:GameGUI = Config.application.gameGUI as GameGUI;
-				if(gameGuiRef)
+				if(gameGuiRef){
+					TutorialManager.instance.setCorrection(0, 20);
 					TutorialManager.instance.highlightGui(gameGuiRef.pauseButton);
+				}
 				messageShowed = true;
 				stepStartTime = getTimer();
 			}else if(messageShowed && !message2Showed && pauseWindow != null)
@@ -46,6 +48,7 @@ package com.somewater.rabbit.application.tutorial {
 				TutorialManager.instance.clearAllStuff();
 
 				TutorialManager.instance.gameMessage('TUTORIAL_UN_PAUSE_HINT', onAccepted2);
+				TutorialManager.instance.setCorrection(0, -10);
 				TutorialManager.instance.highlightGui(pauseWindow.closeButton);
 				message2Showed = true;
 				pauseWindowShowed = true;
