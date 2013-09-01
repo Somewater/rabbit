@@ -54,11 +54,12 @@ class VkApi < NetApi
 
 	def payment(request)
 		return error_response(10) unless request_authorized?(request.params)
+		can_use_test_mode = true #!PRODUCTION
 		if request.params['notification_type'] == 'get_item' ||
-				(!PRODUCTION && request.params['notification_type'] == 'get_item_test')
+				(can_use_test_mode && request.params['notification_type'] == 'get_item_test')
 			{:response => get_item_info(request.params['item'], request.params['lang'].to_s[0,2])}.to_json
 		elsif request.params['notification_type'] == 'order_status_change' ||
-				(!PRODUCTION && request.params['notification_type'] == 'order_status_change_test')
+				(can_use_test_mode && request.params['notification_type'] == 'order_status_change_test')
 			raise FormatError, "Unsupported status #{request.params['status']}" unless request.params['status'] == 'chargeable'
 			order_id = request.params['order_id'].to_i
 			raise FormatError, "order_id not assigned = #{request.params['order_id']}" if order_id <= 0
