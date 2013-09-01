@@ -40,6 +40,7 @@ package com.somewater.rabbit.storage
 		 * disableCameraTracking - отключить автоматическое слежение камеры за персонажем
 		 * disableEnergySpend - отключить трату энергии (бесконечное число попыток прох-я уровней)
 		 * cleanGameScreen - во время игры нет gui и прочих неигровых элементов
+		 * postingTesting - тестирование различных видов остинга по нажатию на кнопку (с)
 		 */
 		public static var memory:Object = {};
 		
