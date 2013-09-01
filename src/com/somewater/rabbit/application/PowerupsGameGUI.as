@@ -52,7 +52,7 @@ package com.somewater.rabbit.application {
 			btnHolder.setSize(48, 48);
 			addChild(btnHolder);
 
-			btnHolder.addEventListener(MouseEvent.CLICK, onBtnClicked);
+			btnHolder.addEventListener(MouseEvent.MOUSE_DOWN, onBtnClicked);
 
 			myPowerups = new MyPowerupsBag(10, true);
 			myPowerups.x = 5;
@@ -75,6 +75,7 @@ package com.somewater.rabbit.application {
 
 		private function onBtnClicked(event:MouseEvent):void {
 			setStateAnimated(!opened);
+			event.stopPropagation();
 		}
 
 		private function setStateAnimated(opened:Boolean):void
@@ -124,7 +125,7 @@ package com.somewater.rabbit.application {
 		}
 
 		public function clear():void {
-			btnHolder.removeEventListener(MouseEvent.CLICK, onBtnClicked);
+			btnHolder.removeEventListener(MouseEvent.MOUSE_DOWN, onBtnClicked);
 			btnHolder.clear();
 			TweenLite.killTweensOf(btnHolder);
 			TweenLite.killTweensOf(myPowerups);

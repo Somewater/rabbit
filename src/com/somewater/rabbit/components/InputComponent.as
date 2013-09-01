@@ -130,7 +130,7 @@ package com.somewater.rabbit.components
 		
 		protected function onSceneClick(e:MouseEvent):void
 		{		
-			if(Config.gameModuleActive && this.owner != null && PBE.processManager.continiousTickCounter > 2)
+			if(PBE.processManager.isTicking && this.owner != null && PBE.processManager.continiousTickCounter > 2)
 			{
 				var tile:Point = IsoRenderer.screenToIso(new Point(PBE.mainStage.mouseX - gameOffset.x - PBE.scene.position.x,
 																   PBE.mainStage.mouseY - gameOffset.y - PBE.scene.position.y));

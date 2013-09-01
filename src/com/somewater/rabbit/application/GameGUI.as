@@ -63,7 +63,7 @@ import com.somewater.rabbit.storage.Config;
 			playPauseButton.x = 15;
 			playPauseButton.y = 15;
 			addChild(playPauseButton);
-			playPauseButton.addEventListener(MouseEvent.CLICK, onPlayPauseClick);
+			playPauseButton.addEventListener(MouseEvent.MOUSE_DOWN, onPlayPauseClick);
 			
 			statPanel = Lib.createMC("interface.GameStatPanel");
 			statPanel.x = Config.WIDTH - statPanel.width - 15;
@@ -200,7 +200,7 @@ import com.somewater.rabbit.storage.Config;
 		
 		public function clear():void
 		{
-			playPauseButton.removeEventListener(MouseEvent.CLICK, onPlayPauseClick);
+			playPauseButton.removeEventListener(MouseEvent.MOUSE_DOWN, onPlayPauseClick);
 			Hint.removeHint(playPauseButton);
 			if(offerStat)
 				offerStat.clear();
@@ -231,6 +231,7 @@ import com.somewater.rabbit.storage.Config;
 
 			Config.application.play(Sounds.ALPHA_BUTTON_CLICK, SoundTrack.INTERFACE, true);
 			new PauseMenuWindow();
+			e.stopPropagation();
 		}
 		
 		// 0..1
