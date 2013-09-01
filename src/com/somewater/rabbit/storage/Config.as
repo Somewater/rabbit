@@ -55,7 +55,7 @@ package com.somewater.rabbit.storage
 		/**
 		 * Производить блиттинг
 		 */
-		public static var blitting:Boolean = true;
+		public static var blitting:Boolean = false;
 		
 		public static var stage:Stage;
 		
