@@ -14,6 +14,7 @@ package com.somewater.rabbit.editor.console {
 		private var password:String;
 		private var size:int;
 		private var folder:String;
+		private var levels:int;
 
 		private var windows:*;
 		private var queue:Array = [];
@@ -24,12 +25,14 @@ package com.somewater.rabbit.editor.console {
 		 * -p password
 		 * -s size (pixels)
 		 * -f folder ["images"]
+		 * -l levels quantity
 		 *
 		 */
 		public function ImageGeneratorCommand(args:Object) {
 			this.password = args['p'] || '';
 			this.size = args['s'] || 100;
 			this.folder = args['f'] || 'images';
+			this.levels = args['l'] || 30;
 
 			windows = Config.application.message('100%');
 			windows.title = 'Posting process...';
@@ -43,7 +46,7 @@ package com.somewater.rabbit.editor.console {
 //				queue.push(new QueueElement(lvl, index++));
 //			}
 
-			for(var i:int = 1;i<=Math.max(Config.application.levels.length, 30); i++)
+			for(var i:int = 1;i<=Math.max(Config.application.levels.length, this.levels); i++)
 			{
 				queue.push(new QueueElement(new LevelDef(<xml number={i}></xml>), index++));
 			}
