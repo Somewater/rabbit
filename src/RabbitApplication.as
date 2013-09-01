@@ -218,14 +218,14 @@ package
 
 			CONFIG::debug
 			{
-				var loaderHint:TextField = new TextField();
-				loaderHint.autoSize = TextFieldAutoSize.LEFT;
-				loaderHint.text = Config.loader.toString() + ' uid=' + Config.loader.getUser().id;
-				loaderHint.x = 0;
-				loaderHint.y = Config.stage.stageHeight - loaderHint.height;
-				Config.stage.addChild(loaderHint);
-				if(Config.memory['cleanGameScreen'])
-					loaderHint.visible = false;
+				if(Config.memory['showLoaderTitle']){
+					var loaderHint:TextField = new TextField();
+					loaderHint.autoSize = TextFieldAutoSize.LEFT;
+					loaderHint.text = Config.loader.toString() + ' uid=' + Config.loader.getUser().id;
+					loaderHint.x = 0;
+					loaderHint.y = Config.stage.stageHeight - loaderHint.height;
+					Config.stage.addChild(loaderHint);
+				}
 			}
 			
 			Lang.options['male'] = Config.loader.getUser().male;
