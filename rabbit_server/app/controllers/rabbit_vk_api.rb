@@ -15,7 +15,7 @@ class RabbitVkApi < VkApi
 		netmoney_to_money = CONFIG[self.name.to_s]["netmoney_to_money"]
 		raise "Current net unsupport billing" unless netmoney_to_money && netmoney_to_money[net_price.to_i]
 		money = netmoney_to_money[net_price.to_i]
-		t = Transaction.create_from(user, money, net_price).save
+		t = Transaction.create_from(user, money, net_price)
 		t.save
 		user.money += money
 		user.save
