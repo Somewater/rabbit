@@ -202,6 +202,19 @@ package com.somewater.rabbit.application {
 			}, onError);
 		}
 
+		public function refreshMoney(onComplete:Function, onError:Function):void {
+			handler.call('money/get', {}, function(response:Object):void{
+				if(response && response['success'])
+				{
+					UserProfile.instance.money = response['user_money'];
+					if(onComplete != null)
+						onComplete(response);
+				}
+				else if(onError != null)
+					onError(response);
+			}, onError);
+		}
+
 		public function purchaseItems(itemIdsToQuantity:Array, sumPrise:int, onComplete:Function, onError:Function):void
 		{
 			// todo: для покупки декора использовать другую ф-ю!!!

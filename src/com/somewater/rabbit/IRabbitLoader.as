@@ -124,6 +124,7 @@ package com.somewater.rabbit
 		function showInviteWindow():void
 			
 		function pay(quantity:Object, onSuccess:Function, onFailure:Function, params:Object = null):void
+		function get asyncPayment():Boolean;// оплата происходит через посредника соц-сеть (после вызова pay фактическая покупка уже совершена)
 			
 		function getUsers(uids:Array, onComplete:Function, onError:Function):void
 

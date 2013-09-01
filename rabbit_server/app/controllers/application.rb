@@ -95,6 +95,8 @@ class Application
 					TopController.new(request).call
 				when 'money/buy'
 					BuyMoneySyncController.new(request).call
+				when 'money/get'
+					RefreshMoneyController.new(request).call
 				when 'items/purchase'
 					BuyUserItemController.new(request).call
 				when 'items/use'

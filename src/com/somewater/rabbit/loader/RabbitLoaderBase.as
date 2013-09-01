@@ -749,6 +749,10 @@ package com.somewater.rabbit.loader
 		{
 			throw new Error("Must be overriden");
 		}
+
+		public function get asyncPayment():Boolean {
+			return true;
+		}
 		
 		public function getUsers(uids:Array, onComplete:Function, onError:Function):void
 		{

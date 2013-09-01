@@ -154,5 +154,9 @@ package {
 			message += ' ' + gameLink + (data ? '#' + data : '')
 			super.posting(user, title, message, image, imageUrl, data, onComplete, onError, additionParams);
 		}
+
+		override public function get asyncPayment():Boolean {
+			return true;
+		}
 	}
 }

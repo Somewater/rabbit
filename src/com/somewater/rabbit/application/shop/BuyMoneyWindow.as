@@ -107,22 +107,27 @@ package com.somewater.rabbit.application.shop {
 				else
 					return;// уже был другой запрос к апи, этот неактуален
 				Config.application.showSlash(0);
-				AppServerHandler.instance.buyMoney(btn.money, btn.netmoney, function(response:Object):void{
-					// SUCCESSSSS
-					Config.application.hideSplash();
-					close();
-					Config.application.message(Lang.t('BUY_MONEY_SUCCESS_MESSAGE', {quantity: btn.money}))
-				}, function(response:Object):void{
-					// game server error
-					Config.application.hideSplash();
-					Config.application.message(Lang.t('ERROR_BUY_MONEY', {error: Config.loader.serverHandler.toJson(response)}))
-				});
 
+				if(Config.loader.asyncPayment){
+					AppServerHandler.instance.refreshMoney(onGameServerResponseSuccess, onGameServerResponseError);
+				} else {
+					AppServerHandler.instance.buyMoney(btn.money, btn.netmoney, onGameServerResponseSuccess, onGameServerResponseError);
+				}
 			}, function(...args):void{
 				// error
 				if(currentClickTime == lastClickTime)
 					lastClickTime = 0;
 			});
+
+			function onGameServerResponseSuccess(response:Object):void{
+				Config.application.hideSplash();
+				close();
+				Config.application.message(Lang.t('BUY_MONEY_SUCCESS_MESSAGE', {quantity: btn.money}))
+			}
+			function onGameServerResponseError(response:Object):void{
+				Config.application.hideSplash();
+				Config.application.message(Lang.t('ERROR_BUY_MONEY', {error: Config.loader.serverHandler.toJson(response)}))
+			}
 		}
 	}
 }
