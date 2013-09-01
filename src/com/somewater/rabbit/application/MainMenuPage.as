@@ -3,6 +3,9 @@ package com.somewater.rabbit.application
 	import com.somewater.controller.PopUpManager;
 	import com.somewater.rabbit.application.buttons.GreenButton;
 	import com.somewater.rabbit.application.commands.OpenRewardLevelCommand;
+	import com.somewater.rabbit.application.commands.PostingFriendsInviteCommand;
+	import com.somewater.rabbit.application.commands.PostingLevelSuccessCommand;
+	import com.somewater.rabbit.application.commands.PostingRewardCommand;
 	import com.somewater.rabbit.application.commands.StartNextLevelCommand;
 	import com.somewater.rabbit.application.tutorial.TutorialLevelDef;
 	import com.somewater.rabbit.application.tutorial.TutorialManager;
@@ -14,6 +17,7 @@ import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.Lib;
+	import com.somewater.rabbit.storage.RewardDef;
 	import com.somewater.rabbit.storage.RewardLevelDef;
 	import com.somewater.rabbit.storage.UserProfile;
 	import com.somewater.storage.Lang;
@@ -238,8 +242,42 @@ import flash.display.DisplayObject;
 				Config.application.startPage("top");
 		}
 
+		private static var i:int = 0;
 		private function onCopyrightClicked(event:MouseEvent = null):void {
-			Config.application.startPage("about");
+			if(!Config.memory['postingTesting']){
+				Config.application.startPage("about");
+				return;
+			}
+			i++;
+			if(i % 3 == 0)
+				new PostingFriendsInviteCommand(Config.loader.getFriends()[int(Config.loader.getFriends().length * Math.random())],
+					function (...args){
+						Config.application.message('[PostingFriendsInviteCommand] success posting');
+					},
+					function (...args){
+						Config.application.message('[PostingFriendsInviteCommand] error posting');
+					}
+				).execute();
+			else if(i % 3 == 1)
+				new PostingLevelSuccessCommand(
+					UserProfile.instance.getLevelInsanceByNumber(2),
+					function (...args){
+						Config.application.message('[PostingLevelSuccessCommand] success posting');
+					},
+					function (...args){
+						Config.application.message('[PostingLevelSuccessCommand] error posting');
+					}
+				).execute();
+			else if(i % 3 == 2)
+				new PostingRewardCommand(
+					RewardManager.instance.getRewards()[1],
+					function (...args){
+						Config.application.message('[PostingRewardCommand] success posting');
+					},
+					function (...args){
+						Config.application.message('[PostingRewardCommand] error posting');
+					}
+				).execute();
 		}
 
 		// для тьюториала

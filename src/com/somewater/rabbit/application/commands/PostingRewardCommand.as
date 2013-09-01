@@ -34,7 +34,8 @@ package com.somewater.rabbit.application.commands {
 			{
 				var image:DisplayObject = PostingFactory.createRewardPosting(reward);
 				var imageUrl:String = Config.loader.getFilePath('reward_posting_' + reward.id);
-				var postdata:String = Config.loader.serverHandler.toJson({'type':'reward_posting','poster':UserProfile.instance.socialUser.id, 'reward':reward.id});
+									// reward_posting
+				var postdata:String = 'rp-' + UserProfile.instance.socialUser.id + '-' + reward.id;
 				Config.loader.posting(UserProfile.instance.socialUser,
 						Lang.t('POSTING_REWARD_PASSES_TITLE'),
 						Lang.t('POSTING_REWARD_PASSES_TEXT', {'reward_name':reward.name}), image, imageUrl, postdata,

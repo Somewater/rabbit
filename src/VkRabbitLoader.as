@@ -53,40 +53,10 @@ package {
 
 		override protected function netInitialize():void
 		{
-//			arrow = new ArrowVkcom();
-//			arrow.addEventListener('wall_view_inline',onWallViewInline);
-//			arrow.addEventListener('wall_post_inline',onWallPostInline);
-//			onArrowComplete('hjli32ls');
-
 			IntegrationProxy._socialNetworkType = SocialNetworkTypes.VKONTAKTE;
 			apiAdapter = IntegrationProxy._adapter = new VKInnerAdapter();
 			apiAdapter.init(flashVars, DESKTOP_MODE);
 			super.netInitialize();
-		}
-
-		private function onWall():void
-		{
-			_content.y= _popups.y = _tooltips.y = _cursors.y = 0;//revert ads offset
-			preloader.scaleX = preloader.scaleY = 0.8;
-			preloader.x += 0;
-			preloader.y += -30;
-		}
-
-		private function onWallViewInline(...args):void {
-			onWall();
-			preloader.bar.textField.text = 'Играть!';
-			preloader.bar.textField.mouseEnabled = false;
-			preloader.bar.useHandCursor = preloader.bar.buttonMode = true;
-			stage.addEventListener(MouseEvent.MOUSE_DOWN, navigateToGame);
-			createSpecificPaths();
-			Lib.Initialize(swfADs);
-			loadSwf('PostingPopup', function():void{
-				var popup:Sprite = Lib.createMC('images.PostingPopup')
-				popup.addEventListener(MouseEvent.MOUSE_DOWN, navigateToGame)
-				popup.buttonMode = popup.useHandCursor = true;
-				Config.stage.frameRate = 15;
-				Config.loader.addChild(popup)
-			})
 		}
 
 		private function navigateToGame(...args):void
@@ -95,46 +65,53 @@ package {
 					'?from_id=' + flashVars['user_id'] + '&loc=' + flashVars['post_id']), '_blank')
 		}
 
-		private function onWallPostInline(...args):void {
-			onWall();
-			preloader.bar.textField.text = 'Ошибка!';
-		}
-
 		override protected function createSpecificPaths():void
 		{
 			basePath = 'http://vk.rabbit.atlantor.ru/';
+			var static_server_path:String = 'http://krolgame.static1.evast.ru/VK/';
+			var cb:int = 1;
 			swfs = {
-						"Game":{priority:-1,preload:true,url:"http://app.vk.com/c6087/u245894/3c04d46f3cb3a1.swf"}
-						,
-						"Application":{priority:int.MIN_VALUE,
-							preload:true,url:"http://app.vk.com/c6178/u245894/fc4d81dccb90a1.swf"}
-						,"Interface":{preload:true, url:"http://app.vk.com/c6087/u245894/e2f52db9be2f33.swf"}
-						,"Assets":{preload:true, url:"http://cs302513.vk.com/u245894/477a5644135f26.zip"}
-						,"Rewards":{preload:true, url:"http://cs302513.vk.com/u245894/c38365043b0e29.zip"}
-						,"Images":{preload:true, url:"http://cs305802.vk.com/u245894/95efe3baee86a7.zip"}
-						,"MusicMenu":{url:"http://cs5231.userapi.com/u245894/9f85f9d027e598.zip"}
-						,"MusicGame":{url:"http://cs5231.userapi.com/u245894/16c9f64377d623.zip"}
-						,"Sound":{preload:true, url:"http://cs11458.vk.com/u245894/b1e1ab2e3fa973.zip"}
-						,"Lang":{priority:100, preload:true, url:"http://app.vk.com/c6087/u245894/09ef13d72379fb.swf"}
-						,"XmlPack":{preload:true, url:"http://cs302513.vk.com/u245894/cddadf35cd9b56.zip"}
+						"Game":{priority:-1,preload:true,url:static_server_path + "r0/RabbitGame.swf"}
+						,"Application":{priority:-1000, preload:true,url:static_server_path + "r0/RabbitApplication.swf?cb=2"}
+						,"Lang":{priority:100, preload:true, url:static_server_path + "r0/lang_pack.swf"}
+						,"XmlPack":{preload:true, url:static_server_path + "r0/xml_pack.swf"}
 
-						,"Font":{priority:100, preload:true, url:"http://cs5231.userapi.com/u245894/fe712dd002e7c1.zip"}
+						,"Interface":{preload:true, url:static_server_path + "r0/assets/interface.swf"}
+						,"Assets":{preload:true, url:static_server_path + "r0/assets/rabbit_asset.swf"}
+						,"Rewards":{preload:true, url:static_server_path + "r0/assets/rabbit_reward.swf"}
+						,"Images":{preload:true, url:static_server_path + "r0/assets/rabbit_images.swf"}
+						,"MusicMenu":{url:static_server_path + "r0/assets/music_menu.swf"}
+						,"MusicGame":{url:static_server_path + "r0/assets/music_game.swf"}
+						,"Sound":{preload:true, url:static_server_path + "r0/assets/rabbit_sound.swf"}
+						,"Font":{priority:100, preload:true, url:static_server_path + "r0/assets/fonts_" + this.locale + ".swf"}
 					}
 
-			// only for vk
-			swfs['PostingPopup'] = {'url':'http://cs5231.userapi.com/u245894/5731f86c081b93.zip'}
+			var i:int = 0;
+			var static_posting_path:String = static_server_path + 'r0/posting/';
+			for (i = 0; i <= 31;i++)
+				filePaths['level_pass_posting_' + i] = static_posting_path + 'levels/level_' + i + '.jpg';
+			for (i = 0; i <= 79;i++)
+				filePaths['reward_posting_' + i] = static_posting_path + 'rewards/reward_' + i + '.jpg';
+			filePaths['friends_invite_posting'] =static_posting_path +  'friends_invite_posting.jpg';
 		}
 
 		override public function get net():int { return 2; }
 
 
 		override public function get referer():String {
+			var result:String;
 			if(flashVars['user_id'] && String(flashVars['user_id']).length && String(flashVars['user_id']) != '0' && flashVars['user_id'] != flashVars['viewer_id'])
-				return flashVars['user_id']
+				result = flashVars['user_id']
 			else if(flashVars['poster_id'] && String(flashVars['poster_id']).length && String(flashVars['poster_id']) != '0')
-				return flashVars['poster_id']
+				result = flashVars['poster_id']
 			else
-				return super.referer;
+				result = super.referer;
+			if(!result && location){
+				var locationParams:Array = location.split('-');
+				if(locationParams.length > 1 && /^\d+$/.test(locationParams[1]))
+					result = locationParams[1];
+			}
+			return result;
 		}
 
 		override public function get hasNavigateToHomepage():Boolean {
@@ -168,6 +145,14 @@ package {
 				};
 			}
 			return _customHash;
+		}
+
+
+		override public function posting(user:SocialUser = null, title:String = null, message:String = null, image:* = null, imageUrl:String = null, data:String = null, onComplete:Function = null, onError:Function = null, additionParams:Object = null):void {
+			var gameLink:String = additionParams ? additionParams['game_link'] : null;
+			if(!gameLink) gameLink = 'http://vk.com/app' + flashVars['api_id'];
+			message += ' ' + gameLink + (data ? '#' + data : '')
+			super.posting(user, title, message, image, imageUrl, data, onComplete, onError, additionParams);
 		}
 	}
 }

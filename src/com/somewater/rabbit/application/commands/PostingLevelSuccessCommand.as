@@ -34,7 +34,8 @@ package com.somewater.rabbit.application.commands {
 			{
 				var image:DisplayObject = PostingFactory.createLevelPosting(levelInstance.levelDef);
 				var imageUrl:String = Config.loader.getFilePath('level_pass_posting_' + levelInstance.number.toString());
-				var postdata:String = Config.loader.serverHandler.toJson({'type':'level_pass_posting','poster':UserProfile.instance.socialUser.id, 'level':levelInstance.number});
+									  // level_pass_posting
+				var postdata:String = 'lpp-'  + UserProfile.instance.socialUser.id + '-' + levelInstance.number;
 				Config.loader.posting(UserProfile.instance.socialUser,
 						Lang.t('POSTING_LEVEL_PASSES_TITLE'),
 						Lang.t('POSTING_LEVEL_PASSES_TEXT', {'level_number':levelInstance.number}), image, imageUrl, postdata,

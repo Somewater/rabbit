@@ -23,6 +23,7 @@ package com.somewater.rabbit.loader {
 		protected var arrow:Object;
 		protected var userStorage:ISocialUserStorage;
 		protected var apiAdapter:IDataAdapter;
+		protected var location:String;
 
 		public function EvaRabbitLoader() {
 			super();
@@ -76,6 +77,9 @@ package com.somewater.rabbit.loader {
 					userStorage.addSocialUser(su);
 				}
 
+				location = apiAdapter.location
+				if(location)
+					trace('[LOCATION] "' + location + '"');
 				onNetInitializeComplete();
 			}
 		}
@@ -201,9 +205,9 @@ package com.somewater.rabbit.loader {
 		override public function posting(user:SocialUser = null, title:String = null, message:String = null, image:* = null, imageUrl:String = null, data:String = null, onComplete:Function = null, onError:Function = null, additionParams:Object = null):void {
 			//arrow.posting(user, title, message, image, imageUrl, data, onComplete, onError, additionParams);
 			if(!user || user.itsMe){
-				apiAdapter.PostToWall(message, imageUrl);
+				apiAdapter.PostToWall(message, imageUrl, onComplete, onError);
 			} else {
-				apiAdapter.SendNotification(message, user.id, imageUrl);
+				apiAdapter.SendNotification(message, user.id, imageUrl, onComplete, onError);
 			}
 		}
 

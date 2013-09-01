@@ -34,7 +34,8 @@ package com.somewater.rabbit.application.commands {
 			{
 				var image:DisplayObject = PostingFactory.createFriendsInvitePosting();
 				var imageUrl:String = Config.loader.getFilePath('friends_invite_posting');
-				var postdata:String = Config.loader.serverHandler.toJson({'type':'friends_invite_posting','poster':UserProfile.instance.socialUser.id});
+									  // friends_invite_posting
+				var postdata:String = 'fip-' + UserProfile.instance.socialUser.id;
 				Config.loader.posting(data['recipient'],
 						Lang.t('POSTING_INVITE_FRIENDS_TITLE'),
 						Lang.t('POSTING_INVITE_FRIENDS_TEXT'), image, imageUrl, postdata,

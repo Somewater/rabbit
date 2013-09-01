@@ -857,5 +857,9 @@ package com.somewater.rabbit.loader
 		{
 			return null;
 		}
+
+		protected function get locale():String {
+			return 'ru';
+		}
 	}
 }
