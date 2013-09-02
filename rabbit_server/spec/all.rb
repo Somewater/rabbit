@@ -530,19 +530,29 @@ class AllSpec
 					@inviter = get_other_user()
 					UserFriend.create(:user_uid => @user_uid, :friend_uid => @inviter.uid)
 
-					request({'net' => @user_net,'uid' => 1,'json' => {'referer' => @inviter.uid, 'add_neighbour' => true, 'user' => {'uid' => 1, 'net' => @user_net}}})
+					response = request({'net' => @user_net,'uid' => 1,'json' => {'referer' => @inviter.uid,
+																																			 'add_neighbour' => true,
+																																			 'friendIds' => [@inviter.uid],
+																																			 'user' => {'uid' => 1, 'net' => @user_net}}})
 
 					@inviter.neighbours.size.should == 1
 					@inviter.neighbours.first.friend_uid.should == @user_uid
 					@user = User.where(:uid => @user_uid).limit(1).first
 					@user.neighbours.size.should == 1
 					@user.neighbours.first.friend_uid.should == @inviter.uid
+
+					response['neighbours'].should_not be_empty
+					response['neighbours'].size.should == 1
+					response['neighbours'].first['uid'].to_s.should == @inviter.uid.to_s
 				end
 
 				it "Если referer друг еще не запросил нового игрока как соседа, создается запрос в соседи от нового игрока" do
 					@inviter = get_other_user()
 
-					request({'net' => @user_net,'uid' => '1','json' => {'referer' => @inviter.uid, 'add_neighbour' => true, 'user' => {'uid' => '1', 'net' => @user_net}}})
+					request({'net' => @user_net,'uid' => '1','json' => {'referer' => @inviter.uid,
+																															'add_neighbour' => true,
+																															'friendIds' => [@inviter.uid],
+																															'user' => {'uid' => '1', 'net' => @user_net}}})
 
 					@inviter.neighbours.should be_empty
 					@inviter.user_friends.size.should == 1
@@ -571,18 +581,28 @@ class AllSpec
 					@user.user_friends.build({:friend_uid => @inviter.uid})
 					@user.save
 
-					request({'net' => @user.net,'uid' => 1,'json' => {'referer' => @inviter.uid, 'add_neighbour' => true, 'user' => {'uid' => 1, 'net' => @user.net}}})
+					response = request({'net' => @user.net,'uid' => 1,'json' => {'referer' => @inviter.uid,
+																																			 'add_neighbour' => true,
+																																			 'friendIds' => [@inviter.uid],
+																																			 'user' => {'uid' => 1, 'net' => @user.net}}})
 
 					@inviter.neighbours.size.should == 1
 					@inviter.neighbours.first.friend_uid.should == @user.uid
 					@user.neighbours.size.should == 1
 					@user.neighbours.first.friend_uid.should == @inviter.uid
+
+					response['neighbours'].should_not be_empty
+					response['neighbours'].size.should == 1
+					response['neighbours'].first['uid'].to_s.should == @inviter.uid.to_s
 				end
 
 				it "Если referer друг еще не запросил игрока как соседа, создается запрос в соседи от игрока" do
 					@inviter = get_other_user()
 
-					request({'net' => @user.net,'uid' => '1','json' => {'referer' => @inviter.uid, 'add_neighbour' => true, 'user' => {'uid' => '1', 'net' => @user.net}}})
+					request({'net' => @user.net,'uid' => '1','json' => {'referer' => @inviter.uid,
+																															'add_neighbour' => true,
+																															'friendIds' => [@inviter.uid],
+																															'user' => {'uid' => '1', 'net' => @user.net}}})
 
 					@inviter.neighbours.should be_empty
 					@inviter.user_friends.size.should == 1

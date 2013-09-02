@@ -37,7 +37,9 @@ class InitializeController < BaseUserController
 
 
 		@response['neighbours'] = []
-		@user.neighbours.each do |friend_assoc|
+		user_neighbours = @user.neighbours
+		user_neighbours << @new_neighbour if @new_neighbour && !user_neighbours.index{|assoc| assoc.friend_uid.to_s == @new_neighbour.friend_uid.to_s }
+		user_neighbours.each do |friend_assoc|
 			next unless self.request_friend_ids.include?(friend_assoc.friend_uid)
 			friend = friend_assoc.friend
 			@response['neighbours'] << friend.to_short_json if friend
@@ -139,6 +141,7 @@ class InitializeController < BaseUserController
 				friend.user_friends.build(:friend_uid => @user.uid, :accepted => true)
 				save(friend)
 			end
+			@new_neighbour = user_assoc
 		elsif !friend_assoc
 			friend.user_friends.build(:friend_uid => @user.uid)
 			save(friend)
