@@ -207,9 +207,9 @@ package com.somewater.rabbit.loader {
 		override public function posting(user:SocialUser = null, title:String = null, message:String = null, image:* = null, imageUrl:String = null, data:String = null, onComplete:Function = null, onError:Function = null, additionParams:Object = null):void {
 			//arrow.posting(user, title, message, image, imageUrl, data, onComplete, onError, additionParams);
 			if(!user || user.itsMe){
-				apiAdapter.PostToWall(message, imageUrl, onComplete, onError);
+				apiAdapter.PostToWall(message, imageUrl, onComplete, onError, {image: image});
 			} else {
-				apiAdapter.SendNotification(message, user.id, imageUrl, onComplete, onError);
+				apiAdapter.SendNotification(message, user.id, imageUrl, onComplete, onError, {image: image});
 			}
 		}
 
