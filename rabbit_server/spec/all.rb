@@ -397,10 +397,8 @@ class AllSpec
 
 			before :each do
 				UserFriend.delete_all
-				@user = User.all.first
-				unless(@user)
-					@user = User.new({:uid => '1', :net => '1'})
-				end
+				User.where(:uid => '1').delete_all
+				@user = User.new({:uid => '1', :net => '1'})
 				@user.update_attributes({:rewards => {}, :level_instances => {}, :day_counter => 0})
 				@user.save
 				@original_app_time = Application.time
@@ -507,7 +505,7 @@ class AllSpec
 
 				uid = get_unexistable_uid()
 
-				request({'net' => @user.net,'uid' => uid,'json' => {'referer' => 100, 'user' => {'uid' => uid, 'net' => @user.net}}})
+				request({'net' => @user.net,'uid' => uid,'json' => {'referer' => @inviter.uid, 'user' => {'uid' => uid, 'net' => @user.net}}})
 
 				# проверка, что в первый раз пригласителю выдается ревард-referer (чтобы показать в интерфейсе)
 				response = request({'net' => @inviter.net,'uid' => @inviter.uid,'json' => {'user' => {'uid' => @inviter.uid, 'net' => @inviter.net}}})
@@ -518,6 +516,91 @@ class AllSpec
 				response = request({'net' => @inviter.net,'uid' => @inviter.uid,'json' => {'user' => {'uid' => @inviter.uid, 'net' => @inviter.net}}})
 				response['rewards'].should_not be_nil
 				response['rewards'].find{|r| r['id'] == 111}.should be_nil
+			end
+
+			context "Новый игрок по ссылка" do
+
+				before :each do
+					@user_net = @user.net
+					@user_uid = @user.uid.to_s
+					@user.delete
+				end
+
+				it "Если referer друг уже запросил вновь добавляемого игрока как соседа, создаются соседи" do
+					@inviter = get_other_user()
+					UserFriend.create(:user_uid => @user_uid, :friend_uid => @inviter.uid)
+
+					request({'net' => @user_net,'uid' => 1,'json' => {'referer' => @inviter.uid, 'add_neighbour' => true, 'user' => {'uid' => 1, 'net' => @user_net}}})
+
+					@inviter.neighbours.size.should == 1
+					@inviter.neighbours.first.friend_uid.should == @user_uid
+					@user = User.where(:uid => @user_uid).limit(1).first
+					@user.neighbours.size.should == 1
+					@user.neighbours.first.friend_uid.should == @inviter.uid
+				end
+
+				it "Если referer друг еще не запросил нового игрока как соседа, создается запрос в соседи от нового игрока" do
+					@inviter = get_other_user()
+
+					request({'net' => @user_net,'uid' => '1','json' => {'referer' => @inviter.uid, 'add_neighbour' => true, 'user' => {'uid' => '1', 'net' => @user_net}}})
+
+					@inviter.neighbours.should be_empty
+					@inviter.user_friends.size.should == 1
+					@inviter.user_friends.first.friend_uid.should == @user_uid
+					@user = User.where(:uid => @user_uid).limit(1).first
+					@user.neighbours.should be_empty
+					@user.user_friends.should be_empty
+				end
+
+				it "Если referer и новый игрок не друзья в соц сети (add_neighbour=false), соседство не создается" do
+					@inviter = get_other_user()
+
+					request({'net' => @user_net,'uid' => '1','json' => {'referer' => @inviter.uid, 'add_neighbour' => nil, 'user' => {'uid' => '1', 'net' => @user_net}}})
+
+					@inviter.neighbours.should be_empty
+					@inviter.user_friends.should be_empty
+					@user = User.where(:uid => @user_uid).limit(1).first
+					@user.neighbours.should be_empty
+					@user.user_friends.should be_empty
+				end
+			end
+
+			context "Сушествующий игрок по ссылка" do
+				it "Если referer друг уже запросил игрока как соседа, создаются соседи" do
+					@inviter = get_other_user()
+					@user.user_friends.build({:friend_uid => @inviter.uid})
+					@user.save
+
+					request({'net' => @user.net,'uid' => 1,'json' => {'referer' => @inviter.uid, 'add_neighbour' => true, 'user' => {'uid' => 1, 'net' => @user.net}}})
+
+					@inviter.neighbours.size.should == 1
+					@inviter.neighbours.first.friend_uid.should == @user.uid
+					@user.neighbours.size.should == 1
+					@user.neighbours.first.friend_uid.should == @inviter.uid
+				end
+
+				it "Если referer друг еще не запросил игрока как соседа, создается запрос в соседи от игрока" do
+					@inviter = get_other_user()
+
+					request({'net' => @user.net,'uid' => '1','json' => {'referer' => @inviter.uid, 'add_neighbour' => true, 'user' => {'uid' => '1', 'net' => @user.net}}})
+
+					@inviter.neighbours.should be_empty
+					@inviter.user_friends.size.should == 1
+					@inviter.user_friends.first.friend_uid.should == @user.uid
+					@user.neighbours.should be_empty
+					@user.user_friends.should be_empty
+				end
+
+				it "Если referer и игрок не друзья в соц сети (add_neighbour=false), соседство не создается" do
+					@inviter = get_other_user()
+
+					request({'net' => @user.net,'uid' => '1','json' => {'referer' => @inviter.uid, 'add_neighbour' => nil, 'user' => {'uid' => '1', 'net' => @user.net}}})
+
+					@inviter.neighbours.should be_empty
+					@inviter.user_friends.should be_empty
+					@user.neighbours.should be_empty
+					@user.user_friends.should be_empty
+				end
 			end
 
 			it "Выдаются друзья юзера" do
@@ -992,7 +1075,7 @@ class AllSpec
 
 			it "Заслуженный ревард выдается (не первый раз)" do
 				create_friendship()
-				@user.user_friends.where(:friend_uid => @friend.uid).first.update_attribute('last_daily_bonus', Time.at(10))
+				@user.user_friends.where(:friend_uid => @friend.uid.to_s).first.update_attribute('last_daily_bonus', Time.at(10))
 
 				inited_money = @user.money
 				response = request(@friend.uid)
@@ -1004,14 +1087,14 @@ class AllSpec
 
 			it "Ревард выдается не чаще заданной величины" do
 				create_friendship()
-				@user.user_friends.where(:friend_uid => @friend.uid).first.update_attribute('last_daily_bonus',
+				@user.user_friends.where(:friend_uid => @friend.uid.to_s).first.update_attribute('last_daily_bonus',
 								Time.new - PUBLIC_CONFIG['FRIEND_DAILY_BONUS_INTERVAL'] + CONFIG['friend_daily_bonus']['time_buffer'] + 10) # до реварда 10 сек
 
 				inited_money = @user.money
 				response = request(@friend.uid)
 				response['success'].should be_false
 
-				@user.user_friends.where(:friend_uid => @friend.uid).first.update_attribute('last_daily_bonus',
+				@user.user_friends.where(:friend_uid => @friend.uid.to_s).first.update_attribute('last_daily_bonus',
 								Time.new - PUBLIC_CONFIG['FRIEND_DAILY_BONUS_INTERVAL'] + CONFIG['friend_daily_bonus']['time_buffer'] - 10) # ревард 10 сек как доступен
 
 				response = request(@friend.uid)
@@ -1058,7 +1141,7 @@ class AllSpec
 
 			it "Нельзя получить ревард не с друга (дружба не подтверждена)" do
 				create_friendship()
-				@user.user_friends.where(:friend_uid => @friend.uid).first.update_attribute('accepted', false)
+				@user.user_friends.where(:friend_uid => @friend.uid.to_s).first.update_attribute('accepted', false)
 				lambda{
 					request(@friend.uid)
 				}.should raise_error(LogicError, /User #.+ not friend for #.+/)

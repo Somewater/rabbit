@@ -8,7 +8,7 @@ class UserInfoController < BaseUserController
 		@response['info'] = @personage.to_json
 
 		if(@json['friend'])
-			user_neighbour = @user.neighbours.where(:friend_uid => @personage.uid).limit(1).first
+			user_neighbour = @user.neighbours.where(:friend_uid => @personage.uid.to_s).limit(1).first
 			if(user_neighbour)
 				@response['friend'] = true
 				# момент следующего сбора, unixtime, по серверу (секунды)

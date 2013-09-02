@@ -23,7 +23,6 @@ package com.somewater.rabbit.loader {
 		protected var arrow:Object;
 		protected var userStorage:ISocialUserStorage;
 		protected var apiAdapter:IDataAdapter;
-		protected var location:String;
 
 		public function EvaRabbitLoader() {
 			super();
@@ -77,9 +76,9 @@ package com.somewater.rabbit.loader {
 					userStorage.addSocialUser(su);
 				}
 
-				location = apiAdapter.location
-				if(location)
-					trace('[LOCATION] "' + location + '"');
+				_postingCode = apiAdapter.location && apiAdapter.location.length ? apiAdapter.location.split('-') : null;
+				if(_postingCode)
+					trace('[LOCATION] "' + _postingCode.join('-') + '"');
 				onNetInitializeComplete();
 			}
 		}

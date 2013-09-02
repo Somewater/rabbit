@@ -229,11 +229,7 @@ class User < ActiveRecord::Base
 	end
 
 	def self.find_by_uid(uid, net = nil)
-		if net
-			User.where(:uid => uid.to_s, :net => net.to_i).first
-		else
-			User.where(:uid => uid.to_s).first
-		end
+		User.where(:uid => uid.to_s).first
 	end
 
 	# всем ревардам юзера удалить флаг "flag", если таковой имеется

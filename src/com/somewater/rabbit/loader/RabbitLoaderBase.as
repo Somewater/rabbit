@@ -120,6 +120,8 @@ package com.somewater.rabbit.loader
 		 * Какой элемент массива _loadSwfsQueue загружается в данный момент
 		 */
 		private var _loadSwfsQueueIterator:int;
+
+		protected var _postingCode:Array;
 		
 		public function RabbitLoaderBase()
 		{
@@ -864,6 +866,10 @@ package com.somewater.rabbit.loader
 
 		protected function get locale():String {
 			return 'ru';
+		}
+
+		public function get postingCode():Array {
+			return _postingCode && _postingCode.length ? _postingCode : null;
 		}
 	}
 }

@@ -106,8 +106,8 @@ package {
 				result = flashVars['poster_id']
 			else
 				result = super.referer;
-			if(!result && location){
-				var locationParams:Array = location.split('-');
+			if(!result && postingCode){
+				var locationParams:Array = postingCode.slice();
 				if(locationParams.length > 1 && /^\d+$/.test(locationParams[1]))
 					result = locationParams[1];
 			}

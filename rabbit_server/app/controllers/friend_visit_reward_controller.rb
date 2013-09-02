@@ -6,7 +6,7 @@ class FriendVisitRewardController < BaseUserController
 	def process
 		friend_uid = @json['friend_id'] || @json['friend_uid']
 		# проверить, что речь идет о друге
-		user_friend = @user.neighbours.where(:friend_uid => friend_uid).first
+		user_friend = @user.neighbours.where(:friend_uid => friend_uid.to_s).first
 		raise LogicError, "User ##{friend_uid} not friend for ##{@user.uid}" unless user_friend
 
 		# проверить, что в данный момент можно собрать награду

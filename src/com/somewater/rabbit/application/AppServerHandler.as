@@ -50,7 +50,18 @@ package com.somewater.rabbit.application {
 			}
 
 			var startRequestTime:Number = new Date().time;
-			handler.call("init", {"referer":Config.loader.referer, "user":gameUserToJson(gameUser, {}), 'friendIds': appFriendsIds},
+
+			var params:Object = {"user":gameUserToJson(gameUser, {}), 'friendIds': appFriendsIds};
+			if(Config.loader.referer && Config.loader.referer.length){
+				params["referer"] = Config.loader.referer;
+				var autoNeighboursPostings:Array = ['fip', 'lpp', 'rp'];
+				var su:SocialUser = Config.loader.getCachedUser(Config.loader.referer);
+				if(su && su.isFriend && Config.loader.postingCode && autoNeighboursPostings.indexOf(String(Config.loader.postingCode[0]))){
+					params['add_neighbour'] = true;
+				}
+			}
+
+			handler.call("init", params,
 				function(response:Object):void{
 					if(response && response['user'] && response['user']['new'])
 						Config.stat(Stat.NEW_USER_REGISTERED);

@@ -10,6 +10,7 @@ class InitializeController < BaseUserController
 				super
 				check_familiar_reward()
 				check_pending_referer_reward()
+				check_add_neighbour()
 			rescue AuthError
 				# создать юзера
 				create_user()
@@ -34,10 +35,10 @@ class InitializeController < BaseUserController
 		user = (@response['user'] ||= {})
 		user.merge!(@user.to_json)
 
-		friendIds = (@json['friendIds'] || []).map(&:to_s)
+
 		@response['neighbours'] = []
 		@user.neighbours.each do |friend_assoc|
-			next unless friendIds.include?(friend_assoc.friend_uid)
+			next unless self.request_friend_ids.include?(friend_assoc.friend_uid)
 			friend = friend_assoc.friend
 			@response['neighbours'] << friend.to_short_json if friend
 		end
@@ -45,10 +46,10 @@ class InitializeController < BaseUserController
 		@response['session'] = true
 	end
 
-	private
+	protected
 	def create_user
 		# необходимые поля для создания: :uid, :net (, :first_name, :last_name)
-		@json['user']['uid'] = @params['uid'] # не даем возможности использовать разные значнеия uid,net в @params и @params['user']
+		@json['user']['uid'] = @params['uid'].to_s # не даем возможности использовать разные значнеия uid,net в @params и @params['user']
 		@json['user']['net'] = @params['net']
 		#@user = User.find_by_uid(@params['uid'], @params['net'])
 		@user = User.new(@json['user'])
@@ -58,8 +59,9 @@ class InitializeController < BaseUserController
 	end
 
 	def check_referer_reward
-		if(@json['referer'] && @json['referer'].to_s.length > 0 && @json['referer'].to_s != '0')
-			invitator = User.find_by_uid(@json['referer'], @user.net)
+		referer = @json['referer']
+		if(referer && referer.to_s.length > 0 && referer.to_s != '0')
+			invitator = User.where(:uid => referer.to_s).first(:select => User::SHORT_SELECT.dup << ', friends_invited, roll, rewards')
 			if invitator
 				invitator.friends_invited += 1
 				reward = ServerLogic.checkAddReward(invitator, nil, nil, Reward::TYPE_REFERER, invitator.friends_invited)
@@ -68,6 +70,7 @@ class InitializeController < BaseUserController
 					invitator.rewards[reward.id.to_s]['flag'] = reward.flag # записать в базу flag
 					@response['invitator.reward'] = reward.to_json
 				end
+				check_add_neighbour(invitator)
 				save(invitator)
 			end
 		end
@@ -106,6 +109,39 @@ class InitializeController < BaseUserController
 			@user.energy_with_gain(true)
 		else
 			@user.gain_energy()
+		end
+	end
+
+	def request_friend_ids
+		@friend_ids ||= (@json['friendIds'] || []).map(&:to_s)
+	end
+
+	def check_add_neighbour(referer = nil)
+		referer_uid = @json['referer']
+		if(referer_uid && referer_uid.to_s.length > 0 && referer_uid.to_s != '0' && @json['add_neighbour'])
+			referer = User.where(:uid => referer_uid.to_s).first(:select => User::SHORT_SELECT) unless referer
+			add_neighbour(referer)
+		end
+	end
+
+	def add_neighbour(friend)
+		friend_assoc = friend.user_friends.where(:friend_uid => @user.uid.to_s).limit(1).first
+		user_assoc = @user.user_friends.where(:friend_uid => friend.uid.to_s).limit(1).first
+
+		if user_assoc
+			# в соседи
+			user_assoc.accepted = true
+			save(user_assoc)
+			if friend_assoc
+				friend_assoc.accepted = true
+				save(friend_assoc)
+			else
+				friend.user_friends.build(:friend_uid => @user.uid, :accepted => true)
+				save(friend)
+			end
+		elsif !friend_assoc
+			friend.user_friends.build(:friend_uid => @user.uid)
+			save(friend)
 		end
 	end
 end

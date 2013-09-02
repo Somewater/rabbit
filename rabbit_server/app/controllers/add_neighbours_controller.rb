@@ -2,7 +2,7 @@ class AddNeighboursController < BaseUserController
 
 	def process
 		@json['friend_uids'].split(',').each do |friend_uid|
-			user_assoc = @user.user_friends.where(:friend_uid => friend_uid).limit(1).first
+			user_assoc = @user.user_friends.where(:friend_uid => friend_uid.to_s).limit(1).first
 
 			if user_assoc && user_assoc.accepted
 				# Already neighbours
@@ -12,7 +12,7 @@ class AddNeighboursController < BaseUserController
 			end
 
 			@friend = User.where(:uid => friend_uid.to_s).first(:select => User::SHORT_SELECT)
-			friend_assoc = @friend.user_friends.where(:friend_uid => @user.uid).limit(1).first
+			friend_assoc = @friend.user_friends.where(:friend_uid => @user.uid.to_s).limit(1).first
 
 			unless friend_assoc
 				friend_assoc = @friend.user_friends.build(:friend_uid => @user.uid)

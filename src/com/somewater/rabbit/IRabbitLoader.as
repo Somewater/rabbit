@@ -149,5 +149,10 @@ package com.somewater.rabbit
 		 */
 		function getClassByName(resourceName:String):Class
 
+		/**
+		 * Хэш, переданный по постингу
+		 */
+		function get postingCode():Array;
+
 	}
 }
