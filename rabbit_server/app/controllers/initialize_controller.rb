@@ -131,6 +131,10 @@ class InitializeController < BaseUserController
 		friend_assoc = friend.user_friends.where(:friend_uid => @user.uid.to_s).limit(1).first
 		user_assoc = @user.user_friends.where(:friend_uid => friend.uid.to_s).limit(1).first
 
+		unless user_assoc # TODO
+			user_assoc = @user.user_friends.build(:friend_uid => friend.uid.to_s)
+		end
+
 		if user_assoc
 			# в соседи
 			user_assoc.accepted = true
