@@ -63,9 +63,10 @@ class InitializeController < BaseUserController
 	def check_referer_reward
 		referer = @json['referer']
 		if(referer && referer.to_s.length > 0 && referer.to_s != '0')
-			invitator = User.where(:uid => referer.to_s).first(:select => User::SHORT_SELECT.dup << ', friends_invited, roll, rewards')
+			invitator = User.where(:uid => referer.to_s).first(:select => User::SHORT_SELECT.dup << ', friends_invited, roll, rewards, money')
 			if invitator
 				invitator.friends_invited += 1
+				invitator.money += PUBLIC_CONFIG['INVITE_REWARD_MONEY'].to_i
 				reward = ServerLogic.checkAddReward(invitator, nil, nil, Reward::TYPE_REFERER, invitator.friends_invited)
 				if reward
 					reward.flag |= RewardInstance::FLAG_NEED_SHOW

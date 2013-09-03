@@ -496,6 +496,17 @@ class AllSpec
 				@inviter.friends_invited.should == (friends_invited + 1)
 			end
 
+			it "Выдаются money пригласителю" do
+				@inviter = get_other_user()
+				money = @inviter.money
+
+				uid = get_unexistable_uid()
+
+				request({'net' => @user.net,'uid' => uid,'json' => {'referer' => 100, 'user' => {'uid' => uid, 'net' => @user.net}}})
+				@inviter.reload
+				@inviter.money.should == (money + PUBLIC_CONFIG['INVITE_REWARD_MONEY'].to_i)
+			end
+
 			it "Корректно выдаются реварды referrer-у" do
 				@inviter = get_other_user()
 				@inviter.friends_invited = 0
