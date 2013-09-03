@@ -59,6 +59,18 @@ package {
 			super.netInitialize();
 		}
 
+		override protected function onNetInitializeComplete(...args):void {
+			if(!postingCode){
+				if(flashVars['request_key'])
+					_postingCode = String(flashVars['request_key']).split('-');
+				else if(flashVars['user_id'] && flashVars['user_id'] != flashVars['viewer_id'])
+					_postingCode = ['fip', flashVars['user_id']];
+				else if(flashVars['referrer'] == 'request' && getAppFriends().length == 0)
+					_postingCode = ['fip', (getAppFriends()[0] as SocialUser).id];
+			}
+			super.onNetInitializeComplete(args);
+		}
+
 		private function navigateToGame(...args):void
 		{
 			navigateToURL(new URLRequest("http://" + 'vk.com' + '/app' + flashVars['api_id'] + '_' + flashVars['poster_id'] +
@@ -72,9 +84,9 @@ package {
 			var cb:int = 1;
 			swfs = {
 						"Game":{priority:-1,preload:true,url:static_server_path + "r0/RabbitGame.swf?cb=5"}
-						,"Application":{priority:-1000, preload:true,url:static_server_path + "r0/RabbitApplication.swf?cb=5"}
+						,"Application":{priority:-1000, preload:true,url:static_server_path + "r0/RabbitApplication.swf?cb=6"}
 						,"Lang":{priority:100, preload:true, url:static_server_path + "r0/lang_pack.swf"}
-						,"XmlPack":{preload:true, url:static_server_path + "r0/xml_pack.swf"}
+						,"XmlPack":{preload:true, url:static_server_path + "r0/xml_pack.swf?cb=6"}
 
 						,"Interface":{preload:true, url:static_server_path + "r0/assets/interface.swf"}
 						,"Assets":{preload:true, url:static_server_path + "r0/assets/rabbit_asset.swf"}
@@ -149,9 +161,11 @@ package {
 
 
 		override public function posting(user:SocialUser = null, title:String = null, message:String = null, image:* = null, imageUrl:String = null, data:String = null, onComplete:Function = null, onError:Function = null, additionParams:Object = null):void {
-			var gameLink:String = additionParams ? additionParams['game_link'] : null;
-			if(!gameLink) gameLink = 'http://vk.com/app' + flashVars['api_id'];
-			message += ' ' + gameLink + (data ? '#' + data : '')
+			if(!user || user.itsMe){
+				var gameLink:String = additionParams ? additionParams['game_link'] : null;
+				if(!gameLink) gameLink = 'http://vk.com/app' + flashVars['api_id'];
+				message += ' ' + gameLink + (data ? '#' + data : '')
+			}
 			super.posting(user, title, message, image, imageUrl, data, onComplete, onError, additionParams);
 		}
 

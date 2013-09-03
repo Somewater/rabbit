@@ -209,7 +209,7 @@ package com.somewater.rabbit.loader {
 			if(!user || user.itsMe){
 				apiAdapter.PostToWall(message, imageUrl, onComplete, onError, {image: image});
 			} else {
-				apiAdapter.SendNotification(message, user.id, imageUrl, onComplete, onError, {image: image});
+				apiAdapter.SendNotification(message, user.id, imageUrl, onComplete, onError, {image: image, data: data});
 			}
 		}
 
