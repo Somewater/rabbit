@@ -4,6 +4,7 @@ package com.somewater.rabbit.application.shop {
 	import com.somewater.display.HintedSprite;
 	import com.somewater.display.Photo;
 	import com.somewater.display.SpriteAligner;
+	import com.somewater.rabbit.application.CustomizeManager;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.ItemDef;
 	import com.somewater.rabbit.storage.Lib;
@@ -16,6 +17,7 @@ package com.somewater.rabbit.application.shop {
 
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
+	import flash.text.TextField;
 
 	public class ShopIcon extends HintedSprite implements IClear{
 
@@ -51,9 +53,11 @@ package com.somewater.rabbit.application.shop {
 			addEventListener(MouseEvent.CLICK, onClick);
 
 			// установка неизменных хар-к айтема
-			var mc:DisplayObject = Lib.createMC(itemDef.shop_slug && itemDef.shop_slug.length > 0 ? itemDef.shop_slug : itemDef.slug);
+			var mc:Sprite = Lib.createMC(itemDef.shop_slug && itemDef.shop_slug.length > 0 ? itemDef.shop_slug : itemDef.slug);
 			if(mc is MovieClip)
 				MovieClipHelper.stopAll(mc as MovieClip);
+			if(mc.getChildByName('textField') && mc.getChildByName('textField') is TextField)
+				CustomizeManager.replaceTitleTextField(mc.getChildByName('textField') as TextField);
 			mc = new SpriteAligner(mc)
 			photo.source = mc;
 			this.hint = itemDef.getTitle();

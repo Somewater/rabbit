@@ -87,22 +87,7 @@ package com.somewater.rabbit.application {
 			var titleClip:DisplayObjectContainer = createByCustomize(CustomizeDef.TYPE_TITLE);
 
 			var titleClipTextField:TextField = titleClip.getChildByName('textField') as TextField;
-
-			var holeTitle:TextField = Config.application.createTextField(null,null,12,false,false,false,false, titleClipTextField.defaultTextFormat.align);
-			holeTitle.width = titleClipTextField.width;
-			holeTitle.height = titleClipTextField.height;
-			holeTitle.defaultTextFormat = titleClipTextField.defaultTextFormat;
-			holeTitle.embedFonts = true;
-			holeTitle.text = Config.game.level is IUserLevel ? IUserLevel(Config.game.level).gameUser.socialUser.firstName
-					: (Config.loader.getUser().firstName && Config.loader.getUser().firstName.length ? Config.loader.getUser().firstName :
-									(Config.loader.getUser().lastName ? Config.loader.getUser().lastName : ''));
-			var tf:TextFormat = titleClipTextField.getTextFormat();
-			holeTitle.setTextFormat(tf);
-			holeTitle.selectable = false;
-			holeTitle.x = titleClipTextField.x;
-			holeTitle.y = titleClipTextField.y;
-			titleClip.addChildAt(holeTitle, titleClip.getChildIndex(titleClipTextField));
-			titleClipTextField.parent.removeChild(titleClipTextField);
+			replaceTitleTextField(titleClipTextField);
 
 			function getHolder(name:String):DisplayObjectContainer
 			{
@@ -120,6 +105,24 @@ package com.somewater.rabbit.application {
 				holder.addChild(customClip);
 				return customClip;
 			}
+		}
+
+		public static function replaceTitleTextField(titleClipTextField:TextField):void {
+			var holeTitle:TextField = Config.application.createTextField(null,null,12,false,false,false,false, titleClipTextField.defaultTextFormat.align);
+			holeTitle.width = titleClipTextField.width;
+			holeTitle.height = titleClipTextField.height;
+			holeTitle.defaultTextFormat = titleClipTextField.defaultTextFormat;
+			holeTitle.embedFonts = true;
+			holeTitle.text = Config.game.level is IUserLevel ? IUserLevel(Config.game.level).gameUser.socialUser.firstName
+					: (Config.loader.getUser().firstName && Config.loader.getUser().firstName.length ? Config.loader.getUser().firstName :
+					(Config.loader.getUser().lastName ? Config.loader.getUser().lastName : ''));
+			var tf:TextFormat = titleClipTextField.getTextFormat();
+			holeTitle.setTextFormat(tf);
+			holeTitle.selectable = false;
+			holeTitle.x = titleClipTextField.x;
+			holeTitle.y = titleClipTextField.y;
+			titleClipTextField.parent.addChildAt(holeTitle, titleClipTextField.parent.getChildIndex(titleClipTextField));
+			titleClipTextField.parent.removeChild(titleClipTextField);
 		}
 	}
 }
