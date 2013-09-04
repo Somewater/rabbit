@@ -24,7 +24,7 @@ import com.somewater.storage.Lang;
 
 		setSize(WIDTH, HEIGHT);
 
-		if(ConfManager.instance.getNumber('PREVENT_INVITE_REWARD') > 0){
+		if(ConfManager.instance.getNumber('PREVENT_INVITE_REWARD') == 0){
 			var moneyRewardHolder:Sprite = new Sprite();
 			var moneyReward:EmbededTextField = new EmbededTextField(null, 0x42591E, 14);
 			moneyReward.htmlText = Lang.t('INVITE_WINDOW_TITLE2', {money: ("<font color=\"#000000\" size=\"16\">"+ConfManager.instance.getNumber('INVITE_REWARD_MONEY')+'</font>') });
