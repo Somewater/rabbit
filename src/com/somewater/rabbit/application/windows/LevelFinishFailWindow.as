@@ -45,6 +45,7 @@ package com.somewater.rabbit.application.windows {
 
 		override protected function onWindowClosed(e:Event = null):void {
 			// стартуем тот же уровень, что был в игре на момент старта окна
+			var level:LevelDef = this.level;
 			if(UserProfile.instance.canSpendEnergy()){
 				Config.application.startGame(level);
 			}else{
