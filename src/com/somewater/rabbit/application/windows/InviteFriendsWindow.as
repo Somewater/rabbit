@@ -24,25 +24,28 @@ import com.somewater.storage.Lang;
 
 		setSize(WIDTH, HEIGHT);
 
-		var moneyRewardHolder:Sprite = new Sprite();
-		var moneyReward:EmbededTextField = new EmbededTextField(null, 0x42591E, 14);
-		moneyReward.htmlText = Lang.t('INVITE_WINDOW_TITLE2', {money: ("<font color=\"#000000\" size=\"16\">"+ConfManager.instance.getNumber('INVITE_REWARD_MONEY')+'</font>') });
-		moneyRewardHolder.addChild(moneyReward);
-		var moneyIcon:DisplayObject = Lib.createMC('interface.MoneyIcon');
-		moneyIcon.x = moneyReward.textWidth + 10;
-		moneyIcon.y = (moneyReward.textHeight - moneyIcon.height) * 0.5;
-		moneyRewardHolder.addChild(moneyIcon);
+		if(ConfManager.instance.getNumber('PREVENT_INVITE_REWARD') > 0){
+			var moneyRewardHolder:Sprite = new Sprite();
+			var moneyReward:EmbededTextField = new EmbededTextField(null, 0x42591E, 14);
+			moneyReward.htmlText = Lang.t('INVITE_WINDOW_TITLE2', {money: ("<font color=\"#000000\" size=\"16\">"+ConfManager.instance.getNumber('INVITE_REWARD_MONEY')+'</font>') });
+			moneyRewardHolder.addChild(moneyReward);
+			var moneyIcon:DisplayObject = Lib.createMC('interface.MoneyIcon');
+			moneyIcon.x = moneyReward.textWidth + 10;
+			moneyIcon.y = (moneyReward.textHeight - moneyIcon.height) * 0.5;
+			moneyRewardHolder.addChild(moneyIcon);
 
-		moneyRewardHolder.x = (this.width - moneyRewardHolder.width) * 0.5;
-		moneyRewardHolder.y = 55;
-		addChild(moneyRewardHolder);
+			moneyRewardHolder.x = (this.width - moneyRewardHolder.width) * 0.5;
+			moneyRewardHolder.y = 55;
+			addChild(moneyRewardHolder);
+		}
 
 		var friends_invited:int = UserProfile.instance.friendsInvited;
 		var friends_need_invite:int = 1000;
 
-		for each(var r:RewardDef in RewardManager.instance.getByType(RewardDef.TYPE_REFERER))
-			if(r.degree > friends_invited && r.degree < friends_need_invite)
-				friends_need_invite = r.degree;
+		if(ConfManager.instance.getNumber('PREVENT_INVITE_REWARD') > 0)
+			for each(var r:RewardDef in RewardManager.instance.getByType(RewardDef.TYPE_REFERER))
+				if(r.degree > friends_invited && r.degree < friends_need_invite)
+					friends_need_invite = r.degree;
 
 		var image:DisplayObject = PostingFactory.getImage("images.InviteFriends");
 		var imageHolder:Sprite = new Sprite();
@@ -57,7 +60,7 @@ import com.somewater.storage.Lang;
 				'</font><br><font color="#000000" size="16">' + Lang.t('NUM_FRIENDS',{number: friends_need_invite}) + '</font>';
 
 		createTextAndImage(Lang.t('INVITE_WINDOW_TITLE'), inviteHTMLText, imageHolder);
-		titleTF.y = 15;
+		if(moneyRewardHolder) titleTF.y = 15;
 
 		open();
 	}

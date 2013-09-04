@@ -3,6 +3,8 @@ ROOT = File.dirname( File.expand_path( __FILE__ + '../../..') )
 ENV['RACK_ENV'] = 'test'
 require ::File.expand_path('../../config/environment',  __FILE__)
 
+PUBLIC_CONFIG['PREVENT_INVITE_REWARD'] = 0 # TODO
+
 class AllSpec
 	describe "Rabbit" do
 

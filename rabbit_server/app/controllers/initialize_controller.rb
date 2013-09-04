@@ -66,12 +66,14 @@ class InitializeController < BaseUserController
 			invitator = User.where(:uid => referer.to_s).first(:select => User::SHORT_SELECT.dup << ', friends_invited, roll, rewards, money')
 			if invitator
 				invitator.friends_invited += 1
-				invitator.money += PUBLIC_CONFIG['INVITE_REWARD_MONEY'].to_i
-				reward = ServerLogic.checkAddReward(invitator, nil, nil, Reward::TYPE_REFERER, invitator.friends_invited)
-				if reward
-					reward.flag |= RewardInstance::FLAG_NEED_SHOW
-					invitator.rewards[reward.id.to_s]['flag'] = reward.flag # записать в базу flag
-					@response['invitator.reward'] = reward.to_json
+				unless PUBLIC_CONFIG['PREVENT_INVITE_REWARD'].to_i > 0
+					invitator.money += PUBLIC_CONFIG['INVITE_REWARD_MONEY'].to_i
+					reward = ServerLogic.checkAddReward(invitator, nil, nil, Reward::TYPE_REFERER, invitator.friends_invited)
+					if reward
+						reward.flag |= RewardInstance::FLAG_NEED_SHOW
+						invitator.rewards[reward.id.to_s]['flag'] = reward.flag # записать в базу flag
+						@response['invitator.reward'] = reward.to_json
+					end
 				end
 				check_add_neighbour(invitator)
 				save(invitator)
