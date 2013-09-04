@@ -26,8 +26,8 @@ import com.somewater.rabbit.events.HeroHealthEvent;
 		private static const DISALLOW_MAP_MOVE_MS:int = 5;
 		private static const HERO_SHOW_DELAY_MS:int = 60;
 		public static const DEFAULT_SPEED:Number = 0.5;
-		private static const HERO_SHOW_SPEED_COEF:Number = 1.2;
-		private static const MOVING_HERO_SHOW_SPEED_COEF:Number = 1.2;
+		private static const HERO_SHOW_SPEED_COEF:Number = 0.8;
+		private static const MOVING_HERO_SHOW_SPEED_COEF:Number = HERO_SHOW_SPEED_COEF;
 		private static const HERO_FIRST_SHOW_SPEED_COEF:Number = 2;
 		public static const MAX_SPEED:Number = 0.3;
 		public static const MAX_ACCELERATION:Number = 0.02;
@@ -40,13 +40,15 @@ import com.somewater.rabbit.events.HeroHealthEvent;
 		 * Сколько тайлов должно остаться объекту слежки до края,
 		 * чтобы сцена начала передвигаться
 		 */
-		public var PADDING:int = 3;
+		public var PADDING_X:int = 5;
+		public var PADDING_Y:int = 5;
 		
 		/**
 		 * На сколько тайлов "сверху" передвинется камера, при необходимости передвинуться
 		 * (для того, чтобы экран "не скакал", когда trackObject постоянно идет в его край)
 		 */
-		public var RESERVE:int = 2;
+		public var RESERVE_X:int = 4;
+		public var RESERVE_Y:int = 4;
 
 		/**
 		 * Объекь, за которым передвигается экран
@@ -78,14 +80,24 @@ import com.somewater.rabbit.events.HeroHealthEvent;
 		public function IsoCameraController()
 		{
 			// пересчитываем константы в зависимости от размера сцены
-			var T_SIZE:int = Math.min(Config.T_WIDTH, Config.T_HEIGHT);
-			if(PADDING * 2 + RESERVE >= T_SIZE)
+			var T_SIZE:int = Config.T_WIDTH;
+			if(PADDING_X * 2 + RESERVE_X >= T_SIZE)
 			{
-				RESERVE = Math.max(0, T_SIZE - PADDING * 2 - 1)
-				if(RESERVE == 0)
+				RESERVE_X = Math.max(0, T_SIZE - PADDING_X * 2 - 1)
+				if(RESERVE_X == 0)
 				{
-					RESERVE = 1;
-					PADDING = (T_SIZE - RESERVE - 1) / 2
+					RESERVE_X = 1;
+					PADDING_X = (T_SIZE - RESERVE_X - 1) / 2
+				}
+			}
+			T_SIZE = Config.T_HEIGHT;
+			if(PADDING_Y * 2 + RESERVE_Y >= T_SIZE)
+			{
+				RESERVE_Y = Math.max(0, T_SIZE - PADDING_Y * 2 - 1)
+				if(RESERVE_Y == 0)
+				{
+					RESERVE_Y = 1;
+					PADDING_Y = (T_SIZE - RESERVE_Y - 1) / 2
 				}
 			}
 
@@ -336,15 +348,15 @@ import com.somewater.rabbit.events.HeroHealthEvent;
 			var scenePos:Point = movePos.clone();
 
 			const USE_RESERVE:int = 1;
-			if(objPos.x - scenePos.x < PADDING)
-				movePos.x = objPos.x - PADDING - USE_RESERVE * RESERVE;
-			else if((scenePos.x + Config.T_WIDTH) - objPos.x < PADDING + 1)
-				movePos.x = objPos.x - Config.T_WIDTH + PADDING + 1 + USE_RESERVE * RESERVE;
+			if(objPos.x - scenePos.x < PADDING_X)
+				movePos.x = objPos.x - PADDING_X - USE_RESERVE * RESERVE_X;
+			else if((scenePos.x + Config.T_WIDTH) - objPos.x < PADDING_X + 1)
+				movePos.x = objPos.x - Config.T_WIDTH + PADDING_X + 1 + USE_RESERVE * RESERVE_X;
 
-			if(objPos.y - scenePos.y < PADDING)
-				movePos.y = objPos.y - PADDING - USE_RESERVE * RESERVE;
-			else if((scenePos.y + Config.T_HEIGHT) - objPos.y < PADDING + 1)
-				movePos.y = objPos.y - Config.T_HEIGHT + PADDING + 1 + USE_RESERVE * RESERVE;
+			if(objPos.y - scenePos.y < PADDING_Y)
+				movePos.y = objPos.y - PADDING_Y - USE_RESERVE * RESERVE_Y;
+			else if((scenePos.y + Config.T_HEIGHT) - objPos.y < PADDING_Y + 1)
+				movePos.y = objPos.y - Config.T_HEIGHT + PADDING_Y + 1 + USE_RESERVE * RESERVE_Y;
 
 			roundLevelSize(movePos);
 
