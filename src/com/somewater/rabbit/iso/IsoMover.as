@@ -373,7 +373,7 @@ package com.somewater.rabbit.iso
 		 */
 		protected function nextTileDestinated():Boolean
 		{
-			if(patienceMode == 2) return false;// если ждем ответа от астара, то не делаем проверок
+			if(patienceMode == 2 || !_destinationPath) return false;// если ждем ответа от астара, то не делаем проверок
 			
 			// проверить, проходим ли следующий тайл
 			// HARDCODE: проходимость/непроходимость тайла заключена в ф-ции IsoSpatialManager.analyzeTile()
