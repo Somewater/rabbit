@@ -91,7 +91,8 @@ namespace :standalone do
 	task :compile_xml_pack => 'flash:configurate_compiler' do
     begin
       levels_file = get_site_file('levels.xml', "tmp_levels.xml")
-      FileUtils.mv(levels_file, "#{ROOT}/bin-debug/Levels.xml")
+      text_without_nn = File.open(levels_file).read.gsub(/(\r|\n)+/, "\n")
+      File.open("#{ROOT}/bin-debug/Levels.xml", 'w'){|f| f.write(text_without_nn) }
       Rake::Task['flash:compile'].execute({:filename => 'xml_pack'})
     ensure
       File.delete(levels_file) rescue nil
