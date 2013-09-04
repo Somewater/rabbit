@@ -26,9 +26,9 @@ import com.somewater.rabbit.events.HeroHealthEvent;
 		private static const DISALLOW_MAP_MOVE_MS:int = 5;
 		private static const HERO_SHOW_DELAY_MS:int = 60;
 		public static const DEFAULT_SPEED:Number = 0.5;
-		private static const HERO_SHOW_SPEED_COEF:Number = 0.5;
-		private static const MOVING_HERO_SHOW_SPEED_COEF:Number = 0.5;
-		private static const HERO_FIRST_SHOW_SPEED_COEF:Number = 1;
+		private static const HERO_SHOW_SPEED_COEF:Number = 1.2;
+		private static const MOVING_HERO_SHOW_SPEED_COEF:Number = 1.2;
+		private static const HERO_FIRST_SHOW_SPEED_COEF:Number = 2;
 		public static const MAX_SPEED:Number = 0.3;
 		public static const MAX_ACCELERATION:Number = 0.02;
 		private static const MAP_MOVE_PADDING:int = 90;
@@ -268,7 +268,7 @@ import com.somewater.rabbit.events.HeroHealthEvent;
 			var speedY:Number;
 
 			// mouse on  gui
-			if(checkMouseOnGui(mouseX, mouseY)){
+			if(checkMouseOnGui(mouseX, mouseY) || PBE.processManager.isTicking){
 				removeTrackRule(TrackTileRule.MAP_MOVING);
 				return;
 			}
@@ -330,7 +330,7 @@ import com.somewater.rabbit.events.HeroHealthEvent;
 		 * @return null, если центровка на персонажа не требуется (персонажа нет или он в поле зрения)
 		 */
 		private function trackObjectCameraPos():Point {
-			if(!trackObject) return null;
+			if(!trackObject || !trackObject.isRegistered) return null;
 			var objPos:Point = trackObject.tile;
 			var movePos:Point = position;
 			var scenePos:Point = movePos.clone();

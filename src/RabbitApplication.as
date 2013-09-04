@@ -84,6 +84,8 @@ package
 	import flash.utils.setInterval;
 	import flash.utils.setTimeout;
 
+	import ru.etcs.ui.MouseWheel;
+
 
 	[Event(name="applicationInited", type="flash.events.Event")]
 
@@ -215,6 +217,7 @@ package
 			Window.GROUND_CLASS = WindowBackground;
 			
 			Hint.init(Config.loader.tooltips);
+			MouseWheel.capture();
 
 			CONFIG::debug
 			{
