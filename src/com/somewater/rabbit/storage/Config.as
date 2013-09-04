@@ -41,6 +41,7 @@ package com.somewater.rabbit.storage
 		 * disableEnergySpend - отключить трату энергии (бесконечное число попыток прох-я уровней)
 		 * cleanGameScreen - во время игры нет gui и прочих неигровых элементов
 		 * postingTesting - тестирование различных видов остинга по нажатию на кнопку (с)
+		 * disableFriendBarInviteBox - при клике по френд бару не показывать стандартный инвайт бокс
 		 */
 		public static var memory:Object = {};
 		

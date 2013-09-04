@@ -67,7 +67,8 @@ package com.somewater.rabbit.application.windows {
 				for each(s in  selectedSocualUsers){
 					if(s.isAppFriend)
 						selectedAppFriends.push(s);
-					else
+
+					if(!s.isAppFriend || Config.memory['disableFriendBarInviteBox'])
 						selectedFriends.push(s);
 				}
 

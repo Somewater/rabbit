@@ -102,11 +102,11 @@ package com.somewater.rabbit.application
 		
 		private function onClick(e:MouseEvent):void
 		{
-			if(mode == 0)
+			if(mode == 0 && !Config.memory['disableFriendBarInviteBox'])
 			{
 				Config.loader.showInviteWindow();	
 			}
-			else if(mode == 3){
+			else if(mode == 3 || mode == 0){
 				var notNeighbours:Array = [];
 				var neighboursIds:Object = {};
 				for each(var g:GameUser in UserProfile.instance.neighbours)
