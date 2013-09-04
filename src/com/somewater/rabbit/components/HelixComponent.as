@@ -191,7 +191,7 @@ package com.somewater.rabbit.components
 			else
 			{
 				// до будки невозможно дойти ?
-				throw new Error("Helix pathfinding error");
+				PBE.log("HelixComponent", "Helix pathfinding error");
 			}
 		}
 		
