@@ -41,6 +41,7 @@ package com.somewater.rabbit.application.windows {
 			submitButton.y = usersSelector.y + usersSelector.height + 30;
 			addChild(submitButton);
 			submitButton.addEventListener(MouseEvent.CLICK, onSubmit);
+			onSelectedChanged();
 
 			open();
 		}
@@ -53,7 +54,7 @@ package com.somewater.rabbit.application.windows {
 			submitButton.removeEventListener(MouseEvent.CLICK, onSubmit);
 		}
 
-		private function onSelectedChanged(event:Event):void {
+		private function onSelectedChanged(event:Event = null):void {
 			submitButton.enabled = usersSelector.selected.length > 0;
 		}
 

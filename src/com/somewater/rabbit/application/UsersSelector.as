@@ -55,12 +55,6 @@ package com.somewater.rabbit.application {
 		}
 
 		protected function sortFunction(a:SocialUser, b:SocialUser):int {
-			// впереди не app-друзья
-			if(a.isAppFriend && !b.isAppFriend)
-				return 1;
-			else if(!a.isAppFriend && b.isAppFriend)
-				return -1;
-
 			return a.lastName < b.lastName ? -1 : 1;
 		}
 
@@ -150,10 +144,10 @@ package com.somewater.rabbit.application {
 					if(icony > UserItem.HEIGHT){
 						if(icony > iconsHolder.height - UserItem.HEIGHT)
 							icony = iconsHolder.height;
-						else
-							icony -= UserItem.HEIGHT;
+					} else {
+						icony = 0;
 					}
-					scroller.position = icony == 0 ? 0 : icony / iconsHolder.height;
+					scroller.position = icony == 0 ? 0 : icony / (iconsHolder.height - this.height);
 				}
 			}
 		}
