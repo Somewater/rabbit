@@ -42,7 +42,7 @@ import com.somewater.storage.Lang;
 		var friends_invited:int = UserProfile.instance.friendsInvited;
 		var friends_need_invite:int = 1000;
 
-		if(ConfManager.instance.getNumber('PREVENT_INVITE_REWARD') > 0)
+		if(ConfManager.instance.getNumber('PREVENT_INVITE_REWARD') == 0)
 			for each(var r:RewardDef in RewardManager.instance.getByType(RewardDef.TYPE_REFERER))
 				if(r.degree > friends_invited && r.degree < friends_need_invite)
 					friends_need_invite = r.degree;
