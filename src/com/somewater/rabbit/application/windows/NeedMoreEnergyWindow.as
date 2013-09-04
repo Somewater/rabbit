@@ -3,7 +3,8 @@ import com.somewater.display.Window;
 import com.somewater.rabbit.application.AppServerHandler;
 import com.somewater.rabbit.application.EnergyIndicator;
 import com.somewater.rabbit.application.buttons.BuyButton;
-import com.somewater.rabbit.storage.ConfManager;
+	import com.somewater.rabbit.application.shop.BuyMoneyWindow;
+	import com.somewater.rabbit.storage.ConfManager;
 import com.somewater.rabbit.storage.Config;
 import com.somewater.rabbit.storage.UserProfile;
 import com.somewater.storage.Lang;
@@ -36,7 +37,6 @@ public class NeedMoreEnergyWindow extends Window{
 		buyButton = new BuyButton();
 		buyButton.width = 200;
 		buyButton.label = Lang.t('BUY_ENERGY_BY', {money: ConfManager.instance.getNumber('ENERGY_COST')});
-		buyButton.enabled = UserProfile.instance.money >= ConfManager.instance.getNumber('ENERGY_COST');
 		buyButton.addEventListener(MouseEvent.CLICK, onBuyClick);
 		buyButton.x = (this.width - buyButton.width) * 0.5;
 		buyButton.y = energyIndicator.y + energyIndicator.height + 40;
@@ -75,7 +75,7 @@ public class NeedMoreEnergyWindow extends Window{
 				Config.application.message(Lang.t('ENERGY_PURCHASE_ERROR'))
 			})
 		} else {
-			Config.application.message(Lang.t('NEED_MONEY_MESSAGE', {quantity: -diff}));
+			new BuyMoneyWindow(-diff);
 		}
 	}
 }
