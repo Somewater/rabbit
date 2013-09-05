@@ -232,15 +232,22 @@ package com.somewater.rabbit.managers
 
 			instantiateLevel(app.level);
 			
-			IsoCameraController.getInstance().position = new Point(int((level.width - Config.T_WIDTH)*0.5),
-																int((level.height - Config.T_HEIGHT)*0.5));// создаем камеру и центрируем (если надо) игровое поле
 			var hero:IEntity = PBE.lookupEntity("Hero");
 			if(hero)
 			{
-				IsoCameraController.getInstance().trackObject = hero.getProperty(new PropertyReference("@Spatial"));
+				var heroSpatial:IsoSpatial = hero.getProperty(new PropertyReference("@Spatial"));
+				IsoCameraController.getInstance().trackObject = heroSpatial;
+				if(heroSpatial){
+					var heroCameraPos:Point = heroSpatial.tile.clone();
+					heroCameraPos.x = Math.min(level.width, Math.max(0, heroCameraPos.x - Config.T_WIDTH * 0.5));
+					heroCameraPos.y = Math.min(level.height, Math.max(0, heroCameraPos.y - Config.T_HEIGHT * 0.5));
+					IsoCameraController.getInstance().position = heroCameraPos;
+				}
 			}
 			else
 			{
+				IsoCameraController.getInstance().position = new Point(int((level.width - Config.T_WIDTH)*0.5),
+						int((level.height - Config.T_HEIGHT)*0.5));// создаем камеру и центрируем (если надо) игровое поле
 				Logger.error(InitializeManager, "restartLevel", "Hero looking failed");
 			}
 			
