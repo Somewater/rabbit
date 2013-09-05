@@ -26,9 +26,9 @@ import com.somewater.rabbit.events.HeroHealthEvent;
 		private static const DISALLOW_MAP_MOVE_MS:int = 5;
 		private static const HERO_SHOW_DELAY_MS:int = 60;
 		public static const DEFAULT_SPEED:Number = 0.5;
-		private static const HERO_SHOW_SPEED_COEF:Number = 0.8;
+		private static const HERO_SHOW_SPEED_COEF:Number = 0.6;
 		private static const MOVING_HERO_SHOW_SPEED_COEF:Number = HERO_SHOW_SPEED_COEF;
-		private static const HERO_FIRST_SHOW_SPEED_COEF:Number = 2;
+		private static const HERO_FIRST_SHOW_SPEED_COEF:Number = 1.5;
 		public static const MAX_SPEED:Number = 0.3;
 		public static const MAX_ACCELERATION:Number = 0.02;
 		private static const MAP_MOVE_PADDING:int = 90;
@@ -54,6 +54,9 @@ import com.somewater.rabbit.events.HeroHealthEvent;
 		 * Объекь, за которым передвигается экран
 		 */
 		public var trackObject:IsoSpatial;
+		protected var trackObjectMove:IsoMover;
+		private var moveDx:int;
+		private var moveDy:int;
 		
 		/**
 		 * Листенеры на изменение позиции сцены (движение камеры)
@@ -244,6 +247,8 @@ import com.somewater.rabbit.events.HeroHealthEvent;
 			trackObject._owner.eventDispatcher.addEventListener(HeroHealthEvent.HERO_DAMAGE_EVENT, onHeroDamage, false, 0, true);
 			trackObject._owner.eventDispatcher.addEventListener(IsoMover.MOVING_STARTED, onHeroMovingStarted, false, 0, true);
 			trackObject._owner.eventDispatcher.addEventListener(IsoMover.DESTINATION_CHANGED, onHeroMovingStopped, false, 0, true);
+			trackObjectMove = trackObject._owner.lookupComponentByType(IsoMover) as IsoMover;
+			moveDx = moveDy = 0;
 			removeAllTrackRules();
 		}
 
@@ -344,6 +349,26 @@ import com.somewater.rabbit.events.HeroHealthEvent;
 		private function trackObjectCameraPos():Point {
 			if(!trackObject || !trackObject.isRegistered) return null;
 			var objPos:Point = trackObject.tile;
+			var objDestination = trackObjectMove.nextDestinationTile;
+			if(objDestination){
+				var destX:int = objDestination.x;
+				var destY:int = objDestination.y;
+				const BUFFER:int = 1;
+				if(destX > objPos.x)
+					moveDx = BUFFER;
+				else if(destX < objPos.x)
+					moveDx = -BUFFER;
+
+				if(destY > objPos.y)
+					moveDy = BUFFER;
+				else if(destY < objPos.y)
+					moveDy = -BUFFER;
+			} else {
+			}
+
+			objPos.x += int(moveDx);
+			objPos.y += int(moveDy);
+
 			var movePos:Point = position;
 			var scenePos:Point = movePos.clone();
 

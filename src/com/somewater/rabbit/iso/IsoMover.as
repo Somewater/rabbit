@@ -248,6 +248,10 @@ package com.somewater.rabbit.iso
 		{
 			return _destinationPath?_destinationPath:[];
 		}
+
+		public function get nextDestinationTile():Point {
+			return _destinationPath && _destinationPath.length ? (_destinationPath[0] as PathItem).position : null;
+		}
 		
 		
 		public function set speed(value:Number):void
