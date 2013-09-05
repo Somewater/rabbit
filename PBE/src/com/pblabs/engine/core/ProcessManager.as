@@ -723,10 +723,6 @@ package com.pblabs.engine.core
 				own = render._owner;
 				if(own == null || unvisibleEntities[own.uid])
 				{
-					CONFIG::debug
-					{
-						continue;
-					}
 					if(dor)
 						dor.visible = false;
 					continue;
