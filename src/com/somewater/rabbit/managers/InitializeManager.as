@@ -239,8 +239,8 @@ package com.somewater.rabbit.managers
 				IsoCameraController.getInstance().trackObject = heroSpatial;
 				if(heroSpatial){
 					var heroCameraPos:Point = heroSpatial.tile.clone();
-					heroCameraPos.x = Math.min(level.width, Math.max(0, heroCameraPos.x - Config.T_WIDTH * 0.5));
-					heroCameraPos.y = Math.min(level.height, Math.max(0, heroCameraPos.y - Config.T_HEIGHT * 0.5));
+					heroCameraPos.x = Math.min(level.width - Config.T_WIDTH, Math.max(0, heroCameraPos.x - Config.T_WIDTH * 0.5));
+					heroCameraPos.y = Math.min(level.height - Config.T_HEIGHT, Math.max(0, heroCameraPos.y - Config.T_HEIGHT * 0.5));
 					IsoCameraController.getInstance().position = heroCameraPos;
 				}
 			}
