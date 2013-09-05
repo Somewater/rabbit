@@ -46,7 +46,17 @@ package com.somewater.storage
 				{
 					var result:String = dict[key];
 					for (var name:String in args) {
-						result = result.replace(new RegExp("\{" + name + "\}", "g"), args[name])
+						if(result.indexOf('{' + name + '}') != -1)
+							result = result.replace(new RegExp("\{" + name + "\}", "g"), args[name]);
+						var quantityIndex:int;
+						var c:int = 100;
+						while(c-- > 0 && (quantityIndex = result.indexOf('{' + name + ':' )) != -1) {
+							var quantityEndIndex:int = result.indexOf('}', quantityIndex + 1);
+							var repl:String = quantityTranslation(result.substring(quantityIndex, quantityEndIndex + 1), name, args[name]);
+							if(repl !== null){
+								result = result.substr(0, quantityIndex) + repl + result.substr(quantityEndIndex + 1);
+							}
+						}
 					}
 					return sexTranslation(result);
 				}
@@ -80,6 +90,23 @@ package com.somewater.storage
 				}
 			}
 			return text;
+		}
+
+		private static function quantityTranslation(part:String, key:String, quantity:int):String {
+			var phrasesStr:String = part.substr(2 + key.length, part.length - 2 - key.length - 1);
+			var phrases:Array = phrasesStr.split('|');
+			return quantityPhrases_ru(phrases, quantity);
+		}
+
+		private static function quantityPhrases_ru(phrases:Array, quantity:int):String {
+			var pos:int = 2;
+			if(quantity == 1)                                   pos = 0;
+			else if(quantity%100 >= 10 && quantity%100 <= 20)   pos = 2;
+			else if(quantity%10 == 1)                           pos = 0;
+			else if(quantity%10 >= 2 && quantity%10 <= 4)       pos = 1;
+			// else pos = 2;
+
+			return phrases[pos];
 		}
 		
 		public static function arr(key:String, separator:String = ","):Array{
