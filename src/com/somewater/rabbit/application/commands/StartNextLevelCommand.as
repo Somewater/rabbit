@@ -18,6 +18,12 @@ import com.somewater.rabbit.storage.Config;
 
 			var nextLevelDef:LevelDef = Config.application.getLevelByNumber(UserProfile.instance.levelNumber);
 
+			if(nextLevelDef == null){
+				Config.application.startPage('levels');
+				Config.application.message("Ожидайте обновлений и новых уровней!");
+				return;
+			}
+
 			// хук для тьюториала. Если тольтко что пройден первый левел игры, тьюториал не доведен до (LEVEL_LAST_STEP+1) шага
 			// и стартовать пытается 2й левел, открываем главное меню
 			if(currentPassedLevel is TutorialLevelDef && nextLevelDef.number != 2)
