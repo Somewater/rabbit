@@ -52,13 +52,8 @@ package
 				//,"Font":{priority:1000, preload:true, url:"assets/fonts_ru.swf"}
 			}
 
-			CONFIG::debug
-			{
-				//swfs["Editor"] = {priority:1, preload:true, url:"RabbitEditor.swf"};
-			}
-
-			//if(!CONFIG::debug)
-			//	swfs["XmlPack"] = {preload:true, url:"xml_pack.swf"};
+			//swfs["Editor"] = {priority:1, preload:true, url:"RabbitEditor.swf"};
+			//swfs["XmlPack"] = {preload:true, url:"xml_pack.swf"};
 		}
 		
 		override protected function initializeServerHandler():void
