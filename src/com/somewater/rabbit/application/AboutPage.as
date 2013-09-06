@@ -4,6 +4,7 @@ package com.somewater.rabbit.application
 	import com.somewater.rabbit.SoundTrack;
 	import com.somewater.rabbit.Sounds;
 	import com.somewater.rabbit.Stat;
+	import com.somewater.rabbit.application.buttons.InteractiveOpaqueBack;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Lib;
@@ -21,7 +22,7 @@ package com.somewater.rabbit.application
 
 	public class AboutPage extends PageBase
 	{
-		private var leftButton:DisplayObject;
+		private var leftButton:InteractiveOpaqueBack;
 		private var items:Array = [];
 		private var offerStat:OfferStatPanel;
 
@@ -69,7 +70,8 @@ package com.somewater.rabbit.application
 				items.push(item);
 			}
 			
-			leftButton = Lib.createMC("interface.LeftButton");
+			leftButton = new InteractiveOpaqueBack(Lib.createMC("interface.LeftButton"));
+			leftButton.setSize(48, 48);
 			leftButton.x = 20;
 			leftButton.y = Config.HEIGHT - leftButton.height - 20;
 			leftButton.addEventListener(MouseEvent.CLICK, onLeftButtonClick);
@@ -185,6 +187,7 @@ package com.somewater.rabbit.application
 		override public function clear():void {
 			super.clear();
 			leftButton.removeEventListener(MouseEvent.CLICK, onLeftButtonClick);
+			leftButton.clear();
 			Hint.removeHint(leftButton);
 			if(items)
 				for (var i:int = 0; i < items.length; i++)

@@ -4,6 +4,7 @@ package com.somewater.rabbit.application {
 	import com.somewater.display.CorrectSizeDefinerSprite;
 	import com.somewater.rabbit.SoundTrack;
 	import com.somewater.rabbit.Sounds;
+	import com.somewater.rabbit.application.buttons.InteractiveOpaqueBack;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.rabbit.storage.TopUser;
@@ -29,7 +30,7 @@ package com.somewater.rabbit.application {
 		private var tableHolder:CorrectSizeDefinerSprite;
 		private var scroller:RScroller;
 		private var rows:Array = [];
-		private var leftButton:DisplayObject;
+		private var leftButton:InteractiveOpaqueBack;
 
 		public function TopPage() {
 
@@ -110,7 +111,8 @@ package com.somewater.rabbit.application {
 				AppServerHandler.instance.topIndex(onTopIndexInfoLoadedComplete, onTopIndexInfoLoadedError);
 			}
 
-			leftButton = Lib.createMC("interface.LeftButton");
+			leftButton = new InteractiveOpaqueBack(Lib.createMC("interface.LeftButton"));
+			leftButton.setSize(48, 48);
 			leftButton.x = 20;
 			leftButton.y = Config.HEIGHT - leftButton.height - 20;
 			leftButton.addEventListener(MouseEvent.CLICK, onLeftButtonClick);
@@ -146,6 +148,7 @@ package com.somewater.rabbit.application {
 
 			scroller.clear();
 			leftButton.removeEventListener(MouseEvent.CLICK, onLeftButtonClick);
+			leftButton.clear();
 		}
 
 		private function onLeftButtonClick(event:MouseEvent):void {

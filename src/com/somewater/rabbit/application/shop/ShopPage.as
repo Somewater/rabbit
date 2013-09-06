@@ -2,6 +2,7 @@ package com.somewater.rabbit.application.shop {
 	import com.somewater.rabbit.SoundTrack;
 	import com.somewater.rabbit.Sounds;
 	import com.somewater.rabbit.application.PageBase;
+	import com.somewater.rabbit.application.buttons.InteractiveOpaqueBack;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.storage.Lang;
@@ -13,7 +14,7 @@ package com.somewater.rabbit.application.shop {
 	public class ShopPage extends PageBase{
 
 		private var module:ShopModule;
-		private var leftButton:DisplayObject;
+		private var leftButton:InteractiveOpaqueBack;
 
 		public function ShopPage() {
 			super();
@@ -24,7 +25,8 @@ package com.somewater.rabbit.application.shop {
 			module.y = (Config.HEIGHT - ShopModule.HEIGHT) * 0.5;
 			addChild(module);
 
-			leftButton = Lib.createMC("interface.LeftButton");
+			leftButton = new InteractiveOpaqueBack(Lib.createMC("interface.LeftButton"));
+			leftButton.setSize(48, 48);
 			leftButton.x = 20;
 			leftButton.y = Config.HEIGHT - leftButton.height - 20;
 			leftButton.addEventListener(MouseEvent.CLICK, onLeftButtonClick);
@@ -36,6 +38,7 @@ package com.somewater.rabbit.application.shop {
 			super.clear();
 			module.clear();
 			leftButton.removeEventListener(MouseEvent.CLICK, onLeftButtonClick);
+			leftButton.clear();
 		}
 
 		private function onLeftButtonClick(event:MouseEvent):void {

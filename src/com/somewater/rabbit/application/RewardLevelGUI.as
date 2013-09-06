@@ -2,6 +2,7 @@ package com.somewater.rabbit.application {
 	import com.somewater.control.IClear;
 	import com.somewater.rabbit.SoundTrack;
 	import com.somewater.rabbit.Sounds;
+	import com.somewater.rabbit.application.buttons.InteractiveOpaqueBack;
 	import com.somewater.rabbit.application.shop.MyMoneyBag;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
@@ -16,14 +17,15 @@ package com.somewater.rabbit.application {
 
 	public class RewardLevelGUI extends Sprite implements IClear{
 
-		private var leftButton:DisplayObject;
+		private var leftButton:InteractiveOpaqueBack;
 		private var offerStat:OfferStatPanel;
 		private var myMoney:MyMoneyBag;
 
 		public function RewardLevelGUI() {
-			leftButton = Lib.createMC("interface.LeftButton");
+			leftButton = new InteractiveOpaqueBack(Lib.createMC("interface.LeftButton"));
 			leftButton.x = 15;
 			leftButton.y = Config.HEIGHT - leftButton.width - 15;
+			leftButton.setSize(48, 48)
 			leftButton.addEventListener(MouseEvent.CLICK, onLeftButtonClick);
 			Hint.bind(leftButton, Lang.t("BACK_TO_MAIN_MENU"));
 			addChild(leftButton);
@@ -45,6 +47,7 @@ package com.somewater.rabbit.application {
 		public function clear():void
 		{
 			leftButton.removeEventListener(MouseEvent.CLICK, onLeftButtonClick);
+			leftButton.clear();
 			Hint.removeHint(leftButton);
 			if(offerStat)
 				offerStat.clear();

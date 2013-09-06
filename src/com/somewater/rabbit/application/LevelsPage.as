@@ -4,6 +4,7 @@ package com.somewater.rabbit.application
 	import com.somewater.rabbit.SoundTrack;
 	import com.somewater.rabbit.Sounds;
 	import com.somewater.rabbit.Stat;
+	import com.somewater.rabbit.application.buttons.InteractiveOpaqueBack;
 	import com.somewater.rabbit.application.buttons.StoriesSwitcher;
 	import com.somewater.rabbit.application.tutorial.TutorialManager;
 import com.somewater.rabbit.application.windows.NeedMoreEnergyWindow;
@@ -33,7 +34,7 @@ import com.somewater.rabbit.storage.Config;
 
 		private var friendBar:FriendBar;
 		private var levelIcons:Array = [];
-		private var leftButton:DisplayObject;
+		private var leftButton:InteractiveOpaqueBack;
 		private var globalScoreCarrot:DisplayObject;
 		private var globalScoreCounterTF:EmbededTextField;
 		private var globalScoreHolder:Sprite;
@@ -114,7 +115,8 @@ import com.somewater.rabbit.storage.Config;
 
 			Config.stat(Stat.LEVELS_PAGE_OPENED);
 
-			leftButton = Lib.createMC("interface.LeftButton");
+			leftButton = new InteractiveOpaqueBack(Lib.createMC("interface.LeftButton"));
+			leftButton.setSize(48, 48);
 
 			onStoryChanged();
 
@@ -191,6 +193,7 @@ import com.somewater.rabbit.storage.Config;
 				LevelIcon(levelIcons[i]).removeEventListener(MouseEvent.CLICK, onLevelClick);
 			}
 			leftButton.removeEventListener(MouseEvent.CLICK, onLeftButtonClick);
+			leftButton.clear();
 			
 			Hint.removeHint(leftButton);
 			Hint.removeHint(globalScoreCarrot);
