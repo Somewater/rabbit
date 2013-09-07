@@ -552,7 +552,7 @@ package
 			{
 				hideSplash();
 
-				if(level.type == LevelDef.TYPE)
+				if(level.type == LevelDef.TYPE || level.type == TutorialLevelDef.TYPE)
 				{
 					levelStartMessage(level);
 					Config.stat(Stat.LEVEL_STARTED);

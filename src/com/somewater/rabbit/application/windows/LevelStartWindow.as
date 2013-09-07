@@ -91,7 +91,9 @@ import com.somewater.rabbit.application.GameGUI;
 			iconLevelNumber.width = 155;
 			iconLevelNumber.text = level.number.toString();
 			starIcon.addChild(iconLevelNumber);
-			createTextAndImage(levelToString(level), level.name + ".\n" + level.shortDescription, level.image);
+
+			var levelText:String = level.name.replace(/(\n|\r)+$/, '').replace(/\.$/, '') + ".\n\n" + level.shortDescription;
+			createTextAndImage(levelToString(level), levelText, level.image || "tutorial.TutorialMouseInput");
 
 			core = Lib.createMC('interface.LevelStartCounters');
 			core.x = 79;
