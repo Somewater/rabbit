@@ -207,10 +207,10 @@ package com.somewater.rabbit.decor {
 				drawRect(mouseTile, tileAvailable ? 0xeeFFee : 0xFF5555);
 			}
 			if(destinationTileVisible)
-				drawRect(destinationTile, 0x5555FF);
+				drawRect(destinationTile, 0xadf500, 0.7);
 		}
 
-		private function drawRect(tile:Point, color:uint):void
+		private function drawRect(tile:Point, color:uint, alpha:Number = 0.3):void
 		{
 			tempPoint.x = tile.x;
 			tempPoint.y = tile.y;
@@ -218,8 +218,8 @@ package com.somewater.rabbit.decor {
 			IsoRenderer.isoToScreen(tempPoint);
 
 			var g:Graphics = shape.graphics;
-			g.lineStyle(1, color);
-			g.beginFill(color, 0.3);
+			//g.lineStyle(1, color);
+			g.beginFill(color, alpha);
 			g.drawRect(tempPoint.x, tempPoint.y,  Config.TILE_WIDTH, Config.TILE_HEIGHT);
 		}
 
