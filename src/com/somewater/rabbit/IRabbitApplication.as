@@ -22,6 +22,7 @@ package com.somewater.rabbit
 
 		function levelFinishMessage(levelInstance:LevelInstanceDef):void
 
+		function preFinishedLevel(levelInstance:LevelInstanceDef):void
 		function addFinishedLevel(levelInstance:LevelInstanceDef):void
 			
 		function showSlash(process:Number):void

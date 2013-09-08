@@ -372,6 +372,13 @@ package
 			}
 		}
 
+		public function preFinishedLevel(levelInstance:LevelInstanceDef):void{
+			if(levelInstance.success)
+				playMusicFadeIn(Sounds.MUSIC_WIN, true);
+			else
+				playMusicFadeIn(Sounds.MUSIC_LOSE, true);
+		}
+
 		public function addFinishedLevel(levelInstance:LevelInstanceDef):void
 		{
 			if(levelInstance.levelDef.type == LevelDef.TYPE || levelInstance.levelDef.type == TutorialLevelDef.TYPE)
@@ -385,11 +392,6 @@ package
 			TutorialManager.instance.restart(null);
 
 			levelFinishMessage(levelInstance);
-
-			if(levelInstance.success)
-				playMusicFadeIn(Sounds.MUSIC_WIN, true);
-			else
-				playMusicFadeIn(Sounds.MUSIC_LOSE, true);
 		}
 
 		
@@ -811,11 +813,17 @@ package
 			function playNewSound():void
 			{
 				var ortadoxMusic:Boolean = track == SoundTrack.MUSIC && (soundName == Sounds.MUSIC_MENU || soundName == Sounds.MUSIC_GAME)
+				var soundTransform:SoundTransform = track == SoundTrack.MUSIC ? _musicSoundTransform : _soundSoundTransform;
+				if(pseudoMusic(soundName))
+					soundTransform = _soundSoundTransform;
 				soundTracks[track] = new SoundData(soundName, soundObject.play(0,
-						ortadoxMusic ? 0xFFFF : 0,
-						track == SoundTrack.MUSIC ? _musicSoundTransform : _soundSoundTransform));
+						ortadoxMusic ? 0xFFFF : 0, soundTransform));
 				SoundData(soundTracks[track]).channel.addEventListener(Event.SOUND_COMPLETE, onSoundComplete);
 			}
+		}
+
+		private function pseudoMusic(soundName:String):Boolean {
+			return soundName == Sounds.MUSIC_WIN || soundName == Sounds.MUSIC_LOSE;
 		}
 
 		private function onSoundVolumeChanged():void {
@@ -827,9 +835,7 @@ package
 		}
 
 		private function onMusicVolumeChanged():void {
-			_musicSoundTransform.volume = _musicEnabled ? _music : 0;
-			if(soundTracks[SoundTrack.MUSIC])
-				SoundData(soundTracks[SoundTrack.MUSIC]).channel.soundTransform = _musicSoundTransform;
+			updateMusicVolume();
 			saveAudioSettings();
 		}
 
@@ -999,7 +1005,7 @@ package
 				TweenLite.to(this, fastFade ? 0.3 : 0.8, {musicFader: 0,
 					onComplete:startMusicFadeInImmediately,
 					onCompleteParams: [musicName, fastFade],
-					onUpdate: dispatchMusicChange
+					onUpdate: updateMusicVolume
 				});
 			}
 			else
@@ -1011,12 +1017,19 @@ package
 
 		private function startMusicFadeInImmediately(musicName:String, fastFade:Boolean):void
 		{
-			TweenLite.to(this, fastFade ? 0.3 : 0.8, {musicFader: 1, onUpdate: dispatchMusicChange});
+			TweenLite.to(this, fastFade ? 0.3 : 0.8, {musicFader: 1, onUpdate: updateMusicVolume});
 			play(musicName, SoundTrack.MUSIC);
 		}
 
 		public function canCompleteLevel():Boolean{
 			return !TutorialManager.instance.running;
+		}
+
+		private function updateMusicVolume():void{
+			_musicSoundTransform.volume = _musicEnabled ? _music : 0;
+			var sd:SoundData = soundTracks[SoundTrack.MUSIC];
+			if(sd && !pseudoMusic(sd.soundName))
+				sd.channel.soundTransform = _musicSoundTransform;
 		}
 	}
 }

@@ -282,15 +282,13 @@ package com.somewater.rabbit.managers
 								: (event.carrotHarvested >= conditionsRef['carrotMiddle'] ? 2
 								: (event.carrotHarvested >= conditionsRef['carrotMin'] ? 1 : 0) ))
 
-			PBE.processManager.schedule(flag == LevelInstanceDef.LEVEL_FATAL_TIME ? 0 : 1500, this, function():void{
+			if(event.success && HeroDataComponent.instance)
+				HeroDataComponent.instance.protectedFlag = 10;
+
+			Config.application.preFinishedLevel(event);
+			PBE.processManager.schedule(flag == LevelInstanceDef.LEVEL_FATAL_TIME ? 0 : 1000, this, function():void{
 
 				event.spendedPowerups = powerupTemplateNameToQuantity;
-				// если кролика за delay убили, отменяем выигрыш
-				if(!(HeroDataComponent.instance && HeroDataComponent.instance.health > 0) && event.success)
-				{
-					event.success = false;
-					event.finalFlag = LevelInstanceDef.LEVEL_FATAL_LIFE;
-				}
 
 				// специально для случаев, когда во время delay игрок еще подсобрал морковок более, чем carrotMax (причем время еще не кончилось)
 				if(time <= conditionsRef["time"] && event.stars == 3 && HeroDataComponent.instance)
