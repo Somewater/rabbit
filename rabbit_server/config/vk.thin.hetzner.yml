@@ -1,5 +1,5 @@
 ---
-servers: 5
+servers: 1
 user: pav
 group: pav
 chdir: /data/srv/RABBITS/vk
