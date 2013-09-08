@@ -95,7 +95,7 @@ namespace :standalone do
       File.open("#{ROOT}/bin-debug/Levels.xml", 'w'){|f| f.write(text_without_nn) }
       Rake::Task['flash:compile'].execute({:filename => 'xml_pack'})
     ensure
-      File.delete(levels_file) rescue nil
+      #File.delete(levels_file) rescue nil
     end
 	end
 
@@ -107,7 +107,7 @@ namespace :standalone do
 			config_swf_filepath = compile_tmp_file(tmp_config_file(), 'tmp_config_pack')
 			FileUtils.cp(config_swf_filepath, "#{ROOT}/bin-debug/config_pack.swf") if args[:production_too]
 		ensure
-			File.delete(config_txt) rescue nil
+			#File.delete(config_txt) rescue nil
 		end
 	end
 
@@ -120,7 +120,7 @@ namespace :standalone do
 			lang_swf_filepath = compile_tmp_file(tmp_lang_file(), 'tmp_lang_pack')
 			FileUtils.cp(lang_swf_filepath, "#{ROOT}/bin-debug/lang_pack.swf") if args[:production_too]
 		ensure
-			File.delete(lang_txt) rescue nil
+			#File.delete(lang_txt) rescue nil
 		end
 	end
 
