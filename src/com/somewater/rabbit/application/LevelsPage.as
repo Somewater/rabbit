@@ -55,7 +55,6 @@ import com.somewater.rabbit.storage.Config;
 				friendBar = new FriendBar();
 				friendBar.x = 35;
 				friendBar.y = Config.HEIGHT -  friendBar.HEIGHT - 40;
-				addChild(friendBar);
 			}
 
 			storiesSwitcher = new StoriesSwitcher(UserProfile.instance);
@@ -123,6 +122,7 @@ import com.somewater.rabbit.storage.Config;
 			leftButton.addEventListener(MouseEvent.CLICK, onLeftButtonClick);
 			Hint.bind(leftButton, Lang.t("BACK_TO_MAIN_MENU"));
 			addChild(leftButton);
+			if(friendBar) addChild(friendBar);
 
 			globalScoreHolder.visible = false;
 			if(UserProfile.instance.levelNumber > 1 || !UserProfile.instance.energyIsFull()){

@@ -145,6 +145,7 @@ package com.somewater.rabbit.application
 		private function fullAppFriends():void{
 			friends = UserProfile.instance.neighbours;
 			friends.push(ImaginaryGameUser.instance)
+			friends.push(UserProfile.instance)
 			friends.sortOn("levelNumber", Array.NUMERIC | Array.DESCENDING);
 		}
 
