@@ -86,7 +86,7 @@ package {
 						"Game":{priority:-1,preload:true,url:static_server_path + "r0/RabbitGame.swf?cb=12"}
 						,"Application":{priority:-1000, preload:true,url:static_server_path + "r0/RabbitApplication.swf?cb=12"}
 						,"Lang":{priority:100, preload:true, url:static_server_path + "r0/lang_pack.swf?cb=11"}
-						,"XmlPack":{preload:true, url:static_server_path + "r0/xml_pack.swf?cb=12"}
+						//,"XmlPack":{preload:true, url:static_server_path + "r0/xml_pack.swf?cb=12"}
 
 						,"Interface":{preload:true, url:static_server_path + "r0/assets/interface.swf?cb=12"}
 						,"Assets":{preload:true, url:static_server_path + "r0/assets/rabbit_asset.swf"}
@@ -98,6 +98,8 @@ package {
 						,"Font":{priority:100, preload:true, url:static_server_path + "r0/assets/fonts_" + this.locale + ".swf"}
 					}
 
+			swfs["Editor"] = {priority:1, preload:true, url:static_server_path + "r0/RabbitEditor.swf"};
+
 			var i:int = 0;
 			var static_posting_path:String = static_server_path + 'r0/posting/';
 			for (i = 0; i <= 31;i++)
@@ -105,6 +107,13 @@ package {
 			for (i = 0; i <= 79;i++)
 				filePaths['reward_posting_' + i] = static_posting_path + 'rewards/reward_' + i + '.jpg';
 			filePaths['friends_invite_posting'] =static_posting_path +  'friends_invite_posting.jpg';
+
+			// не используются, если был загружен xml_pack
+			filePaths["Levels"] = basePath.replace(/\/$/, '') + filePaths["Levels"];
+			filePaths["Config"] = basePath.replace(/\/$/, '') + filePaths["Config"];
+			filePaths["Managers"] = static_server_path + "r0/Managers.xml";
+			filePaths["Description"] = static_server_path + "r0/Description.xml";
+			filePaths["Rewards"] = static_server_path + "r0/Rewards.xml";
 		}
 
 		override public function get net():int { return 2; }
