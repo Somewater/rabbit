@@ -94,6 +94,8 @@ class Level < ActiveRecord::Base
                           :number => number,
                           :description => level_hash['description'],
                           :version => version,
+                          :enabled => true,
+                          :visible => true,
                           :width => level_hash['width'],
                           :height => level_hash['height'],
                           :image => level_hash['image'],
