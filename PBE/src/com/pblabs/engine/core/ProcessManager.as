@@ -522,7 +522,12 @@ package com.pblabs.engine.core
         protected function advance(deltaTime:Number, suppressSafety:Boolean = false):void
         {
 			// FIX: 56.02.2012, check visibility of owner of ticked and animation component
-			this.optimizeModeCounter++;
+	        if(CONFIG::debug){
+		        if(!Config.editorActive)
+					this.optimizeModeCounter++;
+	        } else {
+		        this.optimizeModeCounter++;
+	        }
 			if(optimizeModeCounter == 3)// т.е. если это первый тик с оптимизацией
 				separateProcessObjects();
 			var optimizeMode:Boolean = this.optimizeMode;
