@@ -1,5 +1,5 @@
 ---
-servers: 3
+servers: 1
 user: pav
 group: pav
 chdir: /data/srv/RABBITS/dev
