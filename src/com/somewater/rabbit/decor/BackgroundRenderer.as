@@ -202,9 +202,13 @@ package com.somewater.rabbit.decor {
 
 			if(mouseTileVisible)
 			{
+				try{
 				// ориентировочно определяем, проходим ли тайл:
 				var tileAvailable:Boolean = (IsoSpatialManager.instance.mapPath.getTileAt(mouseTile).mask & PathBits.GRASS) > 0
 				drawRect(mouseTile, tileAvailable ? 0xeeFFee : 0xFF5555);
+				}catch(err:Error){
+					trace(err.getStackTrace());
+				}
 			}
 			if(destinationTileVisible)
 				drawRect(destinationTile, 0xadf500, 0.7);
