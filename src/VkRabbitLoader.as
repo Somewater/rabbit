@@ -42,6 +42,8 @@ package {
 
 		include 'com/somewater/rabbit/include/RuPreloaderAsset.as';
 
+		private var imagePathToHash:Object = {};
+
 		/*
 		На память:
 		 method=execute&uids={viewer_id}&format=json&v=2.0&code=return{"friends":API.getProfiles({"uids":API.getFriends(),"fields":"uid,first_name,last_name,photo,sex"}),"appFriends":API.getAppFriends(),"user":API.getProfiles({"uids":{viewer_id},"fields":"uid,first_name,last_name,nickname,sex,bdate,photo,photo_medium,photo_big,has_mobile,rate"}),balance:API.getUserBalance(),"groups":API.getGroups(),city:API.getCities({"cids":API.getProfiles({"uids":{viewer_id},"fields":"city"})@.city}),country:API.getCountries({"cids":API.getProfiles({"uids":{viewer_id},"fields":"country"})@.country})};
@@ -83,12 +85,12 @@ package {
 			basePath = 'http://vk.rabbit.atlantor.ru/';
 			var static_server_path:String = 'http://krolgame.static1.evast.ru/VK/';
 			swfs = {
-						"Game":{priority:-1,preload:true,url:static_server_path + "r0/RabbitGame.swf?cb=15"}
-						,"Application":{priority:-1000, preload:true,url:static_server_path + "r0/RabbitApplication.swf?cb=15"}
-						,"Lang":{priority:100, preload:true, url:static_server_path + "r0/lang_pack.swf?cb=15"}
-						,"XmlPack":{preload:true, url:static_server_path + "r0/xml_pack.swf?cb=15"}
+						"Game":{priority:-1,preload:true,url:static_server_path + "r0/RabbitGame.swf?cb=17"}
+						,"Application":{priority:-1000, preload:true,url:static_server_path + "r0/RabbitApplication.swf?cb=17"}
+						,"Lang":{priority:100, preload:true, url:static_server_path + "r0/lang_pack.swf?cb=17"}
+						,"XmlPack":{preload:true, url:static_server_path + "r0/xml_pack.swf?cb=17"}
 
-						,"Interface":{preload:true, url:static_server_path + "r0/assets/interface.swf?cb=15"}
+						,"Interface":{preload:true, url:static_server_path + "r0/assets/interface.swf?cb=17"}
 						,"Assets":{preload:true, url:static_server_path + "r0/assets/rabbit_asset.swf"}
 						,"Rewards":{preload:true, url:static_server_path + "r0/assets/rabbit_reward.swf"}
 						,"Images":{preload:true, url:static_server_path + "r0/assets/rabbit_images.swf"}
@@ -114,6 +116,8 @@ package {
 			filePaths["Managers"] = static_server_path + "r0/Managers.xml";
 			filePaths["Description"] = static_server_path + "r0/Description.xml";
 			filePaths["Rewards"] = static_server_path + "r0/Rewards.xml";
+
+			imagePathToHash[filePaths['friends_invite_posting']] = 'photo-57931889_309266823';
 		}
 
 		override public function get net():int { return 2; }
@@ -175,6 +179,8 @@ package {
 				if(!gameLink) gameLink = 'http://vk.com/app' + flashVars['api_id'];
 				message += ' ' + gameLink + (data ? '#' + data : '')
 			}
+			if(imagePathToHash[imageUrl])
+				imageUrl = imagePathToHash[imageUrl];
 			super.posting(user, title, message, image, imageUrl, data, onComplete, onError, additionParams);
 		}
 
