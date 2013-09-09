@@ -32,8 +32,8 @@ package com.pblabs.engine.core
 
         public function InputManager()
         {
-            PBE.mainStage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-            PBE.mainStage.addEventListener(KeyboardEvent.KEY_UP,   onKeyUp);
+            //PBE.mainStage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+            //PBE.mainStage.addEventListener(KeyboardEvent.KEY_UP,   onKeyUp);
             PBE.mainStage.addEventListener(MouseEvent.MOUSE_DOWN,  onMouseDown);
             PBE.mainStage.addEventListener(MouseEvent.MOUSE_UP,    onMouseUp);
             PBE.mainStage.addEventListener(MouseEvent.MOUSE_MOVE,  onMouseMove);
