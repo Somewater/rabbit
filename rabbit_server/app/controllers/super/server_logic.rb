@@ -114,6 +114,9 @@ class ServerLogic
 
 			if(availableRewards.length > 0)
 				# сортируем по id
+				if levelInstance && levelInstance.number > 5 && user.get_roll() < 0.5
+					return nil
+				end
 				availableRewards.sort!{|x,y| x.id <=> y.id }
 				reward = availableRewards[(user.get_roll() * availableRewards.length).to_i];
 				return addReward(user, reward, levelInstance)

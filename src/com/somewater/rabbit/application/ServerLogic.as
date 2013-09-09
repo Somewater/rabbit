@@ -154,6 +154,10 @@ import com.somewater.rabbit.xml.XmlController;
 
 			if(availableRewards.length)
 			{
+				if(levelInstance && levelInstance.number > 5 && user.getRoll() < 0.5){
+					return null;
+				}
+
 				// сортируем по id
 				availableRewards.sortOn(['id'], Array.NUMERIC)
 
