@@ -69,7 +69,7 @@ class LevelsAdminController < AdminController::Base
 				lvl = Level.find(@request['id'])
 				@admin_user.level?(lvl)
 				@admin_user.level?(@request['new_id'])
-				LevelsManageController.create_level(@request['new_id'].to_i, lvl, @admin_user.user.login)
+				Level.create_level(@request['new_id'].to_i, lvl, @admin_user.user.login)
 				on_level_changed
 		end
 
