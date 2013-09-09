@@ -83,12 +83,12 @@ package {
 			basePath = 'http://vk.rabbit.atlantor.ru/';
 			var static_server_path:String = 'http://krolgame.static1.evast.ru/VK/';
 			swfs = {
-						"Game":{priority:-1,preload:true,url:static_server_path + "r0/RabbitGame.swf?cb=14"}
-						,"Application":{priority:-1000, preload:true,url:static_server_path + "r0/RabbitApplication.swf?cb=14"}
-						,"Lang":{priority:100, preload:true, url:static_server_path + "r0/lang_pack.swf?cb=14"}
-						//,"XmlPack":{preload:true, url:static_server_path + "r0/xml_pack.swf?cb=12"}
+						"Game":{priority:-1,preload:true,url:static_server_path + "r0/RabbitGame.swf?cb=15"}
+						,"Application":{priority:-1000, preload:true,url:static_server_path + "r0/RabbitApplication.swf?cb=15"}
+						,"Lang":{priority:100, preload:true, url:static_server_path + "r0/lang_pack.swf?cb=15"}
+						,"XmlPack":{preload:true, url:static_server_path + "r0/xml_pack.swf?cb=15"}
 
-						,"Interface":{preload:true, url:static_server_path + "r0/assets/interface.swf?cb=14"}
+						,"Interface":{preload:true, url:static_server_path + "r0/assets/interface.swf?cb=15"}
 						,"Assets":{preload:true, url:static_server_path + "r0/assets/rabbit_asset.swf"}
 						,"Rewards":{preload:true, url:static_server_path + "r0/assets/rabbit_reward.swf"}
 						,"Images":{preload:true, url:static_server_path + "r0/assets/rabbit_images.swf"}
@@ -98,7 +98,7 @@ package {
 						,"Font":{priority:100, preload:true, url:static_server_path + "r0/assets/fonts_" + this.locale + ".swf"}
 					}
 
-			swfs["Editor"] = {priority:1, preload:true, url:static_server_path + "r0/RabbitEditor.swf?cb=13"};
+			//swfs["Editor"] = {priority:1, preload:true, url:static_server_path + "r0/RabbitEditor.swf?cb=13"};
 
 			var i:int = 0;
 			var static_posting_path:String = static_server_path + 'r0/posting/';
