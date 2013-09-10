@@ -40,6 +40,8 @@ import flash.utils.Timer;
 		 * clienTime + msDelta = serverTime
 		 */
 		public var msDelta:Number;
+
+		public var neighbourRequestUids:Object = {};
 		
 		
 		public function UserProfile(data:Object)

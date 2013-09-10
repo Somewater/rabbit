@@ -28,9 +28,11 @@ package com.somewater.rabbit.application
 		private var leftStuporArrow:SimpleButton;
 		private var rightArrow:SimpleButton;
 		private var rightStuporArrow:SimpleButton;
+		private var requestCounter:NumberIndicator;
 		
 		private var friendIcons:Array = [];
-		private var friends:Array;
+		private var neighbours:Array;
+		private var neighboursUids:Object;
 		private var notAppFriends:Array;
 		private var notAppFriendsPos:int = 0;
 		private var _position:int = -1;
@@ -75,13 +77,13 @@ package com.somewater.rabbit.application
 			notAppFriends = [];
 			var appFriendsUids:Object = {};
 			var g:GameUser;
-			for each(g in friends)
+			for each(g in neighbours)
 				appFriendsUids[g.uid] = true;
 			for each(var s:SocialUser in Config.loader.getFriends())
 				if(!appFriendsUids[s.id])
 					notAppFriends.push(s);
 
-			ITEMS = friends.length > 3 ? Math.max(6, -1 + int((Config.WIDTH - 70 - 110) / 80)) : 4;
+			ITEMS = neighbours.length > 3 ? Math.max(6, -1 + int((Config.WIDTH - 70 - 110) / 80)) : 4;
 			
 			for(var i:int = 0;i<=ITEMS;i++)
 			{
@@ -92,6 +94,11 @@ package com.somewater.rabbit.application
 				friendIcons.push(friendIcon);
 			}
 			position = lastCommonPosition;
+
+			requestCounter = new NumberIndicator();
+			requestCounter.visible = false;
+			addChild(requestCounter);
+			updateNeighbourRequestIcon();
 
 			if(notAppFriends.length) {
 				notAppFriends.sort(function(a:SocialUser, b:SocialUser):int{ return Math.random() > 0.5 ? 1 : -1 });
@@ -140,13 +147,18 @@ package com.somewater.rabbit.application
 			var pos:int = position;
 			_position = -1;
 			position = pos;
+
+			updateNeighbourRequestIcon();
 		}
 
 		private function fullAppFriends():void{
-			friends = UserProfile.instance.neighbours;
-			friends.push(ImaginaryGameUser.instance)
-			friends.push(UserProfile.instance)
-			friends.sortOn("levelNumber", Array.NUMERIC | Array.DESCENDING);
+			neighboursUids = {};
+			neighbours = UserProfile.instance.neighbours;
+			neighbours.push(ImaginaryGameUser.instance)
+			neighbours.push(UserProfile.instance)
+			neighbours.sortOn("levelNumber", Array.NUMERIC | Array.DESCENDING);
+			for each(var n:GameUser in neighbours)
+				neighboursUids[n.uid] = true;
 		}
 
 		private function get friendItemsLength():int {
@@ -155,21 +167,21 @@ package com.somewater.rabbit.application
 		
 		public function set position(value:int):void
 		{
-			value = Math.max(0, Math.min(friends.length - friendItemsLength, value));
+			value = Math.max(0, Math.min(neighbours.length - friendItemsLength, value));
 			if(value != _position)
 			{
 				lastCommonPosition = _position = value;
 				for(var i:int = 0;i<friendItemsLength;i++)
 				{
 					var friendIcon:FriendIcon = friendIcons[i];
-					friendIcon.setUser(friends[i + _position]);
+					friendIcon.setUser(neighbours[i + _position]);
 				}
 				
-				var friendsMore:Boolean = friends.length > friendItemsLength;
+				var friendsMore:Boolean = neighbours.length > friendItemsLength;
 				setButtonEnable(leftArrow, friendsMore  && _position > 0);
 				setButtonEnable(leftStuporArrow, friendsMore && _position > 0);
-				setButtonEnable(rightArrow, friendsMore && _position < friends.length - friendItemsLength);
-				setButtonEnable(rightStuporArrow, friendsMore && _position < friends.length - friendItemsLength);
+				setButtonEnable(rightArrow, friendsMore && _position < neighbours.length - friendItemsLength);
+				setButtonEnable(rightStuporArrow, friendsMore && _position < neighbours.length - friendItemsLength);
 			}
 		}
 		public function get position():int {return _position;} 
@@ -201,7 +213,7 @@ package com.somewater.rabbit.application
 		public function getImaginaryFriendIcon():DisplayObject
 		{
 			// перемотать так, чтобы была видна иконка воображаемого друга
-			this.position = friends.indexOf(ImaginaryGameUser.instance);
+			this.position = neighbours.indexOf(ImaginaryGameUser.instance);
 
 			for each(var icon:FriendIcon in friendIcons)
 				if(icon.imaginaryFriendIcon)
@@ -211,7 +223,22 @@ package com.somewater.rabbit.application
 
 		private function refreshAddNeighbourIcon(event:Event = null):void {
 			var user:SocialUser = notAppFriends[notAppFriendsPos++ % notAppFriends.length];
-			FriendIcon(friendIcons[friendIcons.length - 1]).setUser(user);
+			var icon:FriendIcon = FriendIcon(friendIcons[friendIcons.length - 1]);
+			icon.setUser(user);
+			requestCounter.x = icon.x + 55;
+			requestCounter.y = icon.y - 5;
+		}
+
+		private function updateNeighbourRequestIcon():void {
+			var requestNum:int = 0;
+			var requestUids:Object = UserProfile.instance.neighbourRequestUids;
+			for each(var f:SocialUser in Config.loader.getFriends()){
+				if(!neighboursUids[f.id] && requestUids[f.id]){
+					requestNum++;
+				}
+			}
+			requestCounter.visible = requestNum > 0;
+			requestCounter.number = requestNum;
 		}
 	}
 }

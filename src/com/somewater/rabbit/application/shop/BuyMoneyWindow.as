@@ -1,10 +1,14 @@
 package com.somewater.rabbit.application.shop {
 	import com.somewater.display.Window;
 	import com.somewater.rabbit.application.AppServerHandler;
+	import com.somewater.rabbit.application.OrangeButton;
+	import com.somewater.rabbit.application.windows.NeighboursWindow;
 	import com.somewater.rabbit.storage.ConfManager;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.storage.Lang;
 	import com.somewater.text.EmbededTextField;
+
+	import flash.events.Event;
 
 	import flash.events.MouseEvent;
 	import flash.utils.getTimer;
@@ -12,9 +16,10 @@ package com.somewater.rabbit.application.shop {
 	public class BuyMoneyWindow extends Window{
 
 		private static const WIDTH:int = 550;
-		private static const HEIGHT:int = 350;
+		private static const HEIGHT:int = 380;
 
 		private var buyMoneyButtons:Array = [];
+		private var addFriendsButton:OrangeButton;
 
 		public function BuyMoneyWindow(need:int = 0) {
 			super(null, null, null, []);
@@ -68,6 +73,18 @@ package com.somewater.rabbit.application.shop {
 				i++;
 			}
 
+			addFriendsButton = new OrangeButton();
+			addFriendsButton.addEventListener(MouseEvent.CLICK, onAddNeighboursClicked);
+			addFriendsButton.width = BuyMoneyButton.WIDTH;
+			addFriendsButton.textField.size = 14;
+			addFriendsButton.textField.multiline = true;
+			addFriendsButton.textField.width = addFriendsButton.width * 0.8
+			addFriendsButton.label = "Добавить соседей и собирать\nкруглики на их полянках каждый день";
+			addFriendsButton.height = BuyMoneyButton.HEIGHT * 2;
+			addFriendsButton.x = (this.width - addFriendsButton.width) * 0.5;
+			addFriendsButton.y = nextY;
+			addChild(addFriendsButton);
+
 			if(count == 0)
 			{
 				// если нет воз-ти покупать кругилки
@@ -91,6 +108,7 @@ package com.somewater.rabbit.application.shop {
 				b.removeEventListener(MouseEvent.CLICK, onClick);
 				b.clear();
 			}
+			addFriendsButton.removeEventListener(MouseEvent.CLICK, onAddNeighboursClicked);
 		}
 
 		private var lastClickTime:uint = 0;
@@ -128,6 +146,11 @@ package com.somewater.rabbit.application.shop {
 				Config.application.hideSplash();
 				Config.application.message(Lang.t('ERROR_BUY_MONEY', {error: Config.loader.serverHandler.toJson(response)}))
 			}
+		}
+
+		private function onAddNeighboursClicked(event:Event):void {
+			close();
+			new NeighboursWindow();
 		}
 	}
 }

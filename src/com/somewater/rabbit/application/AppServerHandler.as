@@ -77,7 +77,9 @@ package com.somewater.rabbit.application {
 						gameUser.addNeighbour(gameUserFriend);
 
 					}
-					response['neighbour_requests'];
+					for each(var uid:String in response['neighbour_requests']){
+						gameUser.neighbourRequestUids[uid] = true;
+					}
 					response['friends'] = gameUsersFriends;
 					onComplete && onComplete(response);
 				}, onError);

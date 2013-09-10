@@ -55,9 +55,9 @@ package com.somewater.social
 				_sex = SEX_NONE;
 		}
 		public function get male():Boolean { return _sex == SEX_MALE;	}
-		public function set male(value:Boolean):void{_sex = SEX_MALE;}
+		public function set male(value:Boolean):void{_sex = value ? SEX_MALE : SEX_FEMALE;}
 		public function get female():Boolean { return _sex == SEX_FEMALE;	}
-		public function set female(value:Boolean):void{_sex = SEX_FEMALE;}
+		public function set female(value:Boolean):void{_sex = value ? SEX_FEMALE : SEX_MALE;}
 		
 		
 		public function SocialUser() {

@@ -107,14 +107,7 @@ package com.somewater.rabbit.application
 				Config.loader.showInviteWindow();	
 			}
 			else if(mode == 3 || mode == 0){
-				var notNeighbours:Array = [];
-				var neighboursIds:Object = {};
-				for each(var g:GameUser in UserProfile.instance.neighbours)
-					neighboursIds[g.uid] = true;
-				for each(var f:SocialUser in Config.loader.getFriends())
-					if(!neighboursIds[f.id])
-						notNeighbours.push(f);
-				new NeighboursWindow(notNeighbours, socialUser);
+				new NeighboursWindow(socialUser);
 			}
 			else if(mode == 1 || mode == 2)
 			{

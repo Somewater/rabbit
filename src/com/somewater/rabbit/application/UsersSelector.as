@@ -3,6 +3,7 @@ package com.somewater.rabbit.application {
 	import com.somewater.display.CorrectSizeDefinerSprite;
 	import com.somewater.rabbit.storage.GameUser;
 	import com.somewater.rabbit.storage.Lib;
+	import com.somewater.rabbit.storage.UserProfile;
 	import com.somewater.social.SocialUser;
 
 	import flash.display.DisplayObject;
@@ -15,6 +16,8 @@ package com.somewater.rabbit.application {
 
 	public class UsersSelector extends Sprite implements IClear{
 
+		public static const FRIEND_WITH_REQUEST_CLICKED:String = 'friendWithRequeestClicked';
+
 		private var _selected:Array = [];
 		private var _width:int = 300;
 		private var _height:int = 200;
@@ -25,6 +28,12 @@ package com.somewater.rabbit.application {
 		private var scroller:RScroller;
 		private var iconsHolder:Sprite;
 
+		private var neighbourRequestUids:Object;
+		private var filterFunction:Function;
+
+		public var lastClickedFriendWithRequest:SocialUser;
+
+
 		public function UsersSelector(users:Array) {
 			users = users.slice();
 			for(var i:int = 0;i < users.length; i++){
@@ -32,7 +41,9 @@ package com.somewater.rabbit.application {
 					users[i] = GameUser(users[i]).socialUser;
 				}
 			}
+			neighbourRequestUids = UserProfile.instance.neighbourRequestUids;
 			users.sort(sortFunction);
+
 
 			ground = new Sprite();
 			ground.filters = [new DropShadowFilter(0, 0, 0, 1, 10, 10, 0.3)];
@@ -44,7 +55,7 @@ package com.somewater.rabbit.application {
 			addChild(scroller);
 
 			for each(var u:SocialUser in users){
-				var icon:UserItem = new UserItem(u);
+				var icon:UserItem = new UserItem(u, neighbourRequestUids[u.id]);
 				icons.push(icon);
 				iconsByUid[u.id] = icon;
 				iconsHolder.addChild(icon);
@@ -55,14 +66,21 @@ package com.somewater.rabbit.application {
 		}
 
 		protected function sortFunction(a:SocialUser, b:SocialUser):int {
+			if(neighbourRequestUids[a.id] && !neighbourRequestUids[b.id]) return -1;
+			if(neighbourRequestUids[b.id] && !neighbourRequestUids[a.id]) return 1;
 			return a.lastName < b.lastName ? -1 : 1;
 		}
 
 		public function clear():void {
 			for each(var u:UserItem in  icons){
-				u.clear();
-				u.removeEventListener(MouseEvent.CLICK, onIconClicked);
+				clearIcon(u);
 			}
+			neighbourRequestUids = null;
+		}
+
+		private function clearIcon(u:UserItem):void {
+			u.clear();
+			u.removeEventListener(MouseEvent.CLICK, onIconClicked);
 		}
 
 		public function get selected():Array {
@@ -95,7 +113,6 @@ package com.somewater.rabbit.application {
 		}
 
 		protected function resize():void {
-			scroller.setSize(_width - 3, _height);
 			var g:Graphics = ground.graphics;
 			g.clear();
 			g.beginFill(0xdef781);
@@ -106,16 +123,34 @@ package com.somewater.rabbit.application {
 			var iconsByRow:int = (activeWidth - 10) / UserItem.WIDTH;
 			var wGap:int = (activeWidth - iconsByRow * UserItem.WIDTH) / Math.max(1, iconsByRow - 1)
 			var hGap:int = Math.min(wGap, 20);
-			for(var i:int = 0; i < l; i++){
-				var icon:UserItem = icons[i];
+
+			var i:int = 0;
+			for(var k:int = 0; k < l; k++){
+				var icon:UserItem = icons[k];
+				if(filterFunction && !filterFunction(icon.user)){
+					if(icon.parent)icon.parent.removeChild(icon);
+					continue;
+				}
+				if(!icon.parent)iconsHolder.addChild(icon);
 				icon.x = (i % iconsByRow) * (wGap + UserItem.WIDTH) + 10;
 				icon.y = int(i / iconsByRow) * (hGap + UserItem.HEIGHT) + 10;
+				i++;
 			}
+			scroller.setSize(_width - 3, _height);
 		}
 
 		private function onIconClicked(event:Event):void {
 			var icon:UserItem = event.currentTarget as UserItem;
-			if(icon.selected){
+			if(icon.hasRequest){
+				if(_selected.indexOf(icon.user) != -1)
+					_selected.splice(_selected.indexOf(icon.user), 1)
+				icons.splice(icons.indexOf(icon), 1);
+				lastClickedFriendWithRequest = icon.user;
+				clearIcon(icon)
+				if(icon.parent) icon.parent.removeChild(icon);
+				resize();
+				dispatchEvent(new Event(FRIEND_WITH_REQUEST_CLICKED));
+			}else if(icon.selected){
 			   var oldSelected:Array = this.selected;
 				for (var i:int = 0; i < oldSelected.length; i++) {
 					var s:SocialUser = oldSelected[i];
@@ -151,16 +186,25 @@ package com.somewater.rabbit.application {
 				}
 			}
 		}
+
+		public function filter(showSocialUser:Function):void {
+			filterFunction = showSocialUser;
+			resize();
+		}
 	}
 }
 
 import com.somewater.control.IClear;
 import com.somewater.display.Photo;
+import com.somewater.rabbit.application.NumberIndicator;
 import com.somewater.rabbit.application.buttons.InteractiveOpaqueBack;
 import com.somewater.rabbit.storage.Config;
 import com.somewater.rabbit.storage.Lib;
 import com.somewater.social.SocialUser;
 import com.somewater.text.EmbededTextField;
+import com.somewater.text.Hint;
+
+import flash.display.DisplayObject;
 
 import flash.display.Sprite;
 import flash.events.MouseEvent;
@@ -172,6 +216,7 @@ class UserItem extends Sprite implements IClear{
 	public static const HEIGHT:int = 70;
 
 	public var user:SocialUser;
+	public var hasRequest:Boolean;
 
 	private var photoSprite:Sprite;
 	private var photo:Photo;
@@ -180,8 +225,9 @@ class UserItem extends Sprite implements IClear{
 
 	private var _selected:Boolean = false;
 
-	public function UserItem(user:SocialUser){
+	public function UserItem(user:SocialUser, hasRequest:Boolean){
 		this.user = user;
+		this.hasRequest = hasRequest;
 
 		ground = new InteractiveOpaqueBack();
 		ground.setSize(WIDTH, HEIGHT);
@@ -207,11 +253,18 @@ class UserItem extends Sprite implements IClear{
 
 		_selected = true;
 		selected = false;
+
+		if(hasRequest){
+			Hint.bind(this, "Послал" + (user.female ? 'а' : '') + " тебе запрос в соседи");
+			var number:DisplayObject = Lib.createMC('interface.RequestsIndicator');
+			addChild(number)
+		}
 	}
 
 	public function clear():void {
 		photo.clear();
 		ground.clear();
+		Hint.removeHint(this);
 	}
 
 	public function get selected():Boolean {
