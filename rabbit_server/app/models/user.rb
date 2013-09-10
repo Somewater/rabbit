@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
 	before_save :save_structures
 	has_many :user_friends, :foreign_key => 'user_uid', :primary_key => 'uid'
 	has_many :neighbours, :foreign_key => 'user_uid', :primary_key => 'uid', :class_name => 'UserFriend', :conditions => 'accepted = TRUE'
+	has_many :not_neighbours, :foreign_key => 'user_uid', :primary_key => 'uid', :class_name => 'UserFriend', :conditions => 'accepted = FALSE'
 
 	# {'0':{'c' => 3, 't' => 45, 'v' => 0, 's' => 1}, ...}
 	def level_instances

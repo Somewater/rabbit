@@ -32,7 +32,7 @@ package com.somewater.rabbit.application {
 			return _instance;
 		}
 
-		public function initRequest(gameUser:GameUser, onComplete:Function, onError:Function):void
+		public function initRequest(gameUser:UserProfile, onComplete:Function, onError:Function):void
 		{
 			handler = new ServerReceiver(Config.loader.serverHandler, ['init']);
 			if(Config.loader.basePath && Config.loader.basePath.length > 0)
@@ -77,6 +77,7 @@ package com.somewater.rabbit.application {
 						gameUser.addNeighbour(gameUserFriend);
 
 					}
+					response['neighbour_requests'];
 					response['friends'] = gameUsersFriends;
 					onComplete && onComplete(response);
 				}, onError);
