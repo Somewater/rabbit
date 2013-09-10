@@ -44,7 +44,7 @@ class InitializeController < BaseUserController
 			friend = friend_assoc.friend
 			@response['neighbours'] << friend.to_short_json if friend
 		end
-		@response['neighbour_requests'] = @user.not_neighbours.select("friend_uid").to_a
+		@response['neighbour_requests'] = @user.not_neighbours.select("friend_uid").to_a.map{|u| u.friend_uid}
 		@response['session'] = true
 	end
 
