@@ -276,7 +276,7 @@ package com.somewater.rabbit.managers
 			event.finalFlag = flag;
 			event.success = success;
 			event.aliensPassed = (success ? XmlController.instance.calculateAliens(event.levelDef) : 0);
-			event.currentCarrotHarvested = event.carrotHarvested = HeroDataComponent.instance ? HeroDataComponent.instance.carrot : 0;
+			event.currentCarrotHarvested = event.carrotHarvested = HeroDataComponent.instance ? HeroDataComponent.instance.carrot : HeroDataComponent.lastCarrotValue;
 			event.currentTimeSpended = event.timeSpended = Math.max(time, 1000);
 			event.currentStars = event.stars = (event.carrotHarvested >= conditionsRef['carrotMax'] ? 3
 								: (event.carrotHarvested >= conditionsRef['carrotMiddle'] ? 2

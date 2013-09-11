@@ -63,8 +63,11 @@ package com.somewater.rabbit.application {
 
 			handler.call("init", params,
 				function(response:Object):void{
-					if(response && response['user'] && response['user']['new'])
+					if(response && response['user'] && response['user']['new']){
 						Config.stat(Stat.NEW_USER_REGISTERED);
+						statNewUser();
+					}
+
 
 					UserProfile.instance.msDelta = response['unixtime'] * 1000 - (new Date().time + startRequestTime) / 2;
 					response['user'] = jsonToGameUser(response['user'], gameUser);
@@ -349,6 +352,34 @@ package com.somewater.rabbit.application {
 							}
 					}
 				});
+		}
+
+		public function statLevelPassed(l:LevelInstanceDef):void{
+			var powerups:String = '';
+			for(var powerup:String in l.spendedPowerups)
+				powerups += (powerups.length ? ',' : '') + powerup + ':' + l.spendedPowerups[powerup];
+			var data:Object = {
+				uid: Config.loader.getUser().id,
+				level: l.number,
+				carrots: l.currentCarrotHarvested,
+				stars: l.currentStars,
+				time: int(l.currentTimeSpended * 0.001),
+				powerups: powerups,
+				success: l.success,
+				flag: l.finalFlag,
+				first: l.firstTime
+			}
+			handler.call('stat/level_pass', data, null, null, null, {server_unsecure: true});
+		}
+
+		public function statNewUser():void {
+			var data:Object = {
+				uid: Config.loader.getUser().id,
+				referer: Config.loader.referer,
+				source: Config.loader.flashVars['referrer'],
+				adv: Config.loader.flashVars['ad_info']
+			}
+			handler.call('stat/new_user', data, null, null, null, {server_unsecure: true});
 		}
 
 

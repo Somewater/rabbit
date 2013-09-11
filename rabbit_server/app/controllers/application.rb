@@ -73,6 +73,10 @@ class Application
 			case method
 				when "stat"
 					Stat.inc(request['name']); '{"result":"ok"}'
+				when "stat/level_pass"
+					LevelPassStat.add(JSON.parse(request['json'])); '{"result":"ok"}'
+				when "stat/new_user"
+					NewUserStat.add(JSON.parse(request['json'])); '{"result":"ok"}'
 				when "init"
 					InitializeController.new(request).call
 				when "levels/start"

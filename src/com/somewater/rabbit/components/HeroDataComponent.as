@@ -40,7 +40,8 @@ package com.somewater.rabbit.components
 			instance = null;
 			super.onRemove();
 		}
-		
+
+		public static var lastCarrotValue:int;
 		private var _carrot:int = 0;
 		public function set carrot(value:int):void
 		{
@@ -48,7 +49,7 @@ package com.somewater.rabbit.components
 			{
 				if(value > _carrot)
 					Config.application.play(Sounds.HARVEST, SoundTrack.GAME_HARVEST, true);
-				_carrot = value;
+				_carrot = lastCarrotValue = value;
 			}
 		}
 		public function get carrot():int{ return _carrot; }

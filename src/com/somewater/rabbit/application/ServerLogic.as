@@ -32,6 +32,7 @@ import com.somewater.rabbit.xml.XmlController;
 
 			// получить инфу по прошлому лучшему прохождению уровня (если таковое имеется)
 			var lastLevelInstance:LevelInstanceDef = user.getLevelInsanceByNumber(levelInstance.levelDef.number);
+			levelInstance.firstTime = lastLevelInstance == null;
 
 			var levelConditions:Array = [];
 			for (var key:String in levelInstance.levelDef.conditions)

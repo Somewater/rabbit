@@ -392,6 +392,7 @@ package
 			TutorialManager.instance.restart(null);
 
 			levelFinishMessage(levelInstance);
+			AppServerHandler.instance.statLevelPassed(levelInstance);
 		}
 
 		

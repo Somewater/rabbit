@@ -41,6 +41,8 @@ package com.somewater.rabbit.storage
 		 * (хэш, ключи - имена темплейтов, значения - сколько потрачено)
 		 */
 		public var spendedPowerups:Array;
+
+		public var firstTime:Boolean;// первое удачное прохождение
 		
 		public function LevelInstanceDef(data:Object=null)
 		{
