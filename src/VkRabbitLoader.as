@@ -51,7 +51,7 @@ package {
 		public function VkRabbitLoader() {
 			super();
 			Config.memory['autoPostLevelPass'] = false;
-			Config.memory['disableFriendBarInviteBox'] = true;
+			//Config.memory['disableFriendBarInviteBox'] = true;
 		}
 
 		override protected function netInitialize():void
