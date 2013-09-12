@@ -227,6 +227,7 @@ package com.somewater.rabbit.managers
 				gameGuiRef.life = heroDataRef?heroDataRef.health:0;
 				gameGuiRef.time = time * 0.001;
 				gameGuiRef.carrot = heroDataRef?heroDataRef.carrot:0;
+				gameGuiRef.update(heroDataRef == null, heroDataRef ? heroDataRef.protectedFlag > 0 : false);
 			}
 
 			if(timeLeft <= 10000)
@@ -251,6 +252,8 @@ package com.somewater.rabbit.managers
 				finishLevel(true, LevelInstanceDef.LEVEL_SUCCESS_FINISH);
 			else
 				finishLevel(false, LevelInstanceDef.LEVEL_FATAL_TIME);
+			if(gameGuiRef)
+				gameGuiRef.update(true, false);
 		}
 
 		public function clear():void

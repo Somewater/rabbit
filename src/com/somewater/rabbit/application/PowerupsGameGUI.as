@@ -1,9 +1,11 @@
 package com.somewater.rabbit.application {
 	import com.greensock.TweenLite;
+	import com.greensock.TweenMax;
 	import com.somewater.control.IClear;
 	import com.somewater.controller.PopUpManager;
 	import com.somewater.display.Window;
 	import com.somewater.rabbit.application.buttons.InteractiveOpaqueBack;
+	import com.somewater.rabbit.application.shop.ItemIcon;
 	import com.somewater.rabbit.application.shop.MyPowerupsBag;
 	import com.somewater.rabbit.application.shop.PowerupEvent;
 	import com.somewater.rabbit.application.shop.ShopWindow;
@@ -16,6 +18,7 @@ package com.somewater.rabbit.application {
 	import com.somewater.text.Hint;
 
 	import flash.display.DisplayObject;
+	import flash.display.MovieClip;
 
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -29,9 +32,16 @@ package com.somewater.rabbit.application {
 		public static const HEIGHT:int = 48;
 
 		public var myPowerups:MyPowerupsBag;
-		private var btnHolder:InteractiveOpaqueBack;
+		private var buttonHolder:Sprite;
+		private var button:InteractiveOpaqueBack;
+		private var buttonIcon:MovieClip;
 		private var btnHolderPadding:int;
 		private var closeButton:InteractiveOpaqueBack;
+
+		private var buttonAnimated:Boolean = false;
+		private var buttonAnimatedCounter:int = 0;
+		private var healthProblem:Boolean;
+		private var timeProblem:Boolean;
 
 		private var opened:Boolean = false;
 
@@ -44,15 +54,27 @@ package com.somewater.rabbit.application {
 			this.pauseSplashRef = pauseSplashRef;
 			pauseSplashRef.addEventListener(MouseEvent.CLICK, close);
 
-			btnHolder = new InteractiveOpaqueBack(Lib.createMC('interface.PowerupGUIPanelBtn'));
-			btnHolder.iconShiftY = -1;
-			btnHolderPadding = (WIDTH - btnHolder.width) * 0.5;
-			btnHolder.x = 0;
-			btnHolder.y = 0;
-			btnHolder.setSize(48, 48);
-			addChild(btnHolder);
+			button = new InteractiveOpaqueBack();
+			button.iconShiftY = -1;
+			btnHolderPadding = (WIDTH - button.width) * 0.5;
+			button.setSize(48, 48);
+			button.x = -button.width * 0.5;
+			button.y = -button.height * 0.5;
+			buttonHolder = new Sprite()
+			buttonHolder.addChild(button);
+			buttonHolder.x = button.width * 0.5;
+			buttonHolder.y = button.height * 0.5;
+			addChild(buttonHolder);
 
-			btnHolder.addEventListener(MouseEvent.MOUSE_DOWN, onBtnClicked);
+			buttonIcon = Lib.createMC('interface.PowerupGUIPanelBtn');
+			buttonIcon.gotoAndStop(1);
+			buttonIcon.x = (button.width - buttonIcon.width) * 0.5;
+			buttonIcon.y = (button.height - buttonIcon.height) * 0.5;
+			buttonIcon.mouseEnabled = false;
+			addChild(buttonIcon);
+
+			buttonHolder.addEventListener(MouseEvent.MOUSE_DOWN, onBtnClicked);
+			buttonIcon.addEventListener(MouseEvent.MOUSE_DOWN, onBtnClicked);
 
 			myPowerups = new MyPowerupsBag(10, true);
 			myPowerups.x = 5;
@@ -78,6 +100,37 @@ package com.somewater.rabbit.application {
 			event.stopPropagation();
 		}
 
+		public function startButtonAnim(healthProblem:Boolean, timeProblem:Boolean):void {
+			this.healthProblem = healthProblem;
+			this.timeProblem = timeProblem;
+			if(!buttonAnimated && !opened){
+				buttonAnimated = true;
+				buttonAnimatedCounter = 0;
+				TweenMax.to(buttonHolder, 0.3, {scaleX: 1.1, scaleY: 1.1, onUpdate: updateIcon, yoyo: true, repeat: -1, startAt:{scaleX: 1.0, scaleY: 1.0}});
+			}
+		}
+
+		private function updateIcon():void {
+			var frame1:int = ((buttonAnimatedCounter * 0.1) % 2)
+			buttonAnimatedCounter++;
+			var frame2:int = ((buttonAnimatedCounter * 0.1) % 2)
+			if(frame1 != frame2)
+				buttonIcon.gotoAndStop(frame2 + 1)
+		}
+
+		public function stopButtonAnim(clearFlags:Boolean):void {
+			if(buttonAnimated){
+				TweenMax.killTweensOf(buttonHolder, true);
+				buttonIcon.gotoAndStop(1);
+				TweenMax.to(buttonHolder, 0.2, {scaleX: 1.0, scaleY: 1.0});
+				buttonAnimated = false;
+			}
+			if(clearFlags){
+				healthProblem = false;
+				timeProblem = false;
+			}
+		}
+
 		private function setStateAnimated(opened:Boolean):void
 		{
 			if(this.opened == opened) return;
@@ -85,8 +138,9 @@ package com.somewater.rabbit.application {
 			if(opened)
 			{
 				Config.game.pause();
-				TweenLite.to(btnHolder.icon, 0.2, {alpha: 0});
-				TweenLite.to(btnHolder, 0.2, {alpha:0.4, width:calculateOpenedWidth(), onComplete: onPanelOpenComplete});
+				TweenLite.to(buttonIcon, 0.2, {alpha: 0});
+				stopButtonAnim(false);
+				TweenLite.to(button, 0.2, {alpha:0.4, width:calculateOpenedWidth(), onComplete: onPanelOpenComplete});
 			}
 			else
 			{
@@ -95,6 +149,8 @@ package com.somewater.rabbit.application {
 				myPowerups.visible = true;
 				TweenLite.to(myPowerups, 0.2, {alpha: 0, onComplete: onPowerupsAnimComplete});
 				TweenLite.to(closeButton, 0.2, {alpha: 0});
+				stopPowerupIconAnim(myPowerups.getPowerupIcon(0));
+				stopPowerupIconAnim(myPowerups.getPowerupIcon(2));
 			}
 		}
 
@@ -109,25 +165,44 @@ package com.somewater.rabbit.application {
 			closeButton.alpha = 0;
 			TweenLite.to(myPowerups, 0.2, {alpha: 1});
 			TweenLite.to(closeButton, 0.2, {alpha: 1})
-			btnHolder.mouseEnabled = false;
+			button.mouseEnabled = false;
+
+			if(healthProblem)
+				startPowerupIconAnim(myPowerups.getPowerupIcon(0));
+			if(timeProblem)
+				startPowerupIconAnim(myPowerups.getPowerupIcon(2));
+		}
+
+		private function startPowerupIconAnim(icon:ItemIcon):void {
+			TweenMax.to(icon.imageHolder, 0.2, {scaleX: 1.2, scaleY: 1.2, yoyo: true, repeat: -1, startAt:{scaleX: 1.0, scaleY: 1.0}});
+		}
+
+		private function stopPowerupIconAnim(icon:ItemIcon):void {
+			TweenLite.killTweensOf(icon.imageHolder);
+			icon.scaleX = icon.scaleY = 1;
 		}
 
 		private function onPanelCloseComplete():void {
-			btnHolder.mouseEnabled = true;
+			button.mouseEnabled = true;
 		}
 
 		private function onPowerupsAnimComplete():void {
 			myPowerups.visible = false;
 			closeButton.visible = false;
 			//btnHolder.scaleX = -1;
-			TweenLite.to(btnHolder.icon, 0.2, {alpha: 1});
-			TweenLite.to(btnHolder, 0.2, {alpha:1, width:WIDTH, onComplete: onPanelCloseComplete});
+			TweenLite.to(buttonIcon, 0.2, {alpha: 1});
+			TweenLite.to(button, 0.2, {alpha:1, width:WIDTH, onComplete: onPanelCloseComplete});
+
+
 		}
 
 		public function clear():void {
-			btnHolder.removeEventListener(MouseEvent.MOUSE_DOWN, onBtnClicked);
-			btnHolder.clear();
-			TweenLite.killTweensOf(btnHolder);
+			buttonHolder.removeEventListener(MouseEvent.MOUSE_DOWN, onBtnClicked);
+			buttonIcon.removeEventListener(MouseEvent.MOUSE_DOWN, onBtnClicked);
+			button.clear();
+			TweenLite.killTweensOf(buttonHolder);
+			TweenLite.killTweensOf(button);
+			TweenLite.killTweensOf(buttonIcon);
 			TweenLite.killTweensOf(myPowerups);
 			myPowerups.removeEventListener(PowerupEvent.POWERUP_EVENT, onPowerupCliced);
 			myPowerups.clear();
@@ -183,7 +258,7 @@ package com.somewater.rabbit.application {
 
 		public function getOpenBtn():DisplayObject
 		{
-			return btnHolder;
+			return buttonHolder;
 		}
 
 		public function isOpened():Boolean

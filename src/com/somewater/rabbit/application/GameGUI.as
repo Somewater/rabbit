@@ -378,5 +378,22 @@ import com.somewater.rabbit.storage.Config;
 			cameraArrowDown.visible = dir & CameraMoveEvent.DOWN;
 			cameraArrowUp.visible = dir & CameraMoveEvent.UP;
 		}
+
+		public function update(heroNotFound:Boolean, protectedFlag:Boolean):void {
+			if(heroNotFound){
+				powerupPanel.stopButtonAnim(true);
+				return
+			}
+
+			if((_timeEnd - _time) > 0 && _life > 0 ){
+				var healthProblem:Boolean = !protectedFlag && _life < 0.25;
+				var timeProblem:Boolean = (_timeEnd - _time) < 10;
+				if(healthProblem || timeProblem){
+					powerupPanel.startButtonAnim(healthProblem, timeProblem);
+					return;
+				}
+			}
+			powerupPanel.stopButtonAnim(true);
+		}
 	}
 }

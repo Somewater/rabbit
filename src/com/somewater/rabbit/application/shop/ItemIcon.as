@@ -29,6 +29,7 @@ package com.somewater.rabbit.application.shop {
 
 		public var item:ItemDef;
 
+		public var imageHolder:Sprite;
 		private var image:DisplayObject;
 		private var quantityTF:EmbededTextField;
 		private var _quantity:int = 1;
@@ -60,7 +61,13 @@ package com.somewater.rabbit.application.shop {
 			}
 			else
 				throw new Error('Undefined shop item');
-			addChild(image);
+			imageHolder = new Sprite();
+			imageHolder.addChild(image);
+			imageHolder.x = image.width * image.scaleX * 0.5;
+			imageHolder.y = image.height * image.scaleY * 0.5;
+			image.x -= imageHolder.x;
+			image.y -= imageHolder.y;
+			addChild(imageHolder);
 
 			quantityTF = new EmbededTextField(Config.FONT_SECONDARY, 0xFFFFFF, 16, true, false, false, false, 'right');
 			quantityTF.x = image.width + 10;
