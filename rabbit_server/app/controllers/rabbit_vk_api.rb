@@ -4,7 +4,7 @@ require_relative 'net/vk_api'
 class RabbitVkApi < VkApi
 	def get_item_info item, lang
 		money = CONFIG[self.name.to_s]["netmoney_to_money"][item.to_i]
-		{:title => "Круглики", :price => item.to_i}
+		{:title => "#{money} кругликов", :price => item.to_i}
 	end
 
 	# Осуществить покупку товара
