@@ -31,7 +31,7 @@ class TopManager
 
 	# пересчитать всё и записать в файлы
 	def write_files
-		time = Time.new.to_f
+		time = Time.new
 		time_conditions = time - 3.day
 		top_cache_path = "#{TMP_DIR}/top_cache.yml"
 		@tops = {}
