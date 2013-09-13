@@ -31,10 +31,12 @@ class TopManager
 
 	# пересчитать всё и записать в файлы
 	def write_files
-		t = Time.new.to_f
+		time = Time.new.to_f
+		time_conditions = time - 3.day
 		top_cache_path = "#{TMP_DIR}/top_cache.yml"
 		@tops = {}
 		User.find(:all).each do |user|
+			next if user.updated_at < time_conditions
 			@tops[user.net] = {} unless @tops[user.net]
 			net_tops = @tops[user.net]
 
@@ -52,7 +54,7 @@ class TopManager
 			file.write(YAML.dump(@tops))
 		end
 		@top_version = File.stat(top_cache_path).mtime.to_i
-		puts "TIME #{(Time.new.to_f - t)}"
+		puts "TIME #{(Time.new.to_f - time.to_f)}"
 	end
 
 private
