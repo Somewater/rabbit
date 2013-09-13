@@ -45,6 +45,7 @@ import com.somewater.rabbit.storage.Config;
 		public var carrotMax:int;
 		public var carrotMiddle:int;
 		public var carrotMin:int;
+		public var carrotOnLevel:int;
 
 		private var carrotGUISwitched:int = 0;
 
@@ -386,8 +387,8 @@ import com.somewater.rabbit.storage.Config;
 			}
 
 			if((_timeEnd - _time) > 0 && _life > 0 ){
-				var healthProblem:Boolean = !protectedFlag && _life < 0.25;
-				var timeProblem:Boolean = (_timeEnd - _time) < 10;
+				var healthProblem:Boolean = !protectedFlag && _life < 0.37;
+				var timeProblem:Boolean = (_timeEnd - _time) < 10 && carrotOnLevel > 0;
 				if(healthProblem || timeProblem){
 					powerupPanel.startButtonAnim(healthProblem, timeProblem);
 					return;

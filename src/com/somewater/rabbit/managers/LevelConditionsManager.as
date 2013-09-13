@@ -115,9 +115,14 @@ package com.somewater.rabbit.managers
 		{
 			var time:int = this.time;
 			var timeLeft:int = conditionsRef["time"] - time;
+			var harvestSetSize:int;
 			
 			currentTime = PBE.processManager.virtualTime;
-			if(_levelFinished) return;
+			if(_levelFinished){
+				if(gameGuiRef)
+					gameGuiRef.update(true, false);
+				return;
+			}
 			
 			// проверять условия на выполнения уровня
 			// Если условия были выполнены, либо обнаружено, что условие уже никогда не будет выполнено
@@ -153,12 +158,13 @@ package com.somewater.rabbit.managers
 						if(harvestSet)
 						{
 							// на уровне болше нет морковок
-							if(harvestSet.length == 0)
+							harvestSetSize = harvestSet.length;
+							if(harvestSetSize == 0)
 							{
 								finishForTimeOrCarrot();
 							}
 							// игрок уже не в состоянии собрать сколько нужно
-							else if(conditionsRef["carrotMin"] - heroDataRef.carrot > harvestSet.length)
+							else if(conditionsRef["carrotMin"] - heroDataRef.carrot > harvestSetSize)
 							{
 								finishLevel(false, LevelInstanceDef.LEVEL_FATAL_CARROT);
 							}
@@ -199,6 +205,8 @@ package com.somewater.rabbit.managers
 						finishLevel(true, LevelInstanceDef.LEVEL_SUCCESS_FINISH);
 					}
 				}
+			} else {
+
 			}
 			
 			
@@ -224,6 +232,7 @@ package com.somewater.rabbit.managers
 			}
 			else
 			{
+				gameGuiRef.carrotOnLevel = harvestSetSize;
 				gameGuiRef.life = heroDataRef?heroDataRef.health:0;
 				gameGuiRef.time = time * 0.001;
 				gameGuiRef.carrot = heroDataRef?heroDataRef.carrot:0;
@@ -252,8 +261,6 @@ package com.somewater.rabbit.managers
 				finishLevel(true, LevelInstanceDef.LEVEL_SUCCESS_FINISH);
 			else
 				finishLevel(false, LevelInstanceDef.LEVEL_FATAL_TIME);
-			if(gameGuiRef)
-				gameGuiRef.update(true, false);
 		}
 
 		public function clear():void
