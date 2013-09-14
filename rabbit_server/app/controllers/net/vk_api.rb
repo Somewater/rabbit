@@ -57,13 +57,13 @@ class VkApi < NetApi
 		can_use_test_mode = true #!PRODUCTION
 		if request.params['notification_type'] == 'get_item' ||
 				(can_use_test_mode && request.params['notification_type'] == 'get_item_test')
-			{:response => get_item_info(request.params['item'], request.params['lang'].to_s[0,2])}.to_json
+			{:response => get_item_info(request.params['item'], request.params['lang'].to_s[0,2], request.params['notification_type'] == 'get_item_test')}.to_json
 		elsif request.params['notification_type'] == 'order_status_change' ||
 				(can_use_test_mode && request.params['notification_type'] == 'order_status_change_test')
 			raise FormatError, "Unsupported status #{request.params['status']}" unless request.params['status'] == 'chargeable'
 			order_id = request.params['order_id'].to_i
 			raise FormatError, "order_id not assigned = #{request.params['order_id']}" if order_id <= 0
-			app_order_id = order_status_change(request.params['receiver_id'], request.params['item'], request.params['item_price'].to_i).to_i
+			app_order_id = order_status_change(request.params['receiver_id'], request.params['item'], request.params['item_price'].to_i, request.params['notification_type'] == 'order_status_change_test').to_i
 			{:response => {:order_id => order_id, :app_order_id => app_order_id}}.to_json
 		else
 			error_response(11, "Unsupported notification type #{request.params['notification_type']}")
@@ -75,14 +75,14 @@ class VkApi < NetApi
 
 	# @param item:String выдать информацию о товаре на основе строкового идентификатора
 	# @return hash {title: String, price: Int[, photo_url: String, item_id: Int, expiration: Int]}
-	def get_item_info item, lang
+	def get_item_info item, lang, test
 		raise UnimplementedError, "Implement vk api method get_item_info"
 	end
 
 	# Осуществить покупку товара
 	# @param item:String идентификатор товара
 	# @return Int уникальный номер заказа в системе
-	def order_status_change receiver_id, item, net_price
+	def order_status_change receiver_id, item, net_price, test
 		raise UnimplementedError, "Implement vk api method order_status_change"
 	end
 	
