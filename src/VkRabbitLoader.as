@@ -88,7 +88,7 @@ package {
 						"Game":{priority:-1,preload:true,url:static_server_path + "r0/RabbitGame.swf?cb=23"}
 						,"Application":{priority:-1000, preload:true,url:static_server_path + "r0/RabbitApplication.swf?cb=23"}
 						,"Lang":{priority:100, preload:true, url:static_server_path + "r0/lang_pack.swf?cb=17"}
-						,"XmlPack":{preload:true, url:static_server_path + "r0/xml_pack.swf?cb=23"}
+						,"XmlPack":{preload:true, url:static_server_path + "r0/xml_pack.swf?cb=25"}
 
 						,"Interface":{preload:true, url:static_server_path + "r0/assets/interface.swf?cb=21"}
 						,"Assets":{preload:true, url:static_server_path + "r0/assets/rabbit_asset.swf"}
