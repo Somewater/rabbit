@@ -1,6 +1,7 @@
 package com.somewater.rabbit.application.shop {
 	import com.somewater.rabbit.SoundTrack;
 	import com.somewater.rabbit.Sounds;
+	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.application.PageBase;
 	import com.somewater.rabbit.application.buttons.InteractiveOpaqueBack;
 	import com.somewater.rabbit.storage.Config;
@@ -32,6 +33,8 @@ package com.somewater.rabbit.application.shop {
 			leftButton.addEventListener(MouseEvent.CLICK, onLeftButtonClick);
 			Hint.bind(leftButton, Lang.t("BACK_TO_MAIN_MENU"));
 			addChild(leftButton);
+
+			Config.stat(Stat.SHOP);
 		}
 
 		override public function clear():void {

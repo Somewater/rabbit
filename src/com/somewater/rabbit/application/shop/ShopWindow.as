@@ -1,5 +1,6 @@
 package com.somewater.rabbit.application.shop {
 	import com.somewater.display.Window;
+	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.storage.Lang;
 
@@ -30,6 +31,8 @@ package com.somewater.rabbit.application.shop {
 
 			okButtonRef = buttons[0];
 			okButtonRef.y = this.height -okButtonRef.height - 10;
+
+			Config.stat(Stat.WND_SHOP);
 		}
 
 		override public function clear():void {

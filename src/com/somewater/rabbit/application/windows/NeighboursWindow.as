@@ -1,5 +1,6 @@
 package com.somewater.rabbit.application.windows {
 	import com.somewater.display.Window;
+	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.application.AppServerHandler;
 	import com.somewater.rabbit.application.OrangeButton;
 	import com.somewater.rabbit.application.UsersSelector;
@@ -92,6 +93,8 @@ package com.somewater.rabbit.application.windows {
 			onSelectedChanged();
 
 			open();
+
+			Config.stat(Stat.WND_NEIGHBOURS);
 		}
 
 		override public function clear():void {

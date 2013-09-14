@@ -1,4 +1,5 @@
 package com.somewater.rabbit.application {
+	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.application.RewardManager;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.GameUser;
@@ -47,11 +48,13 @@ import com.somewater.rabbit.xml.XmlController;
 			}
 			if(levelInstance.carrotHarvested > XmlController.instance.calculateCarrots(levelInstance.levelDef))
 			{
+				Config.stat(Stat.ERROR_INVALID_CARROT_HARVEST_VALUE);
 				Config.application.fatalError('ERROR_INVALID_CARROT_HARVEST_VALUE');
 				return null;
 			}
 			if(levelInstance.levelDef.number > user.levelNumber && !Config.memory['portfolioMode'])
 			{
+				Config.stat(Stat.ERROR_INACCESSIBLE_LEVEL);
 				Config.application.fatalError(Config.application.translate('ERROR_INACCESSIBLE_LEVEL',{'level':levelInstance.levelDef.number}));
 				return null;
 			}

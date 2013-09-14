@@ -1,6 +1,7 @@
 package com.somewater.rabbit.application.windows {
 import com.somewater.display.Window;
-import com.somewater.rabbit.application.AppServerHandler;
+	import com.somewater.rabbit.Stat;
+	import com.somewater.rabbit.application.AppServerHandler;
 import com.somewater.rabbit.application.EnergyIndicator;
 import com.somewater.rabbit.application.buttons.BuyButton;
 	import com.somewater.rabbit.application.shop.BuyMoneyWindow;
@@ -43,6 +44,8 @@ public class NeedMoreEnergyWindow extends Window{
 		addChild(buyButton);
 
 		open();
+
+		Config.stat(Stat.WND_NEED_ENERGY);
 	}
 
 

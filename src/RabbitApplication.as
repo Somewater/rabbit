@@ -290,11 +290,13 @@ package
 					onInitResponseComplete, function(error:Object):void{
 						clearLoader();
 						// на запрос профайла сервер вернул ошибку
+						Config.stat(Stat.ERROR_INIT_REQUEST)
 						fatalError(Lang.t("ERROR_INIT_LOADING_PROFILE"));
 					});
 			}, function():void{
 				clearLoader();
 				// ошибка загрузки статики
+				Config.stat(Stat.ERROR_STATIC_LOADING)
 				fatalError(Lang.t("ERROR_INIT_LOADING_STATIC"));
 			}, function(value:Number):void{
 				// прогресс загрузки статики 0..1
@@ -386,6 +388,8 @@ package
 				ServerLogic.addRewardsToLevelInstance(UserProfile.instance, levelInstance);
 				if(levelInstance.success){
 					AppServerHandler.instance.onLevelPassed(UserProfile.instance, levelInstance);
+				} else {
+					Config.stat(Stat.LEVEL_FAILED);
 				}
 			}
 
@@ -767,8 +771,10 @@ package
 		 * Обработка любых серверных ошибок
 		 */
 		private function serverErrorHandler(response:Object):void {
-			if(response.hasOwnProperty('no_callback') && response['no_callback'])
+			if(response.hasOwnProperty('no_callback') && response['no_callback']){
+				Config.stat(Stat.ERROR_SERVER_RESPONSE)
 				this.fatalError(response['error'] ? response['error'] : translate('UNDEFINED_SERVER_ERROR'))
+			}
 		}
 
 		public function play(soundName:String, track:String, force:Boolean = false):void

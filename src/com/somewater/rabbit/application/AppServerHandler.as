@@ -100,6 +100,7 @@ package com.somewater.rabbit.application {
 						arrayElementsIdentical(response['levelInstance']['rewards'] || [], levelInstance.rewards) == false*/)
 					{
 						// произошла рассинхронизация сервера и клиента
+						Config.stat(Stat.ERROR_SERVER_LOGIC_DESYNCRONIZE_LEVEL);
 						Config.application.fatalError('ERROR_SERVER_LOGIC_DESYNCRONIZE_LEVEL')
 						onError && onError(response);
 					}
@@ -122,6 +123,7 @@ package com.somewater.rabbit.application {
 						if(!Config.memory['portfolioMode'] && response['succes'] == false)
 						{
 							// произошла рассинхронизация сервера и клиента
+							Config.stat(Stat.ERROR_LEVEL_START);
 							Config.application.fatalError('Level !pass error')
 							onError && onError(response);
 						}
@@ -141,6 +143,7 @@ package com.somewater.rabbit.application {
 					if(response['reward'] == false )
 					{
 						// произошла рассинхронизация сервера и клиента
+						Config.stat(Stat.ERROR_SERVER_LOGIC_DESYNCRONIZE_REWARD);
 						Config.application.fatalError('ERROR_SERVER_LOGIC_DESYNCRONIZE_REWARD')
 						onError && onError(response);
 					}

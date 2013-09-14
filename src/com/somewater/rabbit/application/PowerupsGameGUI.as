@@ -4,6 +4,7 @@ package com.somewater.rabbit.application {
 	import com.somewater.control.IClear;
 	import com.somewater.controller.PopUpManager;
 	import com.somewater.display.Window;
+	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.application.buttons.InteractiveOpaqueBack;
 	import com.somewater.rabbit.application.shop.ItemIcon;
 	import com.somewater.rabbit.application.shop.MyPowerupsBag;
@@ -171,6 +172,8 @@ package com.somewater.rabbit.application {
 				startPowerupIconAnim(myPowerups.getPowerupIcon(0));
 			if(timeProblem)
 				startPowerupIconAnim(myPowerups.getPowerupIcon(2));
+
+			Config.stat(Stat.ON_PAUSE_POWERUP);
 		}
 
 		private function startPowerupIconAnim(icon:ItemIcon):void {
@@ -222,6 +225,7 @@ package com.somewater.rabbit.application {
 				// просто используем что есть
 				userPowerup(event.powerup);
 				setStateAnimated(false);
+				Config.stat(Stat.ON_POWERUP_USE);
 			}
 			else
 			{
@@ -253,6 +257,7 @@ package com.somewater.rabbit.application {
 			{
 				userPowerup(ItemDef.byId(wishPowerupId) as PowerupDef);
 				setStateAnimated(false);
+				Config.stat(Stat.ON_POWERUP_BUY);
 			}
 		}
 

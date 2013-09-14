@@ -168,6 +168,7 @@ package
 				loadXML();
 			}, function():void{
 				// error
+				Config.stat(Stat.ERROR_ASSET_LOADING)
 				Config.application.fatalError(Lang.t("ERROR_LOADING_ASSETS"));
 			}, function(value:Number):void{
 				// progress
@@ -200,6 +201,7 @@ package
 				blitSlugs();
 			}, function():void{
 				// on error
+				Config.stat(Stat.ERROR_XML_LOADING)
 				Config.application.fatalError(Lang.t("ERROR_LOADING_XMLS"));
 			},function(value:Number):void{
 				// on progress

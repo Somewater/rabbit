@@ -1,6 +1,7 @@
 package com.somewater.rabbit.application.windows
 {
 	import com.somewater.display.Window;
+	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.application.AudioControls;
 	import com.somewater.rabbit.application.OrangeButton;
 	import com.somewater.rabbit.application.buttons.SlideBar;
@@ -88,6 +89,8 @@ package com.somewater.rabbit.application.windows
 			//				//
 			//////////////////
 			Config.game.pause();
+
+			Config.stat(Stat.ON_PAUSE);
 		}
 		
 		public function simulateCloseButtonClick():void

@@ -1,5 +1,6 @@
 package com.somewater.rabbit.application.shop {
 	import com.somewater.display.Window;
+	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.application.AppServerHandler;
 	import com.somewater.rabbit.application.OrangeButton;
 	import com.somewater.rabbit.application.windows.NeighboursWindow;
@@ -98,6 +99,8 @@ package com.somewater.rabbit.application.shop {
 			}
 
 			open();
+
+			Config.stat(Stat.WND_BUY_COINS);
 		}
 
 
