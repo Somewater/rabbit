@@ -11,8 +11,8 @@ init_user:
   energy: 5
 
 vkontakte:
-  app_id: 2732721
-  secure_key: kJ0AVDo3he9GhGlhkmha
+  app_id: 3868289 #2732721
+  secure_key: 8f87VdKrVNLYiIRc1QFU #kJ0AVDo3he9GhGlhkmha
   netmoney_to_money: {1 : 10, 3 : 35, 5 : 60, 10 : 140, 50 : 850}
 
 mailru:

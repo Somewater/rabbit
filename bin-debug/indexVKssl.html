@@ -6,9 +6,10 @@
     <script type="text/javascript" src="js/swfobject.js"></script>
     <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
     <script src="https://vkontakte.ru/js/api/xd_connection.js?2" type="text/javascript"></script>
-    <!--<script type="text/javascript">
-        VK.init(function () {     });
-    </script>-->
+    <script type="text/javascript">
+	adBannerPath = "https://static2.evast.ru/common/full_banner.swf";
+	gameLoaderDefaultPath = "http://app.vk.com/c6179/u6129079/cff4a39beb5590.swf";
+    </script>
 
 <style type="text/css">
 body {
@@ -98,6 +99,19 @@ body {
 
 </head>
 <body style="margin: 0px;">
+    <center><div id="eAdBlock" style=""></div></center>
+        <script type="text/javascript">
+          var expressInstalUrl = "";
+          var attributes = {};
+          var flashVars = {};
+          var params = {};
+          flashVars.app_id = "429";
+          flashVars.social_id = "1";
+          var tmp = 1;
+          swfobject.embedSWF(adBannerPath + "?noCashe=" + tmp,
+          "eAdBlock", "760", "90", "10.0.0",expressInstalUrl,flashVars,params,attributes);
+        </script>
+    <center>
     <center>    
 	<div id="MainContent" style="widht:820px;height:615px" >
 			<a href="http://www.adobe.com/go/getflash">
@@ -174,7 +188,7 @@ body {
         try{
             var apiResult = JSON.parse(decodeURIComponent(window.location.href.split('api_result=')[1].split('&')[0]))
         }catch(error){
-            apiResult = {response: {loader: ""}};
+            apiResult = {response: {loader: gameLoaderDefaultPath}};
         }
         var loaderPath = apiResult.response.loader;
         if(window.location.protocol.substr(0, 5) == 'https' && loaderPath.substr(0, 5) != 'https'){
