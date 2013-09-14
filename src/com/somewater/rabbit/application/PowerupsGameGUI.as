@@ -258,7 +258,7 @@ package com.somewater.rabbit.application {
 
 		public function getOpenBtn():DisplayObject
 		{
-			return buttonHolder;
+			return button;
 		}
 
 		public function isOpened():Boolean
