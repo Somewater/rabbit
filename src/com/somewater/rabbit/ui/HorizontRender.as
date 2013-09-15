@@ -187,9 +187,7 @@ package com.somewater.rabbit.ui
 					if(wolf == null)
 					{
 						wolf = Lib.createMC('rabbit.WolfIcon');
-						var hill:DisplayObjectContainer = hills[1] ? hills[1] : hills[0];
-						if(hill)
-							hill.addChild(wolf);
+						var hill:DisplayObjectContainer = hillHolder
 						wolf.alpha = 0;
 						wolf.x = 630;
 						wolf.y = -50;

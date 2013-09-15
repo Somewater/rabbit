@@ -79,6 +79,7 @@ package com.somewater.rabbit.application.windows {
 			level = null;
 			levelInstance = null;
 			okButton.removeEventListener(MouseEvent.CLICK, onOkClicked)
+			okButton.clear();
 			super.clear();
 		}
 

@@ -16,10 +16,13 @@ package com.somewater.rabbit.components
 		public function SwitchableAttackComponent()
 		{
 			super();
+		}
+
+		override public function initialize():void {
 			_port = portEmulation;
 			enabled = false;// по умолчанию выключен
 		}
-		
+
 		public function set enabled(value:Boolean):void
 		{
 			registerForTicks = _enabled = value;

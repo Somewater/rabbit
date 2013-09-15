@@ -10,6 +10,9 @@ package com.somewater.rabbit.creature {
 	 * (что позволяет не ценрироваться персонажу в текущем тайле, а сразу идти в следующий)
 	 */
 	public class HeroIsoMover extends IsoMover{
+
+		private var savedSpeed:Number
+
 		public function HeroIsoMover() {
 		}
 
@@ -23,6 +26,20 @@ package com.somewater.rabbit.creature {
 //			}
 			if(_destinationPath.length > 1)
 				_destinationPath.shift();
+		}
+
+		public function pinHero():void {
+			if(_speed){
+				savedSpeed = _speed;
+				_speed = 0;
+			}
+		}
+
+		public function unpinHero():void {
+			if(_speed == 0 && savedSpeed > 0){
+				_speed = savedSpeed;
+				savedSpeed = 0;
+			}
 		}
 	}
 }

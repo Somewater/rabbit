@@ -52,10 +52,8 @@ package com.somewater.rabbit.creature
 				PBE.processManager.schedule(1000, this, function(data:DataComponent, attack:Number):void{
 					data.health -= attack;
 				}, data, attack);
+				HeroIsoMover(victim.lookupComponentByType(IsoMover)).pinHero();
 			}
-			
-			// заодно выставим кролику скорость на 0, чтобы он не убежал :)
-			IsoMover(victim.lookupComponentByType(IsoMover)).speed = 0.05;
 
 			return true;
 		}

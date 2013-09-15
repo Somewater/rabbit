@@ -253,7 +253,8 @@ package com.pblabs.engine.core
 					Profiler.exit("instantiateEntityFromObjectReference");
 				}
 			}
-
+			setEntityParams(entity, objectReference);
+			Serializer.instance.clearCurrentEntity();
 			return entity;
 		}
 

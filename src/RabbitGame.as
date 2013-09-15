@@ -6,6 +6,7 @@ package
 	import com.pblabs.engine.debug.Logger;
 	import com.pblabs.engine.entity.IEntity;
 	import com.pblabs.engine.entity.PropertyReference;
+	import com.pblabs.engine.serialization.Serializer;
 	import com.pblabs.rendering2D.SceneAlignment;
 	import com.pblabs.rendering2D.SimpleSpatialComponent;
 	import com.somewater.display.blitting.BlitManager;
@@ -14,6 +15,7 @@ package
 	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.application.commands.RestartLevelCommand;
 	import com.somewater.rabbit.components.GenocideComponent;
+	import com.somewater.rabbit.components.HeroDataComponent;
 	import com.somewater.rabbit.components.InputComponent;
 	import com.somewater.rabbit.components.PowerupControllerComponent;
 	import com.somewater.rabbit.components.RandomActComponent;
@@ -29,6 +31,7 @@ package
 	import com.somewater.rabbit.managers.GameTutorialModule;
 	import com.somewater.rabbit.managers.IGameTutorialModule;
 	import com.somewater.rabbit.managers.InitializeManager;
+	import com.somewater.rabbit.managers.LevelConditionsManager;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
@@ -142,6 +145,10 @@ package
 			PBE.processManager.stop();
 			PBE.processManager.clear();
 			InitializeManager.clearLevel()
+		}
+
+		public function continueLevel(levelInstance:LevelInstanceDef):void{
+			LevelConditionsManager.instance.continueLevel(levelInstance);
 		}
 		
 		
@@ -447,6 +454,13 @@ package
 
 		public function createBlitManager():BlitManager {
 			return new RabbitBlitManager();
+		}
+
+		public function createEntityByHash(hash:String):IEntity {
+			var objectReference:XML = level.group.descendants("objectReference").(@hash == hash)[0]
+			var entity:IEntity = PBE.templateManager.instantiateEntityFromObjectReference(objectReference);
+			entity.owningGroup = PBE.lookup(InitializeManager.lastLevelGroup) as PBGroup;
+			return entity;
 		}
 	}
 }

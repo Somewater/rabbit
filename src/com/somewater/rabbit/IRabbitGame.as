@@ -30,6 +30,11 @@ package com.somewater.rabbit
 		 * Закончить игру и переключиться на страницу уровней в приложении
 		 */
 		function finishLevel(event:LevelInstanceDef):void
+
+		/**
+		 * Воскрестить мертвого кролика, вырастить съеденные воронами морковки или добавить времени
+		 */
+		function continueLevel(event:LevelInstanceDef):void
 		
 		/**
 		 * Уровень, который включен в игре в данный момент

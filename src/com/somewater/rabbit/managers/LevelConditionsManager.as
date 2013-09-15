@@ -7,8 +7,10 @@ package com.somewater.rabbit.managers
 	import com.pblabs.engine.core.NameManager;
 	import com.pblabs.engine.core.PBObject;
 	import com.pblabs.engine.core.PBSet;
+	import com.pblabs.engine.entity.IEntity;
 	import com.somewater.rabbit.application.tutorial.TutorialLevelDef;
 	import com.somewater.rabbit.components.HeroDataComponent;
+	import com.somewater.rabbit.creature.HeroIsoMover;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
@@ -50,6 +52,8 @@ package com.somewater.rabbit.managers
 		private var horizontRef:HorizontRender;
 
 		private var gameGuiRef:Object;
+
+		private var nonHeroHarvested:Array = [];
 
 		/**
 		 * Запоминает использованные в процессе прохождения уровня покупные паверапы
@@ -107,6 +111,7 @@ package com.somewater.rabbit.managers
 			completeConditions["carrotMax"] = true;
 
 			powerupTemplateNameToQuantity = [];
+			nonHeroHarvested = [];
 		}
 			
 		
@@ -224,7 +229,7 @@ package com.somewater.rabbit.managers
 					gameGuiRef.carrotMax = conditionsRef["carrotMax"];
 					gameGuiRef.carrotMiddle = conditionsRef["carrotMiddle"];
 					gameGuiRef.carrotMin = conditionsRef["carrotMin"];
-					gameGuiRef.carrot = heroDataRef?heroDataRef.carrot:0;
+					if(heroDataRef) gameGuiRef.carrot = heroDataRef.carrot;
 					gameGuiRef.init();
 				}
 				else
@@ -239,15 +244,18 @@ package com.somewater.rabbit.managers
 				gameGuiRef.update(heroDataRef == null, heroDataRef ? heroDataRef.protectedFlag > 0 : false);
 			}
 
+			if(!horizontRef)
+			{
+				horizontRef = PBE.lookupComponentByName("Horizont", "Render") as HorizontRender;
+			}
+
 			if(timeLeft <= 10000)
 			{
-				if(!horizontRef)
-				{
-					horizontRef = PBE.lookupComponentByName("Horizont", "Render") as HorizontRender;
-				}
-
 				if(horizontRef)
 					horizontRef.darkness = (10000 - timeLeft) / 10000;
+			} else {
+				if(horizontRef)
+					horizontRef.darkness = 0;
 			}
 		}
 
@@ -306,8 +314,8 @@ package com.somewater.rabbit.managers
 
 				clear();
 
-				Config.application.addFinishedLevel(event);
-				Config.game.finishLevel(event);
+				Config.game.pause();
+				Config.application.levelFinishMessage(event);
 			});
 		}
 
@@ -317,7 +325,42 @@ package com.somewater.rabbit.managers
 		 */
 		public function decrementSpendedTime(milliseconds:Number):void
 		{
-			startLevelTime = Math.min(currentTime, startLevelTime + milliseconds);
+			conditionsRef['time'] += milliseconds;
+			gameGuiRef = null;
+		}
+
+		public function continueLevel(levelInstance:LevelInstanceDef):void {
+			if(levelInstance.finalFlag == LevelInstanceDef.LEVEL_FATAL_LIFE){
+				HeroDataComponent.instance.health = 1;
+				RabbitGame.instance.usePowerup('PowerupProtectionWeak');
+			} else if (levelInstance.finalFlag == LevelInstanceDef.LEVEL_FATAL_CARROT){
+				for each(var hash:String in nonHeroHarvested){
+					RabbitGame.instance.createEntityByHash(hash);
+				}
+				nonHeroHarvested = [];
+			} else if (levelInstance.finalFlag == LevelInstanceDef.LEVEL_FATAL_TIME){
+				conditionsRef['time'] = this.time + 30000;
+			}
+			_levelFinished = false;
+			gameGuiRef = null;
+			var hero:IEntity = PBE.lookupEntity('Hero');
+			if(hero){
+				var heroIsoMover:HeroIsoMover = hero.lookupComponentByType(HeroIsoMover) as HeroIsoMover;
+				if(heroIsoMover && heroIsoMover is HeroIsoMover){
+					heroIsoMover.unpinHero();
+					heroIsoMover.destination = null;
+				}
+			}
+			Config.game.start();
+		}
+
+		/**
+		 * @param harvested array of IEntity
+		 */
+		public function addNonHeroHarvested(harvested:Array):void {
+			for each(var e:IEntity in harvested)
+				if(nonHeroHarvested.indexOf(e.hash) == -1)
+					nonHeroHarvested.push(e.hash)
 		}
 	}
 }

@@ -366,6 +366,8 @@ package
 			include 'com/somewater/rabbit/include/Sitelock.as';
 			if(levelInstance.success)
 			{
+				Config.application.addFinishedLevel(levelInstance);
+				Config.game.finishLevel(levelInstance);
 				new LevelFinishSuccessWindow(levelInstance);
 			}
 			else
@@ -395,7 +397,6 @@ package
 
 			TutorialManager.instance.restart(null);
 
-			levelFinishMessage(levelInstance);
 			AppServerHandler.instance.statLevelPassed(levelInstance);
 		}
 

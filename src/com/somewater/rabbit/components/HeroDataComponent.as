@@ -70,10 +70,6 @@ package com.somewater.rabbit.components
 					_owner.eventDispatcher.dispatchEvent(new HeroHealthEvent(_health, value));
 				}
 				_health = value;
-				if(_health <= 0 && _owner)
-				{
-					owner.destroy();
-				}
 			}
 		}
 	}

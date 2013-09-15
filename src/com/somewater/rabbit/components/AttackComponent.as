@@ -78,7 +78,10 @@ package com.somewater.rabbit.components
 		public function AttackComponent()
 		{
 			super();
-			
+			initialize();
+		}
+
+		public function initialize():void {
 			registerForTicks = true;
 		}
 		

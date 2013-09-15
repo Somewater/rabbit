@@ -174,6 +174,8 @@ package com.somewater.rabbit.iso
 					_roundDestination.y = IsoSpatialManager.instance.height - 1;
 				
 				IsoSpatialManager.requestPath(_spatial.tile, _roundDestination, _spatial, directionMask, onPathFound);
+			} else {
+				setRenderState(false);
 			}
 		}
 		

@@ -641,6 +641,13 @@
 		</component>
 	</template>
 
+	<template name="PowerupProtectionWeak" template="PowerupProtection">
+		<component name="Data">
+			<protection>true</protection>
+			<time>3000</time>
+		</component>
+	</template>
+
 	<template name="PowerupProtection" template="PowerupBase">
 		<component name="Render">
 			<slug>rabbit.PowerupProtectionActor</slug>
