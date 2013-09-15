@@ -6,8 +6,7 @@ class RabbitVkApi < VkApi
 		money = CONFIG[self.name.to_s]["netmoney_to_money"][item.to_i]
 		{:title => "#{money} кругликов",
 		 :photo_url => "http://krolgame.static1.evast.ru/VK/money/money.jpg",
-		 :price => item.to_i,
-		 :expiration => 86400}
+		 :price => item.to_i}
 	end
 
 	# Осуществить покупку товара
