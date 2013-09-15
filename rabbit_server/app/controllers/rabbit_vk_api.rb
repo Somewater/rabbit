@@ -7,7 +7,7 @@ class RabbitVkApi < VkApi
 		item = item - 100 if item > 100 # фикс для введения в действие после выставление expiration
 		money = CONFIG[self.name.to_s]["netmoney_to_money"][item.to_i]
 		{:title => "#{money} кругликов",
-		 :photo_url => "http://krolgame.static1.evast.ru/VK/money/money_#{money}.jpg",
+		 :photo_url => "http://krolgame.static1.evast.ru/VK/money2/money_#{money}.jpg",
 		 :price => item.to_i}
 	end
 
