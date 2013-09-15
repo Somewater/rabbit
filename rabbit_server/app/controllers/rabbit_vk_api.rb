@@ -4,7 +4,10 @@ require_relative 'net/vk_api'
 class RabbitVkApi < VkApi
 	def get_item_info item, lang, test
 		money = CONFIG[self.name.to_s]["netmoney_to_money"][item.to_i]
-		{:title => "#{money} кругликов", :price => item.to_i}
+		{:title => "#{money} кругликов",
+		 :photo_url => "http://krolgame.static1.evast.ru/VK/money/money.jpg",
+		 :price => item.to_i,
+		 :expiration => 86400}
 	end
 
 	# Осуществить покупку товара
