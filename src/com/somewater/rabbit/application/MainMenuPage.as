@@ -140,14 +140,14 @@ import flash.display.DisplayObject;
 
 			copyrightBtn = new CopyrightButton()
 			copyrightBtn.y = DisplayObject(buttons[0]).y;
-			copyrightBtn.x = Config.WIDTH - copyrightBtn.width - copyrightBtn.y;
+			copyrightBtn.x = 40;
 			copyrightBtn.addEventListener(MouseEvent.CLICK, onCopyrightClicked);
 			addChild(copyrightBtn)
 
 			if(UserProfile.instance.levelNumber > 1 || !UserProfile.instance.energyIsFull()){
 				energyIndicator = new EnergyIndicator();
 				energyIndicator.y = DisplayObject(buttons[0]).y;
-				energyIndicator.x = 40;
+				energyIndicator.x = Config.WIDTH - energyIndicator.width - 20;
 				energyIndicator.addEventListener(MouseEvent.CLICK, onEnergyIndicatorClick);
 				addChild(energyIndicator);
 			}
