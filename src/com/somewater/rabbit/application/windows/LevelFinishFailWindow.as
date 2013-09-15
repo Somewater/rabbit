@@ -79,9 +79,9 @@ package com.somewater.rabbit.application.windows {
 		}
 
 		override protected function onCloseBtnClick(e:MouseEvent):void {
+			clearLevel();
 			super.onCloseBtnClick(e);
 			// открываем страницу левелов
-			clearLevel();
 			Config.application.startPage('levels');
 		}
 
