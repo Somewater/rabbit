@@ -1,5 +1,8 @@
 package com.somewater.rabbit.application.windows {
+	import com.somewater.rabbit.Stat;
+	import com.somewater.rabbit.application.AppServerHandler;
 	import com.somewater.rabbit.application.buttons.GreenButton;
+	import com.somewater.rabbit.application.shop.BuyMoneyWindow;
 	import com.somewater.rabbit.storage.ConfManager;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
@@ -20,6 +23,7 @@ package com.somewater.rabbit.application.windows {
 	public class LevelFinishFailWindow extends LevelSwitchWindow{
 
 		private var buyContinueBtn:GreenButton;
+		private var cost:int;
 
 		public function LevelFinishFailWindow(levelInstance:LevelInstanceDef) {
 			this.levelInstance = levelInstance;
@@ -34,18 +38,17 @@ package com.somewater.rabbit.application.windows {
 			buyContinueBtn.icon = Lib.createMC('interface.MoneyIcon');
 			buyContinueBtn.addEventListener(MouseEvent.MOUSE_DOWN, onContinueClicked);
 			if(levelInstance.finalFlag == LevelInstanceDef.LEVEL_FATAL_LIFE){
-				buyContinueBtn.label = Lang.t("ВОССТАНОВИТЬ ЖИЗНЬ ЗА {cost}",
-						{cost: ConfManager.instance.getNumber('RESURRECTION_LIFE_COST')})
+				cost = ConfManager.instance.getNumber('CONTINUE_LIFE_COST');
+				buyContinueBtn.label = Lang.t("ВОССТАНОВИТЬ ЖИЗНЬ ЗА {cost}", {cost: cost})
 				Hint.bind(buyContinueBtn, "Все морковки, которые были съедены воронами, снова вырастут");
 			} else if (levelInstance.finalFlag == LevelInstanceDef.LEVEL_FATAL_CARROT){
-				buyContinueBtn.label = Lang.t("ВОССТАНОВИТЬ МОРКОВКИ ЗА {cost}",
-						{cost: ConfManager.instance.getNumber('RESURRECTION_CARROTS_COST')})
+				cost = ConfManager.instance.getNumber('CONTINUE_CARROTS_COST');
+				buyContinueBtn.label = Lang.t("ВОССТАНОВИТЬ МОРКОВКИ ЗА {cost}", {cost: cost})
 				Hint.bind(buyContinueBtn, "Все морковки, которые были съедены воронами, снова вырастут");
 			} else if (levelInstance.finalFlag == LevelInstanceDef.LEVEL_FATAL_TIME){
-				buyContinueBtn.label = Lang.t("ВОССТАНОВИТЬ ВРЕМЯ ЗА {cost}",
-						{cost: ConfManager.instance.getNumber('RESURRECTION_TIME_COST')})
-				Hint.bind(buyContinueBtn, Lang.t("Будет добавлено {sec} секунд времени",
-						{sec: ConfManager.instance.getNumber('RESURRECTION_TIME_VALUE')}));
+				cost = ConfManager.instance.getNumber('CONTINUE_TIME_COST');
+				buyContinueBtn.label = Lang.t("ВОССТАНОВИТЬ ВРЕМЯ ЗА {cost}", {cost: cost})
+				Hint.bind(buyContinueBtn, Lang.t("Будет добавлено {sec} секунд времени", {sec: 30}));
 			}
 			addChild(buyContinueBtn);
 
@@ -98,10 +101,27 @@ package com.somewater.rabbit.application.windows {
 			}
 		}
 
-		private function onContinueClicked(event:Event):void {
-			Config.game.continueLevel(levelInstance);
-			close();
-			event.stopImmediatePropagation();
+		private function onContinueClicked(event:Event = null):void {
+			if(event)
+				event.stopImmediatePropagation();
+			BuyMoneyWindow.withMoney(this.cost, function():void{
+				continueLevel();
+			})
+		}
+
+		private function continueLevel():void {
+			Config.application.showSlash(0);
+			AppServerHandler.instance.buyLevelContinue(levelInstance.finalFlag, function(response:Object){
+				Config.application.hideSplash();
+				Config.game.continueLevel(levelInstance);
+				close();
+			}, function(response:Object){
+				Config.application.hideSplash();
+				Config.application.message("Ошибка покупки");
+				Config.stat(Stat.ERROR_MONEY_DISCARDING);
+				close();
+				Config.application.startPage('levels');
+			})
 		}
 
 		private function clearLevel():void {

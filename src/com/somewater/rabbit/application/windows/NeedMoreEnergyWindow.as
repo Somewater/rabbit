@@ -63,23 +63,25 @@ public class NeedMoreEnergyWindow extends Window{
 		onCancel = null;
 	}
 
-	private function onBuyClick(event:Event):void {
-		var diff:int = UserProfile.instance.money - ConfManager.instance.getNumber('ENERGY_COST');
-		if(diff >= 0){
-			Config.application.showSlash(0);
-			AppServerHandler.instance.purchaseEnergy(function(response:Object){
-				Config.application.hideSplash();
-				onBuyed && onBuyed();
-				close();
-			}, function(response:Object){
-				Config.application.hideSplash();
-				onCancel && onCancel();
-				close();
-				Config.application.message(Lang.t('ENERGY_PURCHASE_ERROR'))
-			})
-		} else {
-			new BuyMoneyWindow(-diff);
-		}
+	private function onBuyClick(event:Event = null):void {
+		BuyMoneyWindow.withMoney(ConfManager.instance.getNumber('ENERGY_COST'), function():void{
+			buyEnergy();
+		});
+	}
+
+	private function buyEnergy():void {
+		Config.application.showSlash(0);
+		AppServerHandler.instance.purchaseEnergy(function(response:Object){
+			Config.application.hideSplash();
+			onBuyed && onBuyed();
+			close();
+		}, function(response:Object){
+			Config.application.hideSplash();
+			onCancel && onCancel();
+			close();
+			Config.stat(Stat.ERROR_MONEY_DISCARDING);
+			Config.application.message(Lang.t('ENERGY_PURCHASE_ERROR'))
+		})
 	}
 }
 }

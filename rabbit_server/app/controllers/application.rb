@@ -81,6 +81,8 @@ class Application
 					InitializeController.new(request).call
 				when "levels/start"
 					LevelsStartController.new(request).call
+				when "levels/continue"
+					BuyLevelsContinueController.new(request).call
 				when "levels/complete"
 					LevelsController.new(request).call
 				when "levels/manage"

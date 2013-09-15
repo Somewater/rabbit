@@ -55,5 +55,6 @@ package com.somewater.rabbit {
 		public static const ERROR_SERVER_RESPONSE:String = 'error_server_response';
 		public static const ERROR_INIT_REQUEST:String = 'error_init_request';
 		public static const ERROR_STATIC_LOADING:String = 'error_static_loading';
+		public static const ERROR_MONEY_DISCARDING:String = 'error_money_discarding';
 	}
 }

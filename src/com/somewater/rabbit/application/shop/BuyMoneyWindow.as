@@ -6,6 +6,7 @@ package com.somewater.rabbit.application.shop {
 	import com.somewater.rabbit.application.windows.NeighboursWindow;
 	import com.somewater.rabbit.storage.ConfManager;
 	import com.somewater.rabbit.storage.Config;
+	import com.somewater.rabbit.storage.UserProfile;
 	import com.somewater.storage.Lang;
 	import com.somewater.text.EmbededTextField;
 
@@ -18,6 +19,8 @@ package com.somewater.rabbit.application.shop {
 
 		private static const WIDTH:int = 550;
 		private static const HEIGHT:int = 380;
+
+		private static var lastClickTime:uint = 0;
 
 		private var buyMoneyButtons:Array = [];
 		private var addFriendsButton:OrangeButton;
@@ -114,14 +117,24 @@ package com.somewater.rabbit.application.shop {
 			addFriendsButton.removeEventListener(MouseEvent.CLICK, onAddNeighboursClicked);
 		}
 
-		private var lastClickTime:uint = 0;
 		private function onClick(event:MouseEvent):void {
 			var btn:BuyMoneyButton = event.currentTarget as BuyMoneyButton;
 			if(!btn.enabled) return;
+			BuyMoneyWindow.pay(btn.money, btn.netmoney, function():void{
+				close();
+			})
+		}
+
+		private function onAddNeighboursClicked(event:Event):void {
+			close();
+			new NeighboursWindow();
+		}
+
+		private static function pay(money:int, netmoney:int, onComplete:Function, onError:Function = null, silent:Boolean = true):void{
 			var currentClickTime:uint = getTimer()
 			if(currentClickTime - lastClickTime < 2000) return;// не реже раза в 2 секнуды
 			lastClickTime = currentClickTime;
-			Config.loader.pay(btn.netmoney, function(...args):void{
+			Config.loader.pay(netmoney, function(...args):void{
 				// success
 				if(currentClickTime == lastClickTime)
 					lastClickTime = 0;
@@ -132,28 +145,58 @@ package com.somewater.rabbit.application.shop {
 				if(Config.loader.asyncPayment){
 					AppServerHandler.instance.refreshMoney(onGameServerResponseSuccess, onGameServerResponseError);
 				} else {
-					AppServerHandler.instance.buyMoney(btn.money, btn.netmoney, onGameServerResponseSuccess, onGameServerResponseError);
+					AppServerHandler.instance.buyMoney(money, netmoney, onGameServerResponseSuccess, onGameServerResponseError);
 				}
 			}, function(...args):void{
 				// error
 				if(currentClickTime == lastClickTime)
 					lastClickTime = 0;
+				if(onError != null)
+					onError();
 			});
 
 			function onGameServerResponseSuccess(response:Object):void{
 				Config.application.hideSplash();
-				close();
-				Config.application.message(Lang.t('BUY_MONEY_SUCCESS_MESSAGE', {quantity: btn.money}))
+				if(!silent)
+					Config.application.message(Lang.t('BUY_MONEY_SUCCESS_MESSAGE', {quantity: money}))
+				if(onComplete != null)
+					onComplete();
 			}
 			function onGameServerResponseError(response:Object):void{
 				Config.application.hideSplash();
-				Config.application.message(Lang.t('ERROR_BUY_MONEY', {error: Config.loader.serverHandler.toJson(response)}))
+				if(!silent)
+					Config.application.message(Lang.t('ERROR_BUY_MONEY', {error: Config.loader.serverHandler.toJson(response)}))
+				if(onError != null)
+					onError();
 			}
 		}
 
-		private function onAddNeighboursClicked(event:Event):void {
-			close();
-			new NeighboursWindow();
+		public static function withMoney(fullPrice:int, onComplete:Function, onError:Function = null):void {
+			if(UserProfile.instance.money >= fullPrice){
+				onComplete();
+			} else {
+				var need:int = fullPrice - UserProfile.instance.money;
+
+				var rules:Object = ConfManager.instance.get('NETMONEY_TO_MONEY');
+				var sortedRules:Array = [];
+				for(var key:String in rules){
+					sortedRules.push({money: int(rules[key]), netmoney: int(key)});
+				}
+				sortedRules.sortOn('money', Array.NUMERIC);
+				for each(var data:Object in sortedRules){
+					if(data.money >= need){
+						pay(data.money, data.netmoney, onComplete, onError);
+						return;
+					}
+				}
+
+				new BuyMoneyWindow(need).addEventListener(Window.EVENT_CLOSE, function(ev:Event):void{
+					if(UserProfile.instance.money >= fullPrice)
+						onComplete();
+					else if(onError != null)
+						onError();
+				})
+			}
 		}
 	}
 }

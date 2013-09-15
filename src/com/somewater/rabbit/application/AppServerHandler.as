@@ -135,6 +135,24 @@ package com.somewater.rabbit.application {
 					}, onError, null)
 		}
 
+		public function buyLevelContinue(failFlag:String, onComplete:Function = null, onError:Function = null):void
+		{
+			var clientFlagToServerFlag:Object = {};
+			clientFlagToServerFlag[LevelInstanceDef.LEVEL_FATAL_LIFE] = 'life';
+			clientFlagToServerFlag[LevelInstanceDef.LEVEL_FATAL_TIME] = 'time';
+			clientFlagToServerFlag[LevelInstanceDef.LEVEL_FATAL_CARROT] = 'carrot';
+			handler.call('levels/continue', {flag: clientFlagToServerFlag[failFlag]}, function(response:Object):void{
+				if(response['success'])
+				{
+					UserProfile.instance.money = int(response['money'])
+					if(onComplete != null)
+						onComplete(response);
+				}
+				else if(onError != null)
+					onError(response);
+			}, onError)
+		}
+
 		public function onPosting(gameUser:GameUser, onComplete:Function = null, onError:Function = null):void
 		{
 			handler.call('posting/complete', {'roll': int(gameUser.getRoll() * 1000000)},
