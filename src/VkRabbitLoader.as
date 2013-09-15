@@ -85,10 +85,10 @@ package {
 			basePath = 'http://vk.rabbit.atlantor.ru/';
 			var static_server_path:String = 'http://krolgame.static1.evast.ru/VK/';
 			swfs = {
-						"Game":{priority:-1,preload:true,url:static_server_path + "r0/RabbitGame.swf?cb=26"}
-						,"Application":{priority:-1000, preload:true,url:static_server_path + "r0/RabbitApplication.swf?cb=26"}
+						"Game":{priority:-1,preload:true,url:static_server_path + "r1/RabbitGame.swf"}
+						,"Application":{priority:-1000, preload:true,url:static_server_path + "r1/RabbitApplication.swf"}
 						,"Lang":{priority:100, preload:true, url:static_server_path + "r0/lang_pack.swf?cb=17"}
-						,"XmlPack":{preload:true, url:static_server_path + "r0/xml_pack.swf?cb=25"}
+						,"XmlPack":{preload:true, url:static_server_path + "r1/xml_pack.swf"}
 
 						,"Interface":{preload:true, url:static_server_path + "r0/assets/interface.swf?cb=21"}
 						,"Assets":{preload:true, url:static_server_path + "r0/assets/rabbit_asset.swf"}
