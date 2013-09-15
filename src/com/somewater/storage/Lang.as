@@ -35,34 +35,30 @@ package com.somewater.storage
 		public static function t(key:String, args:Object = null):String{
 			if(_instance == null) new Lang();
 			if(_instance == null) return key;
-			var dict:Object = _instance.dictionry;
-			if (dict[key])
+			var result:String = _instance.dictionry[key];
+			if(!result)
+				result = key.length?key:"T_NULL";
+			if(args == null)
 			{
-				if(args == null)
-				{
-					return sexTranslation(dict[key]);
-				}
-				else
-				{
-					var result:String = dict[key];
-					for (var name:String in args) {
-						if(result.indexOf('{' + name + '}') != -1)
-							result = result.replace(new RegExp("\{" + name + "\}", "g"), args[name]);
-						var quantityIndex:int;
-						var c:int = 100;
-						while(c-- > 0 && (quantityIndex = result.indexOf('{' + name + ':' )) != -1) {
-							var quantityEndIndex:int = result.indexOf('}', quantityIndex + 1);
-							var repl:String = quantityTranslation(result.substring(quantityIndex, quantityEndIndex + 1), name, args[name]);
-							if(repl !== null){
-								result = result.substr(0, quantityIndex) + repl + result.substr(quantityEndIndex + 1);
-							}
-						}
-					}
-					return sexTranslation(result);
-				}
+				return sexTranslation(result);
 			}
 			else
-				return key.length?key:"T_NULL";
+			{
+				for (var name:String in args) {
+					if(result.indexOf('{' + name + '}') != -1)
+						result = result.replace(new RegExp("\{" + name + "\}", "g"), args[name]);
+					var quantityIndex:int;
+					var c:int = 100;
+					while(c-- > 0 && (quantityIndex = result.indexOf('{' + name + ':' )) != -1) {
+						var quantityEndIndex:int = result.indexOf('}', quantityIndex + 1);
+						var repl:String = quantityTranslation(result.substring(quantityIndex, quantityEndIndex + 1), name, args[name]);
+						if(repl !== null){
+							result = result.substr(0, quantityIndex) + repl + result.substr(quantityEndIndex + 1);
+						}
+					}
+				}
+				return sexTranslation(result);
+			}
 		}
 		
 		/**
