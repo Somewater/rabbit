@@ -145,6 +145,9 @@ package com.somewater.rabbit.application {
 				if(response['success'])
 				{
 					UserProfile.instance.money = int(response['money'])
+					Config.stat(failFlag == LevelInstanceDef.LEVEL_FATAL_LIFE ? Stat.ON_CONTINUE_LIFE :
+							(failFlag == LevelInstanceDef.LEVEL_FATAL_TIME ? Stat.ON_CONTINUE_TIME :
+									(failFlag == LevelInstanceDef.LEVEL_FATAL_CARROT ? Stat.ON_CONTINUE_CARROT : 'on_continue_undef' )))
 					if(onComplete != null)
 						onComplete(response);
 				}

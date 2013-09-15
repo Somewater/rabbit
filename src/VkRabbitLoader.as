@@ -86,7 +86,7 @@ package {
 			var static_server_path:String = 'http://krolgame.static1.evast.ru/VK/';
 			swfs = {
 						"Game":{priority:-1,preload:true,url:static_server_path + "r1/RabbitGame.swf"}
-						,"Application":{priority:-1000, preload:true,url:static_server_path + "r1/RabbitApplication.swf"}
+						,"Application":{priority:-1000, preload:true,url:static_server_path + "r1/RabbitApplication.swf?cb=1"}
 						,"Lang":{priority:100, preload:true, url:static_server_path + "r0/lang_pack.swf?cb=17"}
 						,"XmlPack":{preload:true, url:static_server_path + "r1/xml_pack.swf"}
 

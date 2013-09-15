@@ -45,6 +45,10 @@ package com.somewater.rabbit {
 		public static const ON_POWERUP_USE:String = 'on_powerup_use';
 		public static const ON_POWERUP_BUY:String = 'on_powerup_buy';
 
+		public static const ON_CONTINUE_LIFE:String = 'on_continue_life';
+		public static const ON_CONTINUE_CARROT:String = 'on_continue_carrot';
+		public static const ON_CONTINUE_TIME:String = 'on_continue_time';
+
 		public static const ERROR_INACCESSIBLE_LEVEL:String = 'error_inacc_level';
 		public static const ERROR_INVALID_CARROT_HARVEST_VALUE:String = 'error_wrong_carrot_harvest';
 		public static const ERROR_SERVER_LOGIC_DESYNCRONIZE_LEVEL:String = 'error_desync_level';
