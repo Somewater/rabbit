@@ -55,6 +55,16 @@ class User < ActiveRecord::Base
 		@offer_instances = hash
 	end
 
+	def get_offers_by_type(type)
+		self.get_range(self.offers.to_i, type.to_i)
+	end
+
+	def set_offers_by_type(type, value)
+		type = type.to_i
+		raise "Overflow" if type > 4 || (type == 4 && value > 21)
+		self.offers = self.set_range(self.offers.to_i, type, value)
+	end
+
 	def customize
 		unless @customize
 			str = self['customize']
@@ -144,7 +154,8 @@ class User < ActiveRecord::Base
 			self.offer_instances[offer.id] = {}#'x' => offer.x,     # временно пишем пустые объекты,
 											   #'y' => offer.y,     # т.к. id оффера однозначно сигнализиурет
 											   #'n' => offer.level} # всю информацию о нем
-			self.offers += 1
+			type = offer.type
+			self.set_offers_by_type(type, self.get_offers_by_type(type) + 1)
 		end
 	end
 
@@ -263,5 +274,18 @@ class User < ActiveRecord::Base
 	# получить ссылку на инстанс NetApi, согласно соц. сети юзера
 	def api
 		NetApi.by_net(self.net)
+	end
+
+	protected
+	def get_range(i, n)
+		r = (i / 100.0**n).to_i
+		r >= 100 ? r.to_s[-2,2].to_i : r
+	end
+
+	def set_range(i, n, value)
+		max_range = [i == 0 ? 0 : (Math.log( i ) / Math.log(100)).to_i, n].max
+		ranges = []
+		0.upto(max_range).each{|cn| ranges << (cn == n ? value : get_range(i, cn)) }
+		ranges.reverse.map{|i| i > 9 ? i : '0' + i.to_s }.join('').to_i
 	end
 end

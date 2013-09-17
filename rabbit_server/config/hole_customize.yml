@@ -40,6 +40,12 @@ crab_roof:
   slug: reward.CrabRoof
   cost: 40
 
+pirate_roof:
+  <<: *roof
+  id: 103
+  slug: reward.PirateRoof
+  cost: 0
+
 #####################
 #
 #	ВОРОТА
@@ -68,6 +74,12 @@ pink_door:
   id: 112
   slug: reward.PinkDoor
   cost: 40
+
+pirate_door:
+  <<: *door
+  id: 113
+  slug: reward.PirateDoor
+  cost: 0
 
 #####################
 #

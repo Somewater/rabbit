@@ -22,4 +22,8 @@ class Offer
 "	<level>#{@level}</level>
 </offer>"
 	end
+
+	def type
+		@type.to_i
+	end
 end

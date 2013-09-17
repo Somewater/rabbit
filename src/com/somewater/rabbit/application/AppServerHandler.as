@@ -2,6 +2,7 @@ package com.somewater.rabbit.application {
 	import com.somewater.net.IServerHandler;
 	import com.somewater.rabbit.Stat;
 	import com.somewater.rabbit.application.offers.OfferManager;
+	import com.somewater.rabbit.application.offers.OfferPrizeCongratulationWindow;
 	import com.somewater.rabbit.application.windows.PendingRewardsWindow;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Config;
@@ -216,6 +217,9 @@ package com.somewater.rabbit.application {
 			handler.call('offer/add', {'offers':[offer.id]}, function(response:Object):void{
 				// сервер успешно принял оффер
 				Config.stat(Stat.OFFER_HARVESTED);
+				if(response['prize_offer_types']){
+					new OfferPrizeCongratulationWindow(response['prize_offer_types']);
+				}
 			}, function(response:Object):void{
 				// сервер не принял оффер
 				UserProfile.instance.removeOfferInstanceById(offer.id);

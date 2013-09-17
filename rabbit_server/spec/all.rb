@@ -963,10 +963,11 @@ class AllSpec
 				@off1 = Offer.new(1,1,2)
 				@off2 = Offer.new(2,2,2)
 				OfferManager.instance.instance_variable_set('@offers_by_id', {@off1.id => @off1, @off2.id => @off2})
+				@offer_controller = OfferController
 			end
 
 			def request(hash)
-				execute_secure_request(hash, OfferController)
+				execute_secure_request(hash, @offer_controller)
 			end
 
 		    it "Если хотя бы 1 оффер зачислен, ошибка не генерируется" do
@@ -1030,6 +1031,86 @@ class AllSpec
 				@user.offers.should == 1
 				@user.offer_instances.keys.size.should == 1
 				response['offers_added'].size.should == 1
+			end
+
+			it "геттер/сеттер числа офферов по типу работает корректно" do
+				@user.set_offers_by_type(0, 23)
+				@user.set_offers_by_type(1, 0)
+				@user.set_offers_by_type(2, 56)
+				@user.set_offers_by_type(3, 28)
+
+				@user.get_offers_by_type(0).should == 23
+				@user.get_offers_by_type(1).should == 0
+				@user.get_offers_by_type(2).should == 56
+				@user.get_offers_by_type(3).should == 28
+
+				@user.set_offers_by_type(1, 67)
+
+				@user.get_offers_by_type(0).should == 23
+				@user.get_offers_by_type(1).should == 67
+				@user.get_offers_by_type(2).should == 56
+				@user.get_offers_by_type(3).should == 28
+
+				@user.offers = 0
+
+				@user.get_offers_by_type(0).should == 0
+				@user.get_offers_by_type(1).should == 0
+				@user.get_offers_by_type(2).should == 0
+				@user.get_offers_by_type(3).should == 0
+
+				@user.set_offers_by_type(2, 1)
+
+				@user.get_offers_by_type(0).should == 0
+				@user.get_offers_by_type(1).should == 0
+				@user.get_offers_by_type(2).should == 1
+				@user.get_offers_by_type(3).should == 0
+			end
+
+			it "Инкрементируется счетчик офферов нужного типа" do
+				@off1.type = 0
+				@off2.type = 1
+
+				@user.get_offers_by_type(0).should == 0
+				@user.get_offers_by_type(1).should == 0
+
+				response = request({'net' => @user.net,'uid' => @user.uid, 'json' => {
+						'offers' => [OfferManager.params_to_id(1, 1, 2)]}})
+				@user.reload
+
+				@user.get_offers_by_type(0).should == 1
+				@user.get_offers_by_type(1).should == 0
+
+				response = request({'net' => @user.net,'uid' => @user.uid, 'json' => {
+						'offers' => [OfferManager.params_to_id(2, 2, 2)]}})
+				@user.reload
+
+				@user.get_offers_by_type(0).should == 1
+				@user.get_offers_by_type(1).should == 1
+			end
+
+			it "При достижении призового значения, выдается награда и отправляется в респонс" do
+				@off1.type = 2
+				@offer_controller = Class.new(OfferController) do
+					def prize_quantity_by_type(type)
+						raise "Wrong arg" unless type == 2
+						1
+					end
+
+					def give_prize_by_type(type)
+						raise "Wrong arg" unless type == 2
+						@user.money += 77
+					end
+				end
+				orig_money = @user.money
+
+				response = request({'net' => @user.net,'uid' => @user.uid, 'json' => {
+						'offers' => [OfferManager.params_to_id(1, 1, 2)]}})
+
+				response['prize_offer_types'].should_not be_nil
+				response['prize_offer_types'].should == [2]
+				response['user'].should_not be_nil
+				@user.reload
+				@user.money.should == (orig_money + 77)
 			end
 		end
 
