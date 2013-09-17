@@ -6,6 +6,7 @@ package com.somewater.rabbit.storage {
 		public var x:int;
 		public var y:int;
 		public var level:int;
+		public var type:int;
 
 		private var _id:int = -1;
 

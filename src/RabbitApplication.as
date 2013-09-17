@@ -19,7 +19,7 @@ package
 	import com.somewater.rabbit.application.GameGUI;
 	import com.somewater.rabbit.application.LevelsPage;
 	import com.somewater.rabbit.application.MainMenuPage;
-	import com.somewater.rabbit.application.OfferManager;
+	import com.somewater.rabbit.application.offers.OfferManager;
 	import com.somewater.rabbit.application.OrangeButton;
 	import com.somewater.rabbit.application.OrangeGround;
 	import com.somewater.rabbit.application.PageBase;
@@ -37,7 +37,7 @@ package
 	import com.somewater.rabbit.application.windows.LevelFinishSuccessWindow;
 	import com.somewater.rabbit.application.windows.LevelStartWindow;
 	import com.somewater.rabbit.application.windows.LevelSwitchWindow;
-	import com.somewater.rabbit.application.windows.OfferDescriptionWindow;
+	import com.somewater.rabbit.application.offers.OfferDescriptionWindow;
 	import com.somewater.rabbit.application.windows.PauseMenuWindow;
 	import com.somewater.rabbit.application.windows.PendingRewardsWindow;
 	import com.somewater.rabbit.application.windows.TesterInvitationWindow;
@@ -430,7 +430,7 @@ package
 					if(canShowOfferWindow)
 					{
 						clearInterval(interv);
-						if(OfferManager.instance.quantity > 0 && UserProfile.instance.offers < OfferManager.instance.prizeQuantity)
+						if(OfferManager.instance.active && !OfferManager.instance.allOffersHarvested())
 							new OfferDescriptionWindow();
 					}
 				}, 10*1000)

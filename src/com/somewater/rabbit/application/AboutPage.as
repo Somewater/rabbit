@@ -24,7 +24,6 @@ package com.somewater.rabbit.application
 	{
 		private var leftButton:InteractiveOpaqueBack;
 		private var items:Array = [];
-		private var offerStat:OfferStatPanel;
 
 		private var links:Array = [];
 		private var testersScroller:RScroller;
@@ -80,12 +79,6 @@ package com.somewater.rabbit.application
 
 
 			logo.visible = logo.visible ? logo.x + logo.width < Config.WIDTH : false;
-
-			offerStat = new OfferStatPanel(OfferStatPanel.INTERFACE_MODE);
-			offerStat.x = Config.WIDTH - offerStat.width - 15;
-			offerStat.y = 15;
-			addChild(offerStat);
-
 
 			if(gds.length)
 			{
@@ -193,7 +186,6 @@ package com.somewater.rabbit.application
 				for (var i:int = 0; i < items.length; i++)
 					IClear(items[i]).clear();
 			items = null;
-			offerStat.clear();
 			for each(var ll:LinkLabel in links)
 			{
 				ll.clear();

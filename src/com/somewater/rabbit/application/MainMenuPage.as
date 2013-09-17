@@ -7,6 +7,8 @@ package com.somewater.rabbit.application
 	import com.somewater.rabbit.application.commands.PostingLevelSuccessCommand;
 	import com.somewater.rabbit.application.commands.PostingRewardCommand;
 	import com.somewater.rabbit.application.commands.StartNextLevelCommand;
+	import com.somewater.rabbit.application.offers.OfferManager;
+	import com.somewater.rabbit.application.offers.OfferStatPanel;
 	import com.somewater.rabbit.application.tutorial.TutorialLevelDef;
 	import com.somewater.rabbit.application.tutorial.TutorialManager;
 import com.somewater.rabbit.application.windows.NeedMoreEnergyWindow;
@@ -50,7 +52,7 @@ import flash.display.DisplayObject;
 		private var buttons:Array;
 		private var audioControls:AudioControls
 		private var friendBar:FriendBar;
-		private var offerStat:OfferStatPanel;
+		private var offerStats:Array = [];
 
 		private var topLink:EmbededTextField;
 		private var sponsorLogo:DisplayObject;
@@ -121,11 +123,6 @@ import flash.display.DisplayObject;
 			if(logo.visible)
 				logo.visible = (friendBar == null || friendBar.x + friendBar.WIDTH + 10 < logo.x) && logo.x + logo.width < Config.WIDTH;
 
-			offerStat = new OfferStatPanel(OfferStatPanel.INTERFACE_MODE);
-			offerStat.x = Config.WIDTH - offerStat.width - 15;
-			offerStat.y = 15;
-			addChild(offerStat);
-
 			var sponsorLogoClass:Class = Config.loader.getClassByName('interface.SponsorLogo');
 			if(sponsorLogoClass != null)
 			{
@@ -146,10 +143,20 @@ import flash.display.DisplayObject;
 
 			if(UserProfile.instance.levelNumber > 1 || !UserProfile.instance.energyIsFull()){
 				energyIndicator = new EnergyIndicator();
-				energyIndicator.y = DisplayObject(buttons[0]).y;
+				energyIndicator.y = buttonsY;
 				energyIndicator.x = Config.WIDTH - energyIndicator.width - 20;
 				energyIndicator.addEventListener(MouseEvent.CLICK, onEnergyIndicatorClick);
 				addChild(energyIndicator);
+			}
+
+			if(OfferManager.instance.active){
+				for each(var offerType:int in OfferManager.instance.types) {
+					var offerStat:OfferStatPanel = new OfferStatPanel(OfferStatPanel.INTERFACE_MODE, offerType);
+					offerStat.x = Config.WIDTH - offerStat.width - 15;
+					offerStat.y = buttonsY + (energyIndicator ? energyIndicator.y + 70 : 0) + offerType * 70;
+					addChild(offerStat);
+					offerStats.push(offerStat);
+				}
 			}
 		}
 		
@@ -179,7 +186,8 @@ import flash.display.DisplayObject;
 			if(friendBar)
 				friendBar.clear();
 			audioControls.clear();
-			offerStat.clear();
+			for each(var offerPanel:OfferStatPanel in offerStats)
+				offerPanel.clear();
 			if(topLink)
 			{
 				topLink.removeEventListener(MouseEvent.CLICK, onTopLinkClick);

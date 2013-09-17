@@ -45,6 +45,7 @@ class OfferManager
 		(offers || []).each do |level, level_offers|
 			level_offers.each do |offer_hash|
 				offer = Offer.new(offer_hash['x'].to_i, offer_hash['y'].to_i, level.to_i)
+				offer.type = offer_hash['type'].to_i if offer_hash['type']
 				raise LogicError, "Offer without id: #{offer_hash}" unless offer.id
 				raise LogicError, "Dublicate offers: #{offer_hash}" if @offers_by_id[offer.id]
 				@offers_by_id[offer.id] = offer

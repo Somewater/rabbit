@@ -5,6 +5,8 @@ package com.somewater.rabbit.application
 	import com.somewater.rabbit.SoundTrack;
 	import com.somewater.rabbit.Sounds;
 	import com.somewater.rabbit.application.buttons.InteractiveOpaqueBack;
+	import com.somewater.rabbit.application.offers.OfferManager;
+	import com.somewater.rabbit.application.offers.OfferStatPanel;
 	import com.somewater.rabbit.application.windows.PauseMenuWindow;
 import com.somewater.rabbit.events.CameraMoveEvent;
 import com.somewater.rabbit.storage.Config;
@@ -109,9 +111,10 @@ import com.somewater.rabbit.storage.Config;
 			Hint.bind(statPanel.getChildByName('scoreRatingHintArea'), scoreRatingHint);
 			statPanel.getChildByName('scoreRatingHintArea').alpha = 0;
 
-			if(OfferManager.instance.quantity)
+			if(OfferManager.instance.active)
 			{
-				offerStat = new OfferStatPanel(OfferStatPanel.GAME_MODE);
+				offerStat = new OfferStatPanel(OfferStatPanel.GAME_MODE,
+						OfferManager.instance.offerTypeByLevel(Config.game.level.number));
 				offerStat.x = statPanel.x - 10 - offerStat.width;
 				offerStat.y = statPanel.y;
 				addChild(offerStat);

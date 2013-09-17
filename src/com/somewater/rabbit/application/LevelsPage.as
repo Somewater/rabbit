@@ -42,8 +42,6 @@ import com.somewater.rabbit.storage.Config;
 		private var storiesSwitcher:StoriesSwitcher;
 		private var iconsHolder:Sprite;
 
-		private var offerStat:OfferStatPanel;
-
 		private var energyIndicator:EnergyIndicator;
 
 		public function LevelsPage()
@@ -84,11 +82,6 @@ import com.somewater.rabbit.storage.Config;
 			globalScoreCounterTF.y = globalScoreCarrot.y + globalScoreCarrot.height + 5;
 			globalScoreCounterTF.text = ' ';
 			globalScoreHolder.addChild(globalScoreCounterTF);
-
-			offerStat = new OfferStatPanel(OfferStatPanel.INTERFACE_MODE);
-			offerStat.x = -offerStat.width * 0.5 + 10;
-			offerStat.y = globalScoreCounterTF.y + globalScoreCounterTF.textHeight + 15;
-			globalScoreHolder.addChild(offerStat);
 
 			var sumScore:int = 0;
 			var maxScores:int = 0;

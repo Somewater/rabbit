@@ -1,6 +1,7 @@
 package com.somewater.rabbit.application {
 	import com.somewater.net.IServerHandler;
 	import com.somewater.rabbit.Stat;
+	import com.somewater.rabbit.application.offers.OfferManager;
 	import com.somewater.rabbit.application.windows.PendingRewardsWindow;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Config;

@@ -394,9 +394,12 @@ package
 			return GameTutorialModule.instance;
 		}
 
-		public function createOffer(x:int, y:int):void {
-			//var entity:IEntity =
-			createEntity('OfferTemplate', x, y);
+		public function createOffer(x:int, y:int, params:Object = null):void {
+			params ||= {};
+			var offerType:int = params.type;
+			var entity:IEntity = createEntity('OfferTemplate', x, y);
+			entity.setProperty(new PropertyReference('@Render.slug'),
+					"rabbit.OfferActor" + (offerType > 0 ? '_' + offerType : '' ));
 		}
 
 		public function usePowerup(templateName:String):void {

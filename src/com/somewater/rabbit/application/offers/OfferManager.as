@@ -1,4 +1,5 @@
-package com.somewater.rabbit.application {
+package com.somewater.rabbit.application.offers {
+	import com.somewater.rabbit.application.*;
 	import com.somewater.rabbit.events.OfferEvent;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
@@ -10,6 +11,8 @@ package com.somewater.rabbit.application {
 		private static var _instance:OfferManager;
 		private var offersById:Array = [];
 		private var _quantity:int = 0;
+		private var levelToOfferTypeCache:Object = {};
+		private var _types:Array;
 
 		public static function get instance():OfferManager
 		{
@@ -63,9 +66,10 @@ package com.somewater.rabbit.application {
 		}
 
 		/**
-		 * Общее число офферов
+		 * Офферы в данный момент активны
+		 * (но возможно уже собраны игроком)
 		 */
-		public function get quantity():int
+		public function get active():int
 		{
 			return _quantity;
 		}
@@ -73,9 +77,33 @@ package com.somewater.rabbit.application {
 		/**
 		 * Сколько следует собрать офферов для получения приза
 		 */
-		public function get prizeQuantity():int
+		public function prizeQuantityByType(type:int):int
 		{
-			return 50;
+			return 20;
+		}
+
+		public function allOffersHarvested():Boolean {
+			for each(var type:int in this.types){
+				if(UserProfile.instance.offersByType(type) < prizeQuantityByType(type)){
+					return false;
+				}
+			}
+			return true;
+		}
+
+		public function get types():Array {
+			if(!_types){
+				_types = [];
+				var addedTypes:Object = {};
+				for each(var offer:OfferDef in offersById){
+					if(!addedTypes[offer.type]){
+						_types.push(offer.type);
+						addedTypes[offer.type] = true;
+					}
+				}
+				_types.sort(Array.NUMERIC);
+			}
+			return _types;
 		}
 
 		public function getOfferById(id:int):OfferDef
@@ -122,7 +150,19 @@ package com.somewater.rabbit.application {
 		 */
 		public function onLevelStarted(level:LevelDef):void {
 			for each(var offer:OfferDef in levelOffers(level.number, true))
-				Config.game.createOffer(offer.x, offer.y);
+				Config.game.createOffer(offer.x, offer.y, {type: offer.type});
+		}
+
+		public function offerTypeByLevel(level:int):int {
+			if(levelToOfferTypeCache[level] === undefined){
+				for each(var offer:OfferDef in offersById){
+					if(offer.level == level){
+						levelToOfferTypeCache[level] = offer.type;
+						break;
+					}
+				}
+			}
+			return int(levelToOfferTypeCache[level]);
 		}
 	}
 }

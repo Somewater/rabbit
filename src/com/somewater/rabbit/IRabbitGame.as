@@ -55,7 +55,7 @@ package com.somewater.rabbit
 
 		function get tutorialModule():IGameTutorialModule
 
-		function createOffer(x:int,  y:int):void
+		function createOffer(x:int,  y:int, params:Object = null):void
 
 		function usePowerup(templateName:String):void
 

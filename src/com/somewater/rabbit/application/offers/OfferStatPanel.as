@@ -1,7 +1,7 @@
-package com.somewater.rabbit.application {
+package com.somewater.rabbit.application.offers {
 	import com.somewater.control.IClear;
 	import com.somewater.display.HintedSprite;
-	import com.somewater.rabbit.application.windows.OfferDescriptionWindow;
+	import com.somewater.rabbit.application.offers.OfferDescriptionWindow;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.rabbit.storage.UserProfile;
@@ -25,9 +25,10 @@ package com.somewater.rabbit.application {
 
 		private var core:Sprite;
 		private var textField:EmbededTextField;
+		private var type:int;
 
-		public function OfferStatPanel(visualMode:int) {
-			if(OfferManager.instance.quantity)
+		public function OfferStatPanel(visualMode:int, type:int) {
+			if(OfferManager.instance.active)
 			{
 				core = Lib.createMC('interface.OfferStatPanel');
 				addChild(core);
@@ -36,6 +37,8 @@ package com.somewater.rabbit.application {
 				textField.x = 56;
 				textField.y = 14.5;
 				addChild(textField);
+
+				this.type = type;
 
 				UserProfile.bind(refresh);
 
@@ -47,11 +50,11 @@ package com.somewater.rabbit.application {
 				switch(visualMode)
 				{
 					case GAME_MODE:
-						(core.getChildByName('icon') as MovieClip).gotoAndStop(1);
+						(core.getChildByName('icon') as MovieClip).gotoAndStop(1 + type * 2);
 						break
 					case INTERFACE_MODE:
-						(core.getChildByName('icon') as MovieClip).gotoAndStop(2);
-						core.getChildByName('background').alpha = 0;
+						(core.getChildByName('icon') as MovieClip).gotoAndStop(2 + type * 2);
+						core.getChildByName('background').visible = false;
 						textField.color = 0x124D18;
 						break
 				}
@@ -59,12 +62,12 @@ package com.somewater.rabbit.application {
 		}
 
 		private function onClick(event:MouseEvent):void {
-			new OfferDescriptionWindow();
+			new OfferDescriptionWindow(null, hint(), "images.OfferWindowImage_" + type);
 		}
 
 		private function refresh():void
 		{
-			textField.text = UserProfile.instance.offers + ' / ' + OfferManager.instance.prizeQuantity;
+			textField.text = UserProfile.instance.offersByType(type) + ' / ' + OfferManager.instance.prizeQuantityByType(type);
 		}
 
 		public function clear():void {
@@ -75,7 +78,7 @@ package com.somewater.rabbit.application {
 
 		private function hint():String
 		{
-			return Lang.t('OFFERS_HINT', {harvested: UserProfile.instance.offers, need: OfferManager.instance.prizeQuantity});
+			return Lang.t('OFFERS_HINT_' + type, {harvested: UserProfile.instance.offersByType(type), need: OfferManager.instance.prizeQuantityByType(type)});
 		}
 	}
 }

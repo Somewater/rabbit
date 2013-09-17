@@ -255,11 +255,12 @@ import flash.utils.Timer;
 			dispatchChange();
 		}
 
-		public function get offers():int
+		public function offersByType(type:int):int
 		{
 			var i:int = 0;
 			for each(var of:OfferDef in _offerInstances)
-				i++;
+				if(of.type == type)
+					i++;
 			return i;
 		}
 

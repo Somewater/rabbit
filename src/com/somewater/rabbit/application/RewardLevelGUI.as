@@ -3,6 +3,8 @@ package com.somewater.rabbit.application {
 	import com.somewater.rabbit.SoundTrack;
 	import com.somewater.rabbit.Sounds;
 	import com.somewater.rabbit.application.buttons.InteractiveOpaqueBack;
+	import com.somewater.rabbit.application.offers.OfferManager;
+	import com.somewater.rabbit.application.offers.OfferStatPanel;
 	import com.somewater.rabbit.application.shop.MyMoneyBag;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
@@ -18,7 +20,7 @@ package com.somewater.rabbit.application {
 	public class RewardLevelGUI extends Sprite implements IClear{
 
 		private var leftButton:InteractiveOpaqueBack;
-		private var offerStat:OfferStatPanel;
+		private var offerStats:Array = [];
 		private var myMoney:MyMoneyBag;
 
 		public function RewardLevelGUI() {
@@ -30,16 +32,19 @@ package com.somewater.rabbit.application {
 			Hint.bind(leftButton, Lang.t("BACK_TO_MAIN_MENU"));
 			addChild(leftButton);
 
-			if(OfferManager.instance.quantity)
+			if(OfferManager.instance.active)
 			{
-				offerStat = new OfferStatPanel(OfferStatPanel.GAME_MODE);
-				offerStat.x = Config.WIDTH - offerStat.width - 15;
-				offerStat.y = 15;
-				addChild(offerStat);
+				for each(var offerType:int in OfferManager.instance.types){
+					var offerStat:OfferStatPanel = new OfferStatPanel(OfferStatPanel.GAME_MODE, offerType);
+					offerStat.x = Config.WIDTH - offerStat.width - 15;
+					offerStat.y = 15 + offerType * 50;
+					addChild(offerStat);
+					offerStats.push(offerStat);
+				}
 			}
 
 			myMoney = new MyMoneyBag();
-			myMoney.x = Config.WIDTH - (offerStat ? offerStat.width + 15 : 0) - MyMoneyBag.WIDTH - 15;
+			myMoney.x = Config.WIDTH - (offerStats.length ? (offerStats[offerStats.length - 1] as OfferStatPanel).width + 15 : 0) - MyMoneyBag.WIDTH - 15;
 			myMoney.y = 15;
 			addChild(myMoney);
 		}
@@ -49,8 +54,8 @@ package com.somewater.rabbit.application {
 			leftButton.removeEventListener(MouseEvent.CLICK, onLeftButtonClick);
 			leftButton.clear();
 			Hint.removeHint(leftButton);
-			if(offerStat)
-				offerStat.clear();
+			for each(var of:OfferStatPanel in offerStats)
+				of.clear();
 			myMoney.clear();
 		}
 

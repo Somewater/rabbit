@@ -10,13 +10,15 @@ package com.somewater.rabbit.creature {
 	 */
 	public class OfferControllerComponent extends HeroContactComponent{
 
+		public var anumationSlug:String = 'rabbit.OfferBonusAnimation';
+
 		override protected function onContact(heroSpatial:IsoSpatial):void {
 			// диспатчить начисление еще одного оффера, передать событию координаты размещения оффера
 			var spatial:IsoSpatial = owner.lookupComponentByName('Spatial') as IsoSpatial;
 			Config.application.dispatchEvent(new OfferEvent(spatial.tile.x,  spatial.tile.y))
 
 			// создать попап эффекта
-			PopupEffectFactory.createEffect('rabbit.OfferBonusAnimation', spatial.tile, this.owner);
+			PopupEffectFactory.createEffect(anumationSlug, spatial.tile, this.owner);
 
 			// и самоудалиться
 			this.owner.destroy();
