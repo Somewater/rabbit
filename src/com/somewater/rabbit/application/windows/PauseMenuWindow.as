@@ -43,7 +43,7 @@ package com.somewater.rabbit.application.windows
 			backToTheGame.x = (width - backToTheGame.width) * 0.5;
 			backToTheGame.y = 70;
 			addChild(backToTheGame);
-			backToTheGame.addEventListener(MouseEvent.CLICK, onBackToTheGameClick);
+			backToTheGame.addEventListener(MouseEvent.MOUSE_DOWN, onBackToTheGameClick);
 			backToTheGame.icon = Lib.createMC('interface.IconPlay');
 
 			gotoMainMenuButton = new OrangeButton();
@@ -91,6 +91,9 @@ package com.somewater.rabbit.application.windows
 			Config.game.pause();
 
 			Config.stat(Stat.ON_PAUSE);
+
+			closeButton.removeEventListener(MouseEvent.CLICK, onCloseBtnClick);
+			closeButton.addEventListener(MouseEvent.MOUSE_DOWN, onCloseBtnClick);
 		}
 		
 		public function simulateCloseButtonClick():void
@@ -107,6 +110,7 @@ package com.somewater.rabbit.application.windows
 			//////////////////
 			Config.game.start();
 			super.onCloseBtnClick(e);
+			e.stopImmediatePropagation();
 		}
 		
 		override public function clear():void
@@ -114,13 +118,14 @@ package com.somewater.rabbit.application.windows
 			super.clear();
 
 			if(backToTheGame)
-				backToTheGame.removeEventListener(MouseEvent.CLICK, onBackToTheGameClick);
+				backToTheGame.removeEventListener(MouseEvent.MOUSE_DOWN, onBackToTheGameClick);
 			if(gotoMainMenuButton)
 				gotoMainMenuButton.removeEventListener(MouseEvent.CLICK, onGotoMainMenuClick);
 			if(gotoSelectLevelButton)
 				gotoSelectLevelButton.removeEventListener(MouseEvent.CLICK, onSelectLevelClick);
 			restartLevelButton.removeEventListener(MouseEvent.CLICK, onRestartLevelClick);
 			audioControls.clear();
+			closeButton.removeEventListener(MouseEvent.MOUSE_DOWN, onCloseBtnClick);
 		}
 
 		private function onBackToTheGameClick(e:MouseEvent):void

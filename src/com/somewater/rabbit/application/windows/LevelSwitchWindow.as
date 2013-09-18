@@ -40,6 +40,9 @@ package com.somewater.rabbit.application.windows {
 
 			individual = true;
 			open();
+
+			closeButton.removeEventListener(MouseEvent.CLICK, onCloseBtnClick);
+			closeButton.addEventListener(MouseEvent.MOUSE_DOWN, onCloseBtnClick);
 		}
 
 		protected function createButtons():void
@@ -52,7 +55,7 @@ package com.somewater.rabbit.application.windows {
 			okButton.x = (width - okButton.width) * 0.5;
 			okButton.y = height - okButton.height - 40;
 			addChild(okButton);
-			okButton.addEventListener(MouseEvent.CLICK, onOkClicked);
+			okButton.addEventListener(MouseEvent.MOUSE_DOWN, onOkClicked);
 		}
 
 
@@ -63,6 +66,7 @@ package com.somewater.rabbit.application.windows {
 		private function onOkClicked(event:MouseEvent):void {
 			onWindowClosed();
 			close();
+			event.stopImmediatePropagation();
 		}
 
 		protected function createContent():void {
@@ -74,13 +78,18 @@ package com.somewater.rabbit.application.windows {
 			// продолжить игру
 		}
 
+		override protected function onCloseBtnClick(e:MouseEvent):void {
+			super.onCloseBtnClick(e);
+			e.stopImmediatePropagation();
+		}
 
 		override public function clear():void {
 			level = null;
 			levelInstance = null;
-			okButton.removeEventListener(MouseEvent.CLICK, onOkClicked)
+			okButton.removeEventListener(MouseEvent.MOUSE_DOWN, onOkClicked)
 			okButton.clear();
 			super.clear();
+			closeButton.removeEventListener(MouseEvent.MOUSE_DOWN, onCloseBtnClick);
 		}
 
 		protected function createIcon(starIcon:DisplayObject):void
