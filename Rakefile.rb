@@ -22,16 +22,15 @@ task :environment do
 	require "#{ROOT}/rabbit_server/config/environment.rb"
 end
 
-
 task :vk_environment => :environment do
-	require "vkontakte"
-	Vkontakte.setup do |config|
-	  config.app_id = "2732721 "
-	  config.app_secret = "kJ0AVDo3he9GhGlhkmha"
-	  config.format = :json
-	  config.debug = false
-	  config.logger = File.open("#{ROOT}/log/vkontakte.log", "a") if DEVELOPMENT
-	end
+        require "vkontakte"
+        Vkontakte.setup do |config|
+          config.app_id = CONFIG["vkontakte"]["app_id"]
+          config.app_secret = CONFIG["vkontakte"]["secure_key"]
+          config.format = :json
+          config.debug = !PRODUCTION
+          config.logger = File.open("#{ROOT}/log/vkontakte.log", "a")  
+        end
 end
 
 ##########################

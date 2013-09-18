@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+require 'vkontakte/app/base'
+
 class VkApi < NetApi
 	
 	def authorized?(uid, key, params = nil)
@@ -27,7 +29,7 @@ class VkApi < NetApi
 			response = nil
 			user_uids = NetApi.arg_to_ids(target)
 			response = secure_vk.secure.sendNotification({:uids => user_uids.join(','), :message => text})
-			response['response'].split(',')
+			(response.is_a?(Hash) && response.has_key?('response') ? response['response'] : response).split(',')
 		rescue Vkontakte::App::VkException
 			Application.logger.error("[ERROR] [NOTIFY]\n#{user_uids} => #{$!} #{$!.backtrace}")
 			false
@@ -93,7 +95,7 @@ class VkApi < NetApi
 				config.app_secret = CONFIG["vkontakte"]["secure_key"]
 				config.format = :json
 				config.debug = !PRODUCTION
-				config.logger = File.open("#{ROOT}/log/vkontakte.log", "a") if DEVELOPMENT
+				config.logger = File.open("#{ROOT}/log/vkontakte.log", "a")
 			end
 			
 			@secure_vk = Vkontakte::App::Secure.new
