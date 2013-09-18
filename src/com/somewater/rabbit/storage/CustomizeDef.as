@@ -9,6 +9,7 @@ package com.somewater.rabbit.storage {
 
 		public var type:String;
 		public var start:Boolean = false;
+		public var shoppable:Boolean;
 
 		public function CustomizeDef(data:Object) {
 			super(data);

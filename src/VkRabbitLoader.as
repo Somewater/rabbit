@@ -85,15 +85,15 @@ package {
 			basePath = 'http://vk.rabbit.atlantor.ru/';
 			var static_server_path:String = 'http://krolgame.static1.evast.ru/VK/';
 			swfs = {
-						"Game":{priority:-1,preload:true,url:static_server_path + "r1/RabbitGame.swf"}
-						,"Application":{priority:-1000, preload:true,url:static_server_path + "r1/RabbitApplication.swf?cb=1"}
-						,"Lang":{priority:100, preload:true, url:static_server_path + "r0/lang_pack.swf?cb=17"}
-						,"XmlPack":{preload:true, url:static_server_path + "r1/xml_pack.swf"}
+						"Game":{priority:-1,preload:true,url:static_server_path + "r2/RabbitGame.swf"}
+						,"Application":{priority:-1000, preload:true,url:static_server_path + "r2/RabbitApplication.swf?cb=1"}
+						,"Lang":{priority:100, preload:true, url:static_server_path + "r2/lang_pack.swf"}
+						,"XmlPack":{preload:true, url:static_server_path + "r2/xml_pack.swf?cb=1"}
 
-						,"Interface":{preload:true, url:static_server_path + "r0/assets/interface.swf?cb=21"}
-						,"Assets":{preload:true, url:static_server_path + "r0/assets/rabbit_asset.swf"}
-						,"Rewards":{preload:true, url:static_server_path + "r0/assets/rabbit_reward.swf"}
-						,"Images":{preload:true, url:static_server_path + "r0/assets/rabbit_images.swf"}
+						,"Interface":{preload:true, url:static_server_path + "r2/assets/interface.swf"}
+						,"Assets":{preload:true, url:static_server_path + "r2/assets/rabbit_asset.swf"}
+						,"Rewards":{preload:true, url:static_server_path + "r2/assets/rabbit_reward.swf"}
+						,"Images":{preload:true, url:static_server_path + "r2/assets/rabbit_images.swf"}
 						,"MusicMenu":{url:static_server_path + "r0/assets/music_menu.swf"}
 						,"MusicGame":{url:static_server_path + "r0/assets/music_game.swf"}
 						,"Sound":{preload:true, url:static_server_path + "r0/assets/rabbit_sound.swf"}

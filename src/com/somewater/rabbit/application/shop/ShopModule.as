@@ -196,9 +196,11 @@ package com.somewater.rabbit.application.shop {
 			if(selectedShopData.type)
 			{
 				items = items.filter(function(obj:ItemDef, ...args):Boolean{
-					if(obj.hasOwnProperty('type') && Object(obj).type == selectedShopData.type)
+					if(obj.hasOwnProperty('type') && Object(obj).type == selectedShopData.type){
+						if(obj is CustomizeDef && !CustomizeDef(obj).shoppable)
+							return false;
 						return true;
-					else
+					}else
 						return false;
 				})
 			}

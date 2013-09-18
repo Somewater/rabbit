@@ -11,6 +11,7 @@ customize: &customize
   class: CustomizeDef
   type: false
   start: false
+  shoppable: true
 
 #####################
 #
@@ -45,6 +46,7 @@ pirate_roof:
   id: 103
   slug: reward.PirateRoof
   cost: 0
+  shoppable: false
 
 #####################
 #
@@ -80,6 +82,7 @@ pirate_door:
   id: 113
   slug: reward.PirateDoor
   cost: 0
+  shoppable: false
 
 #####################
 #
