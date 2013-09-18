@@ -74,6 +74,12 @@ package com.somewater.rabbit.application
 			textField.text = text;
 			setSize(Math.max(_width, textField.width + 20), defaultHeight);
 		}
+
+		public function set htmlLabel(text:String):void
+		{
+			textField.htmlText = text;
+			setSize(Math.max(_width, textField.width + 20), defaultHeight);
+		}
 		
 		public function get label():String
 		{

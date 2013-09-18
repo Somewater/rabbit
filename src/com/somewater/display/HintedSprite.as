@@ -2,7 +2,9 @@ package com.somewater.display
 {
 	import com.somewater.text.Hint;
 	import com.somewater.text.IHinted;
-	
+
+	import flash.display.DisplayObject;
+
 	import flash.display.Sprite;
 
 	public class HintedSprite extends Sprite implements IHinted
@@ -20,10 +22,10 @@ package com.somewater.display
 				if (_hint == null || _hint == "")
 				{
 					_hint = value;
-					Hint.bind(this,value);
+					Hint.bind(hintArea,value);
 				}
 			}else if(_hint != null && _hint != "")
-				Hint.removeHint(this);
+				Hint.removeHint(hintArea);
 			_hint = value;
 								
 		}
@@ -31,6 +33,9 @@ package com.somewater.display
 		{
 			return _hint;
 		}
-		
+
+		protected function get hintArea():DisplayObject {
+			return this;
+		}
 	}
 }

@@ -1,6 +1,7 @@
 package com.somewater.rabbit.application.offers {
 	import com.somewater.control.IClear;
 	import com.somewater.display.HintedSprite;
+	import com.somewater.rabbit.application.OrangeButton;
 	import com.somewater.rabbit.application.offers.OfferDescriptionWindow;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.Lib;
@@ -54,14 +55,31 @@ package com.somewater.rabbit.application.offers {
 						break
 					case INTERFACE_MODE:
 						(core.getChildByName('icon') as MovieClip).gotoAndStop(2 + type * 2);
-						core.getChildByName('background').visible = false;
-						textField.color = 0x124D18;
+						//core.getChildByName('background').visible = false;
+						for(var i:int = 0; i < core.getChildIndex(core.getChildByName('icon')); i++)
+							core.getChildAt(i).visible = false;
+						var buttonGround:OrangeButton = new OrangeButton();
+						buttonGround.setSize(core.width, core.height);
+						buttonGround.y = 3;
+						core.addChildAt(buttonGround, core.getChildIndex(core.getChildByName('icon')));
+						(core.getChildByName('icon') as Sprite).mouseEnabled = false;
 						break
 				}
 			}
 		}
 
 		private function onClick(event:MouseEvent):void {
+			if(UserProfile.instance.offersByType(type) >= OfferManager.instance.prizeQuantityByType(type)){
+				if(type == 0)
+					textArg = "Йохохо, братец-кролик! Набор супер-энергетиков уже твой , заметано!";
+				else if(type == 1)
+					textArg = "Ахой! Пиратский комплект для жилища Кроля - твой, заметано!";
+				else if(type == 2)
+					textArg = "Карамба! Ты уже выиграл 50 кругликов!";
+				Config.application.message(textArg);
+				return;
+			}
+
 			var titleArg:String = '';
 			var textArg:String = '';
 			if(type == 0){

@@ -111,13 +111,14 @@ import com.somewater.rabbit.storage.Config;
 			Hint.bind(statPanel.getChildByName('scoreRatingHintArea'), scoreRatingHint);
 			statPanel.getChildByName('scoreRatingHintArea').alpha = 0;
 
-			if(OfferManager.instance.active)
+			if(OfferManager.instance.active && OfferManager.instance.levelOffers(Config.game.level.number, true).length > 0)
 			{
 				offerStat = new OfferStatPanel(OfferStatPanel.GAME_MODE,
 						OfferManager.instance.offerTypeByLevel(Config.game.level.number));
 				offerStat.x = statPanel.x - 10 - offerStat.width;
 				offerStat.y = statPanel.y;
 				addChild(offerStat);
+				offerStat.mouseChildren = offerStat.mouseEnabled = false;
 			}
 
 			pauseSplash = Lib.createMC('interface.PauseSplash');

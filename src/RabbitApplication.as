@@ -516,7 +516,7 @@ package
 					level = Config.application.levels[0];
 			}
 
-			if(level.type == LevelDef.TYPE && level.number == 1){
+			if(level.type == LevelDef.TYPE && level.number == 1 && UserProfile.instance.levelNumber == 1){
 				level = new TutorialLevelDef();
 			}
 
@@ -1030,7 +1030,7 @@ package
 		}
 
 		public function canCompleteLevel():Boolean{
-			return !TutorialManager.instance.running;
+			return true;
 		}
 
 		private function updateMusicVolume():void{

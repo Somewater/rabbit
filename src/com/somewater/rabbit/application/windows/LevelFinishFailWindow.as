@@ -39,15 +39,15 @@ package com.somewater.rabbit.application.windows {
 			buyContinueBtn.addEventListener(MouseEvent.MOUSE_DOWN, onContinueClicked);
 			if(levelInstance.finalFlag == LevelInstanceDef.LEVEL_FATAL_LIFE){
 				cost = ConfManager.instance.getNumber('CONTINUE_LIFE_COST');
-				buyContinueBtn.label = Lang.t("ВОССТАНОВИТЬ ЖИЗНЬ ЗА {cost}", {cost: cost})
-				Hint.bind(buyContinueBtn, "Все морковки, которые были съедены воронами, снова вырастут");
+				buyContinueBtn.htmlLabel = Lang.t("ВОССТАНОВИТЬ ЖИЗНЬ ЗА <font size='18'>{cost}</font>", {cost: cost})
+				Hint.bind(buyContinueBtn, "Будет восстановлена жизнь и добавлена на несколько секунд защита от врагов");
 			} else if (levelInstance.finalFlag == LevelInstanceDef.LEVEL_FATAL_CARROT){
 				cost = ConfManager.instance.getNumber('CONTINUE_CARROTS_COST');
-				buyContinueBtn.label = Lang.t("ВОССТАНОВИТЬ МОРКОВКИ ЗА {cost}", {cost: cost})
+				buyContinueBtn.htmlLabel = Lang.t("ВОССТАНОВИТЬ МОРКОВКИ ЗА <font size='18'>{cost}</font>", {cost: cost})
 				Hint.bind(buyContinueBtn, "Все морковки, которые были съедены воронами, снова вырастут");
 			} else if (levelInstance.finalFlag == LevelInstanceDef.LEVEL_FATAL_TIME){
 				cost = ConfManager.instance.getNumber('CONTINUE_TIME_COST');
-				buyContinueBtn.label = Lang.t("ВОССТАНОВИТЬ ВРЕМЯ ЗА {cost}", {cost: cost})
+				buyContinueBtn.htmlLabel = Lang.t("ВОССТАНОВИТЬ ВРЕМЯ ЗА <font size='18'>{cost}</font>", {cost: cost})
 				Hint.bind(buyContinueBtn, Lang.t("Будет добавлено {sec} секунд времени", {sec: 30}));
 			}
 			addChild(buyContinueBtn);
