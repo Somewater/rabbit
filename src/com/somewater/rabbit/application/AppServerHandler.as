@@ -218,6 +218,7 @@ package com.somewater.rabbit.application {
 				// сервер успешно принял оффер
 				Config.stat(Stat.OFFER_HARVESTED);
 				if(response['prize_offer_types']){
+					response['user'] = jsonToGameUser(response['user'], UserProfile.instance);
 					new OfferPrizeCongratulationWindow(response['prize_offer_types']);
 				}
 			}, function(response:Object):void{

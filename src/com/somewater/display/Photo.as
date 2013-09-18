@@ -297,7 +297,7 @@ package com.somewater.display
 			while(numChildren)
 				removeChildAt(0);		
 			addChild(image);
-			setSize(scaleType);			
+			setSize(scaleType);
 			
 			
 			if (animatedShowing)

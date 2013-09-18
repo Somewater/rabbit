@@ -9,7 +9,14 @@ package com.somewater.rabbit.application.offers {
 		public function OfferPrizeCongratulationWindow(offersQueue:Array) {
 			this.offersQueue = offersQueue.slice();
 			this.type = this.offersQueue.pop();
-			super(null, null, "images.OfferWindowImage_" + type);
+			var textArg:String = '';
+			if(type == 0)
+				textArg = "Йохохо, братец-кролик! Ты храбро сражался и получаешь награду - набор супер-энергетиков: ускорение и защиту от всех врагов!";
+			else if(type == 1)
+				textArg = "Ахой! Разрази меня гром! Тебе удалось сделать это! Пиратский комплект для жилища Кроля - твой, заметано!";
+			else if(type == 2)
+				textArg = "Аррр! Карамба! Ты выиграл 50 кругликов и теперь богат, как губернатор Ямайки!";
+			super("Ура, победа!!!", textArg, "images.OfferWindowImage_" + type);
 		}
 
 		override public function close():void {

@@ -62,7 +62,22 @@ package com.somewater.rabbit.application.offers {
 		}
 
 		private function onClick(event:MouseEvent):void {
-			new OfferDescriptionWindow(null, hint(), "images.OfferWindowImage_" + type);
+			var titleArg:String = '';
+			var textArg:String = '';
+			if(type == 0){
+				titleArg = 'Собирай рыбьи косточки - получи набор энергетиков!'
+				textArg = 'Йохохо, братцы-кролики! Пират должен быть всегда готов рисковать своей жизнью!\nТе из вас, кто соберет 20 рыбьих косточек,\nполучит супер-энергетики: ускорение и защиту от всех врагов!\nАкция действует с 18 по 27 сентября! Попутного ветра!'
+			}else if(type == 1){
+				titleArg = 'Собирай штурвалы - получи крышу и дверь пирата!'
+				textArg = 'Ахой, свистать всех наверх! Каждый пират должен быть отчаянным и смелым!\nТе из вас, кто соберет 20 штурвалов,\nполучит пиратский комплект для жилища Кроля!\nАкция действует с 18 по 27 сентября! Пора сниматься с якоря!'
+			}else if(type == 2){
+				titleArg = 'Собирай cундучки Дейви Джонса - получи золотишко!'
+				textArg = 'Эй, на палубе! Жизнь пирата – непрестанная цепь сражений!\nТе из вас, кто соберет 20 сундучков Дейви Джонса,\nполучит 50 кругликов!\nАкция действует с 18 по 27 сентября! Смекаешь? На абордаж!'
+			}
+
+			new OfferDescriptionWindow(titleArg,
+					textArg,
+					"images.OfferWindowImage_" + type);
 		}
 
 		private function refresh():void
@@ -78,7 +93,16 @@ package com.somewater.rabbit.application.offers {
 
 		private function hint():String
 		{
-			return Lang.t('OFFERS_HINT_' + type, {harvested: UserProfile.instance.offersByType(type), need: OfferManager.instance.prizeQuantityByType(type)});
+			if(type == 0)
+				return Lang.t("{harvested:Собрана|Собрано|Собрано} {harvested} {harvested:рыбья косточка|рыбьи косточки|рыбьих косточек} из {need}",
+						{harvested: UserProfile.instance.offersByType(type), need: OfferManager.instance.prizeQuantityByType(type)});
+			else if(type == 1)
+				return Lang.t("{harvested:Собран|Собрано|Собрано} {harvested} {harvested:штурвал|штурвала|штурвалов} из {need}",
+						{harvested: UserProfile.instance.offersByType(type), need: OfferManager.instance.prizeQuantityByType(type)});
+			else if(type == 2)
+				return Lang.t("{harvested:Собран|Собрано|Собрано} {harvested} {harvested:сундучек|сундучка|сундучков} из {need}",
+						{harvested: UserProfile.instance.offersByType(type), need: OfferManager.instance.prizeQuantityByType(type)});
+			return ''
 		}
 	}
 }

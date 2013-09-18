@@ -43,11 +43,13 @@ public class EnergyIndicator extends Sprite implements IClear{
 	}
 
 	public function clear():void {
-		user.removeEventListener(UserProfile.CHANGE_USER_DATA, refreshUserData);
-		refreshTimer.removeEventListener(TimerEvent.TIMER, refreshUserData);
-		if(refreshTimer.running) refreshTimer.stop();
-		user = null;
-		Hint.removeHint(this);
+		if(user){
+			user.removeEventListener(UserProfile.CHANGE_USER_DATA, refreshUserData);
+			refreshTimer.removeEventListener(TimerEvent.TIMER, refreshUserData);
+			if(refreshTimer.running) refreshTimer.stop();
+			user = null;
+			Hint.removeHint(this);
+		}
 	}
 
 	private function createView():void {

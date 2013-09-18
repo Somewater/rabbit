@@ -400,6 +400,7 @@ package
 			var entity:IEntity = createEntity('OfferTemplate', x, y);
 			entity.setProperty(new PropertyReference('@Render.slug'),
 					"rabbit.OfferActor" + (offerType > 0 ? '_' + offerType : '' ));
+			entity.setProperty(new PropertyReference('@OfferController.anumationSlug'), 'rabbit.OfferBonusAnimation_' + offerType);
 		}
 
 		public function usePowerup(templateName:String):void {

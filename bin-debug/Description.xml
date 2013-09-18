@@ -698,7 +698,7 @@
 				<y>1</y>
 			</size>
 		</component>
-		<component name="Controller" type="com.somewater.rabbit.creature.OfferControllerComponent">
+		<component name="OfferController" type="com.somewater.rabbit.creature.OfferControllerComponent">
 		</component>
 	</template>
 
