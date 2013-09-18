@@ -164,12 +164,12 @@ namespace :srv do
 		logger.formatter = Logger::Formatter.new
 		
 		puts "=== Process started at #{Time.new} ==="
-		2.times do |step|
+		100.times do |step|
 			break unless notify.enabled
 		
 			# select users
 			user_uids = User.find(:all, :select => 'uid', :limit => 100, 
-						:conditions => "uid='1516396'", :offset => notify.position, :order => 'uid').map(&:uid)
+						:offset => notify.position, :order => 'uid').map(&:uid)
 			puts "selected uids #{user_uids}"
 			break if !user_uids || user_uids.size == 0
 			begin
