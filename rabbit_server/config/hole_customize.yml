@@ -45,7 +45,7 @@ pirate_roof:
   <<: *roof
   id: 103
   slug: reward.PirateRoof
-  cost: 0
+  cost: 1000
   shoppable: false
 
 #####################
@@ -81,7 +81,7 @@ pirate_door:
   <<: *door
   id: 113
   slug: reward.PirateDoor
-  cost: 0
+  cost: 1000
   shoppable: false
 
 #####################
