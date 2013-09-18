@@ -169,7 +169,7 @@ namespace :srv do
 			break unless notify.enabled
 		
 			# select users
-			user_uids = User.find(:all, :select => 'uid', :limit => 100, :conditions => "uid='245894'", :offset => notify.position, :order => 'uid').map(&:uid)
+			user_uids = User.find(:all, :select => 'uid', :limit => 100, :conditions => "uid='91121456'", :offset => notify.position, :order => 'uid').map(&:uid)
 		
 			begin
 				response = nil
