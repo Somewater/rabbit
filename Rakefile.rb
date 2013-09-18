@@ -168,13 +168,15 @@ namespace :srv do
 			break unless notify.enabled
 		
 			# select users
-			user_uids = User.find(:all, :select => 'uid', :limit => 100, :conditions => "uid='91121456'", :offset => notify.position, :order => 'uid').map(&:uid)
-		
+			user_uids = User.find(:all, :select => 'uid', :limit => 100, 
+						:conditions => "uid='1516396'", :offset => notify.position, :order => 'uid').map(&:uid)
+			puts "selected uids #{user_uids}"
+			break if !user_uids || user_uids.size == 0
 			begin
 				response = nil
 				response = app.secure.sendNotification({:uids => user_uids.join(','), :message => notify.message})
 				notify.position += 100
-				logger.warn("Success notify\n#{user_uids} => #{response ? response.body : nil}");
+				logger.warn("Success notify\n#{user_uids} => #{response ? response : nil}");
 			rescue Vkontakte::App::VkException
 				logger.error("Error when notify\n#{user_uids} => #{$!}")
 			rescue
