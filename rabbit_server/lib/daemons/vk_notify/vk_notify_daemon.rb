@@ -4,7 +4,8 @@ require "#{ROOT}/rabbit_server/config/environment.rb"
 require_relative "../rabbit_daemon"
 require_relative 'vk_notify_worker'
 
-logger = Logger.new("#{ROOT/log/daemons/vk-notify-daemon.log}", 10, 1024000)
+Dir.mkdir "#{ROOT}/log/daemons" unless Dir.exist? "#{ROOT}/log/daemons"
+logger = Logger.new("#{ROOT}/log/daemons/vk-notify-daemon.log", 10, 1024000)
 worker = RabbitDaemon::VkNotifyWorker.new
 worker.logger = logger
 

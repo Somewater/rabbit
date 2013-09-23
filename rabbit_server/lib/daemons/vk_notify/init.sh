@@ -1,12 +1,12 @@
 #! /bin/sh
 ### BEGIN INIT INFO
-# Provides:          vk-rabbit-notify
-# Required-Start:    $local_fs $remote_fs
-# Required-Stop:     $local_fs $remote_fs
-# Default-Start:     2 3 4 5
-# Default-Stop:      S 0 1 6
+# Provides:		  vk-rabbit-notify
+# Required-Start:	$local_fs $remote_fs
+# Required-Stop:	 $local_fs $remote_fs
+# Default-Start:	 2 3 4 5
+# Default-Stop:	  S 0 1 6
 # Short-Description: vk-rabbit-notify initscript
-# Description:       vk-rabbit-notify
+# Description:	   vk-rabbit-notify
 ### END INIT INFO
 
 # Add to boot:
@@ -66,18 +66,18 @@ case "$1" in
 	;;
   reload)
 	echo -n "$NAME reloading "
-        if start-stop-daemon --stop --quiet --signal 10 --name ${NAME} --pidfile ${PIDFILE}
-        then
-                echo "reloaded"
-        else
-                echo "not reloaded"
-                exit 1
-        fi
-        ;;
+	if start-stop-daemon --stop --quiet --signal USR1 --name ${NAME} --pidfile ${PIDFILE}
+		then
+				echo "reloaded"
+		else
+				echo "not reloaded"
+				exit 1
+		fi
+		;;
 
   status)
 	echo -n "$NAME is "
-	if start-stop-daemon --stop --quiet --signal 0 --name ${NAME} --pidfile ${PIDFILE}
+	if start-stop-daemon --stop --quiet --signal USR2 --name ${NAME} --pidfile ${PIDFILE}
 	then
 		echo "running"
 	else
