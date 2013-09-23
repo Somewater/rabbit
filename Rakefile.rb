@@ -164,14 +164,31 @@ namespace :srv do
 		logger.formatter = Logger::Formatter.new
 		
 		puts "=== Process started at #{Time.new} ==="
-		100.times do |step|
+		1000.times do |step|
 			break unless notify.enabled
 		
 			# select users
 			user_uids = User.find(:all, :select => 'uid', :limit => 100, 
+#						:conditions => "updated_at < now() - interval '1 hours'",
+:conditions => 
+#"updated_at < now() - interval '1 hours' and not( " << 
+		"(energy < 5 and energy_last_gain is null)" <<
+		" or " <<
+		"(energy = 4 and energy_last_gain < now() - interval '35 minutes')" <<
+		" or " <<
+		"(energy = 3 and energy_last_gain < now() - interval '65 minutes')" <<
+		" or " <<
+		"(energy = 2 and energy_last_gain < now() - interval '95 minutes')" <<
+		" or " <<
+		"(energy = 1 and energy_last_gain < now() - interval '125 minutes')" <<
+		" or " <<
+		"(energy = 0 and energy_last_gain < now() - interval '155 minutes')" , # << " )",
 						:offset => notify.position, :order => 'uid').map(&:uid)
-			puts "selected uids #{user_uids}"
-			break if !user_uids || user_uids.size == 0
+			if !user_uids || user_uids.size == 0
+				notify.enabled = false
+				notify.save
+				break
+			end
 			begin
 				response = nil
 				response = app.secure.sendNotification({:uids => user_uids.join(','), :message => notify.message})
