@@ -8,7 +8,7 @@ require 'common/queue_subscriber'
 
 class RabbitDaemon::Processor
 
-	attr_accessor :sleep_time
+	attr_accessor :min_work_time
 	
 	def initialize(worker, logger, pidfile_path)
 		@worker = worker
@@ -19,7 +19,7 @@ class RabbitDaemon::Processor
 		@pidfile_path = pidfile_path
 		setup_traps()
 
-		@sleep_time = 0
+		@min_work_time = 5
 	end
 
 	def setup_traps()
@@ -70,7 +70,8 @@ class RabbitDaemon::Processor
 				@logger.error "Exception: #{err}"
 				break
 			end
-			sleep(@sleep_time) if @sleep_time > 0
+			time_diff = @min_work_time - (Time.new.to_f - time)
+			sleep(time_diff) if time_diff > 0
 		end
 		status_message "Processing completed at #{Time.new.to_s}"
 		pidfile.close

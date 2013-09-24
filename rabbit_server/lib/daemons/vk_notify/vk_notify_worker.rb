@@ -11,7 +11,7 @@ module RabbitDaemon
 			initialize_queue(QUEUE_NAMESPACE)
 
 			@vk_logger = Logger.new(File.join(ROOT, %W{ log vkontakte.log}))
-			@vk_logger.level = Logger::Severity::WARN
+			@vk_logger.level = Logger::Severity::DEBUG
 			@vk_logger.formatter = Logger::Formatter.new
 
 			Vkontakte.setup do |config|
@@ -28,8 +28,8 @@ module RabbitDaemon
 		def run()
 			t = Time.new.to_f
 			loop do
-				break if (Time.new.to_f - t) > RUN_TIMEOUT
 				break if self.queue_size() == 0
+				break if (Time.new.to_f - t) > RUN_TIMEOUT
 				queue_element = self.shift_from_queue()
 				if queue_element
 					send_notify(queue_element['uids'], queue_element['msg'])
@@ -38,6 +38,7 @@ module RabbitDaemon
 		end
 
 		def send_notify(user_uids, message)
+			@vk_logger.debug("send_notify invoked")
 			return if user_uids.size == 0
 			user_uids.map!{|id| id.to_s}
 			counter = 100000
