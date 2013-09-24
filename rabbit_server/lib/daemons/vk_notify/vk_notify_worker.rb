@@ -32,33 +32,39 @@ module RabbitDaemon
 				break if self.queue_size() == 0
 				queue_element = self.shift_from_queue()
 				if queue_element
-					send_notify(queue_element)
+					send_notify(queue_element['uids'], queue_element['msg'])
 				end
 			end
 		end
 
-		def send_notify(user_uids)
-			reruen if user_uids.size == 0
+		def send_notify(user_uids, message)
+			return if user_uids.size == 0
 			user_uids.map!{|id| id.to_s}
 			counter = 100000
+			time = nil
+			triple_time = 0
 			while user_uids.size > 0 && counter > 0
 				counter -= 0
 				uids = user_uids.shift(100)
 				begin
 					response = nil
-					puts "Sending... #{uids.join(',')[0,10]}"; sleep(0.5)
-					#response = @vk_app.secure.sendNotification({:uids => uids.join(','), :message => notify.message})
+					time = Time.new.to_f
+					response = @vk_app.secure.sendNotification({:uids => uids.join(','), :message => message})
 					@vk_logger.warn("Success notify\n#{uids} => #{response ? response : nil}");
 				rescue Vkontakte::App::VkException
 					@vk_logger.error("Error when notify\n#{uids} => #{$!}")
 				rescue
 					@vk_logger.fatal("Fatal when notify\n#{uids} => #{$!}")
 				end
+				delta_time = Time.new.to_f - time
+				triple_time += delta_time
 				if counter % 3 == 0
-					sleep(0.5)
+					delta_time = 1.1 - triple_time
+					triple_time = 0
 				else
-					sleep(0.3)
+					delta_time = 0.3 - delta_time
 				end
+				sleep(delta_time) if delta_time > 0
 			end
 			raise "Counter limit" if counter == 0
 		end

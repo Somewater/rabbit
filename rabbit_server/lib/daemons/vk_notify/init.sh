@@ -16,10 +16,10 @@
 # $ update-rc.d -f blah remove
 
 # Options
-REPO_PATH=/data/srv/RABBITS/vk/rabbit_server
+REPO_PATH=/data/srv/RABBITS/vk
 DAEMON=$REPO_PATH/rabbit_server/lib/daemons/vk_notify/vk_notify_daemon.rb
 DAEMON_ARGS=
-NAME=vk-rabbit-notify
+NAME=rabbit-vk-notify # as init.d link name
 USER=pav
 GROUP=pav
 
@@ -31,7 +31,9 @@ PIDFILE=$RUNDIR/$NAME.pid
 
 test -x $DAEMON || exit 0
 
-set -e
+. /lib/lsb/init-functions
+
+#set -e
 
 case "$1" in
   start)
@@ -50,7 +52,7 @@ case "$1" in
 	;;
   stop)
 	echo -n "Stopping $NAME: "
-	if start-stop-daemon --stop --retry forever/TERM/1 --quiet --oknodo --pidfile $PIDFILE --exec $DAEMON
+	if start-stop-daemon --stop --retry TERM/300/KILL/5 --pidfile $PIDFILE
 	then
 		echo "$NAME."
 	else
@@ -66,7 +68,7 @@ case "$1" in
 	;;
   reload)
 	echo -n "$NAME reloading "
-	if start-stop-daemon --stop --quiet --signal USR1 --name ${NAME} --pidfile ${PIDFILE}
+	if start-stop-daemon --stop --quiet --signal USR1 --pidfile ${PIDFILE}
 		then
 				echo "reloaded"
 		else
@@ -77,13 +79,7 @@ case "$1" in
 
   status)
 	echo -n "$NAME is "
-	if start-stop-daemon --stop --quiet --signal USR2 --name ${NAME} --pidfile ${PIDFILE}
-	then
-		echo "running"
-	else
-		echo "not running"
-		exit 1
-	fi
+	status_of_proc -p ${PIDFILE} "$DAEMON" && exit 0 || exit $?
 	;;
 
   *)
