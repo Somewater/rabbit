@@ -35,7 +35,7 @@ package com.somewater.rabbit.storage
 		 * hideShop
 		 * autoPostLevelPass - автоматически стартовать постинг пройденного уровня
 		 * portfolioMode - включен режим портфолио, максимально раскрывающий воз-ти игры
-		 * 'lang_pack' - нераспарсенный словарь ключей
+		 * 'lang_pack', lang_pack_local - нераспарсенный словарь ключей
 		 * drawTileGrid - рисовать сетку тайлов
 		 * disableCameraTracking - отключить автоматическое слежение камеры за персонажем
 		 * disableEnergySpend - отключить трату энергии (бесконечное число попыток прох-я уровней)

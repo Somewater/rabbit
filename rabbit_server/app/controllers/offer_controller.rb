@@ -37,15 +37,11 @@ class OfferController < BaseUserController
 
 	def give_prize_by_type(type)
 		if type == 0
-			@user.add_item(ItemManager.instance.by_name('powerup_protection')[:id])
-			@user.add_item(ItemManager.instance.by_name('powerup_speed')[:id])
+			@user.add_item(ItemManager.instance.by_name('powerup_health')[:id], 2)
+			@user.add_item(ItemManager.instance.by_name('powerup_time')[:id])
 		elsif type == 1
-			@user.add_item(ItemManager.instance.by_name('pirate_door')[:id])
-			@user.add_item(ItemManager.instance.by_name('pirate_roof')[:id])
-			@user.set_customize('roof', ItemManager.instance.by_name('pirate_roof')[:id])
-			@user.set_customize('door', ItemManager.instance.by_name('pirate_door')[:id])
-		elsif type == 2
-			@user.money += 50
+			@user.money += 30
+			#@user.set_customize('door', ItemManager.instance.by_name('pirate_door')[:id])
 		end
 	end
 end

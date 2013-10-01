@@ -69,30 +69,13 @@ package com.somewater.rabbit.application.offers {
 		}
 
 		private function onClick(event:MouseEvent):void {
+			var titleArg:String = 'OFFERS_WND_TITLE_0' + type;
+			var textArg:String = 'OFFERS_WND_TEXT_' + type;
 			if(UserProfile.instance.offersByType(type) >= OfferManager.instance.prizeQuantityByType(type)){
-				if(type == 0)
-					textArg = "Йохохо, братец-кролик! Набор супер-энергетиков уже твой , заметано!";
-				else if(type == 1)
-					textArg = "Ахой! Пиратский комплект для жилища Кроля - твой, заметано!";
-				else if(type == 2)
-					textArg = "Карамба! Ты уже выиграл 50 кругликов!";
+				textArg = 'OFFERS_WND_ALREADY_TEXT_' + type;
 				Config.application.message(textArg);
 				return;
 			}
-
-			var titleArg:String = '';
-			var textArg:String = '';
-			if(type == 0){
-				titleArg = 'Собирай рыбьи косточки - получи набор энергетиков!'
-				textArg = 'Йохохо, братцы-кролики! Пират должен быть всегда готов рисковать своей жизнью!\nТе из вас, кто соберет 20 рыбьих косточек,\nполучит супер-энергетики: ускорение и защиту от всех врагов!\nАкция действует с 18 по 27 сентября! Попутного ветра!'
-			}else if(type == 1){
-				titleArg = 'Собирай штурвалы - получи крышу и дверь пирата!'
-				textArg = 'Ахой, свистать всех наверх! Каждый пират должен быть отчаянным и смелым!\nТе из вас, кто соберет 20 штурвалов,\nполучит пиратский комплект для жилища Кроля!\nАкция действует с 18 по 27 сентября! Пора сниматься с якоря!'
-			}else if(type == 2){
-				titleArg = 'Собирай cундучки Дейви Джонса - получи золотишко!'
-				textArg = 'Эй, на палубе! Жизнь пирата – непрестанная цепь сражений!\nТе из вас, кто соберет 20 сундучков Дейви Джонса,\nполучит 50 кругликов!\nАкция действует с 18 по 27 сентября! Смекаешь? На абордаж!'
-			}
-
 			new OfferDescriptionWindow(titleArg,
 					textArg,
 					"images.OfferWindowImage_" + type);

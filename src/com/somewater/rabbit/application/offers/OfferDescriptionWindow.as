@@ -68,7 +68,7 @@ import com.somewater.rabbit.storage.UserProfile;
 		}
 
 		protected function offerText():String {
-			return "Раз-два, взяли! Братцы-кролики, 19 сентября — международный День пиратов! Собирайте бонусы на игровом поле и вас ждет щедрая награда!\nАкция действует с 18 по 27 сентября! Отдать швартовый!"//'OFFERS_WINDOW_TEXT';
+			return "OFFERS_WINDOW_TEXT";
 		}
 
 		protected function offerImage():String {

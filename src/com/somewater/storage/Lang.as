@@ -25,6 +25,10 @@ package com.somewater.storage
 			{
 				_instance = this;
 				delete(Config.memory['lang_pack']);
+				if(Config.memory['lang_pack_local']){
+					langPack += "\n" + Config.memory['lang_pack_local'];
+					delete(Config.memory['lang_pack_local']);
+				}
 				parse(langPack);
 			}
 		}
