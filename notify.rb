@@ -18,13 +18,14 @@ SQL
 VkontakteApi.configure do |config|
 	config.logger.level = Logger::WARN
 end
-def start_procesee(phrases, uids)
+def start_procesee(phrases)
 	v = RabbitDaemon::VkNotifyWorker.new
 	v2 = VkontakteApi::Client.new
 	online_uids_qiantity = 0
 	phrases.each_with_index do |phrase, i| 
 		puts "#{i}) #{phrase}"
 		data = {'msg' => phrase}
+		uids = User.all(:select => 'uid', :conditions => @cond).map &:uid;
 		uids.each_slice(100) do |uids_slice|
 			t = Time.new.to_f
 			online_uids = v2.users.get(:uids => uids_slice, :fields => 'online,uid').select{|u| u.online == 1}.map{|u| u.uid}
@@ -45,8 +46,7 @@ def auto_process(times_q, phrases, step_space = 600)
 	online_uids_qiantity = 0
 	times_q.times do |i|
 		puts "STEP #{i} at #{Time.new}"
-		uids = User.all(:select => 'uid', :conditions => @cond).map &:uid;
-		procesed_uids = start_procesee(phrases, uids)
+		procesed_uids = start_procesee(phrases)
 		sleep(step_space.to_i) if step_space.to_i > 0
 		puts "Processed #{procesed_uids} uids at #{Time.new}"
 		online_uids_qiantity += procesed_uids.to_i
