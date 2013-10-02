@@ -66,7 +66,7 @@ package com.somewater.rabbit.application.windows {
 		}
 
 		protected function get WIDTH():int{
-			return 600;
+			return 630;
 		}
 
 		protected function get HEIGHT():int{

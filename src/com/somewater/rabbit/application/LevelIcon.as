@@ -132,14 +132,7 @@ package com.somewater.rabbit.application
 					offerCounter.visible = true;
 					offerCounterTF.text = unharvested.length.toString();
 					(offerCounter.getChildByName('icon') as MovieClip).gotoAndStop(offerType + 1)
-					var offerHint:String = '';
-					if(offerType == 0){
-						offerHint = Lang.t("{n:Осталась|Осталось|Осталось} {n} {n:косточка|косточки|косточек}", {n: unharvested.length});
-					} else if(offerType == 1){
-						offerHint = Lang.t("{n:Остался|Осталось|Осталось} {n} {n:штурвал|штурвала|штурвалов}", {n: unharvested.length});
-					} else if(offerType == 2){
-						offerHint = Lang.t("{n:Остался|Осталось|Осталось} {n} {n:сундук|сундука|сундуков}", {n: unharvested.length});
-					}
+					var offerHint = Lang.t("OFFERS_HINT_LVL_" + offerType, {n: unharvested.length});
 					Hint.bind(offerCounter, offerHint)
 				} else {
 					offerCounter.visible = false;

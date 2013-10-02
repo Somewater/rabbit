@@ -24,6 +24,9 @@ package
 			super();
 			
 			Config.memory['portfolioMode'] = true;
+
+			Config.memory['lang_pack_local'] = '';
+			include 'locale/smiles_texts.as';
 		}
 		
 		

@@ -68,8 +68,13 @@ package com.somewater.rabbit.application.offers {
 			}
 		}
 
+		public function disableClick():void {
+			buttonMode = useHandCursor = false;
+			removeEventListener(MouseEvent.CLICK, onClick);
+		}
+
 		private function onClick(event:MouseEvent):void {
-			var titleArg:String = 'OFFERS_WND_TITLE_0' + type;
+			var titleArg:String = 'OFFERS_WND_TITLE_' + type;
 			var textArg:String = 'OFFERS_WND_TEXT_' + type;
 			if(UserProfile.instance.offersByType(type) >= OfferManager.instance.prizeQuantityByType(type)){
 				textArg = 'OFFERS_WND_ALREADY_TEXT_' + type;
@@ -94,14 +99,7 @@ package com.somewater.rabbit.application.offers {
 
 		private function hint():String
 		{
-			if(type == 0)
-				return Lang.t("{harvested:Собрана|Собрано|Собрано} {harvested} {harvested:рыбья косточка|рыбьи косточки|рыбьих косточек} из {need}",
-						{harvested: UserProfile.instance.offersByType(type), need: OfferManager.instance.prizeQuantityByType(type)});
-			else if(type == 1)
-				return Lang.t("{harvested:Собран|Собрано|Собрано} {harvested} {harvested:штурвал|штурвала|штурвалов} из {need}",
-						{harvested: UserProfile.instance.offersByType(type), need: OfferManager.instance.prizeQuantityByType(type)});
-			else if(type == 2)
-				return Lang.t("{harvested:Собран|Собрано|Собрано} {harvested} {harvested:сундучек|сундучка|сундучков} из {need}",
+				return Lang.t("OFFERS_HINT_COUNT_" + type,
 						{harvested: UserProfile.instance.offersByType(type), need: OfferManager.instance.prizeQuantityByType(type)});
 			return ''
 		}

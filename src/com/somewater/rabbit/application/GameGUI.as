@@ -118,7 +118,7 @@ import com.somewater.rabbit.storage.Config;
 				offerStat.x = statPanel.x - 10 - offerStat.width;
 				offerStat.y = statPanel.y;
 				addChild(offerStat);
-				offerStat.mouseChildren = offerStat.mouseEnabled = false;
+				offerStat.disableClick();
 			}
 
 			pauseSplash = Lib.createMC('interface.PauseSplash');

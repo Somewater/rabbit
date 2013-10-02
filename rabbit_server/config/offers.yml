@@ -83,9 +83,9 @@
 - type: 1
   x: 4
   y: 4
-- type: 1
-  x: 3
-  y: 3
+- type: 0
+  x: 2
+  y: 1
 10:
 - type: 1
   x: 12
@@ -100,9 +100,9 @@
 - type: 1
   x: 20
   y: 16
-- type: 1
-  x: 6
-  y: 6
+- type: 0
+  x: 4
+  y: 2
 12:
 - type: 1
   x: 6

@@ -53,7 +53,7 @@ package {
 			Config.memory['autoPostLevelPass'] = false;
 			//Config.memory['disableFriendBarInviteBox'] = true;
 			Config.memory['lang_pack_local'] = '';
-			include 'locale/pirates_texts.as'
+			include 'locale/smiles_texts.as';
 		}
 
 		override protected function netInitialize():void
