@@ -433,7 +433,7 @@ package
 						if(OfferManager.instance.active && !OfferManager.instance.allOffersHarvested())
 							new OfferDescriptionWindow();
 					}
-				}, 10*1000)
+				}, 3*1000)
 			}
 		}
 		
