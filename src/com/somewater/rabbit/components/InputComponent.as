@@ -141,7 +141,7 @@ package com.somewater.rabbit.components
 				owner.setProperty(destinationTypeRef, IsoMover.DEST_TYPE_MOUSE);
 				owner.setProperty(destinationRef, tile);
 				listenSuspended = false;
-				var type:int = 0;
+				var type:int = -1;
 				if(type >= 0){
 					trace("- type: " + type + "\n  x: " + tile.x + "\n  y: " + tile.y);
 				}

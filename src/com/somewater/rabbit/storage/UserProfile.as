@@ -214,7 +214,7 @@ import flash.utils.Timer;
 			CONFIG::debug
 			{
 				if(this.roll > 0 && this.roll != roll)
-					throw new Error('Roll collision: client_roll=' + this.roll + '\tserver_roll=' + roll);
+					trace('Roll collision: client_roll=' + this.roll + '\tserver_roll=' + roll);
 			}
 			this.roll = roll;
 		}
