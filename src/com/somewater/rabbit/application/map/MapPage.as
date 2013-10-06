@@ -9,6 +9,7 @@ package com.somewater.rabbit.application.map {
 	import com.somewater.rabbit.application.commands.OpenRewardLevelCommand;
 	import com.somewater.rabbit.application.offers.OfferManager;
 	import com.somewater.rabbit.application.offers.OfferStatPanel;
+	import com.somewater.rabbit.application.tutorial.HighlightArrow;
 	import com.somewater.rabbit.application.windows.NeedMoreEnergyWindow;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
@@ -39,6 +40,7 @@ package com.somewater.rabbit.application.map {
 		protected var core:MovieClip;
 		protected var scroller:MapRScroller;
 		protected var levelIcons:Array;
+		protected var highlightArrow:HighlightArrow;
 		private var mouseMoveStartCoords:Point = new Point();
 		protected var friendBar:FriendBar;
 
@@ -108,6 +110,14 @@ package com.somewater.rabbit.application.map {
 					offerButtons.push(offerStat);
 				}
 			}
+
+			if(UserProfile.instance.levelNumber == 1){
+				highlightArrow = new HighlightArrow();
+				highlightArrow.rotation = 0;
+				highlightArrow.x = 33;
+				highlightArrow.y = 0;
+				levelIcons[0].addChild(highlightArrow);
+			}
 		}
 
 		override public function clear():void {
@@ -135,6 +145,8 @@ package com.somewater.rabbit.application.map {
 			}
 			for each(var offer:OfferStatPanel in offerButtons)
 				offer.clear();
+			if(highlightArrow)
+				highlightArrow.clear();
 		}
 
 		private function onEnergyIndicatorClick(event:MouseEvent):void {
