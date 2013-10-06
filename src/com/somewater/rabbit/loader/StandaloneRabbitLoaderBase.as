@@ -23,6 +23,9 @@ package com.somewater.rabbit.loader {
 		[Embed(source='../../../../../bin-debug/assets/interface.swf', mimeType="application/octet-stream")]
 		private const Interface:Class;
 
+		[Embed(source='../../../../../bin-debug/assets/level_map.swf', mimeType="application/octet-stream")]
+		private const LevelMap:Class;
+
 		[Embed(source='../../../../../bin-debug/assets/rabbit_asset.swf', mimeType="application/octet-stream")]
 		private const Assets:Class;
 
@@ -85,6 +88,7 @@ package com.somewater.rabbit.loader {
 				 {name:'Game', data:Game}
 				,{name:'Application', data:Application}
 				,{name:'Interface', data:Interface}
+				,{name:'LevelMap', data:LevelMap}
 				,{name:'Assets', data:Assets}
 				,{name:'Rewards', data:Rewards}
 				,{name:'Images', data:Images}

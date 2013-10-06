@@ -327,6 +327,7 @@ package com.somewater.control{
 			{
 				position += scrollSpeed;
 			}
+			dispatchEvent(new Event(Event.CHANGE));
 		}
 		
 		
@@ -369,6 +370,7 @@ package com.somewater.control{
 			else
 				_position = (_thumb.x - buttonsHeight)/ (_width - buttonsHeight * 2 - _thumbHeight);
 			updatePosition(false);
+			dispatchEvent(new Event(Event.CHANGE));
 		}
 		
 		/**
@@ -498,8 +500,9 @@ package com.somewater.control{
 			removeEventListener(MouseEvent.MOUSE_WHEEL, onWheel);
 		}
 
-		private function onWheel(event:MouseEvent):void {
+		protected function onWheel(event:MouseEvent):void {
 			this.position -= event.delta * scrollSpeed;
+			dispatchEvent(new Event(Event.CHANGE));
 		}
 	}
 

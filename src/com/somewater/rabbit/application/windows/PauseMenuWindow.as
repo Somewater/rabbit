@@ -20,7 +20,6 @@ package com.somewater.rabbit.application.windows
 	public class PauseMenuWindow extends Window
 	{
 		private var backToTheGame:OrangeButton;
-		private var gotoMainMenuButton:OrangeButton;
 		private var gotoSelectLevelButton:OrangeButton;
 		private var restartLevelButton:OrangeButton;
 		
@@ -29,7 +28,7 @@ package com.somewater.rabbit.application.windows
 		public function PauseMenuWindow()
 		{
 			super("", null, null, [])
-			setSize(270, 430);
+			setSize(270, 380);
 
 			var title:EmbededTextField = new EmbededTextField(null, 0xDB661B, 20);
 			title.text = Lang.t('PAUSE').toUpperCase();
@@ -46,20 +45,11 @@ package com.somewater.rabbit.application.windows
 			backToTheGame.addEventListener(MouseEvent.MOUSE_DOWN, onBackToTheGameClick);
 			backToTheGame.icon = Lib.createMC('interface.IconPlay');
 
-			gotoMainMenuButton = new OrangeButton();
-			gotoMainMenuButton.setSize(180, 32);
-			gotoMainMenuButton.label = Lang.t("BUTTON_GOTO_MAIN_MENU");
-			gotoMainMenuButton.x = (width - gotoMainMenuButton.width) * 0.5;
-			gotoMainMenuButton.y = backToTheGame.y + backToTheGame.height + 25;
-			addChild(gotoMainMenuButton);
-			gotoMainMenuButton.addEventListener(MouseEvent.CLICK, onGotoMainMenuClick);
-			gotoMainMenuButton.icon = Lib.createMC('interface.IconHome');
-
 			gotoSelectLevelButton = new OrangeButton();
 			gotoSelectLevelButton.setSize(180, 32);
 			gotoSelectLevelButton.label = Lang.t("LEVEL_SELECTION");
 			gotoSelectLevelButton.x = (width - gotoSelectLevelButton.width) * 0.5;
-			gotoSelectLevelButton.y = gotoMainMenuButton ? gotoMainMenuButton.y + gotoMainMenuButton.height + 25 : 70;
+			gotoSelectLevelButton.y = backToTheGame ? backToTheGame.y + backToTheGame.height + 25 : 70;
 			addChild(gotoSelectLevelButton);
 			gotoSelectLevelButton.addEventListener(MouseEvent.CLICK, onSelectLevelClick);
 			gotoSelectLevelButton.icon = Lib.createMC('interface.IconLevels');
@@ -68,9 +58,7 @@ package com.somewater.rabbit.application.windows
 			restartLevelButton.setSize(180, 32);
 			restartLevelButton.label = Lang.t("BUTTON_RESTART_LEVEL");
 			restartLevelButton.x = (width - restartLevelButton.width) * 0.5;
-			if(gotoMainMenuButton && gotoSelectLevelButton == null)
-				restartLevelButton.y = gotoMainMenuButton.y + gotoMainMenuButton.height + 25;
-			else if(gotoSelectLevelButton)
+			if(gotoSelectLevelButton)
 				restartLevelButton.y = gotoSelectLevelButton.y + gotoSelectLevelButton.height + 25;
 			addChild(restartLevelButton);
 			restartLevelButton.addEventListener(MouseEvent.CLICK, onRestartLevelClick);
@@ -119,8 +107,6 @@ package com.somewater.rabbit.application.windows
 
 			if(backToTheGame)
 				backToTheGame.removeEventListener(MouseEvent.MOUSE_DOWN, onBackToTheGameClick);
-			if(gotoMainMenuButton)
-				gotoMainMenuButton.removeEventListener(MouseEvent.CLICK, onGotoMainMenuClick);
 			if(gotoSelectLevelButton)
 				gotoSelectLevelButton.removeEventListener(MouseEvent.CLICK, onSelectLevelClick);
 			restartLevelButton.removeEventListener(MouseEvent.CLICK, onRestartLevelClick);

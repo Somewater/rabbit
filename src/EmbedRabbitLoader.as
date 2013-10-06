@@ -43,6 +43,7 @@ package
 				"Application":{priority:int.MIN_VALUE,
 					preload:true,url:"RabbitApplication.swf"}
 				,"Interface":{preload:true, url:"assets/interface.swf"}
+				,"LevelMap":{preload: true, url:"assets/level_map.swf"}
 				,"Assets":{preload:true, url:"assets/rabbit_asset.swf"}
 				,"Rewards":{preload:true, url:"assets/rabbit_reward.swf"}
 				,"Images":{preload:true, url:"assets/rabbit_images.swf"}

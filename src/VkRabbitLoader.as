@@ -93,6 +93,7 @@ package {
 						,"XmlPack":{preload:true, url:static_server_path + "r2/xml_pack.swf?cb=3"}
 
 						,"Interface":{preload:true, url:static_server_path + "r2/assets/interface.swf?cb=3"}
+						,"LevelMap":{preload: true, url:static_server_path + "r2/assets/level_map.swf?cb=3"}
 						,"Assets":{preload:true, url:static_server_path + "r2/assets/rabbit_asset.swf?cb=3"}
 						,"Rewards":{preload:true, url:static_server_path + "r2/assets/rabbit_reward.swf"}
 						,"Images":{preload:true, url:static_server_path + "r2/assets/rabbit_images.swf?cb=3"}

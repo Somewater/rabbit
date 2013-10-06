@@ -19,6 +19,7 @@ package
 	import com.somewater.rabbit.application.GameGUI;
 	import com.somewater.rabbit.application.LevelsPage;
 	import com.somewater.rabbit.application.MainMenuPage;
+	import com.somewater.rabbit.application.map.MapPage;
 	import com.somewater.rabbit.application.offers.OfferManager;
 	import com.somewater.rabbit.application.OrangeButton;
 	import com.somewater.rabbit.application.OrangeGround;
@@ -96,9 +97,9 @@ package
 	public class RabbitApplication extends Sprite implements IRabbitApplication
 	{
 		private const PAGES:Object = {
-										"main_menu":MainMenuPage
+										"main_menu":MapPage
 										,
-										"levels":LevelsPage
+										"levels":MapPage
 										,
 										"top":TopPage
 										,
@@ -118,6 +119,7 @@ package
 		
 		private var _levels:Array;// массив всех уровней игры
 		private var _levelsByNumber:Array;
+		public var lastStartedLevelNum:int = 0;
 		public function get levels():Array{ return _levels; }//array of LevelDef (sort by number)
 		public function getLevelByNumber(number:int):LevelDef{ return _levelsByNumber[number]; }
 		
@@ -491,6 +493,8 @@ package
 			var pageClass:Class = PAGES[name];
 			if(pageClass == null)
 				throw new Error("Undefined page identifier \"" + name + "\"");
+			if(currentPage && Object(currentPage).constructor == pageClass)
+				return;
 			clearContent();
 			currentPage = new pageClass();
 			_content.addChild(currentPage);
@@ -566,6 +570,7 @@ package
 					Config.stat(Stat.LEVEL_STARTED);
 					AppServerHandler.instance.onLevelStarted(UserProfile.instance, level);
 					OfferManager.instance.onLevelStarted(level);
+					lastStartedLevelNum = level.number;
 				}
 				else if(level.type == RewardLevelDef.TYPE)
 				{

@@ -322,7 +322,7 @@ namespace :mailru do
 		require 'fileutils'
 		puts 'Encoding completed'
 		files = ['lang_pack.swf','RabbitApplication.swf','RabbitGame.swf','xml_pack.swf',\
-			'assets/fonts_ru.swf','assets/interface.swf','assets/music_game.swf',\
+			'assets/fonts_ru.swf','assets/interface.swf','assets/level_map.swf','assets/music_game.swf',\
 			'assets/music_menu.swf','assets/rabbit_asset.swf','assets/rabbit_images.swf',\
 			'assets/rabbit_reward.swf','assets/rabbit_sound.swf']
 		files.each{|file|

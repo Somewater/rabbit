@@ -33,6 +33,7 @@ public class OKRabbitLoader extends EvaRabbitLoader{
 			,"XmlPack":{preload:true, url:static_server_path + "r0/xml_pack.swf"}
 
 			,"Interface":{preload:true, url:static_server_path + "r0/assets/interface.swf"}
+			,"LevelMap":{preload:true, url:static_server_path + "r0/assets/level_map.swf"}
 			,"Assets":{preload:true, url:static_server_path + "r0/assets/rabbit_asset.swf"}
 			,"Rewards":{preload:true, url:static_server_path + "r0/assets/rabbit_reward.swf"}
 			,"Images":{preload:true, url:static_server_path + "r0/assets/rabbit_images.swf"}

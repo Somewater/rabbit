@@ -41,10 +41,13 @@ package com.somewater.rabbit.application
 		private var mode:int = -1;
 		private var user:GameUser;
 		private var socialUser:SocialUser;
+		private var bar:FriendBar;
 		
-		public function FriendIcon()
+		public function FriendIcon(bar:FriendBar)
 		{
 			super();
+
+			this.bar = bar;
 			
 			core = Lib.createMC("interface.FriendIcon");
 			addChild(core);
@@ -102,6 +105,7 @@ package com.somewater.rabbit.application
 		
 		private function onClick(e:MouseEvent):void
 		{
+			if(!bar.canIconActions()) return;
 			if(mode == 0 && !Config.memory['disableFriendBarInviteBox'])
 			{
 				Config.loader.showInviteWindow();	

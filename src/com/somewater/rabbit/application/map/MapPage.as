@@ -1,0 +1,332 @@
+package com.somewater.rabbit.application.map {
+	import com.somewater.control.IClear;
+	import com.somewater.display.CorrectSizeDefinerSprite;
+	import com.somewater.rabbit.application.EnergyIndicator;
+	import com.somewater.rabbit.application.FriendBar;
+	import com.somewater.rabbit.application.OrangeButton;
+	import com.somewater.rabbit.application.PageBase;
+	import com.somewater.rabbit.application.RScroller;
+	import com.somewater.rabbit.application.commands.OpenRewardLevelCommand;
+	import com.somewater.rabbit.application.offers.OfferManager;
+	import com.somewater.rabbit.application.offers.OfferStatPanel;
+	import com.somewater.rabbit.application.windows.NeedMoreEnergyWindow;
+	import com.somewater.rabbit.storage.Config;
+	import com.somewater.rabbit.storage.LevelDef;
+	import com.somewater.rabbit.storage.LevelInstanceDef;
+	import com.somewater.rabbit.storage.Lib;
+	import com.somewater.rabbit.storage.UserProfile;
+	import com.somewater.storage.Lang;
+
+	import flash.display.DisplayObject;
+
+	import flash.display.MovieClip;
+	import flash.display.Shape;
+	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
+	import flash.filters.GlowFilter;
+	import flash.geom.Point;
+	import flash.geom.Point;
+	import flash.ui.Mouse;
+	import flash.ui.MouseCursor;
+
+	public class MapPage extends PageBase{
+
+		private static const CORE_HEIGHT:int = 1500;
+		private static var lastShopStart:Boolean = false;
+		private static var lastHoleStart:Boolean = false;
+
+		protected var core:MovieClip;
+		protected var scroller:MapRScroller;
+		protected var levelIcons:Array;
+		private var mouseMoveStartCoords:Point = new Point();
+		protected var friendBar:FriendBar;
+
+		private var shopButton:OrangeButton;
+		private var holeButton:OrangeButton;
+		private var energyIndicator:EnergyIndicator;
+		private var offerButtons:Array = [];
+
+		public function MapPage() {
+			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+		}
+
+		private function onAddedToStage(event:Event):void {
+			createCore();
+
+			scroller = new MapRScroller();
+			scroller.scrollSpeed = 0.05;
+			scroller.scrollFullThumb = false;
+			scroller.setSize(0, Config.HEIGHT);
+			addChild(scroller);
+			scroller.x = Config.WIDTH;
+			scroller.y = 0;
+			scroller.addEventListener(Event.CHANGE, onScroll);
+			var scrollContent:Sprite = new CorrectSizeDefinerSprite(0, CORE_HEIGHT);
+			scroller.content = scrollContent;
+			scrollToUserCurrentPos();
+			onScroll();
+
+			friendBar = new FriendBar();
+			friendBar.x = 10;
+			friendBar.y = Config.HEIGHT -  friendBar.HEIGHT - 10;
+			addChild(friendBar);
+			friendBar.rollDown(true)
+
+			shopButton = new BrightGreenButton();
+			shopButton.label = Lang.t('SHOP_MENU_BTN');
+			shopButton.icon = Lib.createMC('interface.IconShop')
+			shopButton.setSize(180, 32);
+			shopButton.x =  Config.WIDTH - shopButton.width - 30;
+			shopButton.y = 10;
+			shopButton.addEventListener(MouseEvent.CLICK, onShopClick)
+			addChild(shopButton);
+
+			holeButton = new OrangeButton();
+			holeButton.label = Lang.t('MY_ACHIEVEMENTS');
+			holeButton.icon = Lib.createMC('interface.IconRewards')
+			holeButton.setSize(180, 32);
+			holeButton.x = shopButton.x;
+			holeButton.y = holeButton.y + 50;
+			holeButton.addEventListener(MouseEvent.CLICK, onHoleClick)
+			addChild(holeButton);
+
+			if(UserProfile.instance.levelNumber > 1 || !UserProfile.instance.energyIsFull()){
+				energyIndicator = new EnergyIndicator();
+				energyIndicator.y = 10;
+				energyIndicator.x = 10;
+				energyIndicator.addEventListener(MouseEvent.CLICK, onEnergyIndicatorClick);
+				addChild(energyIndicator);
+			}
+
+			if(OfferManager.instance.active){
+				for each(var offerType:int in OfferManager.instance.types) {
+					var offerStat:OfferStatPanel = new OfferStatPanel(OfferStatPanel.INTERFACE_MODE, offerType);
+					offerStat.x = (energyIndicator ? energyIndicator.x + energyIndicator.width + 10: 10) + + offerType * 130;
+					offerStat.y = 10;
+					addChild(offerStat);
+					offerButtons.push(offerStat);
+				}
+			}
+		}
+
+		override public function clear():void {
+			super.clear();
+			scroller.clear();
+			scroller.removeEventListener(Event.CHANGE, onScroll);
+			for each(var lIcon:MapLevelIcon in levelIcons){
+				lIcon.clear();
+				lIcon.removeEventListener(MouseEvent.CLICK, onLevelClick)
+			}
+			levelIcons = null;
+			core.removeEventListener(MouseEvent.MOUSE_DOWN, onMouseDownOnMap);
+			core.removeEventListener(MouseEvent.MOUSE_UP, onMouseUpOnMap);
+			core.removeEventListener(MouseEvent.MOUSE_OUT, onMouseUpOnMap);
+			this.removeEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
+			core.removeEventListener(MouseEvent.MOUSE_MOVE, onMouseMoveOnMap);
+			if(stage) stage.removeEventListener(MouseEvent.MOUSE_OUT, onMouseUpOnStage);
+			clearButton(core.hole);
+			clearButton(core.shop);
+			shopButton.removeEventListener(MouseEvent.CLICK, onShopClick)
+			holeButton.removeEventListener(MouseEvent.CLICK, onHoleClick)
+			if(energyIndicator){
+				energyIndicator.addEventListener(MouseEvent.CLICK, onEnergyIndicatorClick);
+				energyIndicator.clear();
+			}
+			for each(var offer:OfferStatPanel in offerButtons)
+				offer.clear();
+		}
+
+		private function onEnergyIndicatorClick(event:MouseEvent):void {
+			if(!UserProfile.instance.energyIsFull())
+				new NeedMoreEnergyWindow(null, null, Lang.t('BUY_ENERGY_WND_TITLE'));
+		}
+
+		override protected function createGround():void {
+			this.graphics.beginFill(0x96C44A);
+			this.graphics.drawRect(0, 0, Config.WIDTH, Config.HEIGHT);
+			this.graphics.endFill();
+		}
+
+		private function createCore():void {
+			core = Lib.createMC('interface.MapCore');
+			addChild(core);
+			levelIcons = [];
+			var userLevel:int = UserProfile.instance.levelNumber;
+			for(var i:int = 1; i < 100; i++){
+				var levelHolder:DisplayObject = core['level_' + i];
+				if(levelHolder){
+					var icon:MapLevelIcon = new MapLevelIcon();
+					icon.x = levelHolder.x;
+					icon.y = levelHolder.y;
+					levelHolder.parent.addChild(icon);
+					levelHolder.parent.removeChild(levelHolder);
+					levelIcons.push(icon);
+					icon.levelNum = i;
+					icon.levelInstance = UserProfile.instance.getLevelInsanceByNumber(i);
+					icon.refresh();
+					icon.addEventListener(MouseEvent.CLICK, onLevelClick)
+				} else
+					break;
+			}
+			core.wall2.visible = userLevel > 12;
+			createButton(core.hole);
+			createButton(core.shop);
+			core.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDownOnMap);
+			core.addEventListener(MouseEvent.MOUSE_UP, onMouseUpOnMap);
+			core.addEventListener(MouseEvent.MOUSE_OUT, onMouseUpOnMap);
+			if(stage) stage.addEventListener(MouseEvent.MOUSE_OUT, onMouseUpOnStage);
+			this.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
+		}
+
+		private function onScroll(event:Event = null):void {
+			core.y = (CORE_HEIGHT - Config.HEIGHT) * (1 - scroller.position) + Config.HEIGHT;
+		}
+
+		private function onLevelClick(event:MouseEvent):void {
+			var icon:MapLevelIcon = event.currentTarget as MapLevelIcon;
+			if(icon.active){
+				var levelDef:LevelDef = Config.application.getLevelByNumber(icon.levelNum);
+				if(UserProfile.instance.canPlayWithLevel(levelDef) || Config.memory['portfolioMode']){
+					if(UserProfile.instance.canSpendEnergy()){
+						Config.application.startGame(levelDef);
+					}else{
+						new NeedMoreEnergyWindow(function():void{
+							Config.application.startGame(levelDef);
+						})
+					}
+				}
+			}
+		}
+
+		private function onMouseDownOnMap(event:MouseEvent):void {
+			core.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMoveOnMap);
+			mouseMoveStartCoords.x = this.stage.mouseX;
+			mouseMoveStartCoords.y = this.stage.mouseY;
+		}
+
+		private function onMouseUpOnMap(event:MouseEvent):void {
+			if(event.type == MouseEvent.MOUSE_OUT && core.contains(event.target as DisplayObject)) return;
+			onMouseUpOnStage();
+		}
+
+		private function onMouseUpOnStage(event:Event = null):void {
+			core.removeEventListener(MouseEvent.MOUSE_MOVE, onMouseMoveOnMap);
+			Mouse.cursor = MouseCursor.AUTO;
+		}
+
+		private function onMouseMoveOnMap(event:MouseEvent):void {
+			var delta:int = mouseMoveStartCoords.y - this.stage.mouseY;
+			scroller.position += delta / (CORE_HEIGHT - Config.HEIGHT);
+			onScroll();
+			mouseMoveStartCoords.y = this.stage.mouseY;
+			Mouse.cursor = MouseCursor.HAND
+		}
+
+		private function onMouseWheel(event:MouseEvent):void {
+			scroller.scrollOnDelta(event.delta);
+		}
+
+		private function scrollToUserCurrentPos():void {
+			var icon:DisplayObject;
+			if(lastShopStart){
+				icon = core.hole;
+			} else if(lastHoleStart){
+				icon = core.shop;
+			} else {
+				var searchLevel:int = (Config.application as RabbitApplication).lastStartedLevelNum ?
+						(Config.application as RabbitApplication).lastStartedLevelNum : UserProfile.instance.levelNumber;
+				for each(var ic:MapLevelIcon in levelIcons)
+					if(ic.levelNum == searchLevel){
+						icon = ic;
+						break;
+					}
+			}
+			if(icon){
+				var pos:Point = core.globalToLocal(icon.localToGlobal(new Point()));
+				scroller.position = (CORE_HEIGHT + pos.y - Config.HEIGHT * 0.5) / (CORE_HEIGHT - Config.HEIGHT);
+			} else {
+				scroller.position = 0;
+			}
+			lastShopStart = false;
+			lastHoleStart = false;
+		}
+
+		private function createButton(button:MovieClip):void {
+			button.addEventListener(MouseEvent.MOUSE_OVER, onCoreButtonOver);
+			button.addEventListener(MouseEvent.MOUSE_OUT, onCoreButtonOut);
+			button.addEventListener(MouseEvent.CLICK, onCoreButtonClick);
+			button.buttonMode = button.useHandCursor = true;
+		}
+
+		private function clearButton(button:MovieClip):void {
+			button.removeEventListener(MouseEvent.MOUSE_OVER, onCoreButtonOver);
+			button.removeEventListener(MouseEvent.MOUSE_OUT, onCoreButtonOut);
+			button.removeEventListener(MouseEvent.MOUSE_OVER, onCoreButtonClick);
+		}
+
+		private function onCoreButtonOver(event:MouseEvent):void {
+			(event.currentTarget as DisplayObject).filters = [new GlowFilter(0xDB6E39, 1, 20, 20)]
+		}
+
+		private function onCoreButtonOut(event:MouseEvent):void {
+			(event.currentTarget as DisplayObject).filters = [];
+		}
+
+		private function onCoreButtonClick(event:MouseEvent):void {
+			lastShopStart = false;
+			lastHoleStart = false;
+			switch(event.currentTarget){
+				case core.hole:
+					lastHoleStart = true;
+					new OpenRewardLevelCommand(UserProfile.instance).execute();
+					break;
+				case core.shop:
+					lastShopStart = true;
+					Config.application.startPage('shop');
+					break;
+			}
+		}
+
+		private function onShopClick(event:Event):void {
+			Config.application.startPage('shop');
+		}
+
+		private function onHoleClick(event:Event):void {
+			new OpenRewardLevelCommand(UserProfile.instance).execute();
+		}
+	}
+}
+
+import com.somewater.rabbit.application.RScroller;
+import com.somewater.rabbit.application.buttons.GreenButton;
+import com.somewater.rabbit.storage.Lib;
+
+import flash.display.Sprite;
+
+import flash.events.Event;
+
+import flash.events.MouseEvent;
+
+class MapRScroller extends RScroller{
+	override protected function onWheel(event:MouseEvent):void {
+		scrollOnDelta(event.delta);
+	}
+
+	public function scrollOnDelta(delta:int):void {
+		this.position -= (delta > 0 ? 1 : (delta < 0 ? -1 : 0)) * scrollSpeed;
+		dispatchEvent(new Event(Event.CHANGE));
+	}
+}
+
+class BrightGreenButton extends GreenButton {
+
+	public function BrightGreenButton(){
+		super();
+		this.color = 0x226822;
+	}
+
+	override protected function createGround(type:String):Sprite {
+		return Lib.createMC(this.enabled ? "interface.BrightGreenButton_" + type : 'interface.ShadowOrangeButton_up');
+	}
+}

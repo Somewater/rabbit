@@ -1,5 +1,7 @@
 package com.somewater.rabbit.application
 {
+	import com.greensock.TweenLite;
+	import com.greensock.TweenMax;
 	import com.somewater.control.IClear;
 	import com.somewater.rabbit.events.NeighbourAddedEvent;
 	import com.somewater.rabbit.storage.Config;
@@ -20,15 +22,19 @@ package com.somewater.rabbit.application
 	{
 		public var WIDTH:int = 510;
 		public var HEIGHT:int = 120;
+		public var MIN_WIDTH:int = HEIGHT;
 
 		private static var lastCommonPosition:int = 0;
 		
 		private var ground:DisplayObject;
+
+		private var contentHolder:Sprite;
 		private var leftArrow:SimpleButton;
 		private var leftStuporArrow:SimpleButton;
 		private var rightArrow:SimpleButton;
 		private var rightStuporArrow:SimpleButton;
 		private var requestCounter:NumberIndicator;
+		private var rollUnrollBtn:SimpleButton;
 		
 		private var friendIcons:Array = [];
 		private var neighbours:Array;
@@ -47,30 +53,38 @@ package com.somewater.rabbit.application
 			
 			ground = Lib.createMC("interface.LightGreenGround");
 			addChild(ground);
+
+			contentHolder = new Sprite();
+			addChild(contentHolder);
 			
 			leftArrow = Lib.createMC("interface.ArrowButton");
 			leftArrow.addEventListener(MouseEvent.CLICK, onArrowClick);
 			leftArrow.x = 14;
 			leftArrow.y = 25;
-			addChild(leftArrow);
+			contentHolder.addChild(leftArrow);
+
+			rollUnrollBtn = Lib.createMC("interface.ArrowButtonHeight");
+			rollUnrollBtn.addEventListener(MouseEvent.CLICK, onUnrollClick);
+			rollUnrollBtn.y = 25;
+			contentHolder.addChild(rollUnrollBtn);
 			
 			leftStuporArrow = Lib.createMC("interface.ArrowStuporButton");
 			leftStuporArrow.addEventListener(MouseEvent.CLICK, onArrowClick);
 			leftStuporArrow.x = 14;
 			leftStuporArrow.y = 72;
-			addChild(leftStuporArrow);
+			contentHolder.addChild(leftStuporArrow);
 			
 			rightArrow = Lib.createMC("interface.ArrowButton");
 			rightArrow.addEventListener(MouseEvent.CLICK, onArrowClick);
 			rightArrow.scaleX = -1;
 			rightArrow.y = 25;
-			addChild(rightArrow);
+			contentHolder.addChild(rightArrow);
 			
 			rightStuporArrow = Lib.createMC("interface.ArrowStuporButton");
 			rightStuporArrow.addEventListener(MouseEvent.CLICK, onArrowClick);
 			rightStuporArrow.scaleX = -1;
 			rightStuporArrow.y = 72;
-			addChild(rightStuporArrow);
+			contentHolder.addChild(rightStuporArrow);
 
 			fullAppFriends();
 
@@ -83,24 +97,24 @@ package com.somewater.rabbit.application
 				if(!appFriendsUids[s.id])
 					notAppFriends.push(s);
 
-			ITEMS = neighbours.length > 3 ? Math.max(6, -1 + int((Config.WIDTH - 70 - 110) / 80)) : 4;
+			ITEMS = neighbours.length > 3 ? Math.max(6, -1 + int((Config.WIDTH - 70 - 160) / 80)) : 4;
 			
 			for(var i:int = 0;i<=ITEMS;i++)
 			{
-				var friendIcon:FriendIcon = new FriendIcon();
+				var friendIcon:FriendIcon = new FriendIcon(this);
 				friendIcon.x = 55 + i * 80;     
 				friendIcon.y = 27;
-				addChild(friendIcon);
+				contentHolder.addChild(friendIcon);
 				friendIcons.push(friendIcon);
 			}
 			position = lastCommonPosition;
 
 			requestCounter = new NumberIndicator();
 			requestCounter.visible = false;
-			addChild(requestCounter);
+			contentHolder.addChild(requestCounter);
 			updateNeighbourRequestIcon();
 
-			if(notAppFriends.length) {
+			if(notAppFriends.length || realNeighbours.length) {
 				notAppFriends.sort(function(a:SocialUser, b:SocialUser):int{ return Math.random() > 0.5 ? 1 : -1 });
 				refreshAddNeighbourTimer = new Timer(10000);
 				refreshAddNeighbourTimer.addEventListener(TimerEvent.TIMER, refreshAddNeighbourIcon);
@@ -108,11 +122,13 @@ package com.somewater.rabbit.application
 				refreshAddNeighbourIcon();
 			}
 
-			WIDTH = ground.width = 110 + (ITEMS + 1) * 80;
+			WIDTH = ground.width = 160 + (ITEMS + 1) * 80;
 			HEIGHT = ground.height = HEIGHT;
-			rightStuporArrow.x = rightArrow.x = WIDTH - 24;
+			rightStuporArrow.x = rightArrow.x = WIDTH - 24- 50;
+			rollUnrollBtn.x = WIDTH - 24 - 20;
 
 			UserProfile.instance.addEventListener(NeighbourAddedEvent.NEIGHBOUR_ADDED_EVENT, onNeighbourAdded);
+			addEventListener(MouseEvent.CLICK, onRollUnrollClick);
 		}
 		
 		public function clear():void
@@ -125,6 +141,7 @@ package com.somewater.rabbit.application
 			leftStuporArrow.removeEventListener(MouseEvent.CLICK, onArrowClick);
 			rightStuporArrow.removeEventListener(MouseEvent.CLICK, onArrowClick);
 			rightArrow.removeEventListener(MouseEvent.CLICK, onArrowClick);
+			rollUnrollBtn.removeEventListener(MouseEvent.CLICK, onUnrollClick);
 
 			if(refreshAddNeighbourTimer){
 				refreshAddNeighbourTimer.removeEventListener(TimerEvent.TIMER, refreshAddNeighbourIcon);
@@ -133,6 +150,8 @@ package com.somewater.rabbit.application
 			}
 
 			UserProfile.instance.removeEventListener(NeighbourAddedEvent.NEIGHBOUR_ADDED_EVENT, onNeighbourAdded);
+			removeEventListener(MouseEvent.CLICK, onRollUnrollClick);
+			clearRollUnrollAnim();
 		}
 
 		private function onNeighbourAdded(event:NeighbourAddedEvent):void {
@@ -222,11 +241,24 @@ package com.somewater.rabbit.application
 		}
 
 		private function refreshAddNeighbourIcon(event:Event = null):void {
-			var user:SocialUser = notAppFriends[notAppFriendsPos++ % notAppFriends.length];
-			var icon:FriendIcon = FriendIcon(friendIcons[friendIcons.length - 1]);
+			var user:SocialUser;
+			if(notAppFriends.length){
+				user = notAppFriends[notAppFriendsPos++ % notAppFriends.length];
+			} else {
+				var rNeighbours:Array = this.realNeighbours;
+				user = (rNeighbours[notAppFriendsPos++ % rNeighbours.length] as GameUser).socialUser;
+			}
+
+			var icon:FriendIcon = friendTimerIcon();
+			if(icon.parent != this)
+				addChild(icon);
 			icon.setUser(user);
 			requestCounter.x = icon.x + 55;
 			requestCounter.y = icon.y - 5;
+		}
+
+		private function friendTimerIcon():FriendIcon{
+			return friendIcons[friendIcons.length - 1] as FriendIcon;
 		}
 
 		private function updateNeighbourRequestIcon():void {
@@ -239,6 +271,85 @@ package com.somewater.rabbit.application
 			}
 			requestCounter.visible = requestNum > 0;
 			requestCounter.number = requestNum;
+		}
+
+		public function rollUp():void {
+			if(!closed) return;
+			closed = false;
+			TweenLite.to(ground, 0.3, {width: WIDTH, height: HEIGHT, onComplete: function(){
+				setFriendTimerIconPos();
+				contentHolder.visible = true;
+				TweenMax.to(contentHolder, 0.3, {alpha: 1, onComplete: clearRollUnrollAnim});
+			}});
+			buttonMode = useHandCursor = false;
+		}
+
+		private var closed:Boolean = false;
+		public function rollDown(force:Boolean = false):void {
+			if(closed) return;
+			closed = true;
+			if(force){
+				contentHolder.alpha = 0;
+				contentHolder.visible = false;
+				ground.width = ground.height = HEIGHT;
+				this.visible = notAppFriends.length > 0 ||realNeighbours.length > 0;
+				setFriendTimerIconPos(force);
+			} else {
+				setFriendTimerIconPos();
+				TweenMax.to(contentHolder, 0.3, {alpha: 0, onComplete: function():void{
+					contentHolder.visible = false;
+					TweenMax.to(ground, 0.3, {width: MIN_WIDTH, height: HEIGHT, onComplete: clearRollUnrollAnim});
+				}})
+			}
+			buttonMode = useHandCursor = true;
+		}
+
+		private function clearRollUnrollAnim():void {
+			TweenLite.killTweensOf(ground, true);
+			TweenLite.killTweensOf(contentHolder, true);
+			TweenLite.killTweensOf(friendIcons, true);
+		}
+
+		private function setFriendTimerIconPos(force:Boolean = false):void{
+			var friendIcon:FriendIcon = friendTimerIcon();
+			if(closed){
+				if(force){
+					friendIcon.x = (MIN_WIDTH - friendIcon.width) * 0.5 + 2;
+					friendIcon.y = 23;
+				} else {
+					TweenMax.to(friendIcon, 0.15, {
+						x: (MIN_WIDTH - friendIcon.width) * 0.5 + 2,
+						y: 23
+					})
+				}
+			} else {
+				TweenMax.to(friendIcon, 0.15, {
+					x: 55 + friendIcons.indexOf(friendIcon) * 80,
+					y: 27
+				})
+			}
+		}
+
+		public function get realNeighbours():Array {
+			return  neighbours.filter(function(u:GameUser, ...args):Boolean{
+				return  !u.itsMe() && !(u is ImaginaryGameUser);
+			})
+		}
+
+		private function onRollUnrollClick(event:Event):void {
+			if(closed){
+				rollUp();
+				event.stopImmediatePropagation()
+			}
+		}
+
+		private function onUnrollClick(event:Event):void {
+			rollDown();
+			event.stopImmediatePropagation();
+		}
+
+		public function canIconActions():Boolean {
+			return !closed;
 		}
 	}
 }

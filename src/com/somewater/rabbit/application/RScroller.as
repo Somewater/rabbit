@@ -9,6 +9,7 @@ package com.somewater.rabbit.application {
 	public class RScroller extends Scroller{
 
 		public static const SCROLL_WIDTH:int = 20;
+		public var scrollFullThumb:Boolean = true;
 
 		public function RScroller() {
 
@@ -32,7 +33,7 @@ package com.somewater.rabbit.application {
 		override public function draw():void {
 			super.draw();
 
-			if(content)
+			if(content && scrollFullThumb)
 			{
 				scrollSpeed = Math.max(0.05, orientation == VERTICAL ? _height / content.height : _width / content.width);
 			}
