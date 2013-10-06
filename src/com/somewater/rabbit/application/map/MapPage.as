@@ -1,6 +1,7 @@
 package com.somewater.rabbit.application.map {
 	import com.somewater.control.IClear;
 	import com.somewater.display.CorrectSizeDefinerSprite;
+	import com.somewater.rabbit.application.AudioControls;
 	import com.somewater.rabbit.application.EnergyIndicator;
 	import com.somewater.rabbit.application.FriendBar;
 	import com.somewater.rabbit.application.OrangeButton;
@@ -48,6 +49,7 @@ package com.somewater.rabbit.application.map {
 		private var holeButton:OrangeButton;
 		private var energyIndicator:EnergyIndicator;
 		private var offerButtons:Array = [];
+		private var audioControls:AudioControls;
 
 		public function MapPage() {
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
@@ -101,6 +103,11 @@ package com.somewater.rabbit.application.map {
 				addChild(energyIndicator);
 			}
 
+			audioControls = new AudioControls();
+			audioControls.x = 10;
+			audioControls.y = energyIndicator ? energyIndicator.y + energyIndicator.height + 10 : 10;
+			addChild(audioControls)
+
 			if(OfferManager.instance.active){
 				for each(var offerType:int in OfferManager.instance.types) {
 					var offerStat:OfferStatPanel = new OfferStatPanel(OfferStatPanel.INTERFACE_MODE, offerType);
@@ -147,6 +154,7 @@ package com.somewater.rabbit.application.map {
 				offer.clear();
 			if(highlightArrow)
 				highlightArrow.clear();
+			audioControls.clear();
 		}
 
 		private function onEnergyIndicatorClick(event:MouseEvent):void {
