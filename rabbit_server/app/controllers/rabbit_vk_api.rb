@@ -27,6 +27,12 @@ class RabbitVkApi < VkApi
 		user.save
 		t.id
 	end
+
+	def on_event(uid, name, params = nil)
+		if name == 'level'
+			self.secure_vk.secure.setUserLevel(uid, params[:level])
+		end
+	end
 end
 
 NetApi.register(RabbitVkApi)

@@ -28,6 +28,8 @@ class LevelsController < BaseUserController
 			end
 		end
 
+		@user.api.on_event(@user.uid, 'level', {:level => level_instance.number})
+
 		@response['levelInstance'] = level_instance.to_json
 		@response['user'] = @user.to_json
 	end

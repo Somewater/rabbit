@@ -47,6 +47,10 @@ class NetApi
 	def pay(user, value, params = nil)
 		raise UnimplementedError, "Override me"	
 	end
+
+	def on_event(uid, name, params= nil)
+
+	end
 	
 	####
 	#

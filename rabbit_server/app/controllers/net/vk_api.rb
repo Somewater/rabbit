@@ -99,6 +99,13 @@ class VkApi < NetApi
 			end
 			
 			@secure_vk = Vkontakte::App::Secure.new
+
+			s = @secure_vk.secure
+			def s.setUserLevel(uid, level)
+				options = {:uid => uid, :level => level}
+				options = default_options.merge(options)
+				call("secure.setUserLevel", options)
+			end
 		end
 		@secure_vk
 	end
