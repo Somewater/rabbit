@@ -20,6 +20,7 @@ package com.somewater.rabbit.application.map {
 	import com.somewater.storage.Lang;
 
 	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
 
 	import flash.display.MovieClip;
 	import flash.display.Shape;
@@ -189,7 +190,13 @@ package com.somewater.rabbit.application.map {
 				} else
 					break;
 			}
-			core.wall2.visible = userLevel > 12;
+			var rabbitPlace:DisplayObjectContainer = core['rabbit_place_' + userLevel];
+			if(rabbitPlace){
+				core.rabbit.x = core.rabbit.y = 0;
+				rabbitPlace.addChild(core.rabbit);
+			}
+			core.wall2.visible = userLevel <= 12;
+			core.wall3.visible = userLevel <= 24;
 			createButton(core.hole);
 			createButton(core.shop);
 			core.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDownOnMap);
