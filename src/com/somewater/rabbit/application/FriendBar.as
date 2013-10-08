@@ -173,7 +173,7 @@ package com.somewater.rabbit.application
 		private function fullAppFriends():void{
 			neighboursUids = {};
 			neighbours = UserProfile.instance.neighbours;
-			neighbours.push(ImaginaryGameUser.instance)
+			//neighbours.push(ImaginaryGameUser.instance)
 			neighbours.push(UserProfile.instance)
 			neighbours.sortOn("levelNumber", Array.NUMERIC | Array.DESCENDING);
 			for each(var n:GameUser in neighbours)

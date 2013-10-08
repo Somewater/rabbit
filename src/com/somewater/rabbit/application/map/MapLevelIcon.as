@@ -1,5 +1,7 @@
 package com.somewater.rabbit.application.map {
 	import com.somewater.control.IClear;
+	import com.somewater.rabbit.application.OfferCounter;
+	import com.somewater.rabbit.application.offers.OfferManager;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
@@ -19,6 +21,7 @@ package com.somewater.rabbit.application.map {
 		public var levelNum:int;
 		public var levelInstance:LevelInstanceDef;
 		public var active:Boolean;
+		private var offerCounter:OfferCounter;
 
 		public function MapLevelIcon() {
 			core = Lib.createMC('interface.MapLevelCore');
@@ -34,6 +37,8 @@ package com.somewater.rabbit.application.map {
 		}
 
 		public function clear():void {
+			if(offerCounter)
+				offerCounter.clear();
 		}
 
 		public function refresh():void {
@@ -64,6 +69,14 @@ package com.somewater.rabbit.application.map {
 			levelTextField.visible = active;
 			if(active){
 				levelTextField.text = levelNum.toString();
+			}
+
+			if(OfferManager.instance.active){
+				offerCounter = new OfferCounter();
+				offerCounter.x = 45;
+				offerCounter.y = -6;
+				offerCounter.levelNum = levelNum;
+				addChild(offerCounter);
 			}
 		}
 	}
