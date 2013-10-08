@@ -16,6 +16,13 @@ package com.somewater.rabbit.application.map {
 
 	public class MapLevelIcon extends Sprite implements IClear{
 
+		private static const offerPosExceptions:Object = {
+			6: [-20, -6],
+			20: [-20, -6],
+			21: [-20, -6],
+			23: [-20, -6]
+		}
+
 		protected var core:MovieClip;
 		protected var levelTextField:EmbededTextField;
 		public var levelNum:int;
@@ -73,8 +80,8 @@ package com.somewater.rabbit.application.map {
 
 			if(OfferManager.instance.active){
 				offerCounter = new OfferCounter();
-				offerCounter.x = 45;
-				offerCounter.y = -6;
+				offerCounter.x = offerPosExceptions[levelNum] ? offerPosExceptions[levelNum][0] : 45;
+				offerCounter.y = offerPosExceptions[levelNum] ? offerPosExceptions[levelNum][1] : -6;
 				offerCounter.levelNum = levelNum;
 				addChild(offerCounter);
 			}

@@ -244,6 +244,14 @@ package com.somewater.rabbit.application.map {
 
 		private function createFriendMapIcons():void {
 			friendIcons = [];
+			/*var addition:Array = []
+			for(var i:int = 1;i<26;i++)
+				for(var k:int = 0;k<10;k++){
+					var g:GameUser = new ImaginaryGameUser();
+					g.socialUser.photos = ["http://localhost:3000/files/posting/friends_invite_posting.jpg"];
+					g._levelNumber = i;
+					addition.push(g);
+				}*/
 			var groupParentsByLevel:Object = {};
 			for each(var friend:GameUser in UserProfile.instance.neighbours){
 				var placeholder:DisplayObjectContainer = core['level_' + friend.levelNumber];
