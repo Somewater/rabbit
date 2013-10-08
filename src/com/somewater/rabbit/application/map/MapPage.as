@@ -13,6 +13,7 @@ package com.somewater.rabbit.application.map {
 	import com.somewater.rabbit.application.offers.OfferStatPanel;
 	import com.somewater.rabbit.application.tutorial.HighlightArrow;
 	import com.somewater.rabbit.application.windows.NeedMoreEnergyWindow;
+	import com.somewater.rabbit.application.windows.OptionsWindow;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.GameUser;
 	import com.somewater.rabbit.storage.LevelDef;
@@ -20,6 +21,7 @@ package com.somewater.rabbit.application.map {
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.rabbit.storage.UserProfile;
 	import com.somewater.storage.Lang;
+	import com.somewater.text.Hint;
 
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
@@ -67,7 +69,7 @@ package com.somewater.rabbit.application.map {
 		private var holeButton:OrangeButton;
 		private var energyIndicator:EnergyIndicator;
 		private var offerButtons:Array = [];
-		private var audioControls:AudioControls;
+		private var optionsButton:OrangeButton;
 		private var friendIcons;
 
 		public function MapPage() {
@@ -122,16 +124,20 @@ package com.somewater.rabbit.application.map {
 				addChild(energyIndicator);
 			}
 
-			audioControls = new AudioControls();
-			audioControls.x = 10;
-			audioControls.y = energyIndicator ? energyIndicator.y + energyIndicator.height + 10 : 10;
-			addChild(audioControls)
+			optionsButton = new OrangeButton();
+			optionsButton.setSize(48, 48);
+			optionsButton.icon = Lib.createMC('interface.OptionsIcon');
+			optionsButton.x = (energyIndicator ? energyIndicator.x + energyIndicator.width + 10: 10);
+			optionsButton.y = 10;
+			optionsButton.addEventListener(MouseEvent.CLICK, onOptionsClicked);
+			Hint.bind(optionsButton, "Настройки");
+			addChild(optionsButton);
 
 			if(OfferManager.instance.active){
 				for each(var offerType:int in OfferManager.instance.types) {
 					var offerStat:OfferStatPanel = new OfferStatPanel(OfferStatPanel.INTERFACE_MODE, offerType);
-					offerStat.x = (energyIndicator ? energyIndicator.x + energyIndicator.width + 10: 10) + + offerType * 130;
-					offerStat.y = 10;
+					offerStat.x = optionsButton.x + optionsButton.width + 10 + offerType * 130;
+					offerStat.y = 10 - 3;
 					addChild(offerStat);
 					offerButtons.push(offerStat);
 				}
@@ -166,19 +172,25 @@ package com.somewater.rabbit.application.map {
 			shopButton.removeEventListener(MouseEvent.CLICK, onShopClick)
 			holeButton.removeEventListener(MouseEvent.CLICK, onHoleClick)
 			if(energyIndicator){
-				energyIndicator.addEventListener(MouseEvent.CLICK, onEnergyIndicatorClick);
+				energyIndicator.removeEventListener(MouseEvent.CLICK, onEnergyIndicatorClick);
 				energyIndicator.clear();
 			}
 			for each(var offer:OfferStatPanel in offerButtons)
 				offer.clear();
 			if(highlightArrow)
 				highlightArrow.clear();
-			audioControls.clear();
 			for each(var friendIcon:MapFriendIcon in friendIcons){
 				friendIcon.clear();
 				friendIcon.removeEventListener(MouseEvent.CLICK, onFriendIconClicked);
 				friendIcon.removeEventListener(MouseEvent.ROLL_OVER, onFriendIconOver);
 			}
+			optionsButton.removeEventListener(MouseEvent.CLICK, onOptionsClicked);
+			optionsButton.clear();
+			Hint.removeHint(optionsButton);
+		}
+
+		private function onOptionsClicked(event:MouseEvent):void {
+			new OptionsWindow();
 		}
 
 		private function onEnergyIndicatorClick(event:MouseEvent):void {
