@@ -4,6 +4,7 @@ package com.somewater.rabbit.application.map {
 	import com.somewater.rabbit.application.AudioControls;
 	import com.somewater.rabbit.application.EnergyIndicator;
 	import com.somewater.rabbit.application.FriendBar;
+	import com.somewater.rabbit.application.ImaginaryGameUser;
 	import com.somewater.rabbit.application.OrangeButton;
 	import com.somewater.rabbit.application.PageBase;
 	import com.somewater.rabbit.application.RScroller;
@@ -13,6 +14,7 @@ package com.somewater.rabbit.application.map {
 	import com.somewater.rabbit.application.tutorial.HighlightArrow;
 	import com.somewater.rabbit.application.windows.NeedMoreEnergyWindow;
 	import com.somewater.rabbit.storage.Config;
+	import com.somewater.rabbit.storage.GameUser;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
 	import com.somewater.rabbit.storage.Lib;
@@ -39,6 +41,21 @@ package com.somewater.rabbit.application.map {
 		private static var lastShopStart:Boolean = false;
 		private static var lastHoleStart:Boolean = false;
 
+		private static const friendPosExceptins:Object = {
+			4: [-6, 70, -8, 8],
+			6: [70, -6, 8, -8],
+			8: [-6, 70, -4, 10],
+			9: [-6, 70, -8, 8],
+			14: [-10, 5, -11, -1],
+			15: [70, 70, 4, 8],
+			16: [70, 70, 4, 8],
+			19: [-6, 70, -8, 8],
+			20: [70, -6, 8, -8],
+			21: [70, -6, 2, -8],
+			23: [70, -6, 8, -2],
+			24: [-6, 70, -8, 8]
+		};
+
 		protected var core:MovieClip;
 		protected var scroller:MapRScroller;
 		protected var levelIcons:Array;
@@ -51,6 +68,7 @@ package com.somewater.rabbit.application.map {
 		private var energyIndicator:EnergyIndicator;
 		private var offerButtons:Array = [];
 		private var audioControls:AudioControls;
+		private var friendIcons;
 
 		public function MapPage() {
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
@@ -156,6 +174,11 @@ package com.somewater.rabbit.application.map {
 			if(highlightArrow)
 				highlightArrow.clear();
 			audioControls.clear();
+			for each(var friendIcon:MapFriendIcon in friendIcons){
+				friendIcon.clear();
+				friendIcon.removeEventListener(MouseEvent.CLICK, onFriendIconClicked);
+				friendIcon.removeEventListener(MouseEvent.ROLL_OVER, onFriendIconOver);
+			}
 		}
 
 		private function onEnergyIndicatorClick(event:MouseEvent):void {
@@ -180,8 +203,8 @@ package com.somewater.rabbit.application.map {
 					var icon:MapLevelIcon = new MapLevelIcon();
 					icon.x = levelHolder.x;
 					icon.y = levelHolder.y;
-					levelHolder.parent.addChild(icon);
-					levelHolder.parent.removeChild(levelHolder);
+					levelHolder.parent.addChildAt(icon, levelHolder.parent.getChildIndex(levelHolder));
+					levelHolder.visible = false;
 					levelIcons.push(icon);
 					icon.levelNum = i;
 					icon.levelInstance = UserProfile.instance.getLevelInsanceByNumber(i);
@@ -204,6 +227,50 @@ package com.somewater.rabbit.application.map {
 			core.addEventListener(MouseEvent.MOUSE_OUT, onMouseUpOnMap);
 			if(stage) stage.addEventListener(MouseEvent.MOUSE_OUT, onMouseUpOnStage);
 			this.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
+			createFriendMapIcons();
+		}
+
+		private function createFriendMapIcons():void {
+			friendIcons = [];
+			var groupParentsByLevel:Object = {};
+			for each(var friend:GameUser in UserProfile.instance.neighbours){
+				var placeholder:DisplayObjectContainer = core['level_' + friend.levelNumber];
+				if(placeholder){
+					var icon:MapFriendIcon = new MapFriendIcon(friend);
+					icon.addEventListener(MouseEvent.CLICK, onFriendIconClicked);
+					icon.addEventListener(MouseEvent.ROLL_OVER, onFriendIconOver);
+					friendIcons.push(icon);
+					var groupParent = groupParentsByLevel[friend.levelNumber];
+					var xOffset:int;
+					var yOffset:int;
+					var ex:Array = friendPosExceptins[friend.levelNumber];
+					if(!groupParent){
+						groupParentsByLevel[friend.levelNumber] = groupParent = new Sprite();
+
+						if(ex){
+							xOffset = ex[0];
+							yOffset = ex[1];
+						} else {
+							xOffset = 70;
+							yOffset = 70;
+						}
+						groupParent.x = placeholder.x + xOffset;
+						groupParent.y = placeholder.y + yOffset;
+						placeholder.parent.addChild(groupParent);
+					}
+					var groupParentNum:int = groupParent.numChildren;
+					if(ex){
+						xOffset = ex[2];
+						yOffset = ex[3];
+					} else {
+						xOffset = 8;
+						yOffset = 8;
+					}
+					icon.x = Math.pow(groupParentNum, 0.8) * xOffset;
+					icon.y = Math.pow(groupParentNum, 0.8) * yOffset;
+					groupParent.addChildAt(icon, 0);
+				}
+			}
 		}
 
 		private function onScroll(event:Event = null):void {
@@ -321,6 +388,16 @@ package com.somewater.rabbit.application.map {
 
 		private function onHoleClick(event:Event):void {
 			new OpenRewardLevelCommand(UserProfile.instance).execute();
+		}
+
+		private function onFriendIconOver(event:MouseEvent):void {
+			var icon:MapFriendIcon = event.currentTarget as MapFriendIcon;
+			icon.parent.setChildIndex(icon, icon.parent.numChildren - 1);
+		}
+
+		private function onFriendIconClicked(event:MouseEvent):void {
+			var icon:MapFriendIcon = event.currentTarget as MapFriendIcon;
+			new OpenRewardLevelCommand(icon.friend).execute();
 		}
 	}
 }
