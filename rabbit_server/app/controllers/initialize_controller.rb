@@ -37,13 +37,31 @@ class InitializeController < BaseUserController
 
 
 		@response['neighbours'] = []
-		user_neighbours = @user.neighbours
+		user_neighbours = @user.user_friends
 		user_neighbours << @new_neighbour if @new_neighbour && !user_neighbours.index{|assoc| assoc.friend_uid.to_s == @new_neighbour.friend_uid.to_s }
-		user_neighbours.each do |friend_assoc|
-			next unless self.request_friend_ids.include?(friend_assoc.friend_uid)
-			friend = friend_assoc.friend
-			@response['neighbours'] << friend.to_short_json if friend
+		user_neighbours_by_uid = user_neighbours.inject({}){|m,u| m[u.friend_uid.to_s] = u; m }
+
+		self.request_friend_ids.sort[0,100].each do |friend_uid|
+			friend_assoc = user_neighbours_by_uid[friend_uid.to_s]
+			if friend_assoc.nil?
+				# создать запрос
+				unless UserFriend.exists?(['user_uid = ? and friend_uid = ?', friend_uid.to_s, @user.uid])
+					save UserFriend.new({:user_uid => friend_uid, :friend_uid => @user.uid})
+				end
+			else
+				if !friend_assoc.accepted
+					# создать полноценную связь
+					friend_assoc.accepted = true
+					save(friend_assoc)
+					unless UserFriend.exists?(['user_uid = ? and friend_uid = ?', friend_uid.to_s, @user.uid])
+						save UserFriend.new({:user_uid => friend_uid, :friend_uid => @user.uid, :accepted => true})
+					end
+				end
+				friend = friend_assoc.friend
+				@response['neighbours'] << friend.to_short_json if friend
+			end
 		end
+
 		@response['neighbour_requests'] = @user.not_neighbours.select("friend_uid").to_a.map{|u| u.friend_uid}
 		@response['session'] = true
 	end
@@ -124,34 +142,7 @@ class InitializeController < BaseUserController
 	def check_add_neighbour(referer = nil)
 		referer_uid = @json['referer']
 		if(referer_uid && referer_uid.to_s.length > 0 && referer_uid.to_s != '0' && @json['add_neighbour'])
-			referer = User.where(:uid => referer_uid.to_s).first(:select => User::SHORT_SELECT) unless referer
-			add_neighbour(referer)
-		end
-	end
-
-	def add_neighbour(friend)
-		friend_assoc = friend.user_friends.where(:friend_uid => @user.uid.to_s).limit(1).first
-		user_assoc = @user.user_friends.where(:friend_uid => friend.uid.to_s).limit(1).first
-
-		unless user_assoc # TODO
-			user_assoc = @user.user_friends.build(:friend_uid => friend.uid.to_s)
-		end
-
-		if user_assoc
-			# в соседи
-			user_assoc.accepted = true
-			save(user_assoc)
-			if friend_assoc
-				friend_assoc.accepted = true
-				save(friend_assoc)
-			else
-				friend.user_friends.build(:friend_uid => @user.uid, :accepted => true)
-				save(friend)
-			end
-			@new_neighbour = user_assoc
-		elsif !friend_assoc
-			friend.user_friends.build(:friend_uid => @user.uid)
-			save(friend)
+			# pending
 		end
 	end
 end

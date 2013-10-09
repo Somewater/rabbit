@@ -129,19 +129,11 @@ package com.somewater.rabbit.application.windows {
 			var selectedSocualUsers:Array = usersSelector.selected;
 			if(selectedSocualUsers.length) {
 				close();
-				var selectedAppFriends:Array = [];
 				var selectedFriends:Array = [];
 				var s:SocialUser;
 				for each(s in  selectedSocualUsers){
-					if(s.isAppFriend)
-						selectedAppFriends.push(s);
-
-					if(!s.isAppFriend || Config.memory['disableFriendBarInviteBox'])
-						selectedFriends.push(s);
+					selectedFriends.push(s);
 				}
-
-				if(selectedAppFriends.length)
-					AppServerHandler.instance.sendNeighboursAccepts(selectedAppFriends);
 
 				if(selectedFriends.length) {
 					var canSendSelectedFriends:Array = []

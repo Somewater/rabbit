@@ -531,111 +531,6 @@ class AllSpec
 				response['rewards'].find{|r| r['id'] == 111}.should be_nil
 			end
 
-			context "Новый игрок по ссылка" do
-
-				before :each do
-					@user_net = @user.net
-					@user_uid = @user.uid.to_s
-					@user.delete
-				end
-
-				it "Если referer друг уже запросил вновь добавляемого игрока как соседа, создаются соседи" do
-					@inviter = get_other_user()
-					UserFriend.create(:user_uid => @user_uid, :friend_uid => @inviter.uid)
-
-					response = request({'net' => @user_net,'uid' => 1,'json' => {'referer' => @inviter.uid,
-																																			 'add_neighbour' => true,
-																																			 'friendIds' => [@inviter.uid],
-																																			 'user' => {'uid' => 1, 'net' => @user_net}}})
-
-					@inviter.neighbours.size.should == 1
-					@inviter.neighbours.first.friend_uid.should == @user_uid
-					@user = User.where(:uid => @user_uid).limit(1).first
-					@user.neighbours.size.should == 1
-					@user.neighbours.first.friend_uid.should == @inviter.uid
-
-					response['neighbours'].should_not be_empty
-					response['neighbours'].size.should == 1
-					response['neighbours'].first['uid'].to_s.should == @inviter.uid.to_s
-				end
-
-				it "Если referer друг еще не запросил нового игрока как соседа, создается запрос в соседи от нового игрока" do
-					@inviter = get_other_user()
-
-					request({'net' => @user_net,'uid' => '1','json' => {'referer' => @inviter.uid,
-																															'add_neighbour' => true,
-																															'friendIds' => [@inviter.uid],
-																															'user' => {'uid' => '1', 'net' => @user_net}}})
-
-					@inviter.neighbours.should be_empty
-					@inviter.user_friends.size.should == 1
-					@inviter.user_friends.first.friend_uid.should == @user_uid
-					@user = User.where(:uid => @user_uid).limit(1).first
-					@user.neighbours.should be_empty
-					@user.user_friends.should be_empty
-				end
-
-				it "Если referer и новый игрок не друзья в соц сети (add_neighbour=false), соседство не создается" do
-					@inviter = get_other_user()
-
-					request({'net' => @user_net,'uid' => '1','json' => {'referer' => @inviter.uid, 'add_neighbour' => nil, 'user' => {'uid' => '1', 'net' => @user_net}}})
-
-					@inviter.neighbours.should be_empty
-					@inviter.user_friends.should be_empty
-					@user = User.where(:uid => @user_uid).limit(1).first
-					@user.neighbours.should be_empty
-					@user.user_friends.should be_empty
-				end
-			end
-
-			context "Сушествующий игрок по ссылка" do
-				it "Если referer друг уже запросил игрока как соседа, создаются соседи" do
-					@inviter = get_other_user()
-					@user.user_friends.build({:friend_uid => @inviter.uid})
-					@user.save
-
-					response = request({'net' => @user.net,'uid' => 1,'json' => {'referer' => @inviter.uid,
-																																			 'add_neighbour' => true,
-																																			 'friendIds' => [@inviter.uid],
-																																			 'user' => {'uid' => 1, 'net' => @user.net}}})
-
-					@inviter.neighbours.size.should == 1
-					@inviter.neighbours.first.friend_uid.should == @user.uid
-					@user.neighbours.size.should == 1
-					@user.neighbours.first.friend_uid.should == @inviter.uid
-
-					response['neighbours'].should_not be_empty
-					response['neighbours'].size.should == 1
-					response['neighbours'].first['uid'].to_s.should == @inviter.uid.to_s
-				end
-
-				it "Если referer друг еще не запросил игрока как соседа, создается запрос в соседи от игрока" do
-					@inviter = get_other_user()
-
-					request({'net' => @user.net,'uid' => '1','json' => {'referer' => @inviter.uid,
-																															'add_neighbour' => true,
-																															'friendIds' => [@inviter.uid],
-																															'user' => {'uid' => '1', 'net' => @user.net}}})
-
-					@inviter.neighbours.should be_empty
-					@inviter.user_friends.size.should == 1
-					@inviter.user_friends.first.friend_uid.should == @user.uid
-					@user.neighbours.should be_empty
-					@user.user_friends.should be_empty
-				end
-
-				it "Если referer и игрок не друзья в соц сети (add_neighbour=false), соседство не создается" do
-					@inviter = get_other_user()
-
-					request({'net' => @user.net,'uid' => '1','json' => {'referer' => @inviter.uid, 'add_neighbour' => nil, 'user' => {'uid' => '1', 'net' => @user.net}}})
-
-					@inviter.neighbours.should be_empty
-					@inviter.user_friends.should be_empty
-					@user.neighbours.should be_empty
-					@user.user_friends.should be_empty
-				end
-			end
-
 			it "Выдаются друзья юзера" do
 				@friend = get_other_user()
 
@@ -661,7 +556,7 @@ class AllSpec
 				response['neighbours'][0]['uid'].should == @friend.uid
 			end
 
-			it "Инфа о друге не выдается, пока он не сосед (нет запросов)" do
+			it "Инфа о друге не выдается, пока он не связан и нет запросов от него" do
 				@friend = get_other_user()
 
 				response = request({'net' => @user.net,'uid' => @user.uid,'json' => {'friendIds' => [@friend.uid],
@@ -670,7 +565,35 @@ class AllSpec
 				response['neighbours'].size.should == 0
 			end
 
-			it "Инфа о друге не выдается, пока он не сосед (oн послал запрос)" do
+			it "Инфа о друге не выдается, пока он не связан и нет запросов от него (запрос от игрока уже создан)" do
+				@friend = get_other_user()
+
+				UserFriend.create(:user_uid => @friend.uid, :friend_uid => @user.uid)
+				response = request({'net' => @user.net,'uid' => @user.uid,'json' => {'friendIds' => [@friend.uid],
+																																						 'user' => {'uid' => @user.uid, 'net' => @user.net}}})
+				response['neighbours'].should_not be_nil
+				response['neighbours'].size.should == 0
+			end
+
+			it "Создается запрос в соседи друга" do
+				@friend = get_other_user()
+
+				UserFriend.should_not be_exists(:user_uid => @friend.uid, :friend_uid => @user.uid)
+				response = request({'net' => @user.net,'uid' => @user.uid,'json' => {'friendIds' => [@friend.uid],
+																																						 'user' => {'uid' => @user.uid, 'net' => @user.net}}})
+				UserFriend.should be_exists(:user_uid => @friend.uid, :friend_uid => @user.uid, :accepted => false)
+			end
+
+			it "Ничего не ломается, если должен быть создан запрос в соседи, но он уже был создан" do
+				@friend = get_other_user()
+
+				UserFriend.create(:user_uid => @friend.uid, :friend_uid => @user.uid)
+				response = request({'net' => @user.net,'uid' => @user.uid,'json' => {'friendIds' => [@friend.uid],
+																																						 'user' => {'uid' => @user.uid, 'net' => @user.net}}})
+				UserFriend.should be_exists(:user_uid => @friend.uid, :friend_uid => @user.uid, :accepted => false)
+			end
+
+			it "Инфа о друге выдается и связь создается, если он ранее послал запрос" do
 				@friend = get_other_user()
 
 				@user.user_friends.create(:friend_uid => @friend.uid)
@@ -678,18 +601,25 @@ class AllSpec
 				response = request({'net' => @user.net,'uid' => @user.uid,'json' => {'friendIds' => [@friend.uid],
 																																						 'user' => {'uid' => @user.uid, 'net' => @user.net}}})
 				response['neighbours'].should_not be_nil
-				response['neighbours'].size.should == 0
+				response['neighbours'].size.should == 1
+				response['neighbours'][0]['uid'].should == @friend.uid
+				UserFriend.should be_exists(:user_uid => @friend.uid, :friend_uid => @user.uid, :accepted => true)
+				UserFriend.should be_exists(:user_uid => @user.uid, :friend_uid => @friend.uid, :accepted => true)
 			end
 
-			it "Инфа о друге не выдается, пока он не сосед (игрок послал запрос)" do
+			it "Инфа о друге выдается, если он уже стал соседом ранее" do
 				@friend = get_other_user()
 
-				@friend.user_friends.create(:friend_uid => @user.uid)
+				@user.user_friends.create(:friend_uid => @friend.uid, :accepted => true)
+				@friend.user_friends.create(:friend_uid => @user.uid, :accepted => true)
 
 				response = request({'net' => @user.net,'uid' => @user.uid,'json' => {'friendIds' => [@friend.uid],
 																																						 'user' => {'uid' => @user.uid, 'net' => @user.net}}})
 				response['neighbours'].should_not be_nil
-				response['neighbours'].size.should == 0
+				response['neighbours'].size.should == 1
+				response['neighbours'][0]['uid'].should == @friend.uid
+				UserFriend.should be_exists(:user_uid => @friend.uid, :friend_uid => @user.uid, :accepted => true)
+				UserFriend.should be_exists(:user_uid => @user.uid, :friend_uid => @friend.uid, :accepted => true)
 			end
 
 			it "Выдается энергия, если пришло время выдачи" do

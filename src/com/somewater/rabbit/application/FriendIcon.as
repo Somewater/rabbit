@@ -6,6 +6,7 @@ package com.somewater.rabbit.application
 	import com.somewater.display.HintedSprite;
 	import com.somewater.display.Photo;
 	import com.somewater.rabbit.application.commands.OpenRewardLevelCommand;
+	import com.somewater.rabbit.application.commands.PostingFriendsInviteCommand;
 	import com.somewater.rabbit.application.windows.NeighboursWindow;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.GameUser;
@@ -111,7 +112,7 @@ package com.somewater.rabbit.application
 				Config.loader.showInviteWindow();	
 			}
 			else if(mode == 3 || mode == 0){
-				new NeighboursWindow(socialUser);
+				new PostingFriendsInviteCommand(socialUser, trace, trace).execute();
 			}
 			else if(mode == 1 || mode == 2)
 			{
@@ -182,7 +183,7 @@ package com.somewater.rabbit.application
 				starText.text = user.levelNumber.toString();
 				scoreText.text = user.stars.toString();
 				setMode(1);
-				hint = Lang.t('FRIEND_BUTTON_HINT');
+				hint = Lang.t(GameUser(data).itsMe() ? 'FRIEND_BUTTON_MY_HINT' : 'FRIEND_BUTTON_HINT');
 			} else if(data && data is SocialUser) {
 				socialUser = data;
 				photo.source = socialUser.photoMedium;
