@@ -2,6 +2,7 @@ package com.somewater.rabbit.application.map {
 	import com.somewater.control.IClear;
 	import com.somewater.display.CorrectSizeDefinerSprite;
 	import com.somewater.rabbit.application.AudioControls;
+	import com.somewater.rabbit.application.CustomizeManager;
 	import com.somewater.rabbit.application.EnergyIndicator;
 	import com.somewater.rabbit.application.FriendBar;
 	import com.somewater.rabbit.application.ImaginaryGameUser;
@@ -240,6 +241,7 @@ package com.somewater.rabbit.application.map {
 			if(stage) stage.addEventListener(MouseEvent.MOUSE_OUT, onMouseUpOnStage);
 			this.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
 			createFriendMapIcons();
+			CustomizeManager.instance.customizeHole(UserProfile.instance, core.hole);
 		}
 
 		private function createFriendMapIcons():void {
