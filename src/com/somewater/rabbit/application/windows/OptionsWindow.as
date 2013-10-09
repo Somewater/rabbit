@@ -1,13 +1,14 @@
 package com.somewater.rabbit.application.windows {
 	import com.somewater.display.Window;
 	import com.somewater.rabbit.application.AudioControls;
+	import com.somewater.storage.Lang;
 
 	public class OptionsWindow extends Window{
 
 		private var audioControls:AudioControls;
 
 		public function OptionsWindow() {
-			super("Настройки", null, null, [])
+			super(Lang.t('OPTIONS'), null, null, [])
 			setSize(270, 300);
 
 			audioControls = new AudioControls();

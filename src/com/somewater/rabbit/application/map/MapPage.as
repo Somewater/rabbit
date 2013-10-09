@@ -130,7 +130,7 @@ package com.somewater.rabbit.application.map {
 			optionsButton.x = (energyIndicator ? energyIndicator.x + energyIndicator.width + 10: 10);
 			optionsButton.y = 10;
 			optionsButton.addEventListener(MouseEvent.CLICK, onOptionsClicked);
-			Hint.bind(optionsButton, "Настройки");
+			Hint.bind(optionsButton, Lang.t('OPTIONS'));
 			addChild(optionsButton);
 
 			if(OfferManager.instance.active){
