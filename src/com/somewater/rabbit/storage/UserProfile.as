@@ -372,7 +372,7 @@ import flash.utils.Timer;
 		}
 
 		public function gainEnergy():void{
-			_energy = ConfManager.instance.getNumber('ENERGY_MAX')
+			_energy = Math.min(ConfManager.instance.getNumber('ENERGY_MAX'), _energy + 1);
 			_energyLastGain = new Date(serverUnixTime());
 			refreshEnergyGainTimer();
 			dispatchChange();
