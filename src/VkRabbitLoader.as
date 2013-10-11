@@ -90,7 +90,7 @@ package {
 						"Game":{priority:-1,preload:true,url:static_server_path + "r2/RabbitGame.swf?cb=3"}
 						,"Application":{priority:-1000, preload:true,url:static_server_path + "r3/RabbitApplication.swf?cb=5"}
 						,"Lang":{priority:100, preload:true, url:static_server_path + "r3/lang_pack.swf?cb=4"}
-						,"XmlPack":{preload:true, url:static_server_path + "r2/xml_pack.swf?cb=3"}
+						,"XmlPack":{preload:true, url:static_server_path + "r2/xml_pack.swf?cb=4"}
 
 						,"Interface":{preload:true, url:static_server_path + "r3/assets/interface.swf?cb=2"}
 						,"LevelMap":{preload: true, url:static_server_path + "r3/assets/level_map.swf?cb=5"}
