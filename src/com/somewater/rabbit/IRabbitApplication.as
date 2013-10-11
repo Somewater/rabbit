@@ -1,5 +1,6 @@
 package com.somewater.rabbit
 {
+	import com.somewater.effects.IEffect;
 	import com.somewater.rabbit.storage.LevelDef;
 	import com.somewater.rabbit.storage.LevelInstanceDef;
 	
@@ -74,5 +75,7 @@ package com.somewater.rabbit
 		function stat(name:String):void
 
 		function canCompleteLevel():Boolean;
+
+		function createEffect(name:String, params:Object = null):IEffect;
 	}
 }

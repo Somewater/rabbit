@@ -598,7 +598,7 @@
 		<component type="com.pblabs.rendering2D.SimpleSpatialComponent" name="Spatial">
 			<spatialManager entityName="SceneDB" componentName="Spatial"/>
 		</component>
-		<component type="com.somewater.rabbit.decor.PopupEffectRenderer" name="Render">
+		<component type="com.somewater.rabbit.decor.EffectRenderer" name="Render">
 			<layerIndex>20</layerIndex>
 			<scene entityName="SceneDB" componentName="Scene"/>
 			<positionProperty>@Spatial.position</positionProperty>

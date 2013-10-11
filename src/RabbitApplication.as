@@ -19,6 +19,8 @@ package
 	import com.somewater.rabbit.application.GameGUI;
 	import com.somewater.rabbit.application.LevelsPage;
 	import com.somewater.rabbit.application.MainMenuPage;
+	import com.somewater.rabbit.application.effects.OfferFountainEffect;
+	import com.somewater.rabbit.application.effects.SkullFountainEffect;
 	import com.somewater.rabbit.application.map.MapPage;
 	import com.somewater.rabbit.application.offers.OfferManager;
 	import com.somewater.rabbit.application.OrangeButton;
@@ -42,6 +44,8 @@ package
 	import com.somewater.rabbit.application.windows.PauseMenuWindow;
 	import com.somewater.rabbit.application.windows.PendingRewardsWindow;
 	import com.somewater.rabbit.application.windows.TesterInvitationWindow;
+	import com.somewater.effects.IEffect;
+	import com.somewater.rabbit.application.effects.GameFountainEffect;
 	import com.somewater.rabbit.events.GameModuleEvent;
 	import com.somewater.rabbit.storage.ConfManager;
 	import com.somewater.rabbit.storage.Config;
@@ -1043,6 +1047,28 @@ package
 			var sd:SoundData = soundTracks[SoundTrack.MUSIC];
 			if(sd && !pseudoMusic(sd.soundName))
 				sd.channel.soundTransform = _musicSoundTransform;
+		}
+
+		private static const EFFECT_NAME_TO_EFFECT:Object = {
+			'rabbit.RabbitSkull': SkullFountainEffect,
+			'rabbit.CarrotBonusAnimation':SkullFountainEffect,
+			'rabbit.ShineAnimation': SkullFountainEffect,
+			'rabbit.MoneyRewardAnimation': SkullFountainEffect,
+
+			'rabbit.OfferBonusAnimation': OfferFountainEffect,
+			'rabbit.OfferBonusAnimation_0': OfferFountainEffect,
+			'rabbit.OfferBonusAnimation_1': OfferFountainEffect,
+			'rabbit.OfferBonusAnimation_2': OfferFountainEffect
+		}
+		public function createEffect(name:String, params:Object = null):IEffect {
+			var e:IEffect;
+			var cl:Class = EFFECT_NAME_TO_EFFECT[name];
+			if(name.substr(0, 26) == 'rabbit.OfferBonusAnimation'){
+				e = new cl(Lib.createMC('effect.OfferIcon_' + (params ? params.offerType : 0)), params);
+			} else {
+				e = new cl(params);
+			}
+			return e;
 		}
 	}
 }

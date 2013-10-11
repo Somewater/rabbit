@@ -1,7 +1,11 @@
 package com.somewater.rabbit.components
 {
+	import com.pblabs.engine.PBE;
+	import com.pblabs.engine.entity.PropertyReference;
+	import com.somewater.effects.IEffect;
 	import com.somewater.rabbit.SoundTrack;
 	import com.somewater.rabbit.Sounds;
+	import com.somewater.rabbit.decor.PopupEffectFactory;
 	import com.somewater.rabbit.events.HeroHealthEvent;
 	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.util.AnimationHelper;
@@ -25,6 +29,9 @@ package com.somewater.rabbit.components
 		 */
 		public var maxSpeed:Number = 8;
 
+		private var positionRef:PropertyReference;
+		private var lastEffectTime:Number = 0;
+
 		public function HeroDataComponent()
 		{
 			super();
@@ -33,6 +40,7 @@ package com.somewater.rabbit.components
 				throw new Error("Singletone");
 			
 			instance = this;
+			positionRef = new PropertyReference('@Spatial.position');
 		}
 		
 		override protected function onRemove():void
@@ -65,6 +73,13 @@ package com.somewater.rabbit.components
 				{
 					Config.application.play(Sounds.DAMAGE, SoundTrack.GAME_DAMAGE);
 					AnimationHelper.instance.blink((owner.lookupComponentByName('Render') as ProxyIsoRenderer).displayObject, 0, 0.8);
+					var virtualTime:Number = PBE.processManager.virtualTime;
+					if(value == 0 || virtualTime - lastEffectTime > 500){
+						var effect:IEffect = Config.application.createEffect('rabbit.RabbitSkull', {health: value})
+						PopupEffectFactory.createEffect('rabbit.RabbitSkull',
+								_owner.getProperty(positionRef), _owner, false, effect);
+						lastEffectTime = virtualTime;
+					}
 				}
 				if(_owner){
 					_owner.eventDispatcher.dispatchEvent(new HeroHealthEvent(_health, value));
