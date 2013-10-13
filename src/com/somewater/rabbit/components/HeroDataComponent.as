@@ -74,7 +74,7 @@ package com.somewater.rabbit.components
 					Config.application.play(Sounds.DAMAGE, SoundTrack.GAME_DAMAGE);
 					AnimationHelper.instance.blink((owner.lookupComponentByName('Render') as ProxyIsoRenderer).displayObject, 0, 0.8);
 					var virtualTime:Number = PBE.processManager.virtualTime;
-					if(value == 0 || virtualTime - lastEffectTime > 500){
+					if(value > 0 ? virtualTime - lastEffectTime > 500 : _health > 0){
 						var effect:IEffect = Config.application.createEffect('rabbit.RabbitSkull', {health: value})
 						PopupEffectFactory.createEffect('rabbit.RabbitSkull',
 								_owner.getProperty(positionRef), _owner, false, effect);

@@ -13,11 +13,13 @@ package com.somewater.rabbit.application.effects {
 		private static const BOTTOM_OFFSET:int = 50;
 
 		public function SkullFountainEffect(params:Object) {
-			super([Lib.createMC('effect.RabbitSkull')]);
-			if(params && params.health <= 0){
-				lifetime = 1000;
+			died = params && params.health <= 0;
+			super([Lib.createMC(died ? 'effect.RabbitSkullDead' : 'effect.RabbitSkull')]);
+			if(died){
+				lifetime = 100;
 				emitSpeed = 0.02;
-				particleMaximum = 20;
+				particleMaximum = 1;
+				particleMaximumAll = 1;
 				died = true;
 				const1 = 0.01
 				handOffsetX = 20;
@@ -27,8 +29,8 @@ package com.somewater.rabbit.application.effects {
 				emitSpeed = 0.005;
 				particleMaximum = 15;
 			}
-			width = died ? 300 : 200
-			height = (died ? 400 : 200);
+			width = died ? 500 : 200
+			height = (died ? 500 : 200);
 		}
 
 		override protected function setupParticleSpeed(p:Particle):void {

@@ -2,11 +2,14 @@ package com.somewater.rabbit.components {
 	import com.pblabs.engine.PBE;
 	import com.pblabs.engine.core.ObjectType;
 	import com.pblabs.engine.entity.IEntity;
+	import com.somewater.rabbit.SoundTrack;
+	import com.somewater.rabbit.Sounds;
 	import com.somewater.rabbit.decor.PopupEffectFactory;
 	import com.somewater.rabbit.iso.IsoMover;
 	import com.somewater.rabbit.iso.IsoRenderer;
 	import com.somewater.rabbit.iso.IsoSpatial;
 	import com.somewater.rabbit.managers.LevelConditionsManager;
+	import com.somewater.rabbit.storage.Config;
 	import com.somewater.rabbit.storage.PowerupInfo;
 
 	import flash.events.Event;
@@ -121,30 +124,34 @@ package com.somewater.rabbit.components {
 					else
 					{
 						heroDataRef.health = Math.min(1, heroDataRef.health + data.health);
-						PopupEffectFactory.createEffect(SHINE_ASSET_SLUG, spatialRef.tile, _owner);
+						createEffect();
 					}
 				}
 
 				if(data.protection)
 				{
-					if(heroDataRef.protectedFlag > 0)
+					if(heroDataRef.protectedFlag > 0){
 						continue;
-					else
+					}else{
 						heroDataRef.protectedFlag++;
+						createEffect();
+					}
 				}
 
 				if(data.speedAdd)
 				{
-					if(isoMoverRef.speed + data.speedAdd > heroDataRef.maxSpeed)
+					if(isoMoverRef.speed + data.speedAdd > heroDataRef.maxSpeed){
 						continue;
-					else
+					}else{
 						isoMoverRef.speed += data.speedAdd;
+						createEffect();
+					}
 				}
 
 				if(data.timeAdd)
 				{
 					levelConditionsRef.decrementSpendedTime(data.timeAdd);
-					PopupEffectFactory.createEffect(SHINE_ASSET_SLUG, spatialRef.tile, _owner);
+					createEffect();
 				}
 
 				if(data.time)
@@ -177,6 +184,11 @@ package com.somewater.rabbit.components {
 		private function refreshActorPowerups():void
 		{
 			owner.eventDispatcher.dispatchEvent(new Event(POWERUPS_CHANGED));
+		}
+
+		private function createEffect():void {
+			Config.application.play(Sounds.POWERUP, SoundTrack.GAME_DAMAGE);
+			PopupEffectFactory.createEffect(SHINE_ASSET_SLUG, spatialRef.tile, _owner);
 		}
 	}
 }

@@ -12,6 +12,7 @@ public class ParticleEffectBase extends EffectBase {
 
 	public var emitSpeed:Number = 0.01;// particles per ms
 	public var particleMaximum:int = 50;
+	public var particleMaximumAll:int = 1000000;
 	protected var particleAccumulator:Number = 0;
 	public var lifetime:int = 10000;
 
@@ -46,7 +47,7 @@ public class ParticleEffectBase extends EffectBase {
 	protected function render():void {
 		bitmapData.lock();
 		if(clearBeforeRender)
-			bitmapData.fillRect(bitmapData.rect, 0x88000000);
+			bitmapData.fillRect(bitmapData.rect, 0x00000000);
 		for each(var p:Particle in particles){
 			renderMatrix.tx = p.x + p.xOffset;
 			renderMatrix.ty = p.y + p.yOffset;
@@ -84,12 +85,14 @@ public class ParticleEffectBase extends EffectBase {
 		particles = filteredParticles;
 		particleAccumulator += msDelta * emitSpeed;
 		var emitCount:int = int(particleAccumulator);
-		if(emitCount && lifetime > 0){
+		if(emitCount && lifetime > 0 && particleMaximumAll > 0){
 			particleAccumulator -= emitCount;
 			for(var i:int = 0; i < emitCount; i++) {
-				if(particles.length >= particleMaximum)
+				if(particles.length >= particleMaximum || particleMaximumAll-- <= 0)
 					break;
-				var data:BitmapDataPart = pickNewParticleBDPart()
+				var data:BitmapDataPart = pickNewParticleBDPart();
+				if(!data)
+					continue;
 				p = emitParticle(data);
 				setupParticleSpeed(p);
 			}

@@ -18,5 +18,6 @@ package com.somewater.rabbit {
 		public static const HARVEST:String = 'sound.Harvest2';
 		public static const DAMAGE:String = 'sound.Damage';
 		public static const JUMP:String = 'sound.Jump';
+		public static const POWERUP:String = 'sound.Powerup';
 	}
 }

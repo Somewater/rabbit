@@ -19,7 +19,9 @@ package
 	import com.somewater.rabbit.application.GameGUI;
 	import com.somewater.rabbit.application.LevelsPage;
 	import com.somewater.rabbit.application.MainMenuPage;
+	import com.somewater.rabbit.application.effects.HarvestEffect;
 	import com.somewater.rabbit.application.effects.OfferFountainEffect;
+	import com.somewater.rabbit.application.effects.ShineEffect;
 	import com.somewater.rabbit.application.effects.SkullFountainEffect;
 	import com.somewater.rabbit.application.map.MapPage;
 	import com.somewater.rabbit.application.offers.OfferManager;
@@ -789,7 +791,7 @@ package
 
 		public function play(soundName:String, track:String, force:Boolean = false):void
 		{
-			if(track != SoundTrack.MUSIC && soundName != Sounds.HARVEST && soundName != Sounds.DAMAGE)
+			if(track != SoundTrack.MUSIC && soundName != Sounds.HARVEST && soundName != Sounds.DAMAGE && soundName != Sounds.POWERUP)
 				return;// Пока музыка (звуки вернее) идиотская, не проигрываем ее вовсе
 
 			if(force == false && soundTracks[track] && SoundData(soundTracks[track]).soundName == soundName)
@@ -1051,9 +1053,9 @@ package
 
 		private static const EFFECT_NAME_TO_EFFECT:Object = {
 			'rabbit.RabbitSkull': SkullFountainEffect,
-			'rabbit.CarrotBonusAnimation':SkullFountainEffect,
-			'rabbit.ShineAnimation': SkullFountainEffect,
-			'rabbit.MoneyRewardAnimation': SkullFountainEffect,
+			'rabbit.CarrotBonusAnimation':HarvestEffect,
+			'rabbit.ShineAnimation': ShineEffect,
+			'rabbit.MoneyRewardAnimation': ShineEffect,
 
 			'rabbit.OfferBonusAnimation': OfferFountainEffect,
 			'rabbit.OfferBonusAnimation_0': OfferFountainEffect,
