@@ -1,5 +1,6 @@
 package com.somewater.rabbit.application.map {
 	import com.somewater.control.IClear;
+	import com.somewater.display.HintedSprite;
 	import com.somewater.rabbit.application.OfferCounter;
 	import com.somewater.rabbit.application.offers.OfferManager;
 	import com.somewater.rabbit.storage.Config;
@@ -7,6 +8,7 @@ package com.somewater.rabbit.application.map {
 	import com.somewater.rabbit.storage.LevelInstanceDef;
 	import com.somewater.rabbit.storage.Lib;
 	import com.somewater.rabbit.storage.UserProfile;
+	import com.somewater.storage.Lang;
 	import com.somewater.text.EmbededTextField;
 
 	import flash.display.MovieClip;
@@ -14,7 +16,7 @@ package com.somewater.rabbit.application.map {
 	import flash.display.Sprite;
 	import flash.filters.DropShadowFilter;
 
-	public class MapLevelIcon extends Sprite implements IClear{
+	public class MapLevelIcon extends HintedSprite implements IClear{
 
 		private static const offerPosExceptions:Object = {
 			6: [-20, -6],
@@ -46,6 +48,7 @@ package com.somewater.rabbit.application.map {
 		public function clear():void {
 			if(offerCounter)
 				offerCounter.clear();
+			hint = null;
 		}
 
 		public function refresh():void {
@@ -71,11 +74,13 @@ package com.somewater.rabbit.application.map {
 			} else {
 				core.lock.visible = true;
 				active = false;
+				hint = Lang.t("ERROR_LOCKED_HINT");
 			}
 			buttonMode = useHandCursor = active;
 			levelTextField.visible = active;
 			if(active){
 				levelTextField.text = levelNum.toString();
+				hint = Config.application.getLevelByNumber(levelNum).name;
 			}
 
 			if(OfferManager.instance.active){
