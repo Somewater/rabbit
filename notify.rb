@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'rabbit_daemon'
 require 'vk_notify_worker'
 require 'vkontakte_api'
@@ -14,7 +16,7 @@ or
 or
 (energy = 0 and energy_last_gain < now() - interval '155 minutes'))
 SQL
-@uids = User.all(:select => 'uid', :conditions => @cond).map &:uid; @uids.size
+
 VkontakteApi.configure do |config|
 	config.logger.level = Logger::WARN
 end
@@ -41,6 +43,20 @@ def start_procesee(phrases)
 	online_uids_qiantity
 end
 @phrases = Notify.find(40, 41,42,43,29,30).map{|n|n.message}
+@phrases_offer = <<-END
+Последний день Праздника улыбки! Скорее в игру! Собери смайлы и получи награду!
+Последний день Праздника улыбки! Собирай смайлики и получи заветную награду!
+Всемирный день улыбки! Заходи в игру, тебя ждут веселые смайлы и призы!
+Всемирный день улыбки! Собирай смайлики и получи заветную награду!
+Последний день акции! Собирай смайлики и получи заветную награду!
+Сегодня последний день акции! Собирай смайлики и получи заветную награду!
+Улыбнись! Международный день улыбки! Забавные смайлики в игре ждут тебя!
+END
+@phrases_offer = @phrases_offer.split(/\n/)
+@phrases_map = <<-END
+Новая карта огородов появилась в игре. Проведи кролика к победе!
+END
+@phrases_map = @phrases_map.split(/\n/)
 
 def auto_process(times_q, phrases, step_space = 600)
 	online_uids_qiantity = 0
