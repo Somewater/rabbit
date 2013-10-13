@@ -30,8 +30,11 @@ class RabbitVkApi < VkApi
 
 	def on_event(uid, name, params = nil)
 		if name == 'level'
-
-			self.secure_vk.secure.setUserLevel(uid, params[:level]) rescue nil
+			begin
+				self.secure_vk.secure.setUserLevel(uid, params[:level])
+			rescue Exception => ex
+				Application.logger.error("Level up vk api  exception: #{ex}")
+			end
 		end
 	end
 end
