@@ -22,7 +22,7 @@ class ServerLogic
 				return [] # Если уровень пройден с проигрышем, ничего не делаем
 			end
 			raise LogicError, "Unbelievable carrot harvested value = #{levelInstance.carrotHarvested}" if(levelInstance.carrotHarvested > XmlController.instance.carrot_all(levelInstance.levelDef))
-			raise LogicError, "Inaccessible level ##{levelInstance.levelDef.number} from #{user.level}" if user.level < levelInstance.levelDef.number
+#			raise LogicError, "Inaccessible level ##{levelInstance.levelDef.number} from #{user.level}" if user.level < levelInstance.levelDef.number
 
 			# *** T I M E
 			if(levelConditions['fastTime'] && levelConditions['fastTime'].to_i >= levelInstance.timeSpended)#если прошел быстрее fastTime
